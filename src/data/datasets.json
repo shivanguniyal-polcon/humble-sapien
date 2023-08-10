@@ -1,0 +1,1553 @@
+{
+"pmjay_series": {
+"admissions_crore": [
+{
+"d": "2018-09-23",
+"v": 0.0
+},
+{
+"d": "2019-03-31",
+"v": 0.169
+},
+{
+"d": "2019-09-23",
+"v": 0.4662
+},
+{
+"d": "2020-03-31",
+"v": 0.972
+},
+{
+"d": "2021-03-31",
+"v": 1.785
+},
+{
+"d": "2022-03-31",
+"v": 3.28
+},
+{
+"d": "2023-03-31",
+"v": 4.93
+},
+{
+"d": "2023-05-31",
+"v": 5.0
+},
+{
+"d": "2024-06-30",
+"v": 7.37
+},
+{
+"d": "2025-03-31",
+"v": 9.19
+}
+],
+"cards_crore": [
+{
+"d": "2018-09-23",
+"v": 0.0
+},
+{
+"d": "2019-09-23",
+"v": 10.39
+},
+{
+"d": "2022-03-31",
+"v": 17.9
+},
+{
+"d": "2023-05-31",
+"v": 23.39
+},
+{
+"d": "2024-06-30",
+"v": 34.0
+},
+{
+"d": "2025-03-31",
+"v": 40.45
+}
+],
+"hospitals_count": [
+{
+"d": "2018-09-23",
+"v": 18236.0
+},
+{
+"d": "2019-09-23",
+"v": 18236.0
+},
+{
+"d": "2020-09-30",
+"v": 23311.0
+},
+{
+"d": "2021-03-31",
+"v": 24215.0
+},
+{
+"d": "2022-03-31",
+"v": 25800.0
+},
+{
+"d": "2023-05-31",
+"v": 28351.0
+},
+{
+"d": "2024-06-30",
+"v": 29000.0
+},
+{
+"d": "2025-03-31",
+"v": 31005.0
+}
+],
+"treatment_value_crore": [
+{
+"d": "2022-03-31",
+"v": 37606.0
+},
+{
+"d": "2023-05-31",
+"v": 61501.0
+},
+{
+"d": "2025-03-31",
+"v": 129386.0
+}
+]
+},
+"pmjay_states": [
+{
+"s": "Andaman And Nicobar Islands",
+"fy": "2018-19",
+"a": 14
+},
+{
+"s": "Andaman And Nicobar Islands",
+"fy": "2019-20",
+"a": 153
+},
+{
+"s": "Andaman And Nicobar Islands",
+"fy": "2020-21",
+"a": 342
+},
+{
+"s": "Andaman And Nicobar Islands",
+"fy": "2021-22",
+"a": 840
+},
+{
+"s": "Andhra Pradesh",
+"fy": "2018-19",
+"a": 139942
+},
+{
+"s": "Andhra Pradesh",
+"fy": "2019-20",
+"a": 655036
+},
+{
+"s": "Andhra Pradesh",
+"fy": "2020-21",
+"a": 692455
+},
+{
+"s": "Andhra Pradesh",
+"fy": "2021-22",
+"a": 977765
+},
+{
+"s": "Arunachal Pradesh",
+"fy": "2018-19",
+"a": 378
+},
+{
+"s": "Arunachal Pradesh",
+"fy": "2019-20",
+"a": 1353
+},
+{
+"s": "Arunachal Pradesh",
+"fy": "2020-21",
+"a": 75
+},
+{
+"s": "Arunachal Pradesh",
+"fy": "2021-22",
+"a": 30
+},
+{
+"s": "Assam",
+"fy": "2018-19",
+"a": 32713
+},
+{
+"s": "Assam",
+"fy": "2019-20",
+"a": 90194
+},
+{
+"s": "Assam",
+"fy": "2020-21",
+"a": 93007
+},
+{
+"s": "Assam",
+"fy": "2021-22",
+"a": 176633
+},
+{
+"s": "Bihar",
+"fy": "2018-19",
+"a": 19727
+},
+{
+"s": "Bihar",
+"fy": "2019-20",
+"a": 160064
+},
+{
+"s": "Bihar",
+"fy": "2020-21",
+"a": 89146
+},
+{
+"s": "Bihar",
+"fy": "2021-22",
+"a": 116770
+},
+{
+"s": "Chandigarh",
+"fy": "2018-19",
+"a": 358
+},
+{
+"s": "Chandigarh",
+"fy": "2019-20",
+"a": 3515
+},
+{
+"s": "Chandigarh",
+"fy": "2020-21",
+"a": 5378
+},
+{
+"s": "Chandigarh",
+"fy": "2021-22",
+"a": 8357
+},
+{
+"s": "Chhattisgarh",
+"fy": "2018-19",
+"a": 231191
+},
+{
+"s": "Chhattisgarh",
+"fy": "2019-20",
+"a": 636578
+},
+{
+"s": "Chhattisgarh",
+"fy": "2020-21",
+"a": 497637
+},
+{
+"s": "Chhattisgarh",
+"fy": "2021-22",
+"a": 902690
+},
+{
+"s": "DNH and DD",
+"fy": "2018-19",
+"a": 8484
+},
+{
+"s": "DNH and DD",
+"fy": "2019-20",
+"a": 33993
+},
+{
+"s": "DNH and DD",
+"fy": "2020-21",
+"a": 18943
+},
+{
+"s": "DNH and DD",
+"fy": "2021-22",
+"a": 20628
+},
+{
+"s": "Goa",
+"fy": "2018-19",
+"a": 9723
+},
+{
+"s": "Goa",
+"fy": "2019-20",
+"a": 374
+},
+{
+"s": "Goa",
+"fy": "2020-21",
+"a": 139
+},
+{
+"s": "Goa",
+"fy": "2021-22",
+"a": 167
+},
+{
+"s": "Gujarat",
+"fy": "2018-19",
+"a": 314251
+},
+{
+"s": "Gujarat",
+"fy": "2019-20",
+"a": 1140661
+},
+{
+"s": "Gujarat",
+"fy": "2020-21",
+"a": 825742
+},
+{
+"s": "Gujarat",
+"fy": "2021-22",
+"a": 567937
+},
+{
+"s": "Haryana",
+"fy": "2018-19",
+"a": 11224
+},
+{
+"s": "Haryana",
+"fy": "2019-20",
+"a": 97508
+},
+{
+"s": "Haryana",
+"fy": "2020-21",
+"a": 138805
+},
+{
+"s": "Haryana",
+"fy": "2021-22",
+"a": 185480
+},
+{
+"s": "Himachal Pradesh",
+"fy": "2018-19",
+"a": 8646
+},
+{
+"s": "Himachal Pradesh",
+"fy": "2019-20",
+"a": 48212
+},
+{
+"s": "Himachal Pradesh",
+"fy": "2020-21",
+"a": 29274
+},
+{
+"s": "Himachal Pradesh",
+"fy": "2021-22",
+"a": 47695
+},
+{
+"s": "Jammu and Kashmir",
+"fy": "2018-19",
+"a": 6317
+},
+{
+"s": "Jammu and Kashmir",
+"fy": "2019-20",
+"a": 67337
+},
+{
+"s": "Jammu and Kashmir",
+"fy": "2020-21",
+"a": 67856
+},
+{
+"s": "Jammu and Kashmir",
+"fy": "2021-22",
+"a": 250416
+},
+{
+"s": "Jharkhand",
+"fy": "2018-19",
+"a": 108036
+},
+{
+"s": "Jharkhand",
+"fy": "2019-20",
+"a": 409737
+},
+{
+"s": "Jharkhand",
+"fy": "2020-21",
+"a": 298179
+},
+{
+"s": "Jharkhand",
+"fy": "2021-22",
+"a": 327601
+},
+{
+"s": "Karnataka",
+"fy": "2018-19",
+"a": 119435
+},
+{
+"s": "Karnataka",
+"fy": "2019-20",
+"a": 593650
+},
+{
+"s": "Karnataka",
+"fy": "2020-21",
+"a": 682779
+},
+{
+"s": "Karnataka",
+"fy": "2021-22",
+"a": 1144871
+},
+{
+"s": "Kerala",
+"fy": "2019-20",
+"a": 975300
+},
+{
+"s": "Kerala",
+"fy": "2020-21",
+"a": 1043975
+},
+{
+"s": "Kerala",
+"fy": "2021-22",
+"a": 1700986
+},
+{
+"s": "Ladakh",
+"fy": "2020-21",
+"a": 391
+},
+{
+"s": "Ladakh",
+"fy": "2021-22",
+"a": 1632
+},
+{
+"s": "Lakshadweep",
+"fy": "2019-20",
+"a": 1
+},
+{
+"s": "Lakshadweep",
+"fy": "2021-22",
+"a": 69
+},
+{
+"s": "Madhya Pradesh",
+"fy": "2018-19",
+"a": 45219
+},
+{
+"s": "Madhya Pradesh",
+"fy": "2019-20",
+"a": 278348
+},
+{
+"s": "Madhya Pradesh",
+"fy": "2020-21",
+"a": 384190
+},
+{
+"s": "Madhya Pradesh",
+"fy": "2021-22",
+"a": 717904
+},
+{
+"s": "Maharashtra",
+"fy": "2018-19",
+"a": 108247
+},
+{
+"s": "Maharashtra",
+"fy": "2019-20",
+"a": 214921
+},
+{
+"s": "Maharashtra",
+"fy": "2020-21",
+"a": 136699
+},
+{
+"s": "Maharashtra",
+"fy": "2021-22",
+"a": 87741
+},
+{
+"s": "Manipur",
+"fy": "2018-19",
+"a": 1503
+},
+{
+"s": "Manipur",
+"fy": "2019-20",
+"a": 12803
+},
+{
+"s": "Manipur",
+"fy": "2020-21",
+"a": 16362
+},
+{
+"s": "Manipur",
+"fy": "2021-22",
+"a": 24075
+},
+{
+"s": "Meghalaya",
+"fy": "2018-19",
+"a": 1146
+},
+{
+"s": "Meghalaya",
+"fy": "2019-20",
+"a": 124716
+},
+{
+"s": "Meghalaya",
+"fy": "2020-21",
+"a": 123736
+},
+{
+"s": "Meghalaya",
+"fy": "2021-22",
+"a": 145423
+},
+{
+"s": "Mizoram",
+"fy": "2018-19",
+"a": 7097
+},
+{
+"s": "Mizoram",
+"fy": "2019-20",
+"a": 27716
+},
+{
+"s": "Mizoram",
+"fy": "2020-21",
+"a": 16990
+},
+{
+"s": "Mizoram",
+"fy": "2021-22",
+"a": 13891
+},
+{
+"s": "Nagaland",
+"fy": "2018-19",
+"a": 269
+},
+{
+"s": "Nagaland",
+"fy": "2019-20",
+"a": 10226
+},
+{
+"s": "Nagaland",
+"fy": "2020-21",
+"a": 7357
+},
+{
+"s": "Nagaland",
+"fy": "2021-22",
+"a": 5658
+},
+{
+"s": "Puducherry",
+"fy": "2019-20",
+"a": 1370
+},
+{
+"s": "Puducherry",
+"fy": "2020-21",
+"a": 2587
+},
+{
+"s": "Puducherry",
+"fy": "2021-22",
+"a": 11942
+},
+{
+"s": "Punjab",
+"fy": "2019-20",
+"a": 196693
+},
+{
+"s": "Punjab",
+"fy": "2020-21",
+"a": 422817
+},
+{
+"s": "Punjab",
+"fy": "2021-22",
+"a": 537747
+},
+{
+"s": "Rajasthan",
+"fy": "2018-19",
+"a": 1
+},
+{
+"s": "Rajasthan",
+"fy": "2019-20",
+"a": 925684
+},
+{
+"s": "Rajasthan",
+"fy": "2020-21",
+"a": 439168
+},
+{
+"s": "Rajasthan",
+"fy": "2021-22",
+"a": 986969
+},
+{
+"s": "Sikkim",
+"fy": "2018-19",
+"a": 9
+},
+{
+"s": "Sikkim",
+"fy": "2019-20",
+"a": 1215
+},
+{
+"s": "Sikkim",
+"fy": "2020-21",
+"a": 2023
+},
+{
+"s": "Sikkim",
+"fy": "2021-22",
+"a": 2911
+},
+{
+"s": "Tamil Nadu",
+"fy": "2018-19",
+"a": 401435
+},
+{
+"s": "Tamil Nadu",
+"fy": "2019-20",
+"a": 857530
+},
+{
+"s": "Tamil Nadu",
+"fy": "2020-21",
+"a": 1622905
+},
+{
+"s": "Tamil Nadu",
+"fy": "2021-22",
+"a": 4962036
+},
+{
+"s": "Telangana",
+"fy": "2021-22",
+"a": 321826
+},
+{
+"s": "Tripura",
+"fy": "2018-19",
+"a": 7800
+},
+{
+"s": "Tripura",
+"fy": "2019-20",
+"a": 51139
+},
+{
+"s": "Tripura",
+"fy": "2020-21",
+"a": 30196
+},
+{
+"s": "Tripura",
+"fy": "2021-22",
+"a": 46530
+},
+{
+"s": "Uttar Pradesh",
+"fy": "2018-19",
+"a": 68120
+},
+{
+"s": "Uttar Pradesh",
+"fy": "2019-20",
+"a": 289065
+},
+{
+"s": "Uttar Pradesh",
+"fy": "2020-21",
+"a": 318901
+},
+{
+"s": "Uttar Pradesh",
+"fy": "2021-22",
+"a": 502928
+},
+{
+"s": "Uttarakhand",
+"fy": "2018-19",
+"a": 20594
+},
+{
+"s": "Uttarakhand",
+"fy": "2019-20",
+"a": 130229
+},
+{
+"s": "Uttarakhand",
+"fy": "2020-21",
+"a": 121795
+},
+{
+"s": "Uttarakhand",
+"fy": "2021-22",
+"a": 183326
+},
+{
+"s": "West Bengal",
+"fy": "2018-19",
+"a": 17636
+}
+],
+"evm_gender_gap": [
+{
+"section": "1_naive",
+"spec": "naive z (no cov)",
+"variable": "diff (M-F)",
+"beta": "-6.617619476065571",
+"se": "4.031470272750788",
+"t": "-1.6414903319007186",
+"p": "0.10069567236802479",
+"N": "529"
+},
+{
+"section": "2_gap",
+"spec": "Gap 98->99 (main)",
+"variable": "EVM_x_EC98",
+"beta": "-6.617619476065566",
+"se": "3.871474740053056",
+"t": "-1.7093278196036676",
+"p": "0.08739024293601552",
+"N": "529"
+},
+{
+"section": "2_gap",
+"spec": "Gap 98->99 + urban race",
+"variable": "EVM_x_EC98",
+"beta": "-6.708238117859104",
+"se": "3.8492692561232382",
+"t": "-1.742730287622242",
+"p": "0.08138073848358846",
+"N": "529"
+},
+{
+"section": "2_gap",
+"spec": "Gap 96->98 (placebo)",
+"variable": "EVM_x_EC98",
+"beta": "5.113804981423509",
+"se": "3.1868949598457434",
+"t": "1.6046355609006437",
+"p": "0.10857403070451466",
+"N": "529"
+},
+{
+"section": "3_stack",
+"spec": "stacked, fully interacted",
+"variable": "male beta",
+"beta": "-7.150809368756232",
+"se": "2.5573761256408853",
+"t": "-2.7961508270373097",
+"p": "0.005171525950354804",
+"N": "1058"
+},
+{
+"section": "3_stack",
+"spec": "stacked, fully interacted",
+"variable": "female beta",
+"beta": "-0.43078088894713584",
+"se": "",
+"t": "",
+"p": "",
+"N": "1058"
+},
+{
+"section": "3_stack",
+"spec": "stacked, fully interacted",
+"variable": "diff (triple)",
+"beta": "6.720028479809097",
+"se": "3.8839263570292992",
+"t": "1.7302152157563173",
+"p": "0.08359183080855101",
+"N": "1058"
+},
+{
+"section": "4_dose_gap",
+"spec": "dose gap 98->99",
+"variable": "D x EC98",
+"beta": "-2.1836723716321065",
+"se": "3.6022302875631307",
+"t": "-0.6062001030781785",
+"p": "0.54438188435375",
+"N": "434"
+},
+{
+"section": "4_dose_gap",
+"spec": "dose gap 96->98 (placebo)",
+"variable": "D x EC98",
+"beta": "1.8057563883083987",
+"se": "1.9790142115612166",
+"t": "0.9124524613109588",
+"p": "0.361530583794027",
+"N": "434"
+},
+{
+"section": "5_ri",
+"spec": "gap 98->99",
+"variable": "RI diff",
+"beta": "",
+"se": "",
+"t": "",
+"p": "0.132",
+"N": "529"
+},
+{
+"section": "5_ri",
+"spec": "gap 96->98 placebo",
+"variable": "RI diff",
+"beta": "",
+"se": "",
+"t": "",
+"p": "0.128",
+"N": "529"
+},
+{
+"section": "6_wildboot",
+"spec": "gap 98->99",
+"variable": "wildboot diff",
+"beta": "",
+"se": "",
+"t": "",
+"p": "0.335",
+"N": "529"
+},
+{
+"section": "6_wildboot",
+"spec": "stacked triple",
+"variable": "wildboot diff",
+"beta": "",
+"se": "",
+"t": "",
+"p": "0.586",
+"N": "1058"
+}
+],
+"ec98_horserace": [
+{
+"section": "A_full_DiD",
+"gender": "Male",
+"spec": "EC98 only",
+"variable": "EVM_x_EC98",
+"beta": "-7.381995067236242",
+"se": "2.546972234794876",
+"p_cluster": "0.0037514199222954702",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Male",
+"spec": "EC98 + ihs-urban",
+"variable": "EVM_x_EC98",
+"beta": "-7.150809368756187",
+"se": "2.5561661061146084",
+"p_cluster": "0.005150384074718027",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Male",
+"spec": "RACE (EC98 int)",
+"variable": "EVM_x_EC98",
+"beta": "-7.257614801011946",
+"se": "2.0788622719666576",
+"p_cluster": "0.00048095067219124923",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Male",
+"spec": "RACE (Urban int)",
+"variable": "EVM_x_Urban",
+"beta": "-0.8178867828451072",
+"se": "0.7175800280121263",
+"p_cluster": "0.2543759828176373",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Male",
+"spec": "Urban only",
+"variable": "EVM_x_Urban",
+"beta": "-0.7459387014645263",
+"se": "0.6824184440421268",
+"p_cluster": "0.2743581947338144",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Female",
+"spec": "EC98 only",
+"variable": "EVM_x_EC98",
+"beta": "-0.7643755911706711",
+"se": "3.125009599226426",
+"p_cluster": "0.8067665993899346",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Female",
+"spec": "EC98 + ihs-urban",
+"variable": "EVM_x_EC98",
+"beta": "-0.43078088894713673",
+"se": "2.957482977686648",
+"p_cluster": "0.8841914232842204",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Female",
+"spec": "RACE (EC98 int)",
+"variable": "EVM_x_EC98",
+"beta": "-0.5493766831528375",
+"se": "2.5407414941348163",
+"p_cluster": "0.8288108782852613",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Female",
+"spec": "RACE (Urban int)",
+"variable": "EVM_x_Urban",
+"beta": "-2.5235335897012146",
+"se": "0.7949366277117754",
+"p_cluster": "0.001500901642010194",
+"N": "529"
+},
+{
+"section": "A_full_DiD",
+"gender": "Female",
+"spec": "Urban only",
+"variable": "EVM_x_Urban",
+"beta": "-1.4762886004200473",
+"se": "0.5974144059058154",
+"p_cluster": "0.013468688492655553",
+"N": "529"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "EC98_Z only",
+"variable": "EC98_Z",
+"beta": "-5.150655788196588",
+"se": "2.4137111719606965",
+"p_cluster": "0.032849694852659914",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "Urban_Z only",
+"variable": "Urban_Z",
+"beta": "-0.2509569744696485",
+"se": "0.8298966762990332",
+"p_cluster": "0.762350626921372",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "RACE both",
+"variable": "EC98_Z",
+"beta": "-5.146951172394752",
+"se": "2.486661727239625",
+"p_cluster": "0.038468864834207354",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "RACE both",
+"variable": "Urban_Z",
+"beta": "-0.24495669697877354",
+"se": "0.7902080899818802",
+"p_cluster": "0.7565684731621225",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "RACE + EC98xUrban",
+"variable": "EC98_Z",
+"beta": "-5.964362342392197",
+"se": "2.31191618474218",
+"p_cluster": "0.009884752563542001",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "RACE + EC98xUrban",
+"variable": "Urban_Z",
+"beta": "0.15402363759147497",
+"se": "0.8473854740782146",
+"p_cluster": "0.8557684338396202",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "Placebo 96->98 (EC98)",
+"variable": "EC98_Z",
+"beta": "-0.9490412316399001",
+"se": "5.735795906439607",
+"p_cluster": "0.8685824195668596",
+"N": "33"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "EC98_Z only",
+"variable": "EC98_Z",
+"beta": "0.27363707659487013",
+"se": "3.9203245896266563",
+"p_cluster": "0.9443531679182706",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "Urban_Z only",
+"variable": "Urban_Z",
+"beta": "0.44889484873010876",
+"se": "1.6705619269990106",
+"p_cluster": "0.7881537065702822",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "RACE both",
+"variable": "EC98_Z",
+"beta": "0.2668528960334151",
+"se": "4.192903582559989",
+"p_cluster": "0.9492537450991825",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "RACE both",
+"variable": "Urban_Z",
+"beta": "0.44858375360375535",
+"se": "1.7093662708792137",
+"p_cluster": "0.7929923079534563",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "RACE + EC98xUrban",
+"variable": "EC98_Z",
+"beta": "1.395160695260622",
+"se": "4.065142474967146",
+"p_cluster": "0.7314473018885748",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "RACE + EC98xUrban",
+"variable": "Urban_Z",
+"beta": "-0.10214596450781022",
+"se": "1.892621472709077",
+"p_cluster": "0.9569585676628861",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Female",
+"spec": "Placebo 96->98 (EC98)",
+"variable": "EC98_Z",
+"beta": "-8.953131437704615",
+"se": "11.463348748156376",
+"p_cluster": "0.43478935685784426",
+"N": "33"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "EC98_Z alone",
+"variable": "EC98_Z",
+"beta": "",
+"se": "",
+"p_cluster": "0.118",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "EC98_Z | Urban_Z",
+"variable": "EC98_Z",
+"beta": "",
+"se": "",
+"p_cluster": "0.137",
+"N": "44"
+},
+{
+"section": "B_treated_only",
+"gender": "Male",
+"spec": "Urban_Z | EC98_Z",
+"variable": "Urban_Z",
+"beta": "",
+"se": "",
+"p_cluster": "0.73",
+"N": "44"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "D x EC98",
+"variable": "DxEC98",
+"beta": "-10.681903238869971",
+"se": "2.6051213547230185",
+"p_cluster": "4.125299344417987e-05",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "D x Urban",
+"variable": "DxUrban",
+"beta": "-1.4796877400837074",
+"se": "1.0346159774540595",
+"p_cluster": "0.15266518064111528",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "RACE (EC98 dose)",
+"variable": "DxEC98",
+"beta": "-10.145532240372209",
+"se": "2.5765417681410696",
+"p_cluster": "8.228182592829377e-05",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "RACE (Urban dose)",
+"variable": "DxUrban",
+"beta": "-1.2760750471777547",
+"se": "0.9942989380370048",
+"p_cluster": "0.19935486521085877",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Female",
+"spec": "D x EC98",
+"variable": "DxEC98",
+"beta": "-8.498230867237867",
+"se": "3.4374765791906414",
+"p_cluster": "0.013427330108385814",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Female",
+"spec": "D x Urban",
+"variable": "DxUrban",
+"beta": "-2.2182195174359074",
+"se": "1.3615751004108383",
+"p_cluster": "0.10327980093367164",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Female",
+"spec": "RACE (EC98 dose)",
+"variable": "DxEC98",
+"beta": "-7.6183660681348115",
+"se": "3.165189380092887",
+"p_cluster": "0.016087576012685033",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Female",
+"spec": "RACE (Urban dose)",
+"variable": "DxUrban",
+"beta": "-2.0724145380049803",
+"se": "1.3101555514969663",
+"p_cluster": "0.11369340723344518",
+"N": "434"
+},
+{
+"section": "C_dose_placebo",
+"gender": "Male",
+"spec": "Placebo 96->98 (D x EC98)",
+"variable": "DxEC98",
+"beta": "-2.4381103704482276",
+"se": "2.240614789325595",
+"p_cluster": "0.27653177224979764",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "DxEC98 alone",
+"variable": "RI",
+"beta": "",
+"se": "",
+"p_cluster": "0.001",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "DxEC98 | DxUrban",
+"variable": "RI",
+"beta": "",
+"se": "",
+"p_cluster": "0.001",
+"N": "434"
+},
+{
+"section": "C_dose_DiD",
+"gender": "Male",
+"spec": "DxUrban | DxEC98",
+"variable": "RI",
+"beta": "",
+"se": "",
+"p_cluster": "0.334",
+"N": "434"
+},
+{
+"section": "E_orthogonalised",
+"gender": "Male",
+"spec": "EVM x EC98_orth + ihs-urban",
+"variable": "EVM_x_EC98o",
+"beta": "-9.047745832606255",
+"se": "2.2668959383414933",
+"p_cluster": "6.572626544900208e-05",
+"N": "529"
+},
+{
+"section": "E_orthogonalised",
+"gender": "Female",
+"spec": "EVM x EC98_orth + ihs-urban",
+"variable": "EVM_x_EC98o",
+"beta": "-4.050326811173493",
+"se": "3.433562112071692",
+"p_cluster": "0.2381481083694248",
+"N": "529"
+},
+{
+"section": "E_orthogonalised",
+"gender": "Male",
+"spec": "EC98_orth | Urban (treated only)",
+"variable": "EC98o",
+"beta": "-4.811986676550983",
+"se": "2.9111304056421403",
+"p_cluster": "0.09833868569802301",
+"N": "44"
+},
+{
+"section": "E_orthogonalised",
+"gender": "Male",
+"spec": "EC98_orth | Urban_Z",
+"variable": "EC98o",
+"beta": "",
+"se": "",
+"p_cluster": "0.16",
+"N": "44"
+},
+{
+"section": "W_wildboot",
+"gender": "Male",
+"spec": "PC race: EVM x EC98",
+"variable": "EVM_x_EC98",
+"beta": "",
+"se": "",
+"p_cluster": "0.007",
+"N": "529"
+},
+{
+"section": "W_wildboot",
+"gender": "Male",
+"spec": "PC race: EVM x Urban",
+"variable": "EVM_x_Urban",
+"beta": "",
+"se": "",
+"p_cluster": "0.374",
+"N": "529"
+},
+{
+"section": "W_wildboot",
+"gender": "Male",
+"spec": "Treated-only: EC98|Urban",
+"variable": "EC98_Z",
+"beta": "",
+"se": "",
+"p_cluster": "0.216",
+"N": "44"
+},
+{
+"section": "W_wildboot",
+"gender": "Male",
+"spec": "Dose race: D x EC98",
+"variable": "DxEC98",
+"beta": "",
+"se": "",
+"p_cluster": "0.013",
+"N": "434"
+}
+],
+"dosage_ddd": [
+{
+"Design": "PreTrend",
+"Outcome": "M",
+"Dose": "D_area@0.25",
+"b3": "1.8277156333140523",
+"se3": "2.9777313731139654",
+"p3": "0.5393510225232847",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "PreTrend",
+"Outcome": "F",
+"Dose": "D_area@0.25",
+"b3": "0.8833097871637432",
+"se3": "3.343594709297476",
+"p3": "0.7916414664662141",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "PreTrend",
+"Outcome": "T",
+"Dose": "D_area@0.25",
+"b3": "1.4041946545385664",
+"se3": "3.121610157274961",
+"p3": "0.652832849446559",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "M",
+"Dose": "D_area@0.25",
+"b3": "-5.193857764927794",
+"se3": "2.088145839947602",
+"p3": "0.012871461838528499",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "F",
+"Dose": "D_area@0.25",
+"b3": "-6.432041609743602",
+"se3": "2.6583846968000593",
+"p3": "0.015540577430047971",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "T",
+"Dose": "D_area@0.25",
+"b3": "-5.723004176770644",
+"se3": "2.3252961145177276",
+"p3": "0.013847557713566968",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA-plain",
+"Outcome": "M",
+"Dose": "D_area@0.25",
+"b3": "-1.193464829687061",
+"se3": "1.3073633236255982",
+"p3": "0.361306060119192",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA-plain",
+"Outcome": "F",
+"Dose": "D_area@0.25",
+"b3": "-0.7852647953814521",
+"se3": "1.2290579594186208",
+"p3": "0.5228775786550862",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA-plain",
+"Outcome": "T",
+"Dose": "D_area@0.25",
+"b3": "-0.8130823275693018",
+"se3": "1.2404389078050393",
+"p3": "0.5121590536611487",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA",
+"Outcome": "M",
+"Dose": "D_area@0.25",
+"b3": "2.6439350369986947",
+"se3": "1.0231185745833955",
+"p3": "0.009760738488915316",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA",
+"Outcome": "F",
+"Dose": "D_area@0.25",
+"b3": "0.9022016326919902",
+"se3": "1.2470849711726741",
+"p3": "0.4694044420084107",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "ANCOVA",
+"Outcome": "T",
+"Dose": "D_area@0.25",
+"b3": "1.8355880357335836",
+"se3": "1.05477303391385",
+"p3": "0.08181192405149713",
+"N": "437",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "M",
+"Dose": "D_area",
+"b3": "-5.193857764927794",
+"se3": "2.088145839947602",
+"p3": "0.012871461838528499",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "F",
+"Dose": "D_area",
+"b3": "-6.432041609743602",
+"se3": "2.6583846968000593",
+"p3": "0.015540577430047971",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "T",
+"Dose": "D_area",
+"b3": "-5.723004176770644",
+"se3": "2.3252961145177276",
+"p3": "0.013847557713566968",
+"N": "874",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "M",
+"Dose": "D_pop",
+"b3": "-10.600665445876759",
+"se3": "3.8899009548780166",
+"p3": "0.006426718251245838",
+"N": "836",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "F",
+"Dose": "D_pop",
+"b3": "-11.824646990249924",
+"se3": "4.961804917579147",
+"p3": "0.017165935260550633",
+"N": "836",
+"p_RI": ""
+},
+{
+"Design": "DiD",
+"Outcome": "T",
+"Dose": "D_pop",
+"b3": "-11.12568695803927",
+"se3": "4.318729222092623",
+"p3": "0.009990778479540935",
+"N": "836",
+"p_RI": ""
+},
+{
+"Design": "DiD-inference",
+"Outcome": "M",
+"Dose": "D_area@0.25",
+"b3": "-5.193857764927794",
+"se3": "",
+"p3": "0.012871461838528499",
+"N": "874",
+"p_RI": "0.03"
+},
+{
+"Design": "DiD-inference",
+"Outcome": "F",
+"Dose": "D_area@0.25",
+"b3": "-6.432041609743602",
+"se3": "",
+"p3": "0.015540577430047971",
+"N": "874",
+"p_RI": "0.07"
+},
+{
+"Design": "DiD-inference",
+"Outcome": "T",
+"Dose": "D_area@0.25",
+"b3": "-5.723004176770644",
+"se3": "",
+"p3": "0.013847557713566968",
+"N": "874",
+"p_RI": "0.02"
+}
+]
+}

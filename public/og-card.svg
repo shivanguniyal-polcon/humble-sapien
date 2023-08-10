@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- THS social share card. Generated og-card.png (1200x630) from this source.
+       Colors are the hex theme tokens so any rasterizer renders faithfully
+       (white ground, clay-600 maroon mark, paper-800 ink text). -->
+  <rect x="0" y="0" width="1200" height="630" fill="#FFFFFF" />
+
+  <text x="72" y="102" font-family="'IBM Plex Mono', Menlo, monospace" font-size="24" font-weight="500" letter-spacing="2.5" fill="#7A1F2B">Working toward not-for-profit registration · Est. 2023</text>
+
+  <!-- the lockup: same geometry as the brand mark, scaled 3.2x -->
+  <g transform="translate(72,160) scale(3.2)" fill="none" stroke="#7A1F2B" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 32 11 C 27 6 19.5 4.5 14 7 C 7.5 10 4.5 16 4.5 23 C 4.5 31 7.5 39 13 43.5 C 18 47.5 25 48 30 45 L 32 41.5 L 34 45 C 39 48 46 47.5 51 43.5 C 56.5 39 59.5 31 59.5 23 C 59.5 16 56.5 10 50 7 C 44.5 4.5 37 6 32 11 Z" stroke-width="2.4" />
+    <path d="M 32 12.5 C 29.8 17 34.2 22 32 26.5 C 29.8 31 34.2 36 32 40.5" stroke-width="1.8" />
+    <path d="M 10.5 18 C 13 13.5 17.5 11.5 21.5 13" stroke-width="1.7" />
+    <path d="M 9.5 26 C 10 31.5 12.5 36.5 16.5 40" stroke-width="1.7" />
+    <path d="M 10.5 18 C 13 13.5 17.5 11.5 21.5 13" transform="translate(64 0) scale(-1 1)" stroke-width="1.7" />
+    <path d="M 9.5 26 C 10 31.5 12.5 36.5 16.5 40" transform="translate(64 0) scale(-1 1)" stroke-width="1.7" />
+  </g>
+
+  <text x="317" y="270" font-family="'Public Sans', 'Helvetica Neue', Arial, sans-serif" font-size="73.6" font-weight="700" letter-spacing="-0.4" fill="#2B2724">The Humble Sapien</text>
+
+  <text x="72" y="452" font-family="'Public Sans', 'Helvetica Neue', Arial, sans-serif" font-size="42" fill="#4B4640">Public interest technology for every policy</text>
+</svg>

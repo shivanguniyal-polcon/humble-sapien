@@ -10,6 +10,8 @@ import {
   queueing, queueingSample, mmc, monteCarlo, monteCarloSample, mulberry32,
   budgetAt, avgClaimAt, simulate, evaluateSustainability,
   mcdaFromRows, scenarioFromRows,
+  decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
+  budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
   buildManifest, verifyManifest, buildReport, checkPit, canonicalJSON,
 } from '../src/battery/index.js';
 
@@ -439,6 +441,142 @@ ok('parseNumber empty flagged', parseNumber('').empty);
   ok('Scenario adapter output validates', v.errors.length === 0, v.errors.join('; '));
   const r = scenario.run(input);
   ok('Scenario adapter runs both scenarios', r.scenarios.length === 2 && r.scenarios[1].metrics.prFloor !== r.scenarios[0].metrics.prFloor);
+}
+
+// 12b. Adapters for the remaining eight modules: every module can start from
+// a pasted table, and each adapter's output passes its own validator.
+{
+  const csv = [
+    'node_id,node_type,label,children,probs,payoff,root,pit_group,pit_effect',
+    'd1,decision,Empanel,c1;b1,,,true,',
+    'c1,chance,Under the scheme,t1;t2,0.6;0.4,,,',
+    't1,terminal,High take-up,,,100,,Eligible households,benefits',
+    't2,terminal,Low take-up,,,300,,Eligible households,benefits',
+    'b1,terminal,Do not empanel,,,150,,Paying patients,mixed',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = decisionTreeFromRows(dataset, { title: 't' });
+  ok('Tree adapter builds the node list', input && input.nodes.length === 5, notes.join('; '));
+  ok('Tree adapter reads the root column', input.root === 'd1', input.root);
+  const v = decisionTree.validate(input);
+  ok('Tree adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  approx('Tree adapter root EV (0.6*100 + 0.4*300)', decisionTree.run(input).rootEV, 180);
+}
+{
+  const csv = [
+    'alternative,label,cost,effect,threshold,effect_unit,pit_group,pit_effect',
+    'a,A,100,1.0,250,units,g,benefits',
+    'b,B,400,2.0,250,units,g,mixed',
+    'c,C,500,3.0,250,units,g,benefits',
+    'd,D,600,2.5,250,units,g,restricted',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = ceaFromRows(dataset, { title: 't' });
+  ok('CEA adapter builds 4 alternatives', input && input.alternatives.length === 4, notes.join('; '));
+  const v = cea.validate(input);
+  ok('CEA adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  const r = cea.run(input);
+  ok('CEA adapter ladder leaves A and C on the path', r.frontierIds.join(',') === 'a,c', r.frontierIds.join(','));
+  ok('CEA adapter picks C at threshold 250', r.best === 'c', r.best);
+}
+{
+  const { dataset } = ingest('alternative,cost,effect\nx,1,2\n');
+  const { input, notes } = ceaFromRows(dataset);
+  ok('CEA adapter refuses a table without a threshold', input === null && notes.join(' ').includes('threshold'), notes.join('; '));
+}
+{
+  const csv = [
+    'line_id,label,kind,group_id,group_label,population_share,weight,year,value,horizon_years,discount_rate,pit_group,pit_effect',
+    'ben,Time saved,benefit,g1,Group one,0.4,2,1,1000,2,0.05,Group one,benefits',
+    'ben,Time saved,benefit,g1,Group one,0.4,2,2,1000,2,0.05,Group one,benefits',
+    'ben2,Time saved,benefit,g2,Group two,0.6,1,1,500,2,0.05,Group two,mixed',
+    'ben2,Time saved,benefit,g2,Group two,0.6,1,2,500,2,0.05,Group two,mixed',
+    'cost1,Tariff,cost,g1,Group one,0.4,2,0,300,2,0.05,Group one,benefits',
+    'cost2,Tariff,cost,g2,Group two,0.6,1,0,200,2,0.05,Group two,mixed',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = equityFromRows(dataset, { title: 't' });
+  ok('Equity adapter builds 2 groups and 4 lines', input.groups.length === 2 && input.lines.length === 4, notes.join('; '));
+  const v = equity.validate(input);
+  ok('Equity adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  const r = equity.run(input);
+  approx('Equity adapter plain NPV', r.totalNpv,
+    (1000 / 1.05 + 1000 / 1.1025 - 300) + (500 / 1.05 + 500 / 1.1025 - 200));
+}
+{
+  const csv = [
+    'state,label,cost_per_cycle,utility_per_cycle,absorbing,initial,cycles,cycle_years,discount_rate,stable,dead',
+    'stable,Stable,100,0.8,false,1,3,1,0,0.9,0.1',
+    'dead,Dead,0,0,true,0,3,1,0,0,1',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = markovFromRows(dataset, { title: 't' });
+  ok('Markov adapter builds a square matrix',
+    input.states.length === 2 && input.transitions.length === 2 && input.transitions[0].length === 2, notes.join('; '));
+  const v = markov.validate(input);
+  ok('Markov adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  ok('Markov adapter traces every cycle', markov.run(input).trace.length === 4);
+}
+{
+  const csv = [
+    'line_type,label,year,value,horizon_years,eligible_population,population_growth',
+    'uptake,,1,0.5,2,1000,0',
+    'uptake,,2,0.8,2,1000,0',
+    'per_patient_cost,,1,100,2,1000,0',
+    'per_patient_cost,,2,120,2,1000,0',
+    'offset,Averted travel,1,20,2,1000,0',
+    'offset,Averted travel,2,25,2,1000,0',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = budgetImpactFromRows(dataset, { title: 't' });
+  ok('Budget adapter builds the year arrays',
+    input.uptake.join(',') === '0.5,0.8' && input.perPatientCost.join(',') === '100,120', notes.join('; '));
+  const v = budgetImpact.validate(input);
+  ok('Budget adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  approx('Budget adapter year-1 net', budgetImpact.run(input).rows[0].net, 1000 * 0.5 * (100 - 20));
+}
+{
+  const csv = [
+    'row_strategy,col_strategy,payoff_row,payoff_col,player_row,player_col,pit_group,pit_effect',
+    'Hold rate,Accept cap,6,5,District hospital,Private provider,Patients,benefits',
+    'Hold rate,Refuse cap,2,6,District hospital,Private provider,Patients,restricted',
+    'Raise rate,Accept cap,4,3,District hospital,Private provider,State budget,restricted',
+    'Raise rate,Refuse cap,1,2,District hospital,Private provider,Patients,restricted',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = gameTheoryFromRows(dataset, { title: 't' });
+  ok('Game adapter builds the 2x2 grid', input.outcomes.length === 4 && input.players[0].strategies.length === 2, notes.join('; '));
+  const v = gameTheory.validate(input);
+  ok('Game adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  const r = gameTheory.run(input);
+  ok('Game adapter finds the single equilibrium',
+    r.equilibria.length === 1 && r.equilibria[0].rowStrategy === 'Hold rate' && r.equilibria[0].colStrategy === 'Refuse cap',
+    JSON.stringify(r.equilibria));
+}
+{
+  const csv = 'arrival_rate,service_rate,servers,time_unit,pit_group,pit_effect\n42,50,1,hour,Daily-wage patients,restricted\n';
+  const { dataset } = ingest(csv);
+  const { input, notes } = queueingFromRows(dataset, { title: 't' });
+  ok('Queue adapter reads the scenario', input.arrivalRate === 42 && input.servers === 1, notes.join('; '));
+  const v = queueing.validate(input);
+  ok('Queue adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  approx('Queue adapter average wait before service', queueing.run(input).wq, 0.105);
+}
+{
+  const csv = [
+    'variable_id,label,kind,dist,min,max,mean,sd,scale,runs,seed',
+    'capex,Capital cost,cost,uniform,100,200,,,,500,42',
+    'benefit,Health benefit,benefit,normal,,,500,10,,500,42',
+  ].join('\n');
+  const { dataset } = ingest(csv);
+  const { input, notes } = monteCarloFromRows(dataset, { title: 't' });
+  ok('Monte Carlo adapter builds 2 variables',
+    input.variables.length === 2 && input.runs === 500 && input.seed === 42, notes.join('; '));
+  const v = monteCarlo.validate(input);
+  ok('Monte Carlo adapter output validates', v.errors.length === 0, v.errors.join('; '));
+  const a = monteCarlo.run(input);
+  const b = monteCarlo.run(input);
+  approx('Monte Carlo adapter is seeded and reproducible', a.mean, b.mean, 0);
 }
 
 // 13. CEA: hand-derived dominance ladder.

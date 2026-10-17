@@ -10,15 +10,47 @@ import Support from './sections/Support';
 import Licensing from './sections/Licensing';
 import PitAssistant from './components/PitAssistant';
 import Logo from './components/Logo';
+import { TOOLS } from './data/tools';
+import { ESSAYS } from './data/essays';
+import { publications } from './data/publications';
+import { catalog } from './data/catalog';
+import { sectors } from './data/sectors';
 
 // Tools sit second: the instruments are the product, not an appendix.
+// Tabs with contained pages carry a hover dropdown listing them; clicking the
+// heading still opens the tab's own page. The dropdown inverts the site:
+// maroon panel, white text — a band of colour across the top of the window.
 const TABS = [
   { id: 'home', label: 'Home' },
-  { id: 'work', label: 'Tools' },
-  { id: 'research', label: 'Research' },
-  { id: 'data', label: 'Data' },
-  { id: 'compare', label: 'Atlas' },
-  { id: 'writing', label: 'Writing' },
+  {
+    id: 'work',
+    label: 'Tools',
+    children: TOOLS.map((t) => ({ id: t.id, label: t.label })),
+  },
+  {
+    id: 'research',
+    label: 'Research',
+    children: publications.map((p) => ({ id: p.id, label: p.title })),
+  },
+  {
+    id: 'data',
+    label: 'Data',
+    children: [
+      ...catalog.map((d) => ({ id: d.id, label: d.title })),
+      { id: 'methods', label: 'Methods & downloads' },
+      { id: 'opendata', label: 'Open data directory' },
+    ],
+  },
+  {
+    id: 'compare',
+    label: 'Atlas',
+    children: sectors.map((s) => ({ id: s.id, label: s.label })),
+  },
+  {
+    id: 'writing',
+    label: 'Writing',
+    children: ESSAYS.map((e) => ({ id: e.id, label: e.title })),
+  },
   { id: 'about', label: 'About' },
   { id: 'support', label: 'Support' },
 ];
@@ -73,6 +105,23 @@ export default function App() {
     }
   };
 
+  // Keep an open dropdown inside the viewport: measure the panel as if open,
+  // and flip it to right-anchored when it would hang past the edge. Measured
+  // on every open rather than guessed from tab order, because the nav wraps
+  // and nth-child position says nothing about horizontal room.
+  const alignMenu = (e) => {
+    const menu = e.currentTarget.querySelector('.nav-menu');
+    if (!menu) return;
+    menu.style.display = 'block';
+    menu.style.visibility = 'hidden';
+    const overflow =
+      menu.getBoundingClientRect().right >
+      document.documentElement.clientWidth - 8;
+    menu.style.display = '';
+    menu.style.visibility = '';
+    menu.classList.toggle('nav-menu-flip', overflow);
+  };
+
   return (
     <div className="app">
       <header className="site-header">
@@ -82,14 +131,44 @@ export default function App() {
           </button>
           <nav className="site-nav" aria-label="Primary">
             {TABS.map((t) => (
-              <button
+              <div
+                className="nav-item"
                 key={t.id}
-                className={`nav-link ${route.tab === t.id ? 'nav-active' : ''}`}
-                aria-current={route.tab === t.id ? 'page' : undefined}
-                onClick={() => go(t.id)}
+                onPointerEnter={alignMenu}
+                onFocus={alignMenu}
+                onClick={alignMenu}
               >
-                {t.label}
-              </button>
+                <button
+                  className={`nav-link ${route.tab === t.id ? 'nav-active' : ''}`}
+                  aria-current={route.tab === t.id ? 'page' : undefined}
+                  onClick={(e) => {
+                    go(t.id);
+                    // Release focus so :focus-within does not pin the menu
+                    // open after the pointer has left the tab.
+                    e.currentTarget.blur();
+                  }}
+                >
+                  {t.label}
+                </button>
+                {t.children && (
+                  <div className="nav-menu">
+                    {t.children.map((c) => (
+                      <button
+                        key={c.id}
+                        className="nav-menu-item"
+                        onClick={(e) => {
+                          go(t.id, c.id);
+                          // Same release after choosing an item: navigation
+                          // happened, the panel must not linger over the page.
+                          e.currentTarget.blur();
+                        }}
+                      >
+                        {c.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
             ))}
           </nav>
         </div>
@@ -108,9 +187,9 @@ export default function App() {
           {route.tab === 'work' && (
             <Work onNavigate={go} openTool={route.sub} onToolChange={(id) => go('work', id)} />
           )}
-          {route.tab === 'data' && <Data onNavigate={go} />}
-          {route.tab === 'compare' && <Compare onNavigate={go} />}
-          {route.tab === 'writing' && <Writing onNavigate={go} />}
+          {route.tab === 'data' && <Data onNavigate={go} openSub={route.sub} />}
+          {route.tab === 'compare' && <Compare onNavigate={go} openSub={route.sub} />}
+          {route.tab === 'writing' && <Writing onNavigate={go} openSub={route.sub} />}
           {route.tab === 'about' && <About onNavigate={go} />}
           {route.tab === 'support' && <Support />}
           {route.tab === 'licensing' && <Licensing onNavigate={go} />}

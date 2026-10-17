@@ -33,7 +33,6 @@ export default function SprawlStory({ onNavigate }) {
     <section className="sprawl">
       <div className="shell">
         <div className="section-head">
-          <span className="overline">The finding</span>
           <h1 className="sprawl-title">
             The rules exist. The reading does not.
           </h1>

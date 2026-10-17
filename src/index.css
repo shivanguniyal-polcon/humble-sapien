@@ -214,9 +214,10 @@ main {
   color: var(--color-text);
 }
 
-/* The THS lockup: abstract top-down brain in line art (the accent), reading
-   as part of the typography rather than a badge. The brain glows softly
-   under the cursor. */
+/* The THS lockup: the brain/face silhouette in the accent, reading as part
+   of the typography rather than a badge. The mark glows softly under the
+   cursor. The wordmark sits on the nav's typographic line: same family and
+   colour as the tabs, a step between their default (500) and active (650). */
 .brand-lockup {
   height: 3.25rem;
   width: auto;
@@ -241,8 +242,8 @@ main {
 
 .brand-word {
   font-family: var(--font-display);
-  font-weight: 650;
-  font-size: 23px; /* viewBox units */
+  font-weight: 600;
+  font-size: 22px; /* viewBox units */
   letter-spacing: -0.005em;
   fill: var(--color-text-secondary);
   white-space: nowrap;
@@ -1676,17 +1677,18 @@ select:focus-visible {
   padding-block: var(--space-8);
 }
 
-/* The active background: drifting rows of unread policy text (the finding's
-   own motif) with a slow breathing glow, so the lead feels alive without
-   competing with the numbers. */
+/* The active background: drifting rows of real government drafting language
+   (the finding's own motif) with a slow breathing glow, so the lead feels
+   alive without competing with the numbers. The words are the point: the
+   incomprehensibility is rendered, not described. */
 .sprawl::before {
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='150'%3E%3Cg fill='%237A1F2B' fill-opacity='0.07'%3E%3Crect x='16' y='14' width='150' height='6' rx='3'/%3E%3Crect x='16' y='34' width='214' height='6' rx='3'/%3E%3Crect x='16' y='54' width='176' height='6' rx='3'/%3E%3Crect x='16' y='74' width='120' height='6' rx='3'/%3E%3Crect x='16' y='94' width='200' height='6' rx='3'/%3E%3Crect x='16' y='114' width='140' height='6' rx='3'/%3E%3Crect x='16' y='134' width='96' height='6' rx='3'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: 260px 150px;
-  animation: drift-up 80s linear infinite;
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='480'%20height='260'%3E%3Cg%20font-family='Georgia,%20serif'%20font-size='13'%20fill='%237A1F2B'%20fill-opacity='0.13'%3E%3Ctext%20x='14'%20y='18'%3ENOTWITHSTANDING%20ANYTHING%20CONTAINED%20IN%20SECTION%2014,%3C/text%3E%3Ctext%20x='34'%20y='34'%3Ethe%20appropriate%20Government%20may,%20by%20notification%20in%20the%3C/text%3E%3Ctext%20x='34'%20y='50'%3EOfficial%20Gazette,%20make%20rules%20for%20carrying%20out%20the%3C/text%3E%3Ctext%20x='34'%20y='66'%3Epurposes%20of%20this%20Chapter:%20PROVIDED%20THAT%20nothing%3C/text%3E%3Ctext%20x='14'%20y='88'%3ES.O.%201234(E).%20--%20In%20exercise%20of%20the%20powers%20conferred%20by%3C/text%3E%3Ctext%20x='34'%20y='104'%3Eclause%20(c)%20of%20sub-section%20(1)%20of%20section%2045%20of%20the%20said%3C/text%3E%3Ctext%20x='34'%20y='120'%3EAct,%20the%20Central%20Government%20hereby%20makes%20the%20following%3C/text%3E%3Ctext%20x='34'%20y='136'%3Erules,%20namely:%201.%20Short%20title%20and%20commencement.%3C/text%3E%3Ctext%20x='14'%20y='158'%3ESAVE%20AS%20OTHERWISE%20PROVIDED%20IN%20SUB-CLAUSE%20(II)%20OF%3C/text%3E%3Ctext%20x='34'%20y='174'%3ECLAUSE%20(B)%20OF%20THE%20SCHEDULE,%20NO%20SUIT%20SHALL%20LIE,%20and%20the%3C/text%3E%3Ctext%20x='34'%20y='190'%3Ecompetent%20authority%20shall,%20in%20consultation%20with%20the%3C/text%3E%3Ctext%20x='34'%20y='206'%3EState%20Government,%20by%20order,%20determine%20the%20tariff.%3C/text%3E%3Ctext%20x='14'%20y='228'%3EMEMORANDUM%20OF%20UNDERSTANDING%20ENTERED%20INTO%20BY%20THE%3C/text%3E%3Ctext%20x='34'%20y='244'%3EGOVERNMENT%20OF%20--%20SEE%20PARAGRAPH%204%20AND%20ANNEXURE%20III.%3C/text%3E%3C/g%3E%3C/svg%3E");
+  background-size: 480px 260px;
+  animation: drift-up 90s linear infinite;
   pointer-events: none;
 }
 
@@ -1704,7 +1706,7 @@ select:focus-visible {
 
 @keyframes drift-up {
   from {
-    background-position: 0 150px;
+    background-position: 0 260px;
   }
   to {
     background-position: 0 0;
@@ -2243,6 +2245,14 @@ select:focus-visible {
   font-size: 0.85rem;
   color: var(--color-text-secondary);
   line-height: 1.55;
+}
+
+.input-error {
+  display: block;
+  margin-top: 0.35rem;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  color: var(--color-accent-solid);
 }
 
 .fine-print a {
@@ -2827,4 +2837,368 @@ input[type='range'] {
   overflow-x: auto;
   white-space: pre-wrap;
   margin: 0.35rem 0 0;
+}
+
+/* ---------- shared datasets, coverage receipts, publication PIT ---------- */
+
+.shared-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pin-btn {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  border-radius: var(--radius-pill);
+  padding: 0.25rem 0.6rem;
+  font: inherit;
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: background-color var(--duration-state) var(--ease-out),
+    color var(--duration-state) var(--ease-out),
+    border-color var(--duration-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .pin-btn:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+}
+
+.pin-btn-on {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-soft-border);
+  color: var(--color-accent-text);
+}
+
+.receipt-block {
+  border-left: 3px solid var(--color-accent-soft-border);
+  background: var(--color-accent-soft);
+  border-radius: 0.5rem;
+  padding: 0.9rem 1.1rem;
+}
+
+.meter {
+  height: 6px;
+  max-width: 22rem;
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.meter-fill {
+  height: 100%;
+  background: var(--color-accent-solid);
+  border-radius: var(--radius-pill);
+}
+
+.pub-pit {
+  margin: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.pub-pit-row {
+  display: grid;
+  grid-template-columns: minmax(9rem, 12rem) 1fr;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.pub-pit-row dt {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.pub-pit-row dd {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.pit-badge {
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-text);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-soft-border);
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.6rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 40rem) {
+  .pub-pit-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+}
+
+/* ============================================================
+   Landing redo: nav dropdowns (maroon inversion), the flood
+   band, and the closing section map.
+   ============================================================ */
+
+/* ---------- nav dropdowns ----------
+   Tabs with contained pages reveal a maroon panel on hover
+   (and on focus-within for keyboard). The panel inverts the
+   site's paper-and-ink trend: solid accent, white text.
+   Clicking the heading itself still opens the tab's page. */
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.nav-menu {
+  position: absolute;
+  /* Starts at the link's bottom edge (no dead gap: the menu's own top
+     padding provides the visual breathing room, so hovering across the
+     seam never leaves .nav-item and the menu never flickers shut). */
+  top: 100%;
+  left: 0;
+  z-index: 30;
+  min-width: 15rem;
+  max-width: min(22rem, calc(100vw - 2rem));
+  max-height: min(70vh, 32rem);
+  overflow-y: auto;
+  padding: calc(var(--space-2) + 5px) var(--space-2) var(--space-2);
+  background: var(--color-accent-solid);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgb(27 24 21 / 0.22);
+  /* display, not visibility: a visibility-hidden panel still occupies
+     layout and drags a horizontal scrollbar past the viewport. */
+  display: none;
+}
+
+.nav-item:hover .nav-menu,
+.nav-item:focus-within .nav-menu {
+  display: block;
+}
+
+/* Right-edge escape hatch, toggled by measurement on open (App.alignMenu):
+   an open panel never hangs off the window. */
+.nav-menu-flip {
+  left: auto;
+  right: 0;
+}
+
+.nav-menu-item {
+  display: block;
+  width: 100%;
+  text-align: start;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.42rem 0.7rem;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #ffffff;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition-property: background-color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+@media (hover: hover) {
+  .nav-menu-item:hover {
+    background: rgb(255 255 255 / 0.14);
+  }
+}
+
+.nav-menu-item:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+}
+
+/* Long menus (Atlas sectors, Research titles) scroll; keep the
+   last item reachable. */
+.nav-menu-item:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- flood band: the deluge ---------- */
+
+.flood {
+  position: relative;
+  padding-block: var(--space-6) var(--space-8);
+}
+
+.flood-ticker {
+  overflow: hidden;
+  border-block: 1px solid var(--color-border);
+  background: var(--clay-50);
+  margin-bottom: var(--space-6);
+  padding-block: var(--space-2);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+
+.flood-ticker-track {
+  display: flex;
+  gap: var(--space-6);
+  white-space: nowrap;
+  width: max-content;
+  animation: drift 70s linear infinite;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: var(--clay-600);
+}
+
+.flood-ticker-track span:nth-child(2) {
+  color: var(--clay-400);
+}
+
+.flood-head {
+  margin-bottom: var(--space-5);
+}
+
+.flood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+  gap: var(--space-3);
+}
+
+.flood-cell {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.flood-num {
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.flood-cell-danger .flood-num {
+  color: var(--color-accent-solid);
+}
+
+.flood-what {
+  margin-top: var(--space-2);
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  line-height: 1.4;
+}
+
+/* Set in the site font, like the finding's notes and sources
+   (.sprawl-note / .meta): IBM Plex Mono is reserved for data tables,
+   kickers and the decorative ticker, not for reading text. */
+.flood-src {
+  margin-top: var(--space-2);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.flood-cell-danger {
+  border-color: var(--color-accent-soft-border);
+  background: var(--color-accent-soft);
+}
+
+.flood-cell-danger .flood-what {
+  color: var(--color-accent-text);
+  font-weight: 650;
+}
+
+.flood-cell-danger .flood-src {
+  color: var(--color-accent-text);
+}
+
+.flood-foot {
+  margin-top: var(--space-5);
+  max-width: 72ch;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flood-ticker-track {
+    animation: none;
+  }
+}
+
+/* ---------- closing map: where to start ---------- */
+
+.start-map {
+  margin-block: var(--space-8) var(--space-6);
+}
+
+.start-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
+  gap: var(--space-4);
+  margin-block: var(--space-5);
+}
+
+.start-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  text-align: start;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition-property: border-color, box-shadow;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+@media (hover: hover) {
+  .start-card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-raised);
+  }
+}
+
+.start-card:active {
+  scale: 0.98;
+  transition-duration: var(--duration-press);
+}
+
+.start-card:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.start-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--color-accent-text);
+  margin: 0;
+}
+
+.start-card p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+
+.start-count {
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
 }

@@ -32,8 +32,12 @@ export {
   scenario, scenarioSample, PMJAY_REFERENCE, DRIVERS,
   simulate, evaluateSustainability, requiredBudgetGrowth, budgetAt, avgClaimAt,
 } from './modules/scenario.js';
-export { buildReport, checkPit, PIT_QUESTIONS } from './report.js';
-export { cbaFromRows, mcdaFromRows, scenarioFromRows, TREE_CSV_NOTE } from './adapters.js';
+export { buildReport, checkPit, PIT_QUESTIONS, distributionalReceipt, formatDistributional } from './report.js';
+export {
+  cbaFromRows, mcdaFromRows, scenarioFromRows, TREE_CSV_NOTE,
+  decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
+  budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
+} from './adapters.js';
 export { GENERAL_RULES, MODULE_FORMATS } from './formats.js';
 
 import { decisionTree } from './modules/decisionTree.js';

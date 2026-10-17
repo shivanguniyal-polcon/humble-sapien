@@ -1,4 +1,8 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
+import NumInput from '../components/NumInput';
+import { shareDataset, useSharedDatasets, togglePin } from '../lib/datasetStore';
+import { usePitDraft } from '../lib/pitStore';
+import { findUnitColumn, coverageLines } from '../lib/coverage';
 import {
   decisionTree, decisionTreeSample, cba, cbaSample, mcda, mcdaSample,
   scenario, scenarioSample, PMJAY_REFERENCE, DRIVERS,
@@ -7,7 +11,10 @@ import {
   queueing, queueingSample, monteCarlo, monteCarloSample,
   DISCOUNT_PRESETS, VERIFICATION_LABELS, HORIZON_PRESETS,
   ingest, buildManifest, buildReport, checkPit, PIT_QUESTIONS,
-  cbaFromRows, mcdaFromRows, scenarioFromRows, TREE_CSV_NOTE,
+  distributionalReceipt, formatDistributional,
+  cbaFromRows, mcdaFromRows, scenarioFromRows,
+  decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
+  budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
   GENERAL_RULES, MODULE_FORMATS, BATTERY_VERSION, formatINRCompact,
 } from '../battery';
 
@@ -46,38 +53,49 @@ const SAMPLES = {
   'monte-carlo': monteCarloSample,
 };
 
-const JSON_ONLY_NOTE =
-  'This module reads the structured JSON input shown below. Load the sample to see the exact shape; the input format table lists every field.';
+// Every module can be reached from a pasted table: its adapter turns rows
+// into the structured input, or reports exactly which columns were missing.
+// Ready-made module JSON is recognised and loaded as-is.
+const ADAPTERS = {
+  'decision-tree': decisionTreeFromRows,
+  cba: cbaFromRows,
+  mcda: mcdaFromRows,
+  scenario: scenarioFromRows,
+  cea: ceaFromRows,
+  'equity-cba': equityFromRows,
+  markov: markovFromRows,
+  'budget-impact': budgetImpactFromRows,
+  'stakeholder-game': gameTheoryFromRows,
+  queueing: queueingFromRows,
+  'monte-carlo': monteCarloFromRows,
+};
 
-const INGEST_NOTES = {
-  'decision-tree': (format) =>
-    format === 'json'
-      ? ['JSON detected: check the structure below to confirm it is a tree.']
-      : [TREE_CSV_NOTE],
-  cba: null, // built by cbaFromRows
-  mcda: null, // built by mcdaFromRows
-  scenario: null, // built by scenarioFromRows
-  cea: () => [JSON_ONLY_NOTE],
-  'equity-cba': () => [JSON_ONLY_NOTE],
-  markov: () => [JSON_ONLY_NOTE],
-  'budget-impact': () => [JSON_ONLY_NOTE],
-  'stakeholder-game': () => [JSON_ONLY_NOTE],
-  queueing: () => [JSON_ONLY_NOTE],
-  'monte-carlo': () => [JSON_ONLY_NOTE],
+const ADAPTER_HINTS = {
+  'decision-tree': 'Paste a node-per-row table (node_id, node_type, children;probs;payoff) or ready-made tree JSON.',
+  cba: 'Paste a schedule table (line_id, label, kind, year, value) or ready-made JSON.',
+  mcda: 'Paste a score table (alternative, criterion, score, weight, direction) or ready-made JSON.',
+  scenario: 'Paste a driver table (scenario_id, scenario_label, driver, value) or ready-made JSON.',
+  cea: 'Paste an options table (alternative, label, cost, effect, threshold) or ready-made JSON.',
+  'equity-cba': 'Paste a schedule table (line_id, kind, group_id, year, value, horizon_years, discount_rate) or ready-made JSON.',
+  markov: 'Paste one row per state (state, cost_per_cycle, utility_per_cycle, initial) with one transition column per state, or ready-made JSON.',
+  'budget-impact': 'Paste a long table (line_type, year, value, horizon_years, eligible_population, population_growth) or ready-made JSON.',
+  'stakeholder-game': 'Paste one row per grid cell (row_strategy, col_strategy, payoff_row, payoff_col) or ready-made JSON.',
+  queueing: 'Paste one row per scenario (arrival_rate, service_rate, servers, time_unit) or ready-made JSON.',
+  'monte-carlo': 'Paste one row per variable (variable_id, kind, dist, parameters, runs, seed) or ready-made JSON.',
 };
 
 const PLACEHOLDERS = {
-  'decision-tree': 'Paste JSON rows or load the sample tree.',
+  'decision-tree': 'node_id,node_type,label,children,probs,payoff,root,pit_group,pit_effect\n...',
   cba: 'line_id,label,kind,group,year,value\n...',
   mcda: 'alternative,criterion,score,weight,direction,group,who,pit_group,pit_effect\n...',
   scenario: 'scenario_id,scenario_label,driver,value,pit_group,pit_effect\n...',
-  cea: 'JSON only for this module. Load the sample to see the structure.',
-  'equity-cba': 'JSON only for this module. Load the sample to see the structure.',
-  markov: 'JSON only for this module. Load the sample to see the structure.',
-  'budget-impact': 'JSON only for this module. Load the sample to see the structure.',
-  'stakeholder-game': 'JSON only for this module. Load the sample to see the structure.',
-  queueing: 'JSON only for this module. Load the sample to see the structure.',
-  'monte-carlo': 'JSON only for this module. Load the sample to see the structure.',
+  cea: 'alternative,label,cost,effect,threshold,effect_unit,pit_group,pit_effect\n...',
+  'equity-cba': 'line_id,label,kind,group_id,group_label,population_share,weight,year,value,horizon_years,discount_rate\n...',
+  markov: 'state,label,cost_per_cycle,utility_per_cycle,absorbing,initial,cycles,cycle_years,discount_rate,stable,progressed,death\n...',
+  'budget-impact': 'line_type,label,year,value,horizon_years,eligible_population,population_growth\n...',
+  'stakeholder-game': 'row_strategy,col_strategy,payoff_row,payoff_col,player_row,player_col,pit_group\n...',
+  queueing: 'arrival_rate,service_rate,servers,time_unit,pit_group,pit_effect\n...',
+  'monte-carlo': 'variable_id,label,kind,dist,min,max,mean,sd,mu,sigma,alpha,beta,mode,scale,runs,seed\n...',
 };
 
 function download(name, text, type) {
@@ -148,6 +166,8 @@ export default function Battery({ onNavigate }) {
 
   const [rawText, setRawText] = useState('');
   const [validation, setValidation] = useState(null);
+  const [ingested, setIngested] = useState(null);
+  const [sharedNote, setSharedNote] = useState('');
   const [adapterNotes, setAdapterNotes] = useState([]);
   const [inputText, setInputText] = useState(JSON.stringify(cbaSample, null, 2));
   const [structErrors, setStructErrors] = useState([]);
@@ -168,11 +188,27 @@ export default function Battery({ onNavigate }) {
 
   const pitCheck = checkPit(pit);
 
+  const shared = useSharedDatasets();
+  const pitDraft = usePitDraft();
+  const [pinNote, setPinNote] = useState('');
+  const ingestCoverage = useMemo(() => {
+    if (!ingested || !ingested.validation.ok) return null;
+    const found = findUnitColumn(ingested.dataset);
+    return found
+      ? {
+          lines: coverageLines(found.coverage, { estimatedFrom: `Unit names taken from the "${found.column}" column.` }),
+          coverage: found.coverage,
+        }
+      : { lines: ['No column in this data names Indian states or UTs, so population coverage cannot be computed.'], coverage: null };
+  }, [ingested]);
+
   const loadSample = () => {
     const sample = SAMPLES[moduleId];
     setInputText(JSON.stringify(sample, null, 2));
     setRawText('');
     setValidation(null);
+    setIngested(null);
+    setSharedNote('');
     setAdapterNotes([]);
     setStructErrors([]);
     setStructWarnings([]);
@@ -186,9 +222,47 @@ export default function Battery({ onNavigate }) {
     setModuleId(id);
     setInputText(JSON.stringify(SAMPLES[id], null, 2));
     setValidation(null);
-    setAdapterNotes(INGEST_NOTES[id] ? INGEST_NOTES[id]('csv') : []);
+    setIngested(null);
+    setSharedNote('');
+    setAdapterNotes([ADAPTER_HINTS[id]]);
     setStructErrors([]);
     setStructWarnings([]);
+    setResults(null);
+    setManifest(null);
+    setReport(null);
+  };
+
+  const shareWithLab = () => {
+    if (!ingested || !ingested.validation.ok) return;
+    shareDataset({
+      name: `Battery · ${moduleChoice.label}`,
+      dataset: ingested.dataset,
+      validation: ingested.validation,
+      source: 'battery',
+    });
+    setSharedNote('Shared with the evaluation engine: open Tools → Evaluation engine and pick it under "Shared datasets".');
+  };
+
+  // The reverse flow: rows shared by the evaluation engine go through the
+  // ingest adapter for the selected module and come out as structured input.
+  const loadShared = (d) => {
+    setValidation(d.validation);
+    setIngested({ dataset: d.dataset, validation: d.validation });
+    setSharedNote('');
+    const adapter = ADAPTERS[moduleId];
+    const adapted = adapter ? adapter(d.dataset, { horizonYears: horizon }) : null;
+    if (adapted && adapted.input) {
+      setInputText(JSON.stringify(adapted.input, null, 2));
+      const check = moduleChoice.mod.validate(adapted.input);
+      setStructErrors(check.errors);
+      setStructWarnings(check.warnings);
+      setAdapterNotes([
+        `Loaded "${d.name}" from the shared store and rebuilt the ${moduleChoice.label.toLowerCase()} input from its rows.`,
+        ...adapted.notes,
+      ]);
+    } else {
+      setAdapterNotes(adapted ? adapted.notes : [ADAPTER_HINTS[moduleId]]);
+    }
     setResults(null);
     setManifest(null);
     setReport(null);
@@ -197,21 +271,36 @@ export default function Battery({ onNavigate }) {
   const runIngest = () => {
     const { dataset, validation: v } = ingest(rawText, { name: 'pasted data' });
     setValidation(v);
-    const adapted =
-      moduleId === 'cba' && dataset.format !== 'json'
-        ? cbaFromRows(dataset, { horizonYears: horizon })
-        : moduleId === 'mcda' && dataset.format !== 'json'
-          ? mcdaFromRows(dataset)
-          : moduleId === 'scenario' && dataset.format !== 'json'
-            ? scenarioFromRows(dataset)
-            : null;
-    if (adapted) {
-      if (adapted.input) setInputText(JSON.stringify(adapted.input, null, 2));
+    setIngested({ dataset, validation: v });
+    setSharedNote('');
+    if (dataset.format === 'json') {
+      try {
+        const parsed = JSON.parse(rawText);
+        const check = moduleChoice.mod.validate(parsed);
+        if (check.errors.length === 0) {
+          setInputText(JSON.stringify(parsed, null, 2));
+          setStructErrors([]);
+          setStructWarnings(check.warnings);
+          setAdapterNotes([
+            'Recognised as ready-made module input. It fills the structured input below; continue to parameters.',
+          ]);
+          return;
+        }
+      } catch {
+        // Not module JSON after all; the row adapters below take it.
+      }
+    }
+    const adapter = ADAPTERS[moduleId];
+    const adapted = adapter ? adapter(dataset, { horizonYears: horizon }) : null;
+    if (adapted && adapted.input) {
+      setInputText(JSON.stringify(adapted.input, null, 2));
+      const check = moduleChoice.mod.validate(adapted.input);
+      setStructErrors(check.errors);
+      setStructWarnings(check.warnings);
       setAdapterNotes(adapted.notes);
       return;
     }
-    const noteBuilder = INGEST_NOTES[moduleId];
-    setAdapterNotes(noteBuilder ? noteBuilder(dataset.format) : []);
+    setAdapterNotes(adapted ? adapted.notes : [ADAPTER_HINTS[moduleId]]);
   };
 
   const checkStructure = () => {
@@ -226,6 +315,15 @@ export default function Battery({ onNavigate }) {
     }
   };
 
+  const cbaParamsInvalid =
+    !Number.isFinite(discountPct) ||
+    discountPct < 0 ||
+    discountPct > 100 ||
+    !Array.isArray(sensitivity) ||
+    sensitivity.length !== 2 ||
+    !sensitivity.every((x) => Number.isFinite(x)) ||
+    sensitivity[0] > sensitivity[1];
+
   const runExecute = async () => {
     try {
       const input = JSON.parse(inputText);
@@ -234,6 +332,10 @@ export default function Battery({ onNavigate }) {
       setStructWarnings(v.warnings);
       if (v.errors.length > 0) {
         setRunError('The structure has errors. Fix them before running.');
+        return;
+      }
+      if (moduleId === 'cba' && cbaParamsInvalid) {
+        setRunError('Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before running.');
         return;
       }
       const params =
@@ -254,6 +356,10 @@ export default function Battery({ onNavigate }) {
 
   const buildOut = async () => {
     try {
+      if (moduleId === 'cba' && cbaParamsInvalid) {
+        setRunError('Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before building the report.');
+        return;
+      }
       const input = JSON.parse(inputText);
       const params =
         moduleId === 'cba'
@@ -297,6 +403,7 @@ export default function Battery({ onNavigate }) {
         pit,
         source: 'THS Policy Battery sample or user-supplied data; see the validation report.',
         validation,
+        coverage: ingestCoverage ? ingestCoverage.lines : null,
       });
       setReport(out);
     } catch (e) {
@@ -418,7 +525,84 @@ export default function Battery({ onNavigate }) {
               <button type="button" className="btn btn-secondary" onClick={loadSample}>
                 Load the sample
               </button>
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={shareWithLab}
+                disabled={!ingested || !ingested.validation.ok}
+                aria-describedby="share-hint"
+              >
+                Share with the evaluation engine
+              </button>
             </div>
+            <p id="share-hint" className="fine-print">
+              {!ingested
+                ? 'Validate a table first; sharing passes the ingested data to the evaluation engine for this session.'
+                : sharedNote}
+            </p>
+            {shared.length > 0 && (
+              <div className="control" style={{ marginTop: '1rem' }}>
+                <label>Shared datasets</label>
+                <div className="filter-row" role="group" aria-label="Shared datasets">
+                  {shared.map((d) => (
+                    <span key={d.id} className="shared-row">
+                      <button type="button" className="chip" onClick={() => loadShared(d)}>
+                        {d.name} · {d.dataset.rowCount} rows
+                      </button>
+                      <button
+                        type="button"
+                        className={`pin-btn ${d.pinned ? 'pin-btn-on' : ''}`}
+                        aria-pressed={!!d.pinned}
+                        onClick={() => {
+                          const r = togglePin(d.id);
+                          setPinNote(
+                            r.pinned && !r.persisted
+                              ? 'Local storage is blocked in this browser, so this pin lasts only until the tab closes.'
+                              : '',
+                          );
+                        }}
+                        title={d.pinned ? 'Pinned: kept after the tab closes. Click to unpin.' : 'Pin: keep this dataset after the tab closes.'}
+                      >
+                        {d.pinned ? 'Pinned' : 'Pin'}
+                      </button>
+                    </span>
+                  ))}
+                </div>
+                <p className="fine-print" style={{ margin: '0.35rem 0 0' }}>
+                  Click one to rebuild the structured input for the selected
+                  module from its rows, through the ingest adapters. Unpinned
+                  datasets vanish when the tab closes; pinned ones stay until
+                  you unpin them.
+                  {pinNote && <strong> {pinNote}</strong>}
+                </p>
+              </div>
+            )}
+            {ingestCoverage && (
+              <div className="receipt-block" style={{ marginTop: '1rem' }}>
+                <p className="approach-key">Who is missing (computed)</p>
+                {ingestCoverage.coverage && (
+                  <>
+                    <div
+                      className="meter"
+                      role="img"
+                      aria-label={`Unit coverage ${ingestCoverage.coverage.coveragePct.toFixed(1)} percent of the enumerated population`}
+                    >
+                      <div
+                        className="meter-fill"
+                        style={{ width: `${Math.min(100, ingestCoverage.coverage.coveragePct).toFixed(1)}%` }}
+                      />
+                    </div>
+                    <p className="fine-print" style={{ margin: '0.35rem 0 0.6rem' }}>
+                      {ingestCoverage.coverage.matched.length} of {ingestCoverage.coverage.universeSize} census 2011
+                      units · {ingestCoverage.coverage.coveragePct.toFixed(1)}% of the enumerated population.
+                    </p>
+                  </>
+                )}
+                <ul className="fine-print" style={{ marginBottom: 0 }}>
+                  {ingestCoverage.lines.map((l) => <li key={l}>{l}</li>)}
+                </ul>
+              </div>
+            )}
             <div className="control" style={{ marginTop: '1.25rem' }}>
               <label>Structured module input (editable JSON)</label>
               <textarea
@@ -447,10 +631,16 @@ export default function Battery({ onNavigate }) {
                 className="btn btn-primary"
                 onClick={() => setStage(2)}
                 disabled={structErrors.length > 0}
+                aria-describedby="to-params-hint"
               >
                 Continue to parameters
               </button>
             </div>
+            <p id="to-params-hint" className="fine-print">
+              {structErrors.length > 0
+                ? 'Fix the structure errors listed above to continue.'
+                : ''}
+            </p>
           </div>
           <div className="lab-results">
             <div className="card">
@@ -515,12 +705,14 @@ export default function Battery({ onNavigate }) {
                   </select>
                 </div>
                 <div className="control">
-                  <label>Discount rate (%)</label>
-                  <input
-                    type="number"
+                  <label htmlFor="discount-rate">Discount rate (%)</label>
+                  <NumInput
+                    id="discount-rate"
                     step="0.1"
+                    min="0"
+                    max="100"
                     value={discountPct}
-                    onChange={(e) => setDiscountPct(Number(e.target.value))}
+                    onChange={setDiscountPct}
                   />
                 </div>
                 <div className="control">
@@ -602,10 +794,16 @@ export default function Battery({ onNavigate }) {
                 className="btn btn-primary"
                 onClick={() => setStage(3)}
                 disabled={moduleId === 'cba' && provenance.trim() === ''}
+                aria-describedby="to-run-hint"
               >
                 Continue to the run
               </button>
             </div>
+            <p id="to-run-hint" className="fine-print">
+              {moduleId === 'cba' && provenance.trim() === ''
+                ? 'State where the discount rate comes from: the provenance note is required before the run.'
+                : ''}
+            </p>
           </div>
           <div className="lab-results">
             <div className="card">
@@ -703,6 +901,28 @@ export default function Battery({ onNavigate }) {
             <div className="card">
               <h3>Results</h3>
               <div dangerouslySetInnerHTML={{ __html: moduleChoice.mod.renderResults(results, { status: 'custom' }) }} />
+              <div className="receipt-block" style={{ marginTop: '1rem' }}>
+                <p className="approach-key">Distributional coverage</p>
+                {(() => {
+                  const d = distributionalReceipt(results);
+                  return (
+                    <>
+                      {d.total ? (
+                        <>
+                          <div
+                            className="meter"
+                            role="img"
+                            aria-label={`Distributional coverage ${((d.covered / d.total) * 100).toFixed(0)} percent`}
+                          >
+                            <div className="meter-fill" style={{ width: `${((d.covered / d.total) * 100).toFixed(1)}%` }} />
+                          </div>
+                        </>
+                      ) : null}
+                      <p className="fine-print" style={{ marginBottom: 0 }}>{formatDistributional(d)}</p>
+                    </>
+                  );
+                })()}
+              </div>
             </div>
           )}
           {manifest && (
@@ -798,13 +1018,41 @@ export default function Battery({ onNavigate }) {
                 />
               </div>
             ))}
+            {pitDraft && (
+              <div className="btn-row">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setPit({
+                    whoBenefits: pitDraft.whoBenefits,
+                    whoPays: pitDraft.whoPays,
+                    whoMissing: pitDraft.whoMissing,
+                  })}
+                >
+                  Fill from the stakeholder map{pitDraft.policyName ? ` (${pitDraft.policyName})` : ''}
+                </button>
+              </div>
+            )}
             <p className="fine-print">
               {pitCheck.complete ? 'Check complete. The report can be built.' : `Still needed: ${pitCheck.missing.join('; ')}.`}
             </p>
             <div className="btn-row">
-              <button type="button" className="btn btn-primary" onClick={buildOut} disabled={!pitCheck.complete || !results}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={buildOut}
+                disabled={!pitCheck.complete || !results}
+                aria-describedby="report-hint"
+              >
                 Build the report
               </button>
+              <p id="report-hint" className="fine-print">
+                {!results
+                  ? 'Run the module first.'
+                  : !pitCheck.complete
+                    ? 'Answer all three public interest questions to unlock the report.'
+                    : ''}
+              </p>
               <button type="button" className="btn btn-secondary" onClick={saveProject}>
                 Save project file
               </button>

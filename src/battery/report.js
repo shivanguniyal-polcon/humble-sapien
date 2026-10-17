@@ -19,7 +19,71 @@ export function checkPit(pit) {
   return { complete: missing.length === 0, missing };
 }
 
-export async function buildReport({ module, input, params, results, pit, source, validation, resultsHtml }) {
+// Distributional coverage of a run: how many of its outputs name who they hit.
+// Walks the result tree for arrays whose items carry a `pit` or `who` column
+// (leaves, alternatives, groups, scenarios, outcomes, ledger lines) and counts
+// which are named. Module-level `pit` counts as one output for the run itself.
+// The gap arrays modules already publish are honoured alongside, so a module
+// that reports its own gaps is never second-guessed.
+export function distributionalReceipt(results) {
+  const units = [];
+  const visit = (node, depth) => {
+    if (!node || typeof node !== 'object' || depth > 3) return;
+    if (Array.isArray(node)) {
+      const items = node.filter((x) => x && typeof x === 'object' && !Array.isArray(x));
+      const pitItems = items.filter((x) => 'pit' in x);
+      if (pitItems.length > 0) {
+        for (const it of pitItems) {
+          units.push({ id: String(it.id != null ? it.id : it.label != null ? it.label : '?'), named: !!(it.pit && it.pit.group) });
+        }
+        return;
+      }
+      const whoItems = items.filter((x) => 'who' in x);
+      if (whoItems.length > 0) {
+        for (const it of whoItems) {
+          units.push({ id: String(it.id != null ? it.id : it.label != null ? it.label : '?'), named: !!(it.who && String(it.who).trim()) });
+        }
+        return;
+      }
+      for (const it of items) visit(it, depth + 1);
+      return;
+    }
+    for (const v of Object.values(node)) visit(v, depth + 1);
+  };
+  if (results && typeof results === 'object' && 'pit' in results) {
+    units.push({ id: 'the run', named: !!(results.pit && results.pit.group) });
+  }
+  visit(results, 0);
+
+  const gapIds = [];
+  if (results && typeof results === 'object') {
+    if (Array.isArray(results.leavesWithoutDistribution)) gapIds.push(...results.leavesWithoutDistribution.map(String));
+    if (Array.isArray(results.gaps)) gapIds.push(...results.gaps.map(String));
+    else if (results.gaps && typeof results.gaps === 'object') gapIds.push(...Object.values(results.gaps).flat().map(String));
+  }
+  const unnamed = units.filter((u) => !u.named).map((u) => u.id);
+  return {
+    total: units.length > 0 ? units.length : null,
+    covered: units.filter((u) => u.named).length,
+    missing: [...new Set([...gapIds, ...unnamed])],
+  };
+}
+
+export function formatDistributional(d) {
+  if (!d) return '';
+  if (d.total == null) {
+    return d.missing.length > 0
+      ? `${d.missing.length} output(s) flagged as missing a distributional column: ${d.missing.slice(0, 6).join(', ')}${d.missing.length > 6 ? ', …' : ''}.`
+      : 'No output in this run carries a distributional column.';
+  }
+  if (d.total === 0) return 'No output in this run carries a distributional column.';
+  const head = `${d.covered} of ${d.total} outputs name who they hit`;
+  return d.missing.length > 0
+    ? `${head}. Missing: ${d.missing.slice(0, 6).join(', ')}${d.missing.length > 6 ? ', …' : ''}.`
+    : `${head}.`;
+}
+
+export async function buildReport({ module, input, params, results, pit, source, validation, resultsHtml, coverage }) {
   const check = checkPit(pit);
   if (!check.complete) {
     throw new Error(`Public interest check incomplete. Answer: ${check.missing.join('; ')}.`);
@@ -85,6 +149,7 @@ export async function buildReport({ module, input, params, results, pit, source,
   <h2>Data receipt</h2>
   ${validationSummary}
   ${source ? `<p class="fine-print">Source: ${escapeHtml(source)}</p>` : ''}
+  ${Array.isArray(coverage) && coverage.length > 0 ? `<h3>Who is missing from the data (computed)</h3><ul class="fine-print">${coverage.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ul>` : '<p class="fine-print">No computed coverage receipt was available for this run. The public interest check below answers by hand.</p>'}
 
   <h2>Parameters</h2>
   <table><thead><tr><th>Parameter</th><th>Value</th><th>Provenance</th><th>Verification</th></tr></thead><tbody>${paramRows || '<tr><td colspan="4">No parameters bound.</td></tr>'}</tbody></table>
@@ -94,7 +159,11 @@ export async function buildReport({ module, input, params, results, pit, source,
 
   <h2>Public interest check</h2>
   <div class="pit-block">
-    ${PIT_QUESTIONS.map((q) => `<p><strong>${q.label}</strong> ${escapeHtml(pit[q.key])}</p>`).join('')}
+    ${PIT_QUESTIONS.map((q) => {
+      const answer = String((pit && pit[q.key]) || '').trim();
+      return `<p><strong>${q.label}</strong> ${answer ? escapeHtml(answer) : '<em>[not answered]</em>'}</p>`;
+    }).join('')}
+    <p><strong>Distributional columns</strong> ${escapeHtml(formatDistributional(distributionalReceipt(results)))}</p>
   </div>
 
   <h2>Limitations</h2>
@@ -118,6 +187,8 @@ export async function buildReport({ module, input, params, results, pit, source,
     params,
     results,
     pit,
+    coverage: Array.isArray(coverage) ? coverage : null,
+    distributional: distributionalReceipt(results),
     source: source || null,
     manifest,
   };

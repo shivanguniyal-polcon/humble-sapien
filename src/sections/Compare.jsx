@@ -39,9 +39,19 @@ const PolicyCard = ({ p, region }) => (
   </div>
 );
 
-export default function Compare({ onNavigate }) {
-  const [sectorId, setSectorId] = useState('tech');
+export default function Compare({ onNavigate, openSub }) {
+  // Deep links from the nav dropdown: #/atlas/<sector-id>. Seeded from the
+  // prop so a fresh load lands on the right sector, then adjusted on change.
+  const [sectorId, setSectorId] = useState(
+    openSub && sectors.some((s) => s.id === openSub) ? openSub : 'tech',
+  );
   const [tab, setTab] = useState('north');
+
+  const [seenSub, setSeenSub] = useState(openSub);
+  if (openSub !== seenSub) {
+    setSeenSub(openSub);
+    if (openSub && sectors.some((s) => s.id === openSub)) setSectorId(openSub);
+  }
 
   const sector = sectors.find((s) => s.id === sectorId);
   const shown = sector[tab];

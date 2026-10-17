@@ -2,6 +2,15 @@ import { useState } from 'react';
 import { publications, PUB_TYPES } from '../data/publications';
 import { citeAPA, citeBibTeX, citeRIS, citeLine, pubPermalink } from '../lib/cite';
 
+const PIT_ROWS = [
+  ['benefits', 'Who benefits?'],
+  ['pays', 'Who pays?'],
+  ['missing', 'Who is missing?'],
+];
+
+const pitAnswered = (pub) =>
+  (pub.pit ? PIT_ROWS.filter(([k]) => String(pub.pit[k] || '').trim()).length : 0);
+
 const CopyField = ({ label, text }) => {
   const [done, setDone] = useState(false);
   return (
@@ -54,6 +63,11 @@ const LibraryCard = ({ pub, onOpen }) => (
     <h3 className="pub-card-title">{pub.title}</h3>
     <p className="pub-card-abstract">{pub.abstract}</p>
     <span className="pub-meta">{pub.author} · {pub.date}</span>
+    {pitAnswered(pub) < 3 && (
+      <span className="pit-badge">
+        {pub.pit ? `Distributional column incomplete (${pitAnswered(pub)} of 3)` : 'No distributional column'}
+      </span>
+    )}
   </button>
 );
 
@@ -82,6 +96,27 @@ const PubPage = ({ pub, onBack, onNavigate }) => (
     <section className="pub-section">
       <h3>Methods and scope</h3>
       <p>{pub.methods}</p>
+    </section>
+
+    <section className="pub-section">
+      <h3>Who benefits, who pays, who is missing</h3>
+      {!pub.pit && (
+        <p className="fine-print">
+          This entry declares itself argument, not measurement; it carries no
+          distributional columns.
+        </p>
+      )}
+      <dl className="pub-pit">
+        {PIT_ROWS.map(([key, label]) => {
+          const answer = pub.pit ? String(pub.pit[key] || '').trim() : '';
+          return (
+            <div key={key} className="pub-pit-row">
+              <dt>{label}</dt>
+              <dd>{answer || <em>[not answered]</em>}</dd>
+            </div>
+          );
+        })}
+      </dl>
     </section>
 
     <section className="pub-section">
@@ -152,8 +187,8 @@ export default function Research({ onNavigate, openPub, onOpenPub }) {
         <h2>Every finding, with its receipts attached</h2>
         <p className="section-strap">
           Reports, working papers, datasets, tools and essays. Each one carries
-          its author, date, methods, citations and downloads, so you can check
-          the work instead of trusting the brand.
+          its author, date, methods, citations, downloads and a distributional
+          column, so you can check the work instead of trusting the brand.
         </p>
       </div>
 

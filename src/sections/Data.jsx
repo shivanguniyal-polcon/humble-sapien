@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import datasets from '../data/datasets.json';
 import { catalog, byId } from '../data/catalog';
 import { pearson, ols, readingFor, formatNumber } from '../lib/stats';
+import { censusCoverage, coverageLines, panelReceipt } from '../lib/coverage';
 import {
   LineChart,
   ScatterPlot,
@@ -76,14 +77,33 @@ const LockPanel = ({ title, rows, onUnlock, onSupport }) => (
   </div>
 );
 
-export default function Data({ onNavigate }) {
-  const [activeId, setActiveId] = useState('pmjay');
+export default function Data({ onNavigate, openSub }) {
+  // Deep links from the nav dropdown: #/data/<dataset-id>, #/data/methods,
+  // #/data/opendata. Unknown subs fall through to the playground untouched.
+  // Seeded from the prop so a fresh load lands on the right view/dataset,
+  // then adjusted on change (render-time prop pattern, not an effect).
+  const [activeId, setActiveId] = useState(
+    openSub && catalog.some((d) => d.id === openSub) ? openSub : 'pmjay',
+  );
   const [unlocked, setUnlocked] = useState([]);
   const [xKey, setXKey] = useState('cards_crore');
   const [yKey, setYKey] = useState('admissions_crore');
   const [mode, setMode] = useState('line');
   const [fy, setFy] = useState('2020-21');
-  const [view, setView] = useState('playground');
+  const [view, setView] = useState(
+    openSub === 'methods' || openSub === 'opendata' ? openSub : 'playground',
+  );
+
+  const [seenSub, setSeenSub] = useState(openSub);
+  if (openSub !== seenSub) {
+    setSeenSub(openSub);
+    if (openSub === 'methods' || openSub === 'opendata') {
+      setView(openSub);
+    } else if (catalog.some((d) => d.id === openSub)) {
+      setActiveId(openSub);
+      setView('playground');
+    }
+  }
 
   const meta = byId(activeId);
   const locked = meta.tier === 'commons-plus' && !unlocked.includes(activeId);
@@ -133,6 +153,73 @@ export default function Data({ onNavigate }) {
         note: s,
       }));
   }, [activeId, locked]);
+
+  // Absence receipts, computed and never typed. For the national series pair:
+  // which milestones fall out of the pairing window. For the states table:
+  // which states and years are absent, against the Census 2011 universe.
+  const pairReceipt = useMemo(() => {
+    if (activeId !== 'pmjay' || locked) return null;
+    const sa = datasets.pmjay_series[xKey] || [];
+    const sb = datasets.pmjay_series[yKey] || [];
+    const pairs = pairSeries(sa, sb);
+    const pairedA = new Set(pairs.map((p) => p.xa.d));
+    const pairedB = new Set(pairs.map((p) => p.yb.d));
+    const unpairedA = sa.filter((x) => !pairedA.has(x.d));
+    const unpairedB = sb.filter((b) => !pairedB.has(b.d));
+    const zeroAnchors = pairs.filter((p) => !(p.xa.v > 0 && p.yb.v > 0));
+    // Resolved from the imported catalog (pure, module-level) rather than the
+    // component-scope helper, so the memo does not depend on a new closure.
+    const labelOf = (key) => (byId('pmjay').series.find((s) => s.key === key) || {}).label || key;
+    const lines = [
+      `This relationship pairs ${pairs.length} shared observation(s); the correlation describes only those.`,
+    ];
+    if (unpairedA.length > 0) {
+      lines.push(`${labelOf(xKey)} has ${unpairedA.length} milestone(s) with no counterpart inside the 220-day window, absent from this relationship: ${unpairedA.map((u) => u.d).join(', ')}.`);
+    }
+    if (unpairedB.length > 0) {
+      lines.push(`${labelOf(yKey)} has ${unpairedB.length} milestone(s) absent from this relationship: ${unpairedB.map((u) => u.d).join(', ')}.`);
+    }
+    if (unpairedA.length === 0 && unpairedB.length === 0) {
+      lines.push('Every milestone in both series finds a counterpart; nothing is absent from this pair.');
+    }
+    if (zeroAnchors.length > 0) {
+      lines.push(`${zeroAnchors.length} paired observation(s) excluded as zero-value launch anchors (${zeroAnchors.map((z) => z.xa.d).join(', ')}): a launch date is the definition of the start, not an observation of the relationship.`);
+    }
+    lines.push('A missing milestone is a missing observation, not a zero. Nothing here is imputed.');
+    return { lines };
+  }, [activeId, locked, xKey, yKey]);
+
+  const statesReceipt = useMemo(() => {
+    if (activeId !== 'states' || locked) return null;
+    const rows = datasets.pmjay_states;
+    const names = [...new Set(rows.map((r) => r.s))];
+    const cov = censusCoverage(names);
+    const lines = coverageLines(cov, { estimatedFrom: 'State names taken from the PM-JAY admissions table.' });
+    const presentFy = new Set(rows.filter((r) => r.fy === fy).map((r) => r.s));
+    const absentFy = names.filter((n) => !presentFy.has(n));
+    if (absentFy.length > 0) {
+      lines.push(`In FY ${fy} this table names no row for: ${absentFy.join(', ')}. A state absent from a year cannot be ranked in it.`);
+    } else {
+      lines.push(`Every state in the table has an FY ${fy} row.`);
+    }
+    if (growthView) {
+      const inGrowth = new Set(growthView.map((g) => g.note));
+      const leftOut = names.filter((n) => !inGrowth.has(n));
+      lines.push(
+        leftOut.length === 0
+          ? `The FY2019-20 to FY2020-21 comparison covers every state in the table (${names.length}).`
+          : `The FY2019-20 to FY2020-21 comparison covers ${growthView.length} of ${names.length} states; outside it: ${leftOut.slice(0, 8).join(', ')}${leftOut.length > 8 ? `, and ${leftOut.length - 8} more` : ''}.`,
+      );
+    }
+    const panel = panelReceipt(rows.map((r) => ({ unit: r.s, wave: r.fy })));
+    if (panel.unbalanced.length > 0) {
+      const shown = panel.unbalanced.slice(0, 6).map((g) => `${g.unit} (${g.missingWaves.join(', ')})`).join('; ');
+      lines.push(`${panel.unbalanced.length} state(s) hold rows for only some years: ${shown}${panel.unbalanced.length > 6 ? ', and more' : ''}. The table is an unbalanced panel; read a year's ranking as that year's coverage.`);
+    }
+    return { lines, coverage: cov };
+  }, [activeId, locked, fy, growthView]);
+
+  const receipt = pairReceipt || statesReceipt;
 
   const coeffRows = useMemo(() => {
     if (meta.view !== 'coefficients' || locked) return null;
@@ -464,6 +551,32 @@ export default function Data({ onNavigate }) {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              )}
+              {receipt && (
+                <div className="receipt-block">
+                  <p className="approach-key">Who is absent from this view (computed)</p>
+                  {receipt.coverage && (
+                    <>
+                      <div
+                        className="meter"
+                        role="img"
+                        aria-label={`Unit coverage ${receipt.coverage.coveragePct.toFixed(1)} percent of the enumerated population`}
+                      >
+                        <div
+                          className="meter-fill"
+                          style={{ width: `${Math.min(100, receipt.coverage.coveragePct).toFixed(1)}%` }}
+                        />
+                      </div>
+                      <p className="fine-print" style={{ margin: '0.35rem 0 0.6rem' }}>
+                        {receipt.coverage.matched.length} of {receipt.coverage.universeSize} census 2011 units ·{' '}
+                        {receipt.coverage.coveragePct.toFixed(1)}% of the enumerated population.
+                      </p>
+                    </>
+                  )}
+                  <ul className="fine-print" style={{ marginBottom: 0 }}>
+                    {receipt.lines.map((l) => <li key={l}>{l}</li>)}
+                  </ul>
                 </div>
               )}
             </>

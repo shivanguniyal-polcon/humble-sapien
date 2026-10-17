@@ -1,9 +1,12 @@
 import SprawlStory from './SprawlStory';
+import Flood from './Flood';
 import DeepTime from '../components/DeepTime';
 
-// Home is the institutional front page: it opens on the finding (the policy
-// sprawl in four sourced numbers), then the capability band that makes the
-// engine visible, and the deep-time instrument.
+// Home is the institutional front page, built as a deliberate arc:
+// the flood of government output (you land inside the overwhelm), then the
+// finding that names it in four sourced numbers, then the capability band
+// that makes the engine visible, deep time for the history, and finally the
+// map that routes the reader into the site's sections.
 
 const CAPABILITIES = [
   {
@@ -24,9 +27,57 @@ const CAPABILITIES = [
   },
 ];
 
+// The way out: every section of the site, one card each, answering which
+// door of the problem it opens. The overwhelm ends in a clear exit.
+const DOORS = [
+  {
+    tab: 'work',
+    label: 'Tools',
+    count: '9 instruments',
+    what: 'Nine instruments that run live in your browser, from cost-benefit analysis to the evaluation engine. Every one ends by telling you what it cannot prove.',
+  },
+  {
+    tab: 'research',
+    label: 'Research',
+    count: '9 publications',
+    what: 'Reports, briefs and working papers with methods and citations attached, and a distributional block on every one.',
+  },
+  {
+    tab: 'data',
+    label: 'Data',
+    count: '5 datasets, open and Commons',
+    what: 'A playground, not a catalogue. Chart any series, pair two datasets, and read who is missing from the result.',
+  },
+  {
+    tab: 'compare',
+    label: 'Atlas',
+    count: '15 sectors, 90 policies',
+    what: 'Ninety flagship policies across two hemispheres: what each region built, and where the approaches split.',
+  },
+  {
+    tab: 'writing',
+    label: 'Writing',
+    count: '3 essays',
+    what: 'Plain-language notes from the founder on why policy reading must evolve, and how the work is done.',
+  },
+  {
+    tab: 'about',
+    label: 'About',
+    count: 'Who we are',
+    what: 'The institution behind the tools: what THS is, how it works, and what it refuses to do.',
+  },
+  {
+    tab: 'support',
+    label: 'Support',
+    count: 'Keep it free',
+    what: 'The tools are free for citizens and civil society. This is how the work gets paid for.',
+  },
+];
+
 export default function Home({ onNavigate }) {
   return (
     <section className="home-flow">
+      <Flood />
       <SprawlStory onNavigate={onNavigate} />
 
       <div className="capability-band">
@@ -71,6 +122,27 @@ export default function Home({ onNavigate }) {
             </p>
           </div>
           <DeepTime onNavigate={onNavigate} />
+        </div>
+      </div>
+
+      <div className="start-map">
+        <div className="section-head">
+          <span className="overline">Where to start</span>
+          <h2>The problem is a flood. Here are the doors.</h2>
+          <p className="section-strap">
+            You have seen the volume and the finding. Every section of this site
+            takes one piece of the problem apart and hands you the instrument
+            that does it. Pick a door — they are all free.
+          </p>
+        </div>
+        <div className="start-grid">
+          {DOORS.map((d) => (
+            <button key={d.tab} className="start-card" onClick={() => onNavigate(d.tab)}>
+              <span className="start-count">{d.count}</span>
+              <h3>{d.label}</h3>
+              <p>{d.what}</p>
+            </button>
+          ))}
         </div>
       </div>
     </section>

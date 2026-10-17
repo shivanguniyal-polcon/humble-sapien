@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { simplify, SAMPLE_TEXT } from '../lib/simplify';
+import { PIT_QUESTIONS, checkPit } from '../battery/report.js';
+import { usePitDraft } from '../lib/pitStore';
 
 const Readability = ({ label, data, tone }) => (
   <div className="stat">
@@ -15,6 +17,51 @@ const Readability = ({ label, data, tone }) => (
 export default function Simplifier() {
   const [text, setText] = useState(SAMPLE_TEXT);
   const result = useMemo(() => simplify(text), [text]);
+  const [pit, setPit] = useState({ whoBenefits: '', whoPays: '', whoMissing: '' });
+  const [copied, setCopied] = useState(false);
+  const pitDraft = usePitDraft();
+  const pitCheck = checkPit(pit);
+
+  // The rewrite only travels with the people it binds named. The gate is the
+  // same three questions the battery asks, and the answers ride in the copied
+  // text beside the obligations they describe.
+  const copyText = () => {
+    const lines = [
+      'THS Policy Simplifier: plain-language rewrite',
+      '',
+      `Original: Flesch reading ease ${result.readability.original.score} (${result.readability.original.band}), grade ${result.readability.original.grade}.`,
+      `Plain version: Flesch reading ease ${result.readability.simplified.score} (${result.readability.simplified.band}), grade ${result.readability.simplified.grade}.`,
+      '',
+      '--- Plain-language version ---',
+      result.simplifiedText,
+    ];
+    if (result.obligations.length > 0) {
+      lines.push('', '--- Obligations found: who must do what ---', ...result.obligations.map((o, i) => `${i + 1}. ${o}`));
+    }
+    if (result.hindi.sentences.length > 0) {
+      lines.push('', '--- Hindi plain version ---', ...result.hindi.sentences.map((h) => h.text));
+    }
+    lines.push('', '--- Public interest check ---');
+    for (const q of PIT_QUESTIONS) {
+      lines.push(`${q.label} ${String(pit[q.key] || '').trim() || '[not answered]'}`);
+    }
+    lines.push(
+      '',
+      'Both texts travel together: the rewrite never replaces the original. The Hindi layer is rule-based and needs translator review before formal use.',
+      result.hindi.note,
+    );
+    return lines.join('\n');
+  };
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(copyText());
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <section>
@@ -122,6 +169,58 @@ export default function Simplifier() {
             <p className="meta" style={{ marginTop: '0.75rem' }}>
               {result.hindi.note}
             </p>
+          </div>
+
+          <div className="output-sub" style={{ marginTop: '1.5rem' }}>
+            <h4>Public interest check (required to copy)</h4>
+            <p className="meta">
+              Every exported rewrite names who the obligations bind. All three
+              answers travel in the copied text; the gate opens when they are in.
+            </p>
+            {PIT_QUESTIONS.map((q) => (
+              <div key={q.key} className="control">
+                <label>{q.label}</label>
+                <textarea
+                  value={pit[q.key]}
+                  onChange={(e) => setPit({ ...pit, [q.key]: e.target.value })}
+                  rows={2}
+                  aria-describedby="simplifier-pit-hint"
+                />
+              </div>
+            ))}
+            {pitDraft && (
+              <div className="btn-row">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setPit({
+                    whoBenefits: pitDraft.whoBenefits,
+                    whoPays: pitDraft.whoPays,
+                    whoMissing: pitDraft.whoMissing,
+                  })}
+                >
+                  Fill from the stakeholder map{pitDraft.policyName ? ` (${pitDraft.policyName})` : ''}
+                </button>
+              </div>
+            )}
+            <div className="btn-row">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleCopy}
+                disabled={!pitCheck.complete || !result.simplifiedText}
+                aria-describedby="simplifier-pit-hint"
+              >
+                {copied ? 'Copied' : 'Copy the rewrite'}
+              </button>
+              <p id="simplifier-pit-hint" className="fine-print">
+                {!result.simplifiedText
+                  ? 'There is nothing to copy yet: paste or load a text.'
+                  : !pitCheck.complete
+                    ? `Answer all three to unlock the copy: still needed — ${pitCheck.missing.join('; ')}.`
+                    : 'Both texts and all three answers travel in the copied text.'}
+              </p>
+            </div>
           </div>
         </div>
       </div>

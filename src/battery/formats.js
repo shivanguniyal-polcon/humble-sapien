@@ -34,7 +34,7 @@ export const MODULE_FORMATS = [
   {
     id: 'decision-tree',
     module: 'Decision tree',
-    answer: 'JSON only. A flat table cannot express a tree.',
+    answer: 'CSV or JSON. The tabular form is an adjacency list: one row per node.',
     columns: [
       { name: 'root', required: true, example: 'd1', note: 'The id of the first node.' },
       { name: 'nodes[].id, .type', required: true, example: 'c1, chance', note: 'type is decision, chance or terminal.' },
@@ -45,6 +45,7 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'The engine folds the tree back to expected values and reports the optimal branch at every decision node.',
+      'CSV form: node_id, node_type, label, children (semicolon-separated ids), probs (semicolon-separated), payoff, root (true on one row), pit_group, pit_effect, pit_note.',
     ],
   },
   {
@@ -86,7 +87,7 @@ export const MODULE_FORMATS = [
   {
     id: 'cea',
     module: 'Cost-effectiveness analysis',
-    answer: 'JSON only. The dominance ladder needs the whole option set at once.',
+    answer: 'CSV or JSON.',
     columns: [
       { name: 'effectUnit', required: true, example: 'dialysis-years delivered', note: 'The unit of effect being bought. Printed in every ratio.' },
       { name: 'threshold', required: true, example: '90000', note: 'Worth paying per unit of effect, in rupees. State its provenance.' },
@@ -97,12 +98,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'Strictly and extendedly dominated options are removed before any incremental ratio is printed.',
+      'CSV form: one row per alternative — alternative, label, cost, effect, threshold (same on every row), effect_unit, pit_group, pit_effect, pit_note.',
     ],
   },
   {
     id: 'equity-cba',
     module: 'Distributional cost-benefit analysis',
-    answer: 'JSON only (or the structured sample). Schedules are the same shape as the CBA module.',
+    answer: 'CSV or JSON. Schedules are the same shape as the CBA module.',
     columns: [
       { name: 'groups[].id, .label', required: true, example: 'sc-hh, Scheduled caste households', note: 'At least two groups.' },
       { name: 'groups[].populationShare', required: true, example: '0.25', note: 'Share of the affected population (0 to 1).' },
@@ -112,12 +114,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'Two totals are printed side by side: plain NPV and equity-weighted NPV. Where they disagree in sign, that disagreement is the finding.',
+      'CSV form: one row per line per year — line_id, label, kind, group_id, group_label, population_share, weight, year, value, horizon_years, discount_rate, pit_group, pit_effect, pit_note.',
     ],
   },
   {
     id: 'markov',
     module: 'Markov cohort model',
-    answer: 'JSON only. The transition matrix cannot live in a flat table.',
+    answer: 'CSV or JSON. The tabular form is one row per state with one transition column per state.',
     columns: [
       { name: 'states[].id, .label', required: true, example: 'stable, Stable on treatment', note: 'One row per state in the matrix.' },
       { name: 'states[].costPerCycle, .utilityPerCycle', required: true, example: '18000, 0.75', note: 'Rupees and utility (0 to 1) per cycle.' },
@@ -128,12 +131,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'The full cohort trace is printed in the report so every cycle can be checked against the matrix.',
+      'CSV form: state, label, cost_per_cycle, utility_per_cycle, absorbing, initial, cycles, cycle_years, discount_rate, half_cycle_correction, plus one column named after each state id holding that transition probability.',
     ],
   },
   {
     id: 'budget-impact',
     module: 'Budget impact analysis',
-    answer: 'JSON only (year arrays live in the structure).',
+    answer: 'CSV or JSON.',
     columns: [
       { name: 'horizonYears', required: true, example: '5', note: 'Whole years, 1 to 5. Budget impact is a short-horizon instrument.' },
       { name: 'eligiblePopulation', required: true, example: '4200', note: 'Persons eligible in year 1.' },
@@ -144,12 +148,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'Gross, offset and net are printed as three columns so any self-financing claim can be checked against the offset row alone.',
+      'CSV form: one row per line per year — line_type (uptake|per_patient_cost|offset), label (for offsets), year (1-based), value, horizon_years, eligible_population, population_growth.',
     ],
   },
   {
     id: 'stakeholder-game',
     module: 'Stakeholder game analysis',
-    answer: 'JSON only. A payoff grid is a matrix, not a table of rows.',
+    answer: 'CSV or JSON. The tabular form is one row per grid cell.',
     columns: [
       { name: 'players[]', required: true, example: 'two players with id, label, strategies', note: 'Exactly two players in this version.' },
       { name: 'outcomes[]', required: true, example: '{ row: 0, col: 0, payoffs: [6, 5] }', note: 'One entry per grid cell; every cell must be present.' },
@@ -157,12 +162,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'Pure-strategy equilibria only: the module reports honestly when no pure equilibrium exists instead of implying it solved the mixed case.',
+      'CSV form: row_strategy, col_strategy, payoff_row, payoff_col, player_row, player_col, pit_group, pit_effect, pit_note. Strategy order is first appearance in the file.',
     ],
   },
   {
     id: 'queueing',
     module: 'Queue and waiting-time analysis',
-    answer: 'JSON only (three rates and a unit).',
+    answer: 'CSV or JSON.',
     columns: [
       { name: 'arrivalRate', required: true, example: '42', note: 'Arrivals per time unit.' },
       { name: 'serviceRate', required: true, example: '50', note: 'Services per server per time unit.' },
@@ -171,12 +177,13 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'An unstable queue (arrivals at or above capacity) is rejected: it has no steady state to report.',
+      'CSV form: one scenario per row — arrival_rate, service_rate, servers, time_unit, pit_group, pit_effect, pit_note. One row runs at a time.',
     ],
   },
   {
     id: 'monte-carlo',
     module: 'Monte Carlo risk analysis',
-    answer: 'JSON only. Distributions and the seed live in the structure.',
+    answer: 'CSV or JSON.',
     columns: [
       { name: 'seed', required: true, example: '20261014', note: 'Whole number. The seed is part of the result: it is what makes the run reproducible.' },
       { name: 'runs', required: true, example: '10000', note: 'Whole number, 100 to 100,000 draws.' },
@@ -185,6 +192,7 @@ export const MODULE_FORMATS = [
     ],
     notes: [
       'The generator is seeded, so the same input reproduces the same percentiles exactly. Re-run tomorrow: identical hashes.',
+      'CSV form: one row per uncertain variable — variable_id, label, kind, dist, its parameter columns (min/max, mean/sd, mu/sigma, alpha/beta, min/mode/max), scale, runs, seed.',
     ],
   },
 ];

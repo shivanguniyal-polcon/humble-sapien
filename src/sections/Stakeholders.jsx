@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { stakeholderPolicies, effectLabels, effectScore } from '../data/stakeholders';
+import { PIT_QUESTIONS } from '../battery/report.js';
+import { setPitDraft } from '../lib/pitStore';
 
 const EFFECT_COLOR = {
   benefits: 'var(--color-series-2)',
@@ -67,6 +69,7 @@ function Matrix({ rows }) {
 export default function Stakeholders({ onNavigate, onTool }) {
   const [policyId, setPolicyId] = useState(stakeholderPolicies[0].id);
   const [edits, setEdits] = useState({});
+  const [sentNote, setSentNote] = useState('');
   const policy = stakeholderPolicies.find((p) => p.id === policyId);
 
   const rows = policy.stakeholders.map((s, i) => ({
@@ -100,6 +103,26 @@ export default function Stakeholders({ onNavigate, onTool }) {
             : `On this reading benefits and restrictions are spread across similar levels of power (averages ${avgBen ?? 'n/a'} and ${avgRes ?? 'n/a'}). The distributional story here is about scope, not direction.`
         : `The map is one-sided: ${benefited.length ? 'only gains are recorded' : 'only restrictions are recorded'}. A distributional verdict needs both directions on the page.`;
 
+  // The three public interest answers, drafted from what the ledger computed:
+  // the named directions with their power balance, and an honest statement of
+  // what the ledger cannot see.
+  const pitAnswers = {
+    whoBenefits: benefited.length > 0
+      ? `Recorded as gaining: ${benefited.map((r) => r.name).join(', ')}.${avgBen != null ? ` Average power over the policy: ${avgBen.toFixed(1)} of 5.` : ''}`
+      : 'The ledger records no gains yet: nobody on it is named as benefiting from this policy as designed.',
+    whoPays: restricted.length > 0
+      ? `Recorded as restricted: ${restricted.map((r) => r.name).join(', ')}.${avgRes != null ? ` Average power over the policy: ${avgRes.toFixed(1)} of 5.` : ''}`
+      : 'The ledger records no restrictions yet: nobody on it is named as paying for this policy.',
+    whoMissing: `This ledger maps ${rows.length} parties from the published record${mixed.length > 0 ? ` (${mixed.length} mixed or neutral)` : ''}. Anyone absent from it has no direction, magnitude or power reading here, and their absence is unmeasured by construction. ${verdict}`,
+  };
+
+  const sendToPit = () => {
+    setPitDraft({ ...pitAnswers, source: 'stakeholders', policyName: policy.name });
+    setSentNote(
+      `Draft sent from "${policy.name}". The battery, the evaluation engine and the simplifier can now fill their public interest check from it.`,
+    );
+  };
+
   const copyText = () => {
     const lines = [`Stakeholder map: ${policy.name} (${policy.year})`, '', `${policy.strap}`, ''];
     rows.forEach((r, i) => {
@@ -107,7 +130,11 @@ export default function Stakeholders({ onNavigate, onTool }) {
       lines.push(`   Mechanism: ${r.mechanism}`);
       lines.push(`   Counter: ${r.counter}`);
     });
-    lines.push('', verdict, '', 'Source: THS stakeholder maps, seeded from the policy atlas.');
+    lines.push('', verdict, '', 'Public interest check (drafted from this ledger):');
+    lines.push(`Who benefits? ${pitAnswers.whoBenefits}`);
+    lines.push(`Who pays? ${pitAnswers.whoPays}`);
+    lines.push(`Who is missing? ${pitAnswers.whoMissing}`);
+    lines.push('', 'Source: THS stakeholder maps, seeded from the policy atlas.');
     return lines.join('\n');
   };
 
@@ -216,7 +243,19 @@ export default function Stakeholders({ onNavigate, onTool }) {
               <strong>Restricted:</strong> {restricted.map((r) => r.name).join(', ')}.
             </p>
           )}
+          <dl className="pub-pit" style={{ marginTop: '0.75rem' }}>
+            {PIT_QUESTIONS.map((q) => (
+              <div key={q.key} className="pub-pit-row">
+                <dt>{q.label}</dt>
+                <dd>{pitAnswers[q.key]}</dd>
+              </div>
+            ))}
+          </dl>
+          {sentNote && <p className="fine-print">{sentNote}</p>}
           <div className="btn-row">
+            <button type="button" className="btn btn-primary" onClick={sendToPit}>
+              Send to the public interest check
+            </button>
             <button
               type="button"
               className="btn btn-secondary"

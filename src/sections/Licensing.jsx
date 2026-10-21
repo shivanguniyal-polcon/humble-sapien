@@ -322,8 +322,8 @@ export default function Licensing({ onNavigate }) {
           self-declared. Everything else is unchanged: the engine is still
           identical across tiers, the free tier is still unconditional for the
           people who keep it, and no rights already granted have been taken
-          back. The decision and its reasoning are filed in{' '}
-          <code>decisions/2026-10-21-entity-structure.md</code>.
+          back. This entry is the decision record — the reasoning is the
+          paragraph above, not a document kept somewhere else.
         </p>
       </div>
 

@@ -27,6 +27,12 @@ scripts/.cache/
 # redistribute and they are tens of megabytes.
 *.pdf
 
+# Internal commercial documents — never committed, never pushed. Pricing
+# floors, revenue targets, decision logs and governance notes live here on
+# disk only. Keeping them out of git keeps the engine public without
+# publishing the negotiating position.
+private/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

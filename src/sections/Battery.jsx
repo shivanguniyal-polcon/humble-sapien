@@ -3,6 +3,7 @@ import NumInput from '../components/NumInput';
 import { shareDataset, useSharedDatasets, togglePin } from '../lib/datasetStore';
 import { usePitDraft } from '../lib/pitStore';
 import { findUnitColumn, coverageLines } from '../lib/coverage';
+import { sanitizeHtml } from '../lib/sanitize';
 import {
   decisionTree, decisionTreeSample, cba, cbaSample, mcda, mcdaSample,
   scenario, scenarioSample, PMJAY_REFERENCE, DRIVERS,
@@ -900,7 +901,10 @@ export default function Battery({ onNavigate }) {
           {results && (
             <div className="card">
               <h3>Results</h3>
-              <div dangerouslySetInnerHTML={{ __html: moduleChoice.mod.renderResults(results, { status: 'custom' }) }} />
+              {/* Renderers build HTML by concatenation and some interpolate user
+                  labels without escaping. Sanitising at the sink is the guarantee,
+                  whatever any one of them forgets. */}
+              <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(moduleChoice.mod.renderResults(results, { status: 'custom' })) }} />
               <div className="receipt-block" style={{ marginTop: '1rem' }}>
                 <p className="approach-key">Distributional coverage</p>
                 {(() => {

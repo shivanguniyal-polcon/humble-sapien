@@ -34,14 +34,32 @@ export const API_VERSION = 'v1';
 
 // ---- the response helpers -------------------------------------------------
 
+// `allow-origin: *` is deliberate, not laziness: this endpoint holds no
+// session, no cookie and no per-user data, so there is nothing for a
+// cross-origin request to steal, and an allowlist would only break callers.
+// The day it takes an API key or a cookie, this becomes an allowlist.
+const corsHeaders = {
+  'access-control-allow-origin': '*',
+  'access-control-allow-methods': 'GET, POST, OPTIONS',
+  'access-control-allow-headers': 'content-type',
+};
+
+// shortcut: no rate limit on this endpoint, add one backed by a shared store
+// (Cloudflare rate limiting binding or Upstash) the moment it is deployed
+// publicly or behind a paid tier.
+const securityHeaders = {
+  'x-content-type-options': 'nosniff',
+  'referrer-policy': 'no-referrer',
+  'cache-control': 'no-store',
+};
+
 const json = (body, status = 200, extraHeaders = {}) =>
   new Response(JSON.stringify(body, null, 2), {
     status,
     headers: {
       'content-type': 'application/json; charset=utf-8',
-      'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'GET, POST, OPTIONS',
-      'access-control-allow-headers': 'content-type',
+      ...corsHeaders,
+      ...securityHeaders,
       ...extraHeaders,
     },
   });
@@ -228,12 +246,7 @@ export default {
     if (method === 'OPTIONS') {
       return new Response(null, {
         status: 204,
-        headers: {
-          'access-control-allow-origin': '*',
-          'access-control-allow-methods': 'GET, POST, OPTIONS',
-          'access-control-allow-headers': 'content-type',
-          'access-control-max-age': '86400',
-        },
+        headers: { ...corsHeaders, 'access-control-max-age': '86400' },
       });
     }
 
@@ -316,8 +329,9 @@ export default {
             : `ths-review.${spec.ext}`;
 
         const headers = {
+          ...corsHeaders,
+          ...securityHeaders,
           'content-type': spec.type,
-          'access-control-allow-origin': '*',
           'content-disposition': `attachment; filename="${name}"`,
           'x-ths-engine': PIPELINE_VERSION,
           'x-ths-dictionary': `${run.result.jurisdictionId}@${run.result.dictionaryVersion}`,

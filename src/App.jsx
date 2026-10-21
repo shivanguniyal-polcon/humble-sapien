@@ -5,6 +5,8 @@ import Work from './sections/Work';
 import Data from './sections/Data';
 import Compare from './sections/Compare';
 import Writing from './sections/Writing';
+import Newsletter from './sections/Newsletter';
+import PitDesk from './sections/PitDesk';
 import About from './sections/About';
 import Support from './sections/Support';
 import Licensing from './sections/Licensing';
@@ -15,6 +17,7 @@ import { ESSAYS } from './data/essays';
 import { publications } from './data/publications';
 import { catalog } from './data/catalog';
 import { sectors } from './data/sectors';
+import { NEWSLETTER } from './data/newsletter';
 
 // Tools sit second: the instruments are the product, not an appendix.
 // Tabs with contained pages carry a hover dropdown listing them; clicking the
@@ -51,6 +54,12 @@ const TABS = [
     label: 'Writing',
     children: ESSAYS.map((e) => ({ id: e.id, label: e.title })),
   },
+  {
+    id: 'newsletter',
+    label: 'Newsletter',
+    children: NEWSLETTER.map((n) => ({ id: n.id, label: `№${n.issue} · ${n.title}` })),
+  },
+  { id: 'pitdesk', label: 'PIT Desk' },
   { id: 'about', label: 'About' },
   { id: 'support', label: 'Support' },
 ];
@@ -63,6 +72,8 @@ const HASH_TO_TAB = {
   data: 'data',
   atlas: 'compare',
   writing: 'writing',
+  newsletter: 'newsletter',
+  pitdesk: 'pitdesk',
   about: 'about',
   support: 'support',
   licensing: 'licensing',
@@ -190,6 +201,10 @@ export default function App() {
           {route.tab === 'data' && <Data onNavigate={go} openSub={route.sub} />}
           {route.tab === 'compare' && <Compare onNavigate={go} openSub={route.sub} />}
           {route.tab === 'writing' && <Writing onNavigate={go} openSub={route.sub} />}
+          {route.tab === 'newsletter' && (
+            <Newsletter onNavigate={go} openSub={route.sub} />
+          )}
+          {route.tab === 'pitdesk' && <PitDesk />}
           {route.tab === 'about' && <About onNavigate={go} />}
           {route.tab === 'support' && <Support />}
           {route.tab === 'licensing' && <Licensing onNavigate={go} />}

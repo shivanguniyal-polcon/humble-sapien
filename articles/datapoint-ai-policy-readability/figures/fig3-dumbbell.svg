@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="720" viewBox="0 0 1180 720" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+<text x="48" y="52" font-size="25" font-weight="700" fill="#1f2937" text-anchor="start" opacity="1">Every Indian instrument sits closer to the Northern corpus</text>
+<text x="48" y="78" font-size="14.5" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Cosine similarity of each Indian instrument to the Global North and Global South centroids. Bars are 95% bootstrap intervals.</text>
+<line x1="342.81" y1="116" x2="342.81" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="342.81" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.05</text>
+<line x1="406.84" y1="116" x2="406.84" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="406.84" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.10</text>
+<line x1="470.88" y1="116" x2="470.88" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="470.88" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.15</text>
+<line x1="534.91" y1="116" x2="534.91" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="534.91" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.20</text>
+<line x1="598.95" y1="116" x2="598.95" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="598.95" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.25</text>
+<line x1="662.98" y1="116" x2="662.98" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="662.98" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.30</text>
+<line x1="727.02" y1="116" x2="727.02" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="727.02" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.35</text>
+<line x1="791.05" y1="116" x2="791.05" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="791.05" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.40</text>
+<line x1="855.09" y1="116" x2="855.09" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="855.09" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.45</text>
+<line x1="919.12" y1="116" x2="919.12" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="919.12" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.50</text>
+<line x1="983.16" y1="116" x2="983.16" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="983.16" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.55</text>
+<line x1="1047.19" y1="116" x2="1047.19" y2="584" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="1047.19" y="610" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0.60</text>
+<text x="695" y="634" font-size="12" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">Cosine similarity to the regional centroid</text>
+<text x="312" y="173" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">DPDP Act, 2023</text>
+<text x="312" y="191" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2023 · statute</text>
+<line x1="595.11" y1="177" x2="670.67" y2="177" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="582.3" y1="177" x2="662.98" y2="177" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="679.63" y1="177" x2="686.04" y2="177" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="679.63" cy="177" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="686.04" cy="177" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="700.04" y="181" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.318</text>
+<text x="665.63" y="181" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.313</text>
+<text x="1086" y="181" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+0.01</text>
+<text x="312" y="247" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">DPDP Rules, 2025</text>
+<text x="312" y="265" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2025 · rules</text>
+<line x1="490.09" y1="251" x2="651.46" y2="251" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="514.42" y1="251" x2="674.51" y2="251" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="677.07" y1="251" x2="650.18" y2="251" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="677.07" cy="251" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="650.18" cy="251" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="664.18" y="255" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.290</text>
+<text x="663.07" y="255" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.311</text>
+<text x="1086" y="255" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+-0.02</text>
+<text x="312" y="321" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">IT Act, 2000</text>
+<text x="312" y="339" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2000 · statute</text>
+<line x1="524.67" y1="325" x2="632.25" y2="325" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="501.61" y1="325" x2="600.23" y2="325" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="606.63" y1="325" x2="648.89" y2="325" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="606.63" cy="325" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="648.89" cy="325" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="662.89" y="329" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.289</text>
+<text x="592.63" y="329" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.256</text>
+<text x="1086" y="329" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+0.03</text>
+<text x="312" y="395" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">NITI Aayog RAI, 2021</text>
+<text x="312" y="413" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2021 · strategy</text>
+<line x1="696.28" y1="399" x2="808.98" y2="399" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="764.16" y1="399" x2="899.91" y2="399" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="957.54" y1="399" x2="861.49" y2="399" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="957.54" cy="399" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="861.49" cy="399" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="875.49" y="403" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.455</text>
+<text x="943.54" y="403" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.530</text>
+<text x="1086" y="403" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+-0.07</text>
+<text x="312" y="469" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">AI Governance Guidelines, 2025</text>
+<text x="312" y="487" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2025 · guideline</text>
+<line x1="718.05" y1="473" x2="811.54" y2="473" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="837.16" y1="473" x2="938.33" y2="473" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="1004.93" y1="473" x2="862.77" y2="473" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="1004.93" cy="473" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="862.77" cy="473" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="876.77" y="477" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.456</text>
+<text x="990.93" y="477" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.567</text>
+<text x="1086" y="477" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+-0.11</text>
+<text x="312" y="543" font-size="13" font-weight="700" fill="#b21f24" text-anchor="end" opacity="1">IndiaAI Mission, 2024</text>
+<text x="312" y="561" font-size="10.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">India · 2024 · programme</text>
+<line x1="378.67" y1="547" x2="435.02" y2="547" stroke="#1c4e80" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="435.02" y1="547" x2="511.86" y2="547" stroke="#d98213" stroke-width="2" opacity="0.45" stroke-linecap="butt"/>
+<line x1="524.67" y1="547" x2="441.42" y2="547" stroke="#6b7280" stroke-width="2" stroke-dasharray="0" opacity="0.55" stroke-linecap="butt"/>
+<circle cx="524.67" cy="547" r="8" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="441.42" cy="547" r="8" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="455.42" y="551" font-size="11.5" font-weight="700" fill="#1c4e80" text-anchor="start" opacity="1">0.127</text>
+<text x="510.67" y="551" font-size="11.5" font-weight="700" fill="#d98213" text-anchor="end" opacity="1">0.192</text>
+<text x="1086" y="551" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">+-0.07</text>
+<circle cx="53" cy="624" r="6" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="66" y="628" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Global North centroid</text>
+<circle cx="225.6" cy="624" r="6" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<text x="238.6" y="628" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Global South centroid</text>
+<text x="403.2" y="628" font-size="12" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">gap on the right</text>
+<line x1="48" y1="666" x2="1132" y2="666" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="48" y="688" font-size="11.5" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Source: Data Point analysis. 600 bootstrap draws, resampling provisions within each instrument.</text>
+<text x="48" y="706" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="0.85">Centroid = the average TF-IDF direction of the region’s instruments. A larger gap means wording closer to the North.</text>
+</svg>

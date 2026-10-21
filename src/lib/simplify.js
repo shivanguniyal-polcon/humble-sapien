@@ -1,164 +1,49 @@
-// THS: policy simplification pipeline, v2.
-// Turns legal/policy language into speech-level plain language:
-//   1. glossary rewrite : statutory phrases -> casual equivalents
-//   2. sentence surgery : long sentences split at natural joints
-//   3. obligation extraction: "who must do what" bullets
-//   4. readability: Flesch Reading Ease + grade, before and after
-//   5. hindi: rule-based rendering of recognized clauses
+// THS: policy simplification pipeline, v3.
+//
+// The citizen tool and the legal review tool run the same engine. The
+// difference is what the engine is asked to do with the result: the citizen
+// gets a clean rewrite with readability scores and a public interest gate;
+// the reviewer gets provenance, clause types, risk flags and a legal review
+// gate. One dictionary, one segmenter, one set of rules — so a rewrite a
+// citizen reads and a lawyer signs off on are the same words.
+//
 // Runs entirely client-side; no data leaves the page.
 
-import { flesch } from './flesch';
-import { renderHindi, hindiNote, translateTerms } from '../data/hindi';
-
-const GLOSSARY = [
-  // whole-phrase wins first: longest, most specific patterns at the top
-  ['notwithstanding anything contained in any other law for the time being in force', 'even though other laws say otherwise'],
-  ['such rules may provide for the manner in which', 'these rules set out how'],
-  ['make rules for carrying out the purposes of this Act', 'set the detailed rules for this law'],
-  ['in accordance with the provisions of this Act and the rules made thereunder', 'under this law and its rules'],
-  ['benefits shall be availed of by the beneficiaries', 'people can use the benefits'],
-  ['every beneficiary shall be entitled to receive', 'everyone covered can get'],
-  ['the Central Government may', 'the Centre can'],
-  ['notwithstanding anything contained in', 'even though other laws say otherwise,'],
-  ['notwithstanding anything to the contrary', 'even if anything else says the opposite,'],
-  ['notwithstanding', 'even so,'],
-  ['in accordance with the provisions of', 'under'],
-  ['in accordance with', 'as per'],
-  ['the provisions of', 'the rules in'],
-  ['for the time being in force', 'in force right now'],
-  ['for the purposes of this', 'for this'],
-  ['carrying out the purposes of this Act', 'running this law'],
-  ['by notification in the Official Gazette', 'by an official notice'],
-  ['including but not limited to', 'including'],
-  ['shall be deemed to be', 'counts as'],
-  ['shall be liable to', 'must'],
-  ['shall be entitled to receive', 'can get'],
-  ['shall be entitled to', 'can get'],
-  ['shall not be construed as', 'does not mean'],
-  ['without prejudice to', 'without limiting'],
-  ['in the event that', 'if'],
-  ['in the event of', 'if'],
-  ['with effect from', 'starting'],
-  ['prior to', 'before'],
-  ['subsequent to', 'after'],
-  ['in relation to', 'about'],
-  ['pursuant to', 'under'],
-  ['at the discretion of', 'decided by'],
-  ['provided that', 'but'],
-  ['inter alia', 'among other things'],
-  ['as the case may be', ''],
-  ['and/or', 'or'],
-  ['aforesaid', 'earlier'],
-  ['thereof', 'of it'],
-  ['thereto', 'to it'],
-  ['therein', 'in it'],
-  ['hereby', ''],
-  ['herein', 'here'],
-  ['vide', 'through'],
-  ['prior consultation', 'talking first'],
-  ['no such rules shall be made without', 'these rules can only be made after'],
-  ['make rules for', 'set the detailed rules for'],
-  ['the manner in which', 'how'],
-  ['in order to', 'to'],
-  ['at this point in time', 'now'],
-  ['a large number of', 'many'],
-  ['shall', 'must'],
-  // casual contractions
-  ['do not', "don't"],
-  ['does not', "doesn't"],
-  ['cannot', "can't"],
-  ['is not', "isn't"],
-  ['are not', "aren't"],
-  ['will not', "won't"],
-  ['it is', "it's"],
-  ['that is', "that's"],
-];
-
-const LONG_SENTENCE_WORDS = 22;
-
-const countWords = (text) => text.trim().split(/\s+/).filter(Boolean).length;
-
-const splitSentences = (text) =>
-  (text.match(/[^.!?\n]+[.!?]*/g) || []).map((s) => s.trim()).filter(Boolean);
-
-const capitalize = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
-
-const applyGlossary = (sentence, tally) => {
-  let out = sentence;
-  for (const [term, plain] of GLOSSARY) {
-    const re = new RegExp(`\\b${term}\\b`, 'gi');
-    if (re.test(out)) {
-      tally[term] = (tally[term] || 0) + (out.match(re) || []).length;
-      out = out.replace(re, plain);
-    }
-  }
-  out = out
-    .replace(/\s{2,}/g, ' ')
-    .replace(/\s+([,.;:)])/g, '$1')
-    .replace(/^\s*,\s*/, '')
-    .trim();
-  return capitalize(out);
-};
-
-// Split overlong sentences at natural joints to make them speakable.
-const splitLong = (sentence) => {
-  if (countWords(sentence) <= LONG_SENTENCE_WORDS) return [sentence];
-  const joints = [', and ', ', but ', '; ', ', which ', ', so '];
-  for (const joint of joints) {
-    const i = sentence.indexOf(joint);
-    if (i > 8 && i < sentence.length - 12) {
-      const head = sentence.slice(0, i).trim();
-      let tail = sentence.slice(i + joint.length).trim();
-      const lead = joint.trim().startsWith(',') ? joint.trim().slice(1).trim() : '';
-      if (lead === 'and' || lead === 'but' || lead === 'so') tail = capitalize(tail);
-      else tail = capitalize(`${lead ? `${lead} ` : ''}${tail}`);
-      return [head, tail].flatMap(splitLong);
-    }
-  }
-  return [sentence];
-};
-
-const punctuate = (s) => (/[.!?]$/.test(s.trim()) ? s.trim() : `${s.trim()}.`);
+import { analyse } from './legal/pipeline.js';
+import { hindiNote, translateTerms } from '../data/hindi.js';
 
 export const simplify = (text) => {
-  const original = text.trim();
-  const tally = {};
-  const raw = splitSentences(original);
-
-  const simplified = raw.flatMap((sentence) => {
-    const plain = applyGlossary(sentence, tally);
-    return splitLong(plain).map((piece) => ({
-      original: sentence,
-      plain: punctuate(piece),
-      long: countWords(sentence) > LONG_SENTENCE_WORDS,
-    }));
-  });
-
-  const simplifiedText = simplified.map((s) => s.plain).join(' ');
-  const obligations = simplified
-    .filter((s) => /\b(must|required to|is liable to|shall)\b/i.test(s.original))
-    .map((s) => s.plain);
-
-  const hindiSentences = simplified.map((s) => renderHindi(s.plain));
+  const result = analyse(text, { mode: 'citizen', jurisdictionId: 'in-bare-act' });
 
   return {
-    simplifiedText,
+    simplifiedText: result.simplifiedText,
     stats: {
-      words: countWords(original),
-      sentences: raw.length,
-      replacements: Object.entries(tally)
-        .map(([term, count]) => ({ term, count }))
-        .sort((a, b) => b.count - a.count),
+      words: result.stats.words,
+      sentences: result.stats.sentences,
+      replacements: result.stats.replacements.map((r) => ({ term: r.term, count: r.count })),
     },
     readability: {
-      original: flesch(original),
-      simplified: flesch(simplifiedText),
+      original: result.readability.original,
+      simplified: result.readability.simplified,
     },
-    sentences: simplified,
-    obligations,
+    sentences: result.rows.map((row) => ({
+      id: row.id,
+      original: row.sourceText,
+      plain: row.plain,
+      long: row.sourceText.trim().split(/\s+/).length > 22,
+      flag: row.flag,
+    })),
+    // The citizen panel keeps its own, simpler reading of "obligation": any
+    // sentence that binds someone by a duty word. The legal review mode shows
+    // the full clause taxonomy instead, where a proviso or a prohibition is
+    // its own kind rather than an obligation.
+    obligations: result.rows
+      .filter((row) => /\b(must|required to|is liable to|shall)\b/i.test(row.sourceText))
+      .map((row) => row.plain),
+    definitions: result.definitions.definitions,
     hindi: {
       note: hindiNote,
-      sentences: hindiSentences,
+      sentences: result.hindi.sentences,
       glossary: [
         ['Central Government', 'केंद्र सरकार'],
         ['State Governments', 'राज्य सरकारें'],
@@ -177,3 +62,14 @@ export const simplify = (text) => {
 export { translateTerms };
 
 export const SAMPLE_TEXT = `Notwithstanding anything contained in any other law for the time being in force, the Central Government may, by notification in the Official Gazette, make rules for carrying out the purposes of this Act, and such rules may provide for the manner in which benefits shall be availed of by the beneficiaries, provided that no such rules shall be made without prior consultation with the State Governments. Every beneficiary shall be entitled to receive the benefits in accordance with the provisions of this Act and the rules made thereunder.`;
+
+// A worked example for the legal review mode: sections, a definition, a
+// proviso, a penalty and a cross-reference, so the ledger has something to
+// show on first run.
+export const LEGAL_SAMPLE_TEXT = `Section 2. In this Act, unless the context otherwise requires,— (1) "authorised officer" means an officer appointed in writing by the appropriate Government; (2) "scheme" means the scheme notified under section 14.
+
+Section 14. The appropriate Government may, by notification in the Official Gazette, frame a scheme for the grant of financial assistance to the beneficiaries, provided that no scheme shall be framed without prior consultation with the State Governments. Every beneficiary shall be entitled to receive the assistance in accordance with the provisions of this Act and the rules made thereunder.
+
+Section 21. Where an authorised officer contravenes the provisions of this Act, such person shall be punished with imprisonment for a term which may extend to six months, and every such contravention shall also be an offence punishable with a fine of five thousand rupees for every such contravention.
+
+Section 24. The provisions of section 21 shall not apply to any person who proves that he or she exercised all due diligence to prevent the commission of the contravention.`;

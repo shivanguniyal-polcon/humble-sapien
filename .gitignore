@@ -12,6 +12,21 @@ dist
 dist-ssr
 *.local
 
+# API keys for the PIT pipeline — never commit these
+.env
+.env.*
+!.env.example
+pit_pipeline.py.key
+*.secret
+
+# Pipelines cache downloaded source material here. It is reproducible from
+# the sources and it is large — 97MB of it — so it never enters the repo.
+scripts/.cache/
+
+# Reference PDFs bought or downloaded for research. They are not ours to
+# redistribute and they are tens of megabytes.
+*.pdf
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

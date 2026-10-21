@@ -141,7 +141,15 @@ export default function About({ onNavigate }) {
                 shivanguniyal-polcon.github.io
               </a>
               , where The Humble Sapien began as a blog and podcast. This site
-              is the institution it grew into.
+              is the institution it grew into. The live site is at{' '}
+              <a
+                href="https://humble-sapien.vercel.app/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                humble-sapien.vercel.app
+              </a>
+              .
             </p>
           </article>
         </div>

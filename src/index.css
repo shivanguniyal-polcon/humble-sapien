@@ -1089,6 +1089,313 @@ select:focus-visible {
   color: var(--color-text-muted);
 }
 
+/* ---------- legal review mode ---------- */
+.mode-switch {
+  align-items: center;
+  margin-bottom: var(--space-5);
+}
+
+.mode-switch .fine-print {
+  flex: 1 1 18rem;
+  min-width: 14rem;
+}
+
+.legal-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+@media (max-width: 62rem) {
+  .legal-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-3) var(--space-4);
+}
+
+.legal-meta,
+.legal-warnings {
+  margin-top: var(--space-5);
+}
+
+.legal-warnings {
+  border-left: 3px solid var(--color-accent-solid);
+}
+
+.legal-warnings ul {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.legal-warnings li + li {
+  margin-top: var(--space-1);
+}
+
+/* the ledger: one row per reviewed sentence */
+.ledger {
+  padding: 0;
+  overflow: hidden;
+}
+
+.ledger-row {
+  border-bottom: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-border);
+}
+
+.ledger-row:last-child {
+  border-bottom: none;
+}
+
+.ledger-green {
+  border-left-color: var(--paper-400);
+}
+
+.ledger-amber {
+  border-left-color: var(--clay-300);
+}
+
+.ledger-red {
+  border-left-color: var(--color-accent-solid);
+}
+
+.ledger-head {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'flag meta'
+    'flag plain';
+  gap: var(--space-1) var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition-property: background-color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+.ledger-head:hover {
+  background: var(--color-surface-sunken);
+}
+
+.ledger-head:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.ledger-head .flag-chip {
+  grid-area: flag;
+  align-self: start;
+}
+
+.ledger-meta {
+  grid-area: meta;
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+.ledger-plain {
+  grid-area: plain;
+  font-size: 0.95rem;
+  color: var(--color-text);
+}
+
+.flag-chip {
+  display: inline-block;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+}
+
+.flag-green {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+.flag-amber {
+  background: var(--clay-100);
+  color: var(--clay-800);
+}
+
+.flag-red {
+  background: var(--color-accent-solid);
+  color: var(--color-text-on-accent);
+}
+
+.ledger-detail {
+  padding: 0 var(--space-4) var(--space-4);
+  background: var(--color-surface-sunken);
+  border-top: 1px solid var(--color-border);
+}
+
+.ledger-source {
+  margin: var(--space-3) 0 var(--space-2);
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+
+.ledger-label {
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-right: var(--space-2);
+}
+
+.ledger-reasons {
+  margin: var(--space-3) 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.ledger-reasons li + li {
+  margin-top: var(--space-1);
+}
+
+.reason-red {
+  color: var(--clay-700);
+  font-weight: 600;
+}
+
+.reason-amber {
+  color: var(--color-text);
+}
+
+.reason-green {
+  color: var(--color-text-muted);
+}
+
+/* the clause-type summary */
+.clause-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: var(--space-3);
+}
+
+.clause-card {
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.clause-card h5 {
+  margin: 0 0 var(--space-1);
+  font-size: 0.95rem;
+  font-family: var(--font-display);
+}
+
+.clause-count {
+  font-family: var(--font-data);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.clause-card ul {
+  margin: var(--space-2) 0 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.88rem;
+}
+
+/* the methodology card */
+.method-card {
+  font-family: var(--font-data);
+  font-size: 0.75rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-3);
+  overflow-x: auto;
+}
+
+/* comparative mode */
+.compare-card {
+  margin-top: var(--space-6);
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 52rem) {
+  .compare-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.compare-current {
+  min-height: 8rem;
+  font-size: 0.92rem;
+  white-space: pre-wrap;
+}
+
+.delta {
+  margin-top: var(--space-4);
+}
+
+.delta-row {
+  border-left: 3px solid var(--color-border);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-2);
+  background: var(--color-surface-sunken);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.delta-added {
+  border-left-color: var(--data-pine-500);
+}
+
+.delta-removed {
+  border-left-color: var(--clay-600);
+}
+
+.delta-changed {
+  border-left-color: var(--clay-300);
+}
+
+.delta-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.delta-line {
+  margin: var(--space-2) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.legal-disclaimer {
+  margin-top: var(--space-5);
+}
+
 /* ---------- touchpoints / notes ---------- */
 .touchpoint-list {
   display: grid;
@@ -3201,4 +3508,559 @@ input[type='range'] {
   font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
+}
+
+/* ---------- newsletter ----------
+   A fixed branded template rendered from Markdown issues. The masthead,
+   data snapshot, tool spotlight and reading list are the slots every issue
+   fills; the lead/field-note prose reuses the essay typography so the
+   newsletter reads like the rest of the voice. */
+
+.newsletter .nl-masthead {
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.newsletter .nl-tag {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+}
+
+/* The data snapshot: the one number the issue is built around, set in the
+   data face with tabular numerals and an accent-soft ground. */
+.newsletter .nl-snapshot {
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-soft-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-snap-value {
+  font-family: var(--font-data);
+  font-size: 2.4rem;
+  font-weight: 600;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-accent-text);
+  margin: 0;
+}
+
+.newsletter .nl-snap-label {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text);
+}
+
+.newsletter .nl-snap-note {
+  margin: var(--space-2) 0 0;
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+
+.newsletter .nl-snap-source {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  margin: var(--space-3) 0 0;
+}
+
+.newsletter .nl-section-head {
+  font-family: var(--font-data);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+  margin: var(--space-5) 0 var(--space-3);
+}
+
+.newsletter .nl-tool {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-tool h4 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--color-accent-text);
+  margin: 0 0 var(--space-2);
+}
+
+.newsletter .nl-tool p {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text-secondary);
+  max-width: 60ch;
+}
+
+.newsletter .nl-reads {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.newsletter .nl-read-item {
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.newsletter .nl-read-item:last-child {
+  border-bottom: 0;
+}
+
+.newsletter .nl-read-link {
+  font-weight: 600;
+  color: var(--color-accent-text);
+}
+
+.newsletter .nl-read-note {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-1);
+}
+
+/* Edition badge: weekly dispatch vs the monthly deep-dive. */
+.newsletter .nl-edition {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+}
+
+.newsletter .nl-edition-badge {
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-on-accent);
+  background: var(--color-accent-solid);
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.6rem;
+}
+
+.newsletter .nl-edition-policy {
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+/* Policy term / plain-language rewrite: the clause as written, then as a
+   citizen would read it. Both always print together, never one alone. */
+.newsletter .nl-plain {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-plain-before,
+.newsletter .nl-plain-after {
+  margin: 0 0 var(--space-3);
+  max-width: 68ch;
+}
+
+.newsletter .nl-plain-before {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.newsletter .nl-plain-after {
+  margin-bottom: 0;
+  color: var(--color-text);
+}
+
+.newsletter .nl-plain-tag {
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-right: var(--space-2);
+}
+
+.newsletter .nl-plain-tag-after {
+  color: var(--color-accent-text);
+}
+
+.newsletter .nl-plain-note {
+  margin: var(--space-3) 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  max-width: 68ch;
+}
+
+/* Chart of the week: an external/open figure with its takeaway and source. */
+.newsletter .nl-chart {
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-soft-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-chart-title {
+  margin: 0 0 var(--space-2);
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.newsletter .nl-chart-take {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-secondary);
+  max-width: 64ch;
+}
+
+.newsletter .nl-chart-source {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.newsletter .nl-chart-link {
+  display: inline-block;
+  margin-top: var(--space-3);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-accent-text);
+}
+
+/* Monthly deep-dive: the citizen's journey, as a numbered chain of steps. */
+.newsletter .nl-touchpoints {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-5);
+  counter-reset: nl-tp;
+}
+
+.newsletter .nl-tp-item {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+  counter-increment: nl-tp;
+}
+
+.newsletter .nl-tp-item:last-child {
+  border-bottom: 0;
+}
+
+.newsletter .nl-tp-step {
+  flex: none;
+  width: 10rem;
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.newsletter .nl-tp-step::before {
+  content: counter(nl-tp) '. ';
+  font-family: var(--font-data);
+  color: var(--color-accent-text);
+}
+
+.newsletter .nl-tp-detail {
+  color: var(--color-text-secondary);
+  max-width: 52ch;
+}
+
+@media (max-width: 520px) {
+  .newsletter .nl-tp-item {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .newsletter .nl-tp-step {
+    width: auto;
+  }
+}
+
+/* Monthly deep-dive: the stakeholder ledger — who gains, pays, is missing. */
+.newsletter .nl-stake {
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-5);
+  margin-bottom: var(--space-5);
+}
+
+.newsletter .nl-stake-row {
+  margin: var(--space-3) 0;
+  color: var(--color-text-secondary);
+  max-width: 66ch;
+}
+
+.newsletter .nl-stake-k {
+  display: block;
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+/* Missing is the honest column, so it takes the accent — the people the
+   promise was written for, who never appear in a single statistic. */
+.newsletter .nl-stake-missing,
+.newsletter .nl-stake-missing .nl-stake-k {
+  color: var(--color-accent-text);
+}
+
+/* ---------- PIT Desk ----------
+   Scraped policy items read through the public interest test. Reuses the
+   Research library's .pub-pit rows so the three questions look identical
+   wherever they are answered. */
+
+.pit-desk-count {
+  margin-bottom: var(--space-4);
+}
+
+.pit-desk-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.pit-card-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.pit-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.pit-card-domain {
+  margin: 0;
+}
+
+.pit-card-domain .nl-tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  color: var(--color-accent-text);
+  background: var(--color-accent-soft);
+  border: 1px solid var(--color-accent-soft-border);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+}
+
+.pit-card-source {
+  margin: var(--space-3) 0 0;
+  font-size: 0.9rem;
+}
+
+.pit-card-source a {
+  color: var(--color-accent-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.pit-card-source a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   Legal review: the decision layer
+   The confidence axis and the risk axis are separate questions and
+   are shown side by side. A decision is a person's judgement about
+   one sentence, so the controls that record it look like controls.
+   ============================================================ */
+
+/* the confidence chip sits in its own column, beside the risk flag */
+.ledger-head-review {
+  grid-template-columns: auto auto minmax(0, 1fr);
+  grid-template-areas:
+    'flag conf meta'
+    'flag conf plain';
+}
+
+.ledger-head-review .conf-chip {
+  grid-area: conf;
+  align-self: start;
+}
+
+.conf-chip {
+  display: inline-block;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.conf-high {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+}
+
+.conf-medium {
+  background: var(--clay-50);
+  color: var(--clay-800);
+  border-color: var(--clay-200);
+}
+
+/* Low confidence is the one that must not be mistaken for a footnote,
+   so it is outlined rather than filled. */
+.conf-low {
+  background: transparent;
+  color: var(--clay-700);
+  border-color: var(--clay-300);
+  border-style: dashed;
+}
+
+/* the counts a reviewer keeps checking */
+.review-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.review-summary strong {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  color: var(--color-text);
+}
+
+/* the decision bar: accept, reject, reset, and the reason in one line */
+.decision-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding-block: var(--space-3);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.decision-btn {
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-pill);
+  padding: 0.35rem 0.95rem;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition-property: background-color, border-color, color, scale;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+@media (hover: hover) {
+  .decision-btn:hover {
+    background: var(--color-surface-sunken);
+  }
+}
+
+.decision-btn:active:not(:disabled) {
+  scale: 0.96;
+  transition-duration: var(--duration-press);
+}
+
+.decision-on {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+  color: var(--color-text-on-accent);
+}
+
+@media (hover: hover) {
+  .decision-on:hover {
+    background: var(--color-accent-solid-hover);
+  }
+}
+
+.decision-reject {
+  background: var(--clay-100);
+  border-color: var(--clay-300);
+  color: var(--clay-800);
+}
+
+.decision-hint {
+  flex: 1 1 18rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+
+/* notices: what just happened, said plainly */
+.notice {
+  padding: var(--space-3) var(--space-4);
+  margin-block: var(--space-3);
+  border-left: 3px solid var(--color-border-strong);
+  background: var(--color-surface-sunken);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.notice-ok {
+  border-left-color: var(--data-pine-500);
+}
+
+.notice-warn {
+  border-left-color: var(--clay-400);
+  background: var(--clay-50);
+  color: var(--clay-800);
+}
+
+.notice-error {
+  border-left-color: var(--color-accent-solid);
+  background: var(--clay-50);
+  color: var(--clay-900);
+}
+
+/* a file input is a button here; the real input stays out of the way */
+.file-button {
+  cursor: pointer;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* A sentence the engine could not certify, or one the flag says can change
+   the legal effect, says so in the ledger in the same red as the flag. The
+   note is the instruction; the chip is only the colour. */
+.ledger-detail .verify-note {
+  color: #641622;
+  border-left: 3px solid #7a1f2b;
+  padding-left: 0.6rem;
 }

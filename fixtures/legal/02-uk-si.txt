@@ -1,0 +1,43 @@
+The Public Lending (Notification) Regulations 2026
+
+Made 4th February 2026
+
+Coming into force 1st April 2026
+
+The Secretary of State, in exercise of the powers conferred by section 212 of the Financial Services and Markets Act 2000, makes the following Regulations.
+
+Citation, commencement and interpretation
+
+1.—(1) These Regulations may be cited as the Public Lending (Notification) Regulations 2026 and come into force on 1st April 2026.
+
+(2) In these Regulations, unless the context otherwise requires——
+"the Act" means the Financial Services and Markets Act 2000;
+"the Scheme" means the scheme established under regulation 4;
+"specified person" means a person specified in Schedule 1.
+
+Public lending to be notified
+
+2. A person to whom the Act applies shall not carry on the business of lending, or holding out as being ready to lend, money to the public in the United Kingdom unless the person has been notified by the Authority.
+
+(3) A person who contravenes paragraph (2) is guilty of an offence and liable on summary conviction to imprisonment for a term not exceeding six months or to a fine not exceeding level 5 on the standard scale, or both.
+
+Prescribed requirements
+
+3.—(1) The requirements prescribed for the purposes of section 192A(4) of the Act are those set out in Schedule 2.
+(2) The Authority may by written notice require a person to whom the Act applies to provide such additional information as the Authority considers necessary for the purpose of monitoring compliance with paragraph (1).
+
+Establishment of the Scheme
+
+4. The Authority may establish a scheme, to be known as the Public Lending Guarantee Scheme, for the purpose of guaranteeing the obligations of a person to whom the Act applies in respect of loans made to the public, provided that no such scheme shall be established without the consent of the Treasury.
+
+5.—(1) A guarantee under regulation 4 shall be limited to ninety per cent of the principal amount of the loan.
+(2) A guarantee under regulation 4 does not confer any right on the borrower to be indemnified against any loss that arises otherwise than from the insolvency of the lender.
+(3) Nothing in this regulation shall be construed as limiting the power of the Authority to recover from a person to whom the Act applies any amount paid out under a guarantee.
+
+Transitional provision
+
+6. A person who, on the commencement of these Regulations, is carrying on the business of lending to the public and who applies to the Authority within three months of that commencement shall be permitted to continue to do so until the Authority notifies its decision on the application.
+
+Revocation
+
+7. The Public Lending (Notification) Regulations 2024 are revoked.

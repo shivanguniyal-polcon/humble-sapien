@@ -1,0 +1,74 @@
+{
+  "generated": "2026-10-18",
+  "count": 4,
+  "items": [
+    {
+      "id": "cbmie0fvx3lxTFBSN0dsNHpMbGotc3M0aGdkY2k2dnA3TFdGTDA3T1M",
+      "title": "Cabinet approves continuation of the National Social Assistance Programme for five years from 2026-27 to 2030-31 - Press Information Bureau",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFBSN0dsNHpMbGotc3M0aGdkY2k2dnA3TFdGTDA3T1MxTWJqXzV1cW13WkdnYUxhRVR3Q3ByZ0lmOVVLZ21BOTdsOWpTMV85VmhINGplaThoRjlxUnh5ay1Vdll0ZHc3NjVWaHlwOEVHQU9iQUc5SzV2WTBCSQ?oc=5",
+      "source": "PIB (Govt of India)",
+      "kind": "government",
+      "published": "2026-10-14",
+      "fetched": "2026-10-18",
+      "summary": "The Union Cabinet approved continuing the National Social Assistance Programme (NSAP) for another five years, from 2026-27 to 2030-31.",
+      "domain": "Welfare & Social Security",
+      "explanation": "NSAP is the central government's scheme giving a small monthly pension to elderly, widowed and disabled people who have almost no other income. Extending it for five years keeps that safety net funded and, importantly, commits the money for half a decade rather than renewing it annually — which gives states and beneficiaries a predictable floor instead of a yearly question mark.",
+      "pit": {
+        "benefits": "Elderly people with little or no family support, widows, and persons with disabilities who qualify for the pension. These are among the poorest households in the country, and the money reaches them directly into a bank account.",
+        "pays": "The Union government through the central budget, with states sharing the architecture of identification and delivery. In practice this is the general taxpayer funding a targeted income floor for the bottom of the income distribution.",
+        "missing": "People who are eligible on paper but never receive it: the homeless elderly, those without an Aadhaar or bank link, migrants who cannot prove residence in a district, and widows whose marital status is hard to document. The scheme reaches only those the local machinery can enumerate — the unenumerated stay out, and NSAP's own numbers cannot see them."
+      }
+    },
+    {
+      "id": "cbmie0fvx3lxTFA4VVA3X1poWHNqNGZ1YXNjTHFxaHpUejZDU3R4ZVdwQ1B",
+      "title": "Research, Development and Innovation Fund Announces First Cohort of 19 Second Level Fund Managers - Press Information Bureau",
+      "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFA4VVA3X1poWHNqNGZ1YXNjTHFxaHpUejZDU3R4ZVdwQ1BzY2wzWUhMNmdsdHBJb3c3TU9vSmNDTW03bmowQmlLWmVhdHliTlBLaU4xbmhDbEtJTHpKTGdyWGE3NXh6cmRWc0VIM25fTUFDb0dzYm9wNXItbw?oc=5",
+      "source": "PIB (Govt of India)",
+      "kind": "government",
+      "published": "2026-10-12",
+      "fetched": "2026-10-18",
+      "summary": "The Research, Development and Innovation Fund announced its first cohort of 19 second level fund managers to channel investment into research and innovation.",
+      "domain": "Finance & Economy",
+      "explanation": "This is a public fund appointing professional fund managers to invest in Indian research and innovation. In plain terms: the government is pooling money and hiring specialists to decide which labs, startups and technologies get backed, rather than allocating grants department by department. Who those managers pick will quietly shape which kinds of research in India find money.",
+      "pit": {
+        "benefits": "Research institutions, deep-tech startups and innovators in the selected sectors stand to gain investment they would struggle to raise privately, because patient public capital is willing to fund early, risky work the market avoids.",
+        "pays": "Public money — the fund's capital comes from the government, so ultimately the taxpayer underwrites the risk of investments that may not pay off. If losses mount, that is a public loss carried quietly.",
+        "missing": "Researchers and institutions outside the networks that second level fund managers already know — smaller universities, regional colleges, individual scientists without institutional backing, and work in fields deemed uncommercial such as public health or basic science. Fund managers optimise for returns, so the hardest-to-monetise research is the first to be screened out."
+      }
+    },
+    {
+      "id": "foreign-contribution-regulation-amendment-rules-2026",
+      "title": "Foreign Contribution (Regulation) Amendment Rules, 2026",
+      "url": "https://prsindia.org/billtrack/foreign-contribution-regulation-amendment-rules-2026",
+      "source": "PRS (Bills)",
+      "kind": "legislative",
+      "published": null,
+      "fetched": "2026-10-18",
+      "summary": "PRS Legislative Research analysis of the 2026 amendment rules under the Foreign Contribution (Regulation) Act, which govern how foreign funds flow to Indian organisations.",
+      "domain": "Governance",
+      "explanation": "These rules set out how NGOs, associations and other organisations in India can receive money from abroad, and what they must report. Amending them changes the compliance burden and the boundaries of foreign funding — which for civil society groups is not a technical matter but a question of whether they can continue operating and advocating at all.",
+      "pit": {
+        "benefits": "The state gains greater oversight of cross-border money flowing into Indian organisations, which is the stated public purpose: reducing the risk of foreign influence on domestic politics and ensuring funds are not diverted.",
+        "pays": "Registered NGOs and civil society organisations carry the cost — in compliance staff, reporting time, legal fees and bank scrutiny. Smaller organisations feel a single new requirement as a proportionally larger burden than a large, well-resourced charity does.",
+        "missing": "Organisations that close or never register because the compliance load exceeds their capacity, and the communities those groups served — grassroots outfits working on land, labour, environment and minority issues are often the first to fold under paperwork, and the people they worked with disappear from the record without any decision ever being recorded against them."
+      }
+    },
+    {
+      "id": "ap-cabinet-clears-new-social-media-policy-content-creators-govt-schemes",
+      "title": "AP cabinet clears new social media policy to rope in content creators to publicise govt schemes - ThePrint",
+      "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxOWVpYWU1yd0NBOEJzSmFtWW9VUmxEMjFjZnNxaUE5VVg5NU92bDZHa0RrSXZLTlJCOXp1RnNtM2VNTC13RV9oT1VUWF9RWGRxamZNcVNMZ3NEQU1LQ1dXdzlsbV9KcTU1akZJcjMzWTlPZ19wUG1sUHM4MmdTdWZXdnRjeFphLUh6X1lwZUoyR2g5ZFBsUGUyc2dBMzc5VkNNRlMtaXVvZ3Ric2o1SjV3ejFRd1ptQjRqZy1jb1A0LTI1OWJUQldRN2xCMUh4QkJuVGFfM2ZsMGnSAd4BQVVfeXFMUHBQbDhoUDNkRUJHYUlnVzlEU0w3azdvUVAyNF8xQVlWellLdDhDY3ZWTU1NbkEzZnA3SGIyTl9Gbk9DQmJnNEFVcExpTnlxSjBsUDQzUU5Cd3gxOFEzZHpjeEF3Tm5HazdiR1pmLU1ReENqRUQ5RUVDWXdMZUY3VTZnV2xDVnFuSGxWUmZOeFhVOEE1bkVHb3A0S2c4WEd5SkxtODNZenIwN3l2RkpKald4V1o0SGRySkZ3eXk4dFpEczI1Ulc2eThDbEJ5cF9UbExiZlhXTEtFeXRob3l3?oc=5",
+      "source": "Google News",
+      "kind": "press",
+      "published": "2026-09-25",
+      "fetched": "2026-10-18",
+      "summary": "Andhra Pradesh's cabinet cleared a new social media policy that brings content creators on board to publicise government schemes.",
+      "domain": "Data & Technology",
+      "explanation": "The state is paying or formally engaging social media creators to promote its welfare schemes — turning government communication into influencer marketing. The idea is reach: young audiences who never read a press release will see a scheme explained by someone they follow. The trade is that public information now travels through creators whose incentive is engagement, not accuracy.",
+      "pit": {
+        "benefits": "The state government gains a cheaper, wider and younger communication channel than newspapers or official portals, and creators gain paid work promoting public schemes. Citizens who discover a scheme they were eligible for but never knew about are a real benefit too.",
+        "pays": "The state budget funds the creator payments, so the public pays for government promotion through advertising spend. There is also a subtler cost: public information budgets move from neutral official channels to paid endorsement.",
+        "missing": "People who do not use social media — largely the elderly, the very poor, and those in low-connectivity areas — are exactly the populations most dependent on welfare schemes, yet they are least reached by an influencer-led strategy. The scheme becomes most visible to those who least need it announced, and hardest to find for those who most do. There is also no obvious correction mechanism if a creator misstates eligibility."
+      }
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "manifestVersion": "ths-legal-fixtures-1.0.0",
+  "note": "Pinned by scripts/build-fixture-manifest.mjs. A change here means the engine changed; review the diff before accepting it.",
+  "fixtures": [
+    {
+      "file": "01-in-bare-act.txt",
+      "jurisdictionId": "in-bare-act",
+      "title": "Community Records Act, 2026 (fictional)",
+      "citation": "Act No. 00 of 2026, section N (as amended to date)",
+      "date": "2026-01-15",
+      "engine": "ths-legal-simplifier-1.0.0",
+      "dictionary": "in-bare-act@ths-statutory-1.0.0",
+      "rows": 17,
+      "flags": {
+        "green": 0,
+        "amber": 15,
+        "red": 2,
+        "total": 17
+      },
+      "confidence": {
+        "high": 0,
+        "medium": 6,
+        "low": 11,
+        "total": 17
+      },
+      "readability": {
+        "source": 12.6,
+        "rewrite": 8.9
+      },
+      "outputHash": "fe76f0873739adec76e4b49a2c27246131bf266f7f67fd21b527542044a7f53e",
+      "sourceHash": "sha256:6308f97c96dc3901bf56c3bfc217afde72c25ccf0c618e8d029ee7bcae467e93"
+    },
+    {
+      "file": "02-uk-si.txt",
+      "jurisdictionId": "uk-si",
+      "title": "Public Lending (Notification) Regulations 2026 (fictional)",
+      "citation": "SI 2026/114, regulation N",
+      "date": "2026-02-04",
+      "engine": "ths-legal-simplifier-1.0.0",
+      "dictionary": "uk-si@ths-statutory-1.0.0",
+      "rows": 29,
+      "flags": {
+        "green": 3,
+        "amber": 24,
+        "red": 2,
+        "total": 29
+      },
+      "confidence": {
+        "high": 6,
+        "medium": 2,
+        "low": 21,
+        "total": 29
+      },
+      "readability": {
+        "source": 13.3,
+        "rewrite": 9.5
+      },
+      "outputHash": "70a7467ed212bf4a6a64e87ed367740f153711c615f25a50bbf6ab89c3aaf6bf",
+      "sourceHash": "sha256:7c3a7d5423aea52727948bd0739622aa9c4a5189e9b53919f03c2ae374e6f1e2"
+    },
+    {
+      "file": "03-us-cfr.txt",
+      "jurisdictionId": "us-cfr",
+      "title": "Title 12 § 1026.35 (fictional)",
+      "citation": "CFR title 12, section 1026.35",
+      "date": "2025-11-30",
+      "engine": "ths-legal-simplifier-1.0.0",
+      "dictionary": "us-cfr@ths-statutory-1.0.0",
+      "rows": 21,
+      "flags": {
+        "green": 0,
+        "amber": 17,
+        "red": 4,
+        "total": 21
+      },
+      "confidence": {
+        "high": 1,
+        "medium": 7,
+        "low": 13,
+        "total": 21
+      },
+      "readability": {
+        "source": 14.4,
+        "rewrite": 11
+      },
+      "outputHash": "4a1a8da6d35d5a51bb408c0346e548d690f15d4f94a4b32e86efcf9558193640",
+      "sourceHash": "sha256:b2ea77ef1a1a1095393576a6a93d1bc2838c0c9e9987901b99a2bd75173ed28f"
+    },
+    {
+      "file": "04-eu-regulation.txt",
+      "jurisdictionId": "eu-regulation",
+      "title": "Regulation (EU) 2026/1140 (fictional)",
+      "citation": "Regulation (EU) 2026/1140, Article N",
+      "date": "2026-02-12",
+      "engine": "ths-legal-simplifier-1.0.0",
+      "dictionary": "eu-regulation@ths-statutory-1.0.0",
+      "rows": 31,
+      "flags": {
+        "green": 2,
+        "amber": 27,
+        "red": 2,
+        "total": 31
+      },
+      "confidence": {
+        "high": 5,
+        "medium": 10,
+        "low": 16,
+        "total": 31
+      },
+      "readability": {
+        "source": 16.7,
+        "rewrite": 11.5
+      },
+      "outputHash": "a615cfbc3e7ae74b09e96f99abaf533535a3bb7f5bd0ab5c17a883b605124d15",
+      "sourceHash": "sha256:be20f100eece6123a1f6adb0f0bb5b53ff034411ff9d3f9c9c0563dc0772215d"
+    },
+    {
+      "file": "05-sg-statute.txt",
+      "jurisdictionId": "sg-statute",
+      "title": "Community Facilities (Maintenance) Act 2026 (fictional)",
+      "citation": "2026 Rev Ed Act N, section N",
+      "date": "2026-03-02",
+      "engine": "ths-legal-simplifier-1.0.0",
+      "dictionary": "sg-statute@ths-statutory-1.0.0",
+      "rows": 27,
+      "flags": {
+        "green": 1,
+        "amber": 25,
+        "red": 1,
+        "total": 27
+      },
+      "confidence": {
+        "high": 0,
+        "medium": 8,
+        "low": 19,
+        "total": 27
+      },
+      "readability": {
+        "source": 13.4,
+        "rewrite": 9.8
+      },
+      "outputHash": "ba9dde066107d3de560846b05ece71c63967acf3a34876ab19503aaade8c287e",
+      "sourceHash": "sha256:bac1b93376e4c6222524a51b42eb9af5662bac7d0c871d42ac8d3d8609164d27"
+    }
+  ]
+}

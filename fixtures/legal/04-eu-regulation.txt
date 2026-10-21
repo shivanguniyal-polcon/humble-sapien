@@ -1,0 +1,60 @@
+Regulation (EU) 2026/1140 of the European Parliament and of the Council of 12 February 2026 on the transparency of automated decision-making in the administration of public funds.
+
+THE EUROPEAN PARLIAMENT AND THE COUNCIL OF THE EUROPEAN UNION,
+
+Having regard to the Treaty on the Functioning of the European Union, and in particular Article 16 thereof,
+
+Whereas the rules on public funds should be applied consistently across the Union,
+
+HAVE ADOPTED THIS REGULATION:
+
+CHAPTER I — GENERAL PROVISIONS
+
+Article 1
+
+Subject matter and scope
+
+1. This Regulation establishes the obligations of public authorities and of contractors acting on their behalf when an automated decision is used in the administration of public funds.
+
+2. This Regulation shall apply to the allocation, award, disbursement and recovery of public funds, and to the assessment of eligibility for any scheme of assistance funded from the budget of the Union or of a Member State.
+
+3. This Regulation shall not apply to decisions taken in the course of criminal proceedings, or to decisions for which the applicable Union or Member State law requires the processing of personal data to remain secret.
+
+Article 2
+
+Definitions
+
+For the purposes of this Regulation, the following definitions shall apply:
+(a) "automated decision" means a decision taken by an automated means, including by means of a machine learning system, which produces legal effects or otherwise significantly affects the rights or interests of a natural person;
+(b) "controller" means the public authority or contractor referred to in Article 1(1);
+(c) "meaningful information about the logic involved" means information on the criteria and procedures used in the decision, the weight assigned to each input and the treatment of the data that the applicant supplied.
+
+Article 3
+
+Obligations of controllers
+
+1. A controller shall ensure that an applicant is informed, in a concise, transparent, intelligible and easily accessible form, where an automated decision is used and the decision produces legal effects in respect of that applicant.
+
+2. A controller shall provide the applicant with meaningful information about the logic involved, the significance of the data used and the anticipated consequences of the decision, and shall do so within a period not exceeding fifteen days from the date of the request.
+
+3. Where the applicant contests the outcome of an automated decision, the controller shall ensure that the decision is reviewed by a person with the authority and competence to change it, and that the review is carried out without undue delay.
+
+4. The Commission is empowered to adopt delegated acts specifying the technical standards to be applied to the information referred to in paragraph 2. Such delegated acts shall not enter into force unless the European Parliament and the Council express no objection within a period of two months.
+
+Article 4
+
+Derogations
+
+Article 4 does not apply to the extent that processing is necessary for the protection of the public interest, and where the decision is made under Union or Member State law which provides for the exclusion of the right to information, subject to the conditions of that law.
+
+Article 5
+
+Entry into force
+
+This Regulation shall enter into force on the twentieth day following that of its publication in the Official Journal of the European Union.
+
+Article 6
+
+Addressees
+
+This Regulation shall be binding in its entirety and directly applicable in all Member States.

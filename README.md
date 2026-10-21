@@ -25,6 +25,10 @@ Run by the learners of today, for the leaders of tomorrow.
   funds the rest.
 - **Field notes** — the thinking behind the venture.
 
+## Live site
+
+**https://humble-sapien.vercel.app/**
+
 ## Development
 
 ```bash

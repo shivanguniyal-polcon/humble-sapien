@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="800" viewBox="0 0 1180 800" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif">
+<text x="48" y="52" font-size="25" font-weight="700" fill="#1f2937" text-anchor="start" opacity="1">India sits in its own corner: harder to read, closer to Northern wording</text>
+<text x="48" y="78" font-size="14.5" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Flesch Reading Ease against the gap in cosine similarity to the Global North and Global South corpora. Each point is one instrument.</text>
+<rect x="96" y="389.44" width="232.65" height="280.56" fill="#fbf7f2" stroke="none" stroke-width="1" opacity="1" rx="0"/>
+<rect x="328.65" y="389.44" width="791.35" height="280.56" fill="#f7f3f7" stroke="none" stroke-width="1" opacity="1" rx="0"/>
+<line x1="96" y1="128" x2="96" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="96" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">0</text>
+<line x1="275.65" y1="128" x2="275.65" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="275.65" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">10</text>
+<line x1="455.3" y1="128" x2="455.3" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="455.3" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">20</text>
+<line x1="634.95" y1="128" x2="634.95" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="634.95" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">30</text>
+<line x1="814.6" y1="128" x2="814.6" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="814.6" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">40</text>
+<line x1="994.25" y1="128" x2="994.25" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="994.25" y="694" font-size="11" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">50</text>
+<line x1="96" y1="670" x2="1120" y2="670" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="674" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">-0.36</text>
+<line x1="96" y1="579.67" x2="1120" y2="579.67" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="583.67" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">-0.25</text>
+<line x1="96" y1="489.33" x2="1120" y2="489.33" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="493.33" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">-0.13</text>
+<line x1="96" y1="399" x2="1120" y2="399" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="403" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">-0.02</text>
+<line x1="96" y1="308.67" x2="1120" y2="308.67" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="312.67" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">0.09</text>
+<line x1="96" y1="218.33" x2="1120" y2="218.33" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="222.33" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">0.21</text>
+<line x1="96" y1="128" x2="1120" y2="128" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="84" y="132" font-size="11" font-weight="400" fill="#6b7280" text-anchor="end" opacity="1">0.32</text>
+<line x1="328.65" y1="128" x2="328.65" y2="670" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 4" opacity="1" stroke-linecap="butt"/>
+<line x1="96" y1="389.44" x2="1120" y2="389.44" stroke="#9ca3af" stroke-width="1" stroke-dasharray="4 4" opacity="1" stroke-linecap="butt"/>
+<text x="608" y="720" font-size="12" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1">Flesch Reading Ease  →  easier to read</text>
+<text x="44" y="399" font-size="12" font-weight="400" fill="#6b7280" text-anchor="middle" opacity="1" style="transform: rotate(-90);">Similarity to the North minus similarity to the South  →</text>
+<text x="336.65" y="146" font-size="11.5" font-weight="400" fill="#6b7280" text-anchor="start" opacity="0.9">closer to the North</text>
+<text x="320.65" y="658" font-size="11.5" font-weight="400" fill="#6b7280" text-anchor="end" opacity="0.9">closer to the South</text>
+<circle cx="356.49" cy="379.07" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="356.49" cy="379.07" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="370.49" y="367.07" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">DPDP Act, 2023</text>
+<circle cx="401.4" cy="399.8" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="401.4" cy="399.8" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="415.4" y="387.8" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">DPDP Rules, 2025</text>
+<circle cx="227.14" cy="357.55" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="227.14" cy="357.55" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="241.14" y="379.55" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">IT Act, 2000</text>
+<circle cx="460.69" cy="442.04" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="460.69" cy="442.04" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="474.69" y="430.04" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">NITI Aayog RAI, 2021</text>
+<circle cx="291.82" cy="470.74" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="291.82" cy="470.74" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="305.82" y="492.74" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">AI Governance Guidelines, 2025</text>
+<circle cx="261.28" cy="434.87" r="8" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<circle cx="261.28" cy="434.87" r="12" fill="none" stroke="#b21f24" stroke-width="1.5" opacity="0.35"/>
+<text x="275.28" y="456.87" font-size="12.5" font-weight="700" fill="#b21f24" text-anchor="start" opacity="1">IndiaAI Mission, 2024</text>
+<circle cx="471.47" cy="265.89" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="485.47" y="257.89" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">US AI Action Plan, 2025</text>
+<circle cx="340.32" cy="151.91" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="354.32" y="143.91" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">US EO 14179, 2025</text>
+<circle cx="383.44" cy="253.14" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="397.44" y="245.14" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">NIST AI RMF, 2023</text>
+<circle cx="1048.14" cy="161.48" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="1062.14" y="153.48" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">UK AI policy proposals, 2023</text>
+<circle cx="96" cy="211.69" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="110" y="203.69" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Japan AI Promotion Act, 2025</text>
+<circle cx="96" cy="210.1" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="110" y="202.1" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Canada C-27, 2022</text>
+<circle cx="496.62" cy="334.44" r="5.5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="510.62" y="326.44" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Singapore MGF, 2020</text>
+<circle cx="297.21" cy="637.32" r="5.5" fill="#d98213" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="311.21" y="629.32" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">South Africa AI Policy, 2026</text>
+<circle cx="460.69" cy="520.95" r="5.5" fill="#d98213" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="474.69" y="512.95" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">ASEAN AI Guide, 2024</text>
+<circle cx="316.97" cy="650.87" r="5.5" fill="#d98213" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="330.97" y="642.87" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">AU AI Strategy, 2024</text>
+<circle cx="246.91" cy="651.67" r="5.5" fill="#d98213" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="260.91" y="643.67" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Nigeria AI Strategy, 2025</text>
+<circle cx="96" cy="501.02" r="5.5" fill="#d98213" stroke="none" stroke-width="1" opacity="0.85"/>
+<text x="110" y="493.02" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Kenya DPA, 2019</text>
+<circle cx="53" cy="700" r="5" fill="#b21f24" stroke="none" stroke-width="1" opacity="1"/>
+<text x="64" y="704" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">India</text>
+<circle cx="114" cy="700" r="5" fill="#1c4e80" stroke="none" stroke-width="1" opacity="1"/>
+<text x="125" y="704" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Global North</text>
+<circle cx="221.2" cy="700" r="5" fill="#d98213" stroke="none" stroke-width="1" opacity="1"/>
+<text x="232.2" y="704" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Global South</text>
+<text x="339.4" y="704" font-size="12" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">median Flesch 13 · median gap -0.01</text>
+<line x1="48" y1="746" x2="1132" y2="746" stroke="#e5e7eb" stroke-width="1" opacity="1" stroke-linecap="butt"/>
+<text x="48" y="768" font-size="11.5" font-weight="400" fill="#6b7280" text-anchor="start" opacity="1">Source: Data Point analysis. Cosine similarity over TF-IDF vectors of sampled provisions; centroids by region.</text>
+<text x="48" y="786" font-size="11" font-weight="400" fill="#6b7280" text-anchor="start" opacity="0.85">A point on the right is easier to read; a point above the dashed line is closer in wording to the Global North corpus.</text>
+</svg>

@@ -1,0 +1,16 @@
+§ 1026.35 Higher-priced mortgage loans.
+
+(a) Definitions. For purposes of this section:
+(1) "Covered institution" means any depository institution or Federal credit union that is subject to the requirements of this part.
+(2) "Higher-priced mortgage loan" means a mortgage loan secured by a dwelling that is made to a consumer if the annual percentage interest rate exceeds the greater of—
+(i) The average of the annual percentage interest rate for all mortgage loans for which the applicant obtained a mortgage loan from a covered institution in the ninety calendar days prior to the date the loan was made; or
+(ii) The average of the annual percentage interest rate for all mortgage loans the applicant obtained in the ninety calendar days prior to the date the loan was made.
+(3) "Qualifying ratio" means the ratio of total monthly debt payments, including the monthly payment on the new mortgage loan, to the consumer's monthly gross income.
+
+(b) Prohibited acts. A covered institution shall not— (1) Advertise or otherwise make available a higher-priced mortgage loan; (2) Make a higher-priced mortgage loan unless the consumer's qualifying ratio is less than or equal to 43 percent; (3) Make a higher-priced mortgage loan on the basis of the age of the borrower.
+
+(c) Exclusions. This section does not apply to— (1) A loan secured by a dwelling that is made to a consumer where the consumer's repayment obligation is secured by a guarantee from a governmental agency; (2) A loan that is made to a consumer on the basis of an equity line of credit secured by the dwelling; (3) A loan that is made to a consumer and is insured by the Federal Housing Administration.
+
+(d) Exemption for certain loans. Notwithstanding the provisions of paragraph (b), a covered institution shall not be subject to the requirements of that paragraph with respect to a mortgage loan if the covered institution has documented that it has made a reasonable, good faith determination that the consumer is able to repay the loan.
+
+(e) Violations. A covered institution that violates this section is subject to a penalty of not more than the amount provided under section 8 of this part for each day that the violation continues.

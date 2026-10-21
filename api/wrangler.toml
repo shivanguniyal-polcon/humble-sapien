@@ -1,0 +1,27 @@
+# The Legal Simplifier API.
+#
+# Stateless and binding-free: the engine is a pure function of the request, so
+# there is no database, no bucket and no secret to provision. Deploy with:
+#
+#     wrangler deploy -c api/wrangler.toml
+#
+# Paths are relative to this file, so `worker.js` is the handler in this
+# directory. The site is a separate surface and deploys separately — this
+# config does not touch it.
+
+name = "ths-legal-simplifier-api"
+main = "worker.js"
+compatibility_date = "2026-10-21"
+
+# The engine is pure JavaScript with no Node built-ins in the request path:
+# `src/battery/hash.js` prefers `globalThis.crypto.subtle` and only falls back
+# to `node:crypto` when the platform has no Web Crypto. Workers have Web
+# Crypto, so the fallback never runs there.
+workers_dev = true
+
+[observability]
+enabled = true
+
+# No routes, no bindings, no secrets. Add an auth layer only if a paid tier
+# ever needs one — the free tier is unconditional and unauthenticated by
+# design, and the site publishes that promise.

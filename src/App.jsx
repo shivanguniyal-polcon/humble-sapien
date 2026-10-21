@@ -216,10 +216,11 @@ export default function App() {
       <footer className="site-footer">
         <div className="shell">
           <p>
-            <strong>THS: The Humble Sapien.</strong> A public interest
-            technology initiative working toward registration as a
-            not-for-profit civil society organisation. Evidence with
-            receipts, tools in the open, data you can take apart.
+            <strong>THS: The Humble Sapien.</strong> A mission-locked public
+            interest technology company: a perpetual free tier for individuals
+            and small civil society organisations, paid for by the institutions
+            that can afford to pay. Evidence with receipts, tools in the open,
+            data you can take apart.
           </p>
           <p style={{ marginBottom: 0 }}>
             Datasets on this site are sourced to public releases; analysis runs

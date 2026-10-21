@@ -13,7 +13,7 @@ const TIERS = [
     name: 'Citizens and civil society',
     price: 'Free, permanently',
     priceNote: 'No account, no card, no expiry, no watermark.',
-    who: 'Individuals, students, community groups, registered non-profits, trade unions, journalists, panchayat and ward offices, public-interest litigants, classrooms, and anyone answering an RTI or sitting in a public hearing.',
+    who: 'Individuals, students, community groups, small non-profits (annual budget up to ₹1 crore, self-declared), trade unions, journalists, panchayat and ward offices, public-interest litigants, classrooms, and anyone answering an RTI or sitting in a public hearing.',
     what: [
       'Every module: decision tree, cost-benefit analysis, multi-criteria ranking, scenario runs.',
       'Unlimited runs on your own data, with the full audit manifest in every report.',
@@ -24,11 +24,11 @@ const TIERS = [
   {
     id: 'public',
     name: 'Public sector and academia',
-    price: 'Free when published in the open; at cost otherwise',
-    priceNote: 'A support agreement covers unpublished internal use, training and integration. Rate card on request.',
-    who: 'Government departments, public hospitals, panchayati raj institutions, regulators, legislatures, public universities and research institutions.',
+    price: 'At cost, for every use',
+    priceNote: 'A support agreement covers internal use, training and integration. Rate card below.',
+    who: 'Government departments, public hospitals, panchayati raj institutions, regulators, legislatures, public universities and research institutions. Large non-profits (annual budget above ₹1 crore) sit here too.',
     what: [
-      'Analysis published in the open stays free: publish the report and the manifest with it.',
+      'At-cost banding by training and implementation days. This is a pricing choice inside the paying layer, not a free concession.',
       'Support agreements add training sessions, custom module development, and help wiring the engine into internal workflows.',
       'Procurement-friendly: written rate card, tax invoice, no lock-in. The engine keeps working if the agreement lapses.',
     ],
@@ -103,12 +103,12 @@ const LEGAL_RATE_CARD = [
     id: 'support',
     name: 'Public sector and academia',
     basis: 'per year, at cost',
-    who: 'Government departments, regulators, public universities, legal-aid clinics. Published-in-the-open analysis stays free; this covers internal use, training and integration.',
+    who: 'Government departments, regulators, public universities, legal-aid clinics, and non-profits above the ₹1 crore small-CSO line. Only individuals and small CSOs pay nothing; everyone else is in the paying layer, and at-cost banding is how this tier is priced within it.',
     lines: [
       { line: 'Support agreement, banded by training days', price: 'USD 10,000 – 40,000' },
       { line: 'Training / implementation day', price: 'USD 400 – 600' },
     ],
-    includes: 'Training sessions. Help wiring the engine into an internal workflow. A procurement pack: engine description, reproducibility terms, rate card, no-lock-in statement. A named contact.',
+    includes: 'Training sessions. Help wiring the engine into an internal workflow. A procurement pack: engine description, reproducibility terms, rate card, no-lock-in statement. A named contact. Publishing your output in the open is encouraged and credited, but it does not make the run free.',
     excludes: 'Custom module development (commissioned development, below), findings, a legal opinion, procurement compliance certification.',
   },
   {
@@ -170,7 +170,7 @@ function LegalOrderForm() {
         Fill in what you can and send it. There is no account, no card and no
         checkout: the form builds a structured order request, and the licence
         is granted on our reply with an invoice. For a single self-serve seat,
-        the fastest route is the payment link below.
+        the faster route is the payment link above.
       </p>
       <div className="meta-grid">
         <div className="control">
@@ -305,6 +305,25 @@ export default function Licensing({ onNavigate }) {
           interest gate that will not release a report until the three
           questions are answered. What money buys is rights, support and
           engineering time. It never buys a different answer.
+        </p>
+      </div>
+
+      <div className="card" style={{ marginTop: '1.5rem' }}>
+        <h3>Changelog</h3>
+        <p className="fine-print">
+          <strong>21 October 2026 — the free tier is narrowed to individuals and
+          small CSOs.</strong> Two earlier promises are superseded and the change
+          is published rather than quietly edited. First, the public-sector
+          concession "free when published in the open" is withdrawn: government,
+          academia and large non-profits now pay, and at-cost banding is a
+          pricing choice inside that paying layer rather than a free one.
+          Second, "registered non-profits" in the free tier is now "small
+          non-profits", defined as an annual budget up to ₹1 crore,
+          self-declared. Everything else is unchanged: the engine is still
+          identical across tiers, the free tier is still unconditional for the
+          people who keep it, and no rights already granted have been taken
+          back. The decision and its reasoning are filed in{' '}
+          <code>decisions/2026-10-21-entity-structure.md</code>.
         </p>
       </div>
 

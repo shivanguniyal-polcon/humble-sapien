@@ -6,7 +6,7 @@ export default function About({ onNavigate }) {
     <section>
       <div className="section-head">
         <span className="overline">About THS</span>
-        <h2>Working toward a not-for-profit for public interest technology, in every policy</h2>
+        <h2>Mission-locked, for the public: a free tier that cannot be taken back</h2>
         <p className="section-strap">
           The Humble Sapien (THS) works the way organisations like Upturn work on
           technology policy: close to the systems that shape people&apos;s
@@ -60,11 +60,13 @@ export default function About({ onNavigate }) {
           <article className="card">
             <h3>The model</h3>
             <p>
-              THS is working toward registration as a not-for-profit civil
-              society organisation. Grant and donor funding carries research and advocacy; earned
-              revenue from the THS Data Commons Plus tier and future data
-              products is mission-locked: it funds free public tools and field
-              work rather than distribution.
+              THS is a private limited company with the mission locked into
+              contract rather than into a corporate form. Every published
+              engine version ships under a perpetual public licence granting
+              free use to individuals and small civil society organisations, so
+              a future board — or an acquirer — cannot reach back and take it
+              away. Earned revenue from the paid tiers is mission-locked too:
+              it funds free public tools and field work rather than distribution.
             </p>
             <p style={{ marginBottom: 0 }}>
               Raising funds is a means to independence, not a departure from it:

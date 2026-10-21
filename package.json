@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-legal-review.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs",
+    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs",
+    "test:api": "node scripts/test-api.mjs",
+    "api": "wrangler dev -c api/wrangler.toml",
     "preview": "vite preview"
   },
   "dependencies": {

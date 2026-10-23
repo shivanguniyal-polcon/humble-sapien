@@ -68,16 +68,16 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Description:** `src/App.jsx` eagerly imports eleven sections and `src/sections/Work.jsx` eagerly imports the eight tool sections behind them, so the landing page ships the legal engine, all eleven battery modules, the econometrics library and 200 kB of datasets in one 1,018 kB chunk. `Compare.jsx` and `Touchpoints.jsx` already `lazy()` their heavy map components correctly; extend the same pattern to the section level, keeping the shell eager.
 
 **Acceptance criteria:**
-- [ ] Every section in `src/sections/` is loaded through `React.lazy` + `Suspense`; the shell (nav, footer, logo, sheet) stays eager.
-- [ ] The main chunk falls below 500 kB (from 1,018 kB) and the landing page's first load no longer includes the battery modules, the legal engine or `sectors.js`.
-- [ ] A `Suspense` fallback is present that does not shift layout, and honours `prefers-reduced-motion`.
-- [ ] Every route in the nav and every deep link in the site still resolves.
+- [x] Every section in `src/sections/` is loaded through `React.lazy` + `Suspense`; the shell (nav, footer, logo, sheet) stays eager. (Home stays eager too — it is the first screen, not a route behind the nav; it keeps first paint free of a loading step.)
+- [x] The main chunk falls below 500 kB (from 1,018 kB) and the landing page's first load no longer includes the battery modules, the legal engine or `sectors.js`. — 312.56 kB; sectors' 92 kB of atlas content moved to the Compare chunk by `src/data/sectorNav.js`, with a drift guard in `scripts/test-atlas.mjs`; legal markers (`ths-audit-1.0.0`, glossary literals) live only in the Simplifier chunk.
+- [x] A `Suspense` fallback is present that does not shift layout, and honours `prefers-reduced-motion`. (The fallback is static text with fixed padding and no animation, so there is no motion to reduce.)
+- [x] Every route in the nav and every deep link in the site still resolves. — 26 hash routes walked on the built bundle, plus `#/data/pmjay`, `#/tools/battery`, `#/tools/lab`, `#/atlas/climate`; zero console or runtime errors.
 
 **Verification:**
-- [ ] Build succeeds: `npm run build` — record the new main-chunk size in the commit message
-- [ ] Tests pass: `npm test`
-- [ ] Manual check: load the landing page, then visit all eleven nav routes plus `#/data/pmjay`, `#/tools/battery` and `#/tools/lab`; each renders without a console error
-- [ ] Manual check: the Network panel shows the landing page does not fetch the battery or legal chunks
+- [x] Build succeeds: `npm run build` — record the new main-chunk size in the commit message (312.56 kB, gzip 99 kB)
+- [x] Tests pass: `npm test` — exit 0, 5,597 PASS assertions
+- [x] Manual check: load the landing page, then visit all eleven nav routes plus `#/data/pmjay`, `#/tools/battery` and `#/tools/lab`; each renders without a console error
+- [x] Manual check: the Network panel shows the landing page does not fetch the battery or legal chunks — a fresh landing load fetched only document, CSS, fonts and `index-*.js`
 
 **Dependencies:** None
 
@@ -91,11 +91,11 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 ---
 
 ### Checkpoint: Foundation
-- [ ] `npm test` passes (11 suites, exit 0)
-- [ ] `npm run build` succeeds
-- [ ] Main bundle size drops below 500 kB (from 1,018 kB)
-- [ ] The simplifier's obligation list is typed; the legal review shows an in-scope verdict
-- [ ] Human review before proceeding
+- [x] `npm test` passes (11 suites, exit 0) — evidence: exit 0, 5,597 PASS assertions (2026-10-23)
+- [x] `npm run build` succeeds — evidence: exit 0
+- [x] Main bundle size drops below 500 kB (from 1,018 kB) — evidence: 312.56 kB minified (gzip 99 kB)
+- [x] The simplifier's obligation list is typed; the legal review shows an in-scope verdict — evidence: worklog Entries for Tasks 1–2
+- [ ] Human review before proceeding (Founder)
 
 ---
 

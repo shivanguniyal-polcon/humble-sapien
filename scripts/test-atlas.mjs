@@ -8,6 +8,7 @@
 // Run: node scripts/test-atlas.mjs
 
 import { sectors, PIT_ROWS } from '../src/data/sectors.js';
+import { SECTOR_NAV } from '../src/data/sectorNav.js';
 import {
   JURISDICTION_ISO,
   sectorIsoCodes,
@@ -33,6 +34,15 @@ ok('three policies a side in every sector',
   sectors.every((s) => s.north.length === 3 && s.south.length === 3),
   sectors.map((s) => `${s.north.length}/${s.south.length}`).join(' '));
 ok('ninety policies in all', allPolicies.length === 90, `${allPolicies.length}`);
+
+// 1b. sectorNav.js is the copy the landing page's nav dropdown reads, so it
+//     must be the same fifteen ids and labels as the atlas itself. If a
+//     sector is renamed in only one place, this fails rather than leaving a
+//     dead nav item behind.
+ok('sectorNav matches sectors.js',
+  JSON.stringify(SECTOR_NAV) ===
+    JSON.stringify(sectors.map((s) => ({ id: s.id, label: s.label }))),
+  `${SECTOR_NAV.length} nav entries vs ${sectors.length} sectors`);
 
 // 2. Every policy carries the three PIT answers, and none is empty.
 const PIT_KEYS = PIT_ROWS.map(([key]) => key);

@@ -47,14 +47,14 @@ Route-level code splitting (App.jsx, Work.jsx) ── prerequisite for every
 
 - [ ] **Task 1: Replace the keyword obligation grep with the real classifier**
 - [ ] **Task 2: Wire the applicability filter into the legal review**
-- [ ] **Task 3: Route-level code splitting for every section**
+- [x] **Task 3: Route-level code splitting for every section**
 
 ### Checkpoint: Foundation
-- [ ] `npm test` passes (11 suites, exit 0)
-- [ ] `npm run build` succeeds
-- [ ] Main bundle size drops below 500 kB (from 1,018 kB)
-- [ ] The simplifier's obligation list is typed; the legal review shows an in-scope verdict
-- [ ] Human review before proceeding
+- [x] `npm test` passes (11 suites, exit 0) — evidence: exit 0, 5,597 PASS assertions (2026-10-23)
+- [x] `npm run build` succeeds — evidence: exit 0
+- [x] Main bundle size drops below 500 kB (from 1,018 kB) — evidence: 312.56 kB minified (gzip 99 kB); landing first load fetches only the index chunk — battery, legal and atlas chunks all behind routes
+- [x] The simplifier's obligation list is typed; the legal review shows an in-scope verdict — evidence: worklog Entries for Tasks 1–2 (`classifyObligation` types every line; `assessApplicability` verdict chip per row)
+- [ ] Human review before proceeding (Founder)
 
 ### Phase 2: The proposition layer — the simplifier's missing centre
 

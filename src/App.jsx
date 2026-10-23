@@ -4,7 +4,7 @@ import PitAssistant from './components/PitAssistant';
 import Logo from './components/Logo';
 import { TOOLS } from './data/tools';
 import { PUB_TYPES } from './data/publications';
-import { sectors } from './data/sectors';
+import { SECTOR_NAV } from './data/sectorNav';
 
 // Every section behind the nav is its own chunk. The shell — header, nav,
 // footer, assistant — and Home, the front door, stay eager so the first paint
@@ -65,7 +65,9 @@ const TABS = [
   {
     id: 'compare',
     label: 'Atlas',
-    children: sectors.map((s) => ({ id: s.id, label: s.label })),
+    // Nav metadata only — the atlas content (sectors.js, ~92 kB) loads with
+    // the Compare chunk, not with the landing page.
+    children: SECTOR_NAV.map((s) => ({ id: s.id, label: s.label })),
   },
   // Writing and Newsletter are read in one sitting, so they open the page
   // and let the page do the choosing. No dropdown.

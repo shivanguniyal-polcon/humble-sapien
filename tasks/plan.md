@@ -58,7 +58,7 @@ Route-level code splitting (App.jsx, Work.jsx) ── prerequisite for every
 
 ### Phase 2: The proposition layer — the simplifier's missing centre
 
-- [ ] **Task 4: Specify the proposition schema and write the design note**
+- [x] **Task 4: Specify the proposition schema and write the design note** — note: `private/proposition-schema-design.md`; verification gates (human review, Task 5 field cross-check) remain open
 - [ ] **Task 5: Build the proposition extractor**
 - [ ] **Task 6: Build the proposition renderer**
 - [ ] **Task 7: Shadow mode — run both engines and measure agreement**

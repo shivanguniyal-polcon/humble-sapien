@@ -104,10 +104,10 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Description:** Before writing code, fix the shape of the meaning layer: what a segment becomes, which fields exist, which are required, how a field is read from source text, and what a renderer may and may not do with it. The schema is the contract that Tasks 5–9 all depend on, so it is written down and agreed first.
 
 **Acceptance criteria:**
-- [ ] A design note in `private/` defines the proposition: field list, required vs. optional, per-field reading rules, and the canonical frame per obligation type.
-- [ ] The note states explicitly what the renderer may not do — no invention of actors, no added conditions, no dropped negations, no silently dropped numbers.
-- [ ] The note names the fields that a sentence without a rule hit must still fill, and the minimum viable subset if the extractor cannot.
-- [ ] The note specifies the shadow-mode agreement metric and who signs off on the threshold for switching the citizen panel.
+- [x] A design note in `private/` defines the proposition: field list, required vs. optional, per-field reading rules, and the canonical frame per obligation type. — `private/proposition-schema-design.md` (11 fields; actor/action/obligationType required, eight declared per kind; frame table for all 10 kinds)
+- [x] The note states explicitly what the renderer may not do — no invention of actors, no added conditions, no dropped negations, no silently dropped numbers. — note section "What the renderer may not do", each with a named machine check for shadow mode
+- [x] The note names the fields that a sentence without a rule hit must still fill, and the minimum viable subset if the extractor cannot. — kind `statement`; subset: id, sourceId, sourceText, obligationType, actor (fallback legal), predicate (verbatim span)
+- [x] The note specifies the shadow-mode agreement metric and who signs off on the threshold for switching the citizen panel. — per-sentence 4-check agreement, ≥ 95% + zero critical violations + ≥ 18/20 human review; sign-off: founder (Shivang Uniyal)
 
 **Verification:**
 - [ ] Reviewed by a human before Task 5 starts

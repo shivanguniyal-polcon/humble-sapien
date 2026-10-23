@@ -152,15 +152,15 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Description:** `src/lib/legal/render.js` takes a proposition and emits plain-language text using a canonical frame per obligation type — "The Central Government may…", "Every beneficiary must…", "You can apply if…". The dictionary moves down a layer: it becomes the vocabulary the renderer uses inside a frame, not the transformation itself.
 
 **Acceptance criteria:**
-- [ ] `render(proposition, { jurisdiction })` returns plain text plus the list of dictionary substitutions it used.
-- [ ] The renderer emits a frame per obligation type and never emits a frame for a proposition whose type it does not recognise — it returns the source text and marks the sentence unresolved.
-- [ ] Every number, date, threshold and negation present in the proposition appears in the output.
-- [ ] The renderer cannot introduce a condition that is not in the proposition.
+- [x] `render(proposition, { jurisdiction })` returns plain text plus the list of dictionary substitutions it used. — returns `{ plain, frame, substitutions, unresolved, dictionaryVersion }`; the substitutions are `applyDictionary`'s rule hits, each with `from`, `to`, risk and note
+- [x] The renderer emits a frame per obligation type and never emits a frame for a proposition whose type it does not recognise — it returns the source text and marks the sentence unresolved. — frame table for all 10 kinds in `render.js`; an unknown `obligationType` returns `sourceText` with `unresolved: true`; `statement` keeps its own words (no dictionary, no rewording)
+- [x] Every number, date, threshold and negation present in the proposition appears in the output. — force derives from the kind (a prohibition renders "must not"); tail clauses append whenever their words are not already in the frame, so a threshold inside the act is never dropped or doubled; per-kind number- and negation-preservation cases in the render suite
+- [x] The renderer cannot introduce a condition that is not in the proposition. — tail clauses come only from the proposition's own `condition`/`exception`/`consequence`/`authority` slots; a condition-free duty renders no condition connective (tested)
 
 **Verification:**
-- [ ] Tests pass: `scripts/test-proposition.mjs` extended with a render suite, including a number-preservation and negation-preservation case per obligation type
-- [ ] Build succeeds: `npm run build`
-- [ ] Manual check: render the built-in sample; each obligation reads as one sentence a non-lawyer can act on
+- [x] Tests pass: `scripts/test-proposition.mjs` extended with a render suite, including a number-preservation and negation-preservation case per obligation type — all 10 kinds covered (method hand-built: its patterns never co-occur with a duty trigger, so `typeProposition` cannot reach that kind); full `npm test` 5,769 PASS / 0 FAIL
+- [x] Build succeeds: `npm run build` ✓
+- [x] Manual check: render the built-in sample; each obligation reads as one sentence a non-lawyer can act on — both sample sentences render as one clean sentence with their substitutions listed; findings recorded in `private/worklog.md` (embedded-clause force typing, dictionary rules spanning the subject/force boundary)
 
 **Dependencies:** Task 5
 

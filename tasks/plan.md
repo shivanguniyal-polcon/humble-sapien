@@ -60,7 +60,7 @@ Route-level code splitting (App.jsx, Work.jsx) ── prerequisite for every
 
 - [x] **Task 4: Specify the proposition schema and write the design note** — note: `private/proposition-schema-design.md` (v2, founder review folded in: 6-check shadow metric, pinned corpus manifest, stratified human review); verification gates (founder review, Task 5 field cross-check) remain open
 - [x] **Task 5: Build the proposition extractor** — `propositions.js` extended to the v2 schema (`propose()` entry point; action/object split, qualifier, threshold, authority, consequence, `unreadable[]`, `schemaVersion`); `scripts/test-proposition.mjs` green and in `npm test`; manual check over `LEGAL_SAMPLE_TEXT` traced every slot to a source span
-- [ ] **Task 6: Build the proposition renderer**
+- [x] **Task 6: Build the proposition renderer** — `src/lib/legal/render.js`: canonical frame per kind with force derived from the kind, the dictionary as vocabulary inside the frame (substitutions reported), source fallback + `unresolved` for unknown kinds, number/negation/condition conservation; render suite in `test-proposition.mjs` green
 - [ ] **Task 7: Shadow mode — run both engines and measure agreement**
 - [ ] **Task 8: Switch the citizen panel to the rendered proposition**
 - [ ] **Task 9: Rewire risk, confidence and Hindi onto the proposition**

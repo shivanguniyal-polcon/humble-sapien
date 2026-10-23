@@ -1,13 +1,16 @@
-// Verification for the proposition extractor (Task 5), against the schema
-// contract in private/proposition-schema-design.md (v2): every field of the
-// schema, the absent-value rule (scalars null, arrays []), the per-field
-// reading rules, span traceability, the unreadable record, and determinism.
+// Verification for the proposition extractor (Task 5) and the proposition
+// renderer (Task 6), against the schema contract in
+// private/proposition-schema-design.md (v2): every field of the schema, the
+// absent-value rule (scalars null, arrays []), the per-field reading rules,
+// span traceability, the unreadable record, determinism, and the renderer's
+// frames with number- and negation-preservation per obligation type.
 // Run: node scripts/test-proposition.mjs
 
 import {
   propose, extractPropositions, PROPOSITION_SCHEMA_VERSION,
 } from '../src/lib/legal/propositions.js';
 import { classifyObligation } from '../src/lib/legal/obligations.js';
+import { render } from '../src/lib/legal/render.js';
 
 let failures = 0;
 function ok(name, cond, detail = '') {
@@ -245,6 +248,115 @@ const traced = (p, value) => norm(p.sourceText).includes(norm(value));
   const withOpts = propose(seg, { jurisdiction: 'in', definitions: [] });
   ok('jurisdiction and definitions are accepted', JSON.stringify(withOpts) === JSON.stringify(p));
   ok('a bare sentence gets a full-length span', propose('The Bank shall appoint the auditors.').source.end === 'The Bank shall appoint the auditors.'.length);
+}
+
+// ---------------------------------------------------------------------------
+// 14. Render suite (Task 6): render.js turns a proposition into one plain
+//    sentence in the canonical frame. Per obligation type: the frame shape,
+//    number preservation and negation preservation.
+
+const digitTokens = (s) => String(s || '').match(/\d[\d,]*(?:\.\d+)?/g) || [];
+const NEG_CUE = /\b(?:\w+ not|no \w+|never|without|cannot)\b/i;
+
+// A method proposition is built by hand: the method patterns never sit next
+// to a duty trigger, so typeProposition cannot currently reach that kind.
+// Task 6 owns the frame, so the frame is what is tested here.
+const methodProp = {
+  id: 'p-m', sourceId: 0, source: { start: 0, end: 86, text: 'The net book value is to be calculated on the basis of the book value of 100 rupees.' },
+  sourceText: 'The net book value is to be calculated on the basis of the book value of 100 rupees.',
+  clause: null, rewrite: '', split: false, schemaVersion: PROPOSITION_SCHEMA_VERSION,
+  obligationType: 'method',
+  actor: { id: 'UNNAMED', label: 'someone else', side: 'unclear', known: false },
+  action: 'be calculated on the basis of the book value of 100 rupees', object: null,
+  qualifier: null, condition: [], exception: [], consequence: null,
+  deadline: [], threshold: [], authority: null,
+  subject: 'The net book value', modality: 'is computed as', predicate: 'the book value of 100 rupees',
+  flags: { hedged: false, illustration: false, needsReview: false, fragment: false },
+  unreadable: [],
+};
+
+const renderCases = [
+  ['duty', propose('The bank shall file the return within 30 days of 31 March 2027.'),
+    /^The bank must file the return, within 30 days of 31 March 2027\.$/],
+  ['prohibition', propose('The Company shall not transfer more than 10 per cent of the shares.'),
+    /^The Company must not transfer more than 10 per cent of the shares\.$/],
+  ['permission', propose('The appropriate Government may frame a scheme under section 14.'),
+    /^The appropriate Government may frame a scheme under section 14\.$/],
+  ['entitlement', propose('Every beneficiary shall be entitled to receive assistance of up to 5000 rupees.'),
+    /^Every beneficiary is entitled to receive assistance of up to 5000 rupees\.$/],
+  ['definition', propose('In this Act, "scheme" means the scheme notified under section 14 and not a scheme under section 15.'),
+    /^"scheme" means the scheme notified under section 14 and not a scheme under section 15\.$/],
+  ['constitutive', propose('The Committee shall comprise of 12 members and not officers.'),
+    /^The Committee comprises 12 members and not officers\.$/],
+  ['method', methodProp,
+    /^The net book value is computed as the book value of 100 rupees\.$/],
+  ['meta', propose('These Directions shall come into effect from January 1, 2027.'),
+    /^These Directions come into effect: from January 1, 2027\.$/],
+  ['illustration', propose('For instance, the bank shall file one return within 10 days.'),
+    /^For instance, the bank must file one return, within 10 days\.$/],
+  ['statement', propose('The Reserve Bank has examined 3 feedback letters received on the draft Directions.'),
+    /^The Reserve Bank has examined 3 feedback letters received on the draft Directions\.$/],
+];
+
+for (const [kind, p, shape] of renderCases) {
+  const r = render(p);
+  ok(`the frame reads as one sentence (${kind})`, shape.test(r.plain), r.plain);
+  ok(`resolved (${kind})`, r.unresolved === false);
+  const slotText = [
+    p.action, p.object, p.qualifier, p.consequence, p.authority, p.predicate,
+    ...(p.deadline || []), ...(p.threshold || []), ...(p.condition || []), ...(p.exception || []),
+  ].join(' ');
+  const missing = digitTokens(slotText).filter((t) => !r.plain.includes(t));
+  ok(`number preserved (${kind})`, missing.length === 0, `missing ${missing.join(',')}: ${r.plain}`);
+  const srcNeg = NEG_CUE.test(p.sourceText);
+  ok(`negation preserved (${kind})`, NEG_CUE.test(r.plain) === srcNeg,
+    `source ${srcNeg} vs output ${NEG_CUE.test(r.plain)}: ${r.plain}`);
+}
+
+// The dictionary becomes the vocabulary inside the frame, and the renderer
+// reports exactly which rules it used.
+{
+  const p = propose('The Centre may make rules for carrying out the purposes of this Act, provided that no such rules shall be made without prior consultation with the State Governments.');
+  const r = render(p);
+  ok('render returns plain text plus the substitutions it used',
+    typeof r.plain === 'string' && Array.isArray(r.substitutions));
+  ok('a dictionary rule fired inside the frame is recorded',
+    r.substitutions.some((s) => s.from === 'prior consultation' && s.to === 'talking first'),
+    JSON.stringify(r.substitutions.map((s) => s.from)));
+  ok('the frame keeps the source wording the substitutions came from',
+    r.frame.includes('prior consultation') && r.plain.includes('talking first'), r.frame);
+  // The condition appears in the output in its source words or in the
+  // vocabulary's substitution for them — never as a clause of its own.
+  const rendered = (phrase) => {
+    const rule = r.substitutions.find((s) => s.from.toLowerCase() === phrase.toLowerCase());
+    return rule ? rule.to : phrase;
+  };
+  ok('a condition renders only from the proposition',
+    r.plain.includes(rendered('provided that'))
+      && r.plain.includes(rendered('prior consultation'))
+      && r.plain.includes('State Governments'), r.plain);
+}
+
+// The renderer cannot introduce a condition the proposition does not carry.
+{
+  const p = propose('The bank shall file the return within 30 days of 31 March 2027.');
+  const r = render(p);
+  ok('no condition is introduced',
+    p.condition.length === 0 && p.exception.length === 0 && !/\b(provided|unless|subject to)\b/i.test(r.plain), r.plain);
+}
+
+// A type the renderer does not recognise gets the source back, not a guess.
+{
+  const p = { ...propose('The Bank shall appoint the auditors.'), obligationType: 'promise' };
+  const r = render(p);
+  ok('an unrecognised type renders the source text', r.plain === p.sourceText, r.plain);
+  ok('and marks the sentence unresolved', r.unresolved === true);
+}
+
+// A statement keeps its own words: tidying only, never a rewording.
+{
+  const r = render(propose('The Reserve Bank has examined 3 feedback letters received on the draft Directions.'));
+  ok('a statement is never reworded', r.substitutions.length === 0, JSON.stringify(r.substitutions.map((s) => s.from)));
 }
 
 console.log(failures === 0 ? '\nAll proposition checks passed.' : `\n${failures} proposition check(s) FAILED.`);

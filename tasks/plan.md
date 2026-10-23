@@ -21,7 +21,7 @@ Catalog as single registry ──┐
 Tool output → result dataset ┘
 
 Proposition schema
-   ├── Proposition extractor (proposition.js)
+   ├── Proposition extractor (propositions.js, extended)
    │      ├── Proposition renderer (render.js)
    │      │      ├── Citizen rule card
    │      │      └── Hindi rendering from the proposition
@@ -58,7 +58,7 @@ Route-level code splitting (App.jsx, Work.jsx) ── prerequisite for every
 
 ### Phase 2: The proposition layer — the simplifier's missing centre
 
-- [x] **Task 4: Specify the proposition schema and write the design note** — note: `private/proposition-schema-design.md`; verification gates (human review, Task 5 field cross-check) remain open
+- [x] **Task 4: Specify the proposition schema and write the design note** — note: `private/proposition-schema-design.md` (v2, founder review folded in: 6-check shadow metric, pinned corpus manifest, stratified human review); verification gates (founder review, Task 5 field cross-check) remain open
 - [ ] **Task 5: Build the proposition extractor**
 - [ ] **Task 6: Build the proposition renderer**
 - [ ] **Task 7: Shadow mode — run both engines and measure agreement**
@@ -69,7 +69,7 @@ Route-level code splitting (App.jsx, Work.jsx) ── prerequisite for every
 - [ ] Shadow-mode agreement rate recorded and ≥ the threshold set in Task 4
 - [ ] `npm test` passes; the existing simplifier suite is unchanged and green
 - [ ] A sentence no dictionary rule touches now renders as a rule card with a structural confidence, not a green tick
-- [ ] Human review of 20 real instrument sentences before the switch
+- [ ] Human review of 20 real instrument sentences (stratified, drawn before the run) before the switch
 
 ### Phase 3: The analysis tools
 

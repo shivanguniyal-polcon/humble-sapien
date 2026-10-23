@@ -107,16 +107,16 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 - [x] A design note in `private/` defines the proposition: field list, required vs. optional, per-field reading rules, and the canonical frame per obligation type. — `private/proposition-schema-design.md` (11 fields; actor/action/obligationType required, eight declared per kind; frame table for all 10 kinds)
 - [x] The note states explicitly what the renderer may not do — no invention of actors, no added conditions, no dropped negations, no silently dropped numbers. — note section "What the renderer may not do", each with a named machine check for shadow mode
 - [x] The note names the fields that a sentence without a rule hit must still fill, and the minimum viable subset if the extractor cannot. — kind `statement`; subset: id, sourceId, sourceText, obligationType, actor (fallback legal), predicate (verbatim span)
-- [x] The note specifies the shadow-mode agreement metric and who signs off on the threshold for switching the citizen panel. — per-sentence 4-check agreement, ≥ 95% + zero critical violations + ≥ 18/20 human review; sign-off: founder (Shivang Uniyal)
+- [x] The note specifies the shadow-mode agreement metric and who signs off on the threshold for switching the citizen panel. — per-sentence 6-check agreement (v2 of the note: adds condition/exception conservation and 100% coverage), ≥ 95% + zero critical violations + ≥ 18/20 stratified human review; sign-off: founder (Shivang Uniyal), recorded as a dated line in the shadow report
 
 **Verification:**
 - [ ] Reviewed by a human before Task 5 starts
-- [ ] The field list in the note matches the list used in `src/lib/legal/proposition.js` in Task 5
+- [ ] The field list in the note matches the list used in `src/lib/legal/propositions.js` in Task 5 (field cross-check; `kind` survives only as a deprecated alias of `obligationType`)
 
 **Dependencies:** None
 
 **Files likely touched:**
-- `private/proposition-layer-design.md` (new)
+- `private/proposition-schema-design.md` (new)
 
 **Estimated scope:** Small: 1 file
 
@@ -124,10 +124,10 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 
 ## Task 5: Build the proposition extractor
 
-**Description:** `src/lib/legal/proposition.js` reads one segmented sentence and returns a proposition object: actor, action, object, qualifier, condition, exception, consequence, deadline, threshold, authority, obligationType, plus the source span it was read from. It is deterministic and offline, like everything else in `src/lib/legal/`. The obligation type comes from the existing `obligations.js` classifier.
+**Description:** `src/lib/legal/propositions.js` (the existing module, extended — not a new `proposition.js`; see the design note) reads one segmented sentence and returns a proposition object: actor, action, object, qualifier, condition, exception, consequence, deadline, threshold, authority, obligationType, plus the source span it was read from. It is deterministic and offline, like everything else in `src/lib/legal/`. The obligation type comes from the existing `obligations.js` classifier. All five missing fields (`object`, `qualifier`, `threshold`, `authority`, `consequence`) are sentence-local reads and land in Task 5; Task 6 only renders `consequence`.
 
 **Acceptance criteria:**
-- [ ] `propose(segment, { jurisdiction, definitions })` returns a proposition object with every field of the schema, `null` where a field was not found, and a `source` span that points at the characters the fields were read from.
+- [ ] `propose(segment, { jurisdiction, definitions })` returns a proposition object with every field of the schema — scalars `null` where not found, arrays `[]`, with unreadable slots named in `unreadable[]` — and a `source` span that points at the characters the fields were read from.
 - [ ] `obligationType` is taken from `classifyObligation` in `obligations.js`, not re-derived.
 - [ ] The extractor records what it could not read, so an unresolved condition is visible rather than absent.
 - [ ] The extractor is deterministic: the same sentence and dictionary version always produce the same proposition.
@@ -140,7 +140,7 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Dependencies:** Task 4
 
 **Files likely touched:**
-- `src/lib/legal/proposition.js` (new)
+- `src/lib/legal/propositions.js` (extend)
 - `scripts/test-proposition.mjs` (new)
 
 **Estimated scope:** Medium: 2 files
@@ -178,8 +178,8 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 
 **Acceptance criteria:**
 - [ ] A `compareEngines(text, options)` function returns both renderings per sentence, a per-sentence agreement verdict, and an overall rate.
-- [ ] A written agreement report exists for a fixed corpus of at least 20 real instrument sentences.
-- [ ] The report is reproducible: the corpus, the dictionary version and the proposition version are recorded with the result.
+- [ ] A written agreement report exists for a corpus pinned by manifest (documents, segmentation version, sentence set, exact count), plus the stratified 20-sentence human review drawn before the run — every obligation kind and the old engine's failure classes represented.
+- [ ] The report is reproducible: the corpus manifest hash, the dictionary version and the proposition `schemaVersion` are recorded with the result, and a per-check breakdown accompanies the blended rate.
 - [ ] The report states the threshold and whether the switch is justified.
 
 **Verification:**

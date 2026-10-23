@@ -1,39 +1,54 @@
-import Solutions from './Solutions';
-import GenderIndex from './GenderIndex';
-import Simplifier from './Simplifier';
-import Touchpoints from './Touchpoints';
-import Scorecards from './Scorecards';
-import FieldNotes from './FieldNotes';
-import EconometricsLab from './EconometricsLab';
-import Battery from './Battery';
-import Stakeholders from './Stakeholders';
-import PolicyGame from '../components/PolicyGame';
+import { lazy, Suspense } from 'react';
 import { TOOLS } from '../data/tools';
+
+// One chunk per instrument. The tools index loads on its own; the engine
+// behind a tool arrives only when that tool is opened, so the landing page
+// never ships the battery, the legal engine or the lab.
+const Solutions = lazy(() => import('./Solutions'));
+const GenderIndex = lazy(() => import('./GenderIndex'));
+const Simplifier = lazy(() => import('./Simplifier'));
+const Touchpoints = lazy(() => import('./Touchpoints'));
+const Scorecards = lazy(() => import('./Scorecards'));
+const FieldNotes = lazy(() => import('./FieldNotes'));
+const EconometricsLab = lazy(() => import('./EconometricsLab'));
+const Battery = lazy(() => import('./Battery'));
+const Stakeholders = lazy(() => import('./Stakeholders'));
+const PolicyGame = lazy(() => import('../components/PolicyGame'));
 
 // One instrument per screen. Every tool brings its own section head, so the
 // page adds only a way back to the index and the instrument itself.
 const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
+  let view = null;
   switch (id) {
     case 'battery':
-      return <Battery onNavigate={onNavigate} />;
+      view = <Battery onNavigate={onNavigate} />;
+      break;
     case 'lab':
-      return <EconometricsLab onNavigate={onNavigate} />;
+      view = <EconometricsLab onNavigate={onNavigate} />;
+      break;
     case 'stakeholders':
-      return <Stakeholders onNavigate={onNavigate} onTool={onTool} />;
+      view = <Stakeholders onNavigate={onNavigate} onTool={onTool} />;
+      break;
     case 'solutions':
-      return <Solutions />;
+      view = <Solutions />;
+      break;
     case 'gender-index':
-      return <GenderIndex />;
+      view = <GenderIndex />;
+      break;
     case 'simplifier':
-      return <Simplifier />;
+      view = <Simplifier />;
+      break;
     case 'touchpoints':
-      return <Touchpoints query={query} onQueryChange={onQueryChange} />;
+      view = <Touchpoints query={query} onQueryChange={onQueryChange} />;
+      break;
     case 'scorecards':
-      return <Scorecards onNavigate={onNavigate} onTool={onTool} />;
+      view = <Scorecards onNavigate={onNavigate} onTool={onTool} />;
+      break;
     case 'notes':
-      return <FieldNotes />;
+      view = <FieldNotes />;
+      break;
     case 'arcade':
-      return (
+      view = (
         <div>
           <div className="card">
             <h3>Catch the Entitlement</h3>
@@ -46,9 +61,21 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
           <PolicyGame />
         </div>
       );
+      break;
     default:
-      return null;
+      view = null;
   }
+  return (
+    <Suspense
+      fallback={
+        <p role="status" style={{ padding: '2rem 0', textAlign: 'center' }}>
+          Loading…
+        </p>
+      }
+    >
+      {view}
+    </Suspense>
+  );
 };
 
 export default function Work({ onNavigate, openTool, onToolChange, query, onQueryChange }) {

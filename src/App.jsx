@@ -1,20 +1,34 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import Home from './sections/Home';
-import Research from './sections/Research';
-import Work from './sections/Work';
-import Data from './sections/Data';
-import Compare from './sections/Compare';
-import Writing from './sections/Writing';
-import Newsletter from './sections/Newsletter';
-import PitDesk from './sections/PitDesk';
-import About from './sections/About';
-import Support from './sections/Support';
-import Licensing from './sections/Licensing';
 import PitAssistant from './components/PitAssistant';
 import Logo from './components/Logo';
 import { TOOLS } from './data/tools';
 import { PUB_TYPES } from './data/publications';
 import { sectors } from './data/sectors';
+
+// Every section behind the nav is its own chunk. The shell — header, nav,
+// footer, assistant — and Home, the front door, stay eager so the first paint
+// has no loading step; everything else loads when its route is opened. This
+// keeps the legal engine, the eleven battery modules and the datasets off the
+// landing page's critical path.
+const Research = lazy(() => import('./sections/Research'));
+const Work = lazy(() => import('./sections/Work'));
+const Data = lazy(() => import('./sections/Data'));
+const Compare = lazy(() => import('./sections/Compare'));
+const Writing = lazy(() => import('./sections/Writing'));
+const Newsletter = lazy(() => import('./sections/Newsletter'));
+const PitDesk = lazy(() => import('./sections/PitDesk'));
+const About = lazy(() => import('./sections/About'));
+const Support = lazy(() => import('./sections/Support'));
+const Licensing = lazy(() => import('./sections/Licensing'));
+
+// One fallback for every route: the shell stays on screen, the page body
+// arrives a moment later.
+const RouteFallback = () => (
+  <div className="shell" role="status">
+    <p style={{ padding: '3rem 0', textAlign: 'center' }}>Loading…</p>
+  </div>
+);
 
 // Tools sit second: the instruments are the product, not an appendix.
 // Tabs with contained pages carry a hover dropdown listing them; clicking the
@@ -211,6 +225,7 @@ export default function App() {
 
       <main>
         <div className="shell">
+          <Suspense fallback={<RouteFallback />}>
           {route.tab === 'home' && <Home onNavigate={go} />}
           {route.tab === 'research' && (
             <Research
@@ -248,6 +263,7 @@ export default function App() {
           {route.tab === 'about' && <About onNavigate={go} />}
           {route.tab === 'support' && <Support />}
           {route.tab === 'licensing' && <Licensing onNavigate={go} />}
+          </Suspense>
         </div>
       </main>
 

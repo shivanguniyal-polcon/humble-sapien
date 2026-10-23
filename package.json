@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs && node scripts/test-atlas.mjs && node scripts/test-india-locator.mjs",
+    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-proposition.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs && node scripts/test-atlas.mjs && node scripts/test-india-locator.mjs",
     "test:api": "node scripts/test-api.mjs",
     "test:atlas": "node scripts/test-atlas.mjs",
     "test:india": "node scripts/test-india-locator.mjs",

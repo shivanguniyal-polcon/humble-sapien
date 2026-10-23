@@ -110,8 +110,8 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 - [x] The note specifies the shadow-mode agreement metric and who signs off on the threshold for switching the citizen panel. — per-sentence 6-check agreement (v2 of the note: adds condition/exception conservation and 100% coverage), ≥ 95% + zero critical violations + ≥ 18/20 stratified human review; sign-off: founder (Shivang Uniyal), recorded as a dated line in the shadow report
 
 **Verification:**
-- [ ] Reviewed by a human before Task 5 starts
-- [ ] The field list in the note matches the list used in `src/lib/legal/propositions.js` in Task 5 (field cross-check; `kind` survives only as a deprecated alias of `obligationType`)
+- [x] Reviewed by a human before Task 5 starts — v2 confirmed by the founder in the 2026-10-23 working session ("Confirm v2 of the proposition schema note and start Task 5"), before Task 5 code began
+- [x] The field list in the note matches the list used in `src/lib/legal/propositions.js` in Task 5 (field cross-check; `kind` survives only as a deprecated alias of `obligationType`) — cross-checked 2026-10-23: identity 7 + annotations (`flags`, `unreadable[]`) + content 11 emitted exactly as the note lists them; `kind`/`timing`/`conditions`/`exceptions` are non-enumerable getters, never emitted; `flags.fragment` retained beyond the schema and recorded in the note's delta table
 
 **Dependencies:** None
 
@@ -127,15 +127,15 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Description:** `src/lib/legal/propositions.js` (the existing module, extended — not a new `proposition.js`; see the design note) reads one segmented sentence and returns a proposition object: actor, action, object, qualifier, condition, exception, consequence, deadline, threshold, authority, obligationType, plus the source span it was read from. It is deterministic and offline, like everything else in `src/lib/legal/`. The obligation type comes from the existing `obligations.js` classifier. All five missing fields (`object`, `qualifier`, `threshold`, `authority`, `consequence`) are sentence-local reads and land in Task 5; Task 6 only renders `consequence`.
 
 **Acceptance criteria:**
-- [ ] `propose(segment, { jurisdiction, definitions })` returns a proposition object with every field of the schema — scalars `null` where not found, arrays `[]`, with unreadable slots named in `unreadable[]` — and a `source` span that points at the characters the fields were read from.
-- [ ] `obligationType` is taken from `classifyObligation` in `obligations.js`, not re-derived.
-- [ ] The extractor records what it could not read, so an unresolved condition is visible rather than absent.
-- [ ] The extractor is deterministic: the same sentence and dictionary version always produce the same proposition.
+- [x] `propose(segment, { jurisdiction, definitions })` returns a proposition object with every field of the schema — scalars `null` where not found, arrays `[]`, with unreadable slots named in `unreadable[]` — and a `source` span that points at the characters the fields were read from. — `scripts/test-proposition.mjs` asserts every field, the null/`[]` conventions, `unreadable[]`, and the `source` span for both a segment and a bare sentence
+- [x] `obligationType` is taken from `classifyObligation` in `obligations.js`, not re-derived. — `typeProposition()` delegates to `classifyObligation` and maps its type + negation to the kind; no re-derivation of the classifier's verdict
+- [x] The extractor records what it could not read, so an unresolved condition is visible rather than absent. — `unreadable[]` names each slot whose trigger matched but no span parsed (action, condition, exception, deadline, threshold, authority, consequence); `flags.needsReview` follows it and unplaceable numbers
+- [x] The extractor is deterministic: the same sentence and dictionary version always produce the same proposition. — repeated `propose` on the same sentence is identical; `schemaVersion` is stamped on every proposition
 
 **Verification:**
-- [ ] Tests pass: a new `scripts/test-proposition.mjs` covering every field, plus the sentences in `scripts/test-simplifier.mjs` that currently have no dictionary rule hit
-- [ ] Build succeeds: `npm run build`
-- [ ] Manual check: run the extractor over `LEGAL_SAMPLE_TEXT` and read the propositions; each field traced back to a real span
+- [x] Tests pass: a new `scripts/test-proposition.mjs` covering every field, plus the sentences in `scripts/test-simplifier.mjs` that currently have no dictionary rule hit — new suite green and wired into `npm test`; its kind matrix covers every sentence from `test-simplifier.mjs`'s proposition block; full `npm test` green (5,584 PASS, 0 FAIL)
+- [x] Build succeeds: `npm run build` ✓
+- [x] Manual check: run the extractor over `LEGAL_SAMPLE_TEXT` and read the propositions; each field traced back to a real span — 5 propositions read field by field; every filled slot traced to a real span (0 untraced). Known reading problems recorded in `private/worklog.md` for Tasks 6–7: a proviso `shall` can type a `may` sentence as `duty`; clause heads merge into `subject`/`predicate`; a fronted `Where…` condition lands in `unreadable["condition"]` (visible, by design)
 
 **Dependencies:** Task 4
 

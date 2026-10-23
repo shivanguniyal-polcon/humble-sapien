@@ -213,6 +213,28 @@ const traced = (p, value) => norm(p.sourceText).includes(norm(value));
   ok('the proposition kind follows (2)', propose(entitled).obligationType === 'entitlement');
 }
 
+// 12a. Force patterns are read from the sentence proper. A proviso's "shall"
+//    is the condition's force — "may frame a scheme, provided that no scheme
+//    shall be framed" is a permission — and must not re-type the sentence.
+{
+  const permitted = propose('The appropriate Government may, by notification in the Official Gazette, frame a scheme for the grant of financial assistance to the beneficiaries, provided that no scheme shall be framed without prior consultation with the State Governments.');
+  ok('a proviso duty trigger does not type a may sentence as duty',
+    permitted.obligationType === 'permission', permitted.obligationType);
+  ok('the frame joins the force and its insertions without stray spaces',
+    /^The appropriate Government may, by notification in the Official Gazette, frame a scheme/.test(permitted.frame), permitted.frame);
+
+  const duty = propose('The bank shall file the return, provided that the Reserve Bank must not extend the period without recording reasons.');
+  ok('a proviso negation does not turn a duty into a prohibition',
+    duty.obligationType === 'duty', duty.obligationType);
+
+  // Boundary: when the main clause carries no force of its own, the whole
+  // sentence is the force pattern. The proviso still binds, so the sentence
+  // stays on the binding side rather than dropping to a statement.
+  const bare = propose('The scheme provides for assistance to the beneficiaries, provided that no scheme shall be framed without prior consultation with the State Governments.');
+  ok('a proviso alone still types a binding sentence',
+    bare.obligationType === 'duty', bare.obligationType);
+}
+
 // 13. propose() takes a segment and hands back a source span pointing at the
 //    characters, and accepts the { jurisdiction, definitions } options.
 {

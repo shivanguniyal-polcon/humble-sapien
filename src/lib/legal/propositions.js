@@ -194,8 +194,17 @@ export const typeProposition = (sentence, { prev = '' } = {}) => {
   // "No such rules shall be made ..." is a prohibition whatever else the
   // sentence looks like: the negation lives in the subject.
   if (NO_SHALL_RE.test(text.trim())) return 'prohibition';
-  if (!isDutyTrigger(text)) return /\bmay\b/i.test(text) ? 'permission' : 'statement';
-  const cls = classifyObligation(text, { prev });
+  // The force pattern is read from the sentence proper. A proviso's "shall"
+  // is the condition's force — "may frame a scheme, provided that no scheme
+  // shall be framed" is a permission — so it never re-types the sentence.
+  // Only when the main clause carries no force of its own does the whole
+  // sentence decide: a proviso that binds still keeps the sentence on the
+  // binding side.
+  const { main } = splitQualifiers(text);
+  const force = isDutyTrigger(main) || /\bmay\b/i.test(main) || NEGATED_RE.test(main)
+    ? main : text;
+  if (!isDutyTrigger(force)) return /\bmay\b/i.test(force) ? 'permission' : 'statement';
+  const cls = classifyObligation(force, { prev });
   switch (cls.type) {
     case 'definition': return 'definition';
     case 'illustration': return 'illustration';
@@ -204,7 +213,7 @@ export const typeProposition = (sentence, { prev = '' } = {}) => {
     case 'constitutive': return 'constitutive';
     case 'entitlement': return 'entitlement';
     default:
-      return NEGATED_RE.test(text) ? 'prohibition' : 'duty';
+      return NEGATED_RE.test(force) ? 'prohibition' : 'duty';
   }
 };
 
@@ -508,6 +517,7 @@ export const renderFrame = (p) => {
     .filter(Boolean)
     .join(' ')
     .replace(/\s+/g, ' ')
+    .replace(/\s+([,;:])/g, '$1')
     .trim();
   const tail = [...p.deadline, ...p.condition, ...p.exception]
     .map((s) => String(s || '').trim())

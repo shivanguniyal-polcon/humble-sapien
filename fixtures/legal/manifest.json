@@ -25,9 +25,9 @@
       },
       "readability": {
         "source": 12.6,
-        "rewrite": 8.9
+        "rewrite": 8.8
       },
-      "outputHash": "fe76f0873739adec76e4b49a2c27246131bf266f7f67fd21b527542044a7f53e",
+      "outputHash": "c75548b3ca1ef89ec2610ca512b22c53fc5176b832828c1246d6646ec583b689",
       "sourceHash": "sha256:6308f97c96dc3901bf56c3bfc217afde72c25ccf0c618e8d029ee7bcae467e93"
     },
     {
@@ -38,24 +38,24 @@
       "date": "2026-02-04",
       "engine": "ths-legal-simplifier-1.0.0",
       "dictionary": "uk-si@ths-statutory-1.0.0",
-      "rows": 29,
+      "rows": 28,
       "flags": {
         "green": 3,
-        "amber": 24,
+        "amber": 23,
         "red": 2,
-        "total": 29
+        "total": 28
       },
       "confidence": {
-        "high": 6,
+        "high": 8,
         "medium": 2,
-        "low": 21,
-        "total": 29
+        "low": 18,
+        "total": 28
       },
       "readability": {
         "source": 13.3,
-        "rewrite": 9.5
+        "rewrite": 9.6
       },
-      "outputHash": "70a7467ed212bf4a6a64e87ed367740f153711c615f25a50bbf6ab89c3aaf6bf",
+      "outputHash": "bed2dd3c42e57124e2734e0b671b085ad0a0e73a50f8502bdc5b0732a333a4a9",
       "sourceHash": "sha256:7c3a7d5423aea52727948bd0739622aa9c4a5189e9b53919f03c2ae374e6f1e2"
     },
     {
@@ -66,24 +66,24 @@
       "date": "2025-11-30",
       "engine": "ths-legal-simplifier-1.0.0",
       "dictionary": "us-cfr@ths-statutory-1.0.0",
-      "rows": 21,
+      "rows": 19,
       "flags": {
         "green": 0,
-        "amber": 17,
+        "amber": 15,
         "red": 4,
-        "total": 21
+        "total": 19
       },
       "confidence": {
         "high": 1,
         "medium": 7,
-        "low": 13,
-        "total": 21
+        "low": 11,
+        "total": 19
       },
       "readability": {
         "source": 14.4,
-        "rewrite": 11
+        "rewrite": 11.3
       },
-      "outputHash": "4a1a8da6d35d5a51bb408c0346e548d690f15d4f94a4b32e86efcf9558193640",
+      "outputHash": "3fd61dcde54051403add5efc01ec1a4a712d53fdfd74c25f44f3ec2b3fcd53bd",
       "sourceHash": "sha256:b2ea77ef1a1a1095393576a6a93d1bc2838c0c9e9987901b99a2bd75173ed28f"
     },
     {
@@ -94,24 +94,24 @@
       "date": "2026-02-12",
       "engine": "ths-legal-simplifier-1.0.0",
       "dictionary": "eu-regulation@ths-statutory-1.0.0",
-      "rows": 31,
+      "rows": 24,
       "flags": {
-        "green": 2,
-        "amber": 27,
+        "green": 1,
+        "amber": 21,
         "red": 2,
-        "total": 31
+        "total": 24
       },
       "confidence": {
-        "high": 5,
-        "medium": 10,
-        "low": 16,
-        "total": 31
+        "high": 4,
+        "medium": 7,
+        "low": 13,
+        "total": 24
       },
       "readability": {
         "source": 16.7,
-        "rewrite": 11.5
+        "rewrite": 12.8
       },
-      "outputHash": "a615cfbc3e7ae74b09e96f99abaf533535a3bb7f5bd0ab5c17a883b605124d15",
+      "outputHash": "8902575a7bced3a021fb98a090ccfbd0e456b131315e6f5b4118ebd2a37d92b5",
       "sourceHash": "sha256:be20f100eece6123a1f6adb0f0bb5b53ff034411ff9d3f9c9c0563dc0772215d"
     },
     {
@@ -122,24 +122,24 @@
       "date": "2026-03-02",
       "engine": "ths-legal-simplifier-1.0.0",
       "dictionary": "sg-statute@ths-statutory-1.0.0",
-      "rows": 27,
+      "rows": 26,
       "flags": {
         "green": 1,
-        "amber": 25,
+        "amber": 24,
         "red": 1,
-        "total": 27
+        "total": 26
       },
       "confidence": {
         "high": 0,
         "medium": 8,
-        "low": 19,
-        "total": 27
+        "low": 18,
+        "total": 26
       },
       "readability": {
         "source": 13.4,
         "rewrite": 9.8
       },
-      "outputHash": "ba9dde066107d3de560846b05ece71c63967acf3a34876ab19503aaade8c287e",
+      "outputHash": "98c7e8b604396d4ff4c9896ed41a357e4232d2ae95832d64681febc8827aeff2",
       "sourceHash": "sha256:bac1b93376e4c6222524a51b42eb9af5662bac7d0c871d42ac8d3d8609164d27"
     }
   ]

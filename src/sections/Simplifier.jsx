@@ -198,6 +198,7 @@ function CitizenPanel({ text, setText }) {
               {result.stats.replacements.map((r) => (
                 <li key={r.term}>
                   <code>{r.term}</code> <span>× {r.count}</span>
+                  <span>{' → '}{r.removed ? 'removed' : <code>{r.to}</code>}</span>
                 </li>
               ))}
             </ul>

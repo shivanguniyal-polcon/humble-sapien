@@ -188,6 +188,16 @@ const splitQualifiers = (text) => {
 
 // Type the sentence. A sentence with no binding language and no definition
 // is a statement — it still gets a frame, but its frame is its own words.
+// A modal is only a modal before a verb. The month "May" collides with the
+// modal "may", and micro-fragments ("May", "May 2010", "4 Dec.") are dates,
+// not permissions — the force word must be followed by a letter-led word
+// (possibly after a comma: "may, by notification, appoint").
+const MODAL_RE = /\b(?:shall|may|must|will|can|should|could|would|might)(?:\s*,)?\s+(?:not\s+)?[a-z]/i;
+// A permission is a deontic grant in active voice — "may apply", "can
+// submit". A passive possibility ("can be found") and a future ("will
+// depend") are statements: the modal word alone is not the force.
+const PERMISSION_RE = /\b(?:may|can)(?:\s*,)?\s+(?:not\s+)?(?!be\b)[a-z]/i;
+
 export const typeProposition = (sentence, { prev = '' } = {}) => {
   const text = String(sentence || '');
   if (DEFINITION_RE.test(text)) return 'definition';
@@ -201,9 +211,9 @@ export const typeProposition = (sentence, { prev = '' } = {}) => {
   // sentence decide: a proviso that binds still keeps the sentence on the
   // binding side.
   const { main } = splitQualifiers(text);
-  const force = isDutyTrigger(main) || /\bmay\b/i.test(main) || NEGATED_RE.test(main)
+  const force = isDutyTrigger(main) || MODAL_RE.test(main) || NEGATED_RE.test(main)
     ? main : text;
-  if (!isDutyTrigger(force)) return /\bmay\b/i.test(force) ? 'permission' : 'statement';
+  if (!isDutyTrigger(force)) return PERMISSION_RE.test(force) ? 'permission' : 'statement';
   const cls = classifyObligation(force, { prev });
   switch (cls.type) {
     case 'definition': return 'definition';
@@ -397,7 +407,10 @@ export const propositionFromSentence = (sentence, context = {}) => {
     action = (text.match(MEAN_WORD_RE) || ['means'])[0];
     object = predicate || null;
   } else if (kind === 'statement') {
-    action = predicate || null;
+    // A statement's action is the predicate in the source's own words — and
+    // when there is no predicate (a fragment, a date line, a heading) the
+    // source's own words are the subset. Never empty, never guessed.
+    action = predicate || cleanAct(text) || null;
     object = null;
   } else if (metaOp) {
     action = metaOp;

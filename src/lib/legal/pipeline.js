@@ -84,7 +84,12 @@ export const analyse = (text, options = {}) => {
       const key = change.from;
       const existing = tally.get(key);
       if (existing) existing.count += change.count;
-      else tally.set(key, { term: key, count: change.count, to: change.to, risk: change.risk });
+      // The report must say what each phrase became, or that it was removed.
+      // A bare "term × count" is not a change list a reader can audit.
+      else tally.set(key, {
+        term: key, from: key, to: change.to, risk: change.risk,
+        count: change.count, removed: change.to === '',
+      });
     }
 
     parts.forEach((piece, partIndex) => {
@@ -162,7 +167,7 @@ export const analyse = (text, options = {}) => {
   }
 
   const replacements = [...tally.values()]
-    .sort((a, b) => b.count - a.count || a.term.localeCompare(b.term));
+    .sort((a, b) => b.count - a.count || a.from.localeCompare(b.from));
 
   const hindiSentences = rows.map((row) => renderHindi(row.plain));
 

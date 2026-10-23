@@ -72,7 +72,10 @@ export const simplify = (text) => {
     stats: {
       words: result.stats.words,
       sentences: result.stats.sentences,
-      replacements: result.stats.replacements.map((r) => ({ term: r.term, count: r.count })),
+      replacements: result.stats.replacements.map((r) => ({
+        term: r.term, from: r.from, to: r.to, risk: r.risk,
+        removed: r.removed, count: r.count,
+      })),
     },
     readability: {
       original: result.readability.original,

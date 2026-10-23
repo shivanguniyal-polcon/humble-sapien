@@ -79,6 +79,26 @@ const SHARED = [
     'This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical.'),
   R('and/or', 'or', 'amber',
     '"And/or" is a drafting habit, not a choice. Confirm whether either, both or all apply.'),
+  R('shall be construed as a reference to', 'means', 'green',
+    'Plain wording for the reference formula: the cross-reference is read as the thing it points at.'),
+  R('for matters connected therewith or incidental thereto', 'for related matters', 'green',
+    'The "connected therewith or incidental thereto" tail is one word in plain English.'),
+  R('the commencement of', 'the start of', 'green', 'Plain wording.'),
+  R('coming into force', 'start', 'green', 'Plain wording for the commencement formula.'),
+  R('come into force', 'start', 'green', 'Plain wording for the commencement formula.'),
+  R('hereinafter referred to as', 'called', 'green', 'Plain wording.'),
+  R('from time to time', 'when needed', 'green', 'Plain wording.'),
+  R('it is reiterated that', 'we repeat that', 'green', 'Plain wording.'),
+  R('a term which may extend to', 'up to', 'green', 'Plain wording for the sentencing formula.'),
+  R('in terms of', 'under', 'green', 'Plain wording.'),
+  R('please refer to', 'see', 'green', 'Plain cross-reference wording.'),
+  R('appearing in the lists of', 'on the lists of', 'green', 'Plain wording.'),
+  R('appearing in the list of', 'on the list of', 'green', 'Plain wording.'),
+  R('periodically circulated by', 'regularly sent by', 'amber',
+    'Circulation is the distribution of a list to the addressed banks; "sent" narrows the channel. Confirm it reads right for the instrument.'),
+  R('as per which', 'under which', 'green', 'Plain wording.'),
+  R('as applicable', '', 'amber',
+    'The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge.'),
   R('aforesaid', 'earlier', 'green', 'Plain wording.'),
   R('thereof', 'of it', 'green', 'Plain wording.'),
   R('thereto', 'to it', 'green', 'Plain wording.'),
@@ -363,6 +383,9 @@ export const applyDictionary = (sentence, phrases, { protectedTerms = [] } = {})
   out = out
     .replace(/\s{2,}/g, ' ')
     .replace(/\s+([,.;:)])/g, '$1')
+    // A deletion can leave two marks side by side ("…, as applicable, …"
+    // minus "as applicable" is "…, , …"). Keep the first mark.
+    .replace(/([,.;:])[\s,.;:]*([,.;:])/g, '$1')
     .replace(/^\s*,\s*/, '')
     .trim();
   out = unmask(out, tokens);

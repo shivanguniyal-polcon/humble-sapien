@@ -64,6 +64,12 @@ const startsLine = (source, index) => index === 0 || /[\n]/.test(source.slice(0,
 
 const shouldMerge = (source, a, b) => {
   if (ABBREVIATIONS.test(a.text)) return true;
+  // A dotted reference or number sequence is one token, not a run of
+  // one-word "sentences": "DoR.AML.REC.250/14.06.001/2026-27".
+  if (/\w\.$/.test(a.text) && /\w/.test(source[a.end] || '')) return true;
+  // A line that ends in a comma is a wrapped list, not a sentence. Cutting
+  // it and re-punctuating invents "Banks,.".
+  if (/[,;:]$/.test(a.text)) return true;
   if (CLAUSE_HEAD.test(a.text) && /\b(?:section|sec|article|regulation|rule|part|chapter|schedule)\b/i.test(a.text)) {
     return true;
   }
@@ -125,6 +131,38 @@ export const clauseLabel = (text, jurisdiction) => {
   return { no: marker.no, label: `${prefix} ${marker.no}`, kind: marker.kind, prefix };
 };
 
+// A finite verb: the auxiliaries and copulas legal clauses lead with. A
+// lexical verb alone ("enacted", "circulated") is not enough to tell a clause
+// apart from a list item.
+const FINITE = /\b(?:shall|must|may|will|can|could|would|should|is|are|was|were|has|have|had|does|do|did|cannot)\b/i;
+const SUBORD = /^(?:if|when|where|unless|after|before|upon|once|while|although|though|because|since|provided|subject|in the event|in case|to the extent|so far as)\b/i;
+
+// "…may appoint and different dates may be appointed…" is two clauses with
+// no comma between them, and splitting it shortens both sentences. "banks
+// and officers" and "1267 (1999), 1989 (2011) and 2253 (2015)" are lists,
+// and splitting those changes what the text says. The tail is a clause when
+// its finite verb comes before any comma or relative pronoun in it.
+const coordinationJoint = (sentence) => {
+  const lower = sentence.toLowerCase();
+  let at = lower.indexOf(' and ');
+  while (at > 0) {
+    const head = sentence.slice(0, at);
+    const tail = sentence.slice(at + 5);
+    // A tail that opens with its own subordinator ("if…", "in the event
+    // of…") is a clause whatever the commas inside its adjuncts say:
+    // "…this Act, and in the event of X at one time and Y at another, such
+    // reference shall…" splits cleanly at the "and" even though its finite
+    // verb sits past a comma.
+    if (
+      FINITE.test(head)
+      && clauseTail(tail, { items: false })
+      && countWords(head) >= 4 && countWords(tail) >= 4
+    ) return at;
+    at = lower.indexOf(' and ', at + 5);
+  }
+  return -1;
+};
+
 // Split an overlong sentence at natural joints. The same rule the citizen
 // tool has always used, kept in one place so the two modes never diverge.
 //
@@ -133,18 +171,52 @@ export const clauseLabel = (text, jurisdiction) => {
 // legal text both losses change what the sentence says. So the tail keeps
 // its "and", "but" or "so", and a ", which " joint is not used at all,
 // because a sentence cannot start with "which".
+// The tail of a comma joint is a clause when it opens with its subject and
+// its finite verb comes before any comma in it. "…resolution 2734 (2024),
+// and adopted under Chapter VII …" is the tail of a noun phrase, not a
+// clause: splitting there prints "And adopted under Chapter VII …" as a
+// sentence of its own, and that garble is what the joint exists to prevent.
+const SUBJECT = /^(?:the|a|an|this|that|these|those|such|every|each|any|no|all|both|some|different|several|other|another|it|he|she|they|we|you|there|if|when|where)\b/i;
+// An enumerated item — "(a) …", "(2) …", "2. …" — or a quoted definition
+// ("the Scheme" means …) is its own unit even with no determiner and no
+// finite verb: "the rules may provide for— (a) …; (b) …; (c) the fees
+// payable …" splits into its items, not into fragments. Items are accepted
+// at the comma joints only: at a bare "and" an item tail ("…and (iii)") is
+// part of the same list and must not break.
+const ENUM_ITEM = /^(?:\(?(?:\d+[a-z]?|[a-z]{1,2}|[ivxlc]{1,4})[.)]\s+\S|["“'][^"”']{1,80}["”']\s+(?:means?|includes?|refers?|has?|shall|is|are|will|can)\b)/i;
+const clauseTail = (tail, { items = true } = {}) => {
+  const body = tail.replace(/^(?:and|but|so)\s+/i, '');
+  if (items && ENUM_ITEM.test(body)) return true;
+  if (!SUBJECT.test(body)) return false;
+  if (SUBORD.test(body)) return true;
+  const verb = FINITE.exec(body);
+  const comma = body.search(/[,;]/);
+  return !!verb && (comma === -1 || verb.index < comma);
+};
+
 export const splitLong = (sentence, maxWords = LONG_SENTENCE_WORDS) => {
   if (countWords(sentence) <= maxWords) return [sentence];
   const joints = [', and ', ', but ', '; ', ', so '];
   for (const joint of joints) {
-    const i = sentence.indexOf(joint);
-    if (i > 8 && i < sentence.length - 12) {
-      const head = sentence.slice(0, i).trim();
-      let tail = sentence.slice(i + joint.length).trim();
-      const lead = joint.trim().startsWith(',') ? joint.trim().slice(1).trim() : '';
-      tail = capitalize(`${lead ? `${lead} ` : ''}${tail}`);
-      return [head, tail].flatMap((piece) => splitLong(piece, maxWords));
+    let at = sentence.indexOf(joint);
+    while (at > 0) {
+      if (at > 8 && at < sentence.length - 12) {
+        const head = sentence.slice(0, at).trim();
+        let tail = sentence.slice(at + joint.length).trim();
+        const lead = joint.trim().startsWith(',') ? joint.trim().slice(1).trim() : '';
+        tail = capitalize(`${lead ? `${lead} ` : ''}${tail}`);
+        if (clauseTail(tail)) {
+          return [head, tail].flatMap((piece) => splitLong(piece, maxWords));
+        }
+      }
+      at = sentence.indexOf(joint, at + joint.length);
     }
+  }
+  const at = coordinationJoint(sentence);
+  if (at > 8 && at < sentence.length - 12) {
+    const head = sentence.slice(0, at).trim();
+    const tail = capitalize(`And ${sentence.slice(at + 5).trim()}`);
+    return [head, tail].flatMap((piece) => splitLong(piece, maxWords));
   }
   return [sentence];
 };

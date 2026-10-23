@@ -359,5 +359,251 @@ for (const [kind, p, shape] of renderCases) {
   ok('a statement is never reworded', r.substitutions.length === 0, JSON.stringify(r.substitutions.map((s) => s.from)));
 }
 
+// ---- 9. Shadow mode: proposition vs substitution rewrite (Task 7) ----
+//
+// Six checks per sentence, all-or-nothing per sentence. A check with
+// nothing to test passes vacuously and is not counted as engaged. Critical
+// classes: force flip, invented actor, silently dropped number.
+import {
+  CHECKS, THRESHOLD, checkForce, checkType, checkNumbers, checkActor,
+  checkQualifiers, checkCoverage, compareSentence, compareEngines,
+  thresholdVerdict, drawReviewSample,
+} from '../src/lib/legal/shadow.js';
+
+// Check 1: force parity across source, frame and rewrite.
+{
+  const kept = checkForce({
+    source: 'The Company shall not transfer the shares.',
+    frame: 'The Company must not transfer the shares.',
+    rewrite: 'The Company must not transfer the shares.',
+  });
+  ok('a kept negation is force parity', kept.engaged && kept.pass && !kept.critical, JSON.stringify(kept));
+  const flip = checkForce({
+    source: 'The Company shall not transfer the shares.',
+    frame: 'The Company must transfer the shares.',
+    rewrite: 'The Company must transfer the shares.',
+  });
+  ok('a dropped negation is a force flip', !flip.pass && flip.critical, JSON.stringify(flip));
+  const vacuous = checkForce({
+    source: 'The Bank shall appoint the auditors.',
+    frame: 'The Bank must appoint the auditors.',
+    rewrite: 'The Bank must appoint the auditors.',
+  });
+  ok('no negation anywhere is a vacuous pass', !vacuous.engaged && vacuous.pass, JSON.stringify(vacuous));
+}
+
+// Check 2: type parity — the mapping table in the design note, and nothing else.
+{
+  ok('action maps to duty',
+    checkType({ source: 'The Bank shall appoint the auditors of the Company.', kind: 'duty' }).pass);
+  ok('action maps to prohibition',
+    checkType({ source: 'The Company shall not transfer the shares.', kind: 'prohibition' }).pass);
+  ok('entitlement maps to permission',
+    checkType({ source: 'Every beneficiary shall be entitled to receive the benefits.', kind: 'permission' }).pass);
+  ok('constitutive maps to constitutive',
+    checkType({ source: 'Membership of the BLBC shall comprise of banks and officers.', kind: 'constitutive' }).pass);
+  const bad = checkType({
+    source: 'In this Act, "scheme" shall mean the scheme notified under section 14.',
+    kind: 'duty',
+  });
+  ok('a definition typed as a duty fails parity', !bad.pass, JSON.stringify(bad));
+  const vacuous = checkType({
+    source: 'The Reserve Bank has examined 3 feedback letters received on the draft Directions.',
+    kind: 'statement',
+  });
+  ok('a statement is vacuously true', !vacuous.engaged && vacuous.pass, JSON.stringify(vacuous));
+}
+
+// Check 3: number conservation — verbatim on the proposition side,
+// normalized on the rewrite side, and a declared gap is not silent.
+{
+  const kept = checkNumbers({
+    source: 'The fine shall be 5,000 rupees for every contravention.',
+    propositionText: 'The Bank must set the fine 5,000 rupees.',
+    rewrite: 'The fine must be 5,000 rupees for every contravention.',
+    needsReview: false,
+  });
+  ok('a kept number conserves', kept.engaged && kept.pass && !kept.critical, JSON.stringify(kept));
+  const reformatted = checkNumbers({
+    source: 'The fine shall be 5,000 rupees.',
+    propositionText: 'The fine must be 5,000 rupees.',
+    rewrite: 'The fine must be 5000 rupees.',
+    needsReview: false,
+  });
+  ok('a reformatted number in the rewrite still conserves', reformatted.pass, JSON.stringify(reformatted));
+  const dropped = checkNumbers({
+    source: 'The fine shall be 5,000 rupees.',
+    propositionText: 'The Bank must set the fine.',
+    rewrite: 'The fine must be rupees.',
+    needsReview: false,
+  });
+  ok('a dropped number fails the check', !dropped.pass, JSON.stringify(dropped));
+  ok('an undeclared dropped number is critical', dropped.critical, JSON.stringify(dropped));
+  const declared = checkNumbers({
+    source: 'The fine shall be 5,000 rupees.',
+    propositionText: 'The Bank must set the fine.',
+    rewrite: 'The fine must be rupees.',
+    needsReview: true,
+  });
+  ok('a declared gap fails but is not silent', !declared.pass && !declared.critical, JSON.stringify(declared));
+  const vacuous = checkNumbers({
+    source: 'The Bank shall appoint the auditors.',
+    propositionText: 'The Bank must appoint the auditors.',
+    rewrite: 'The Bank must appoint the auditors.',
+    needsReview: false,
+  });
+  ok('a source without numbers does not engage', !vacuous.engaged && vacuous.pass, JSON.stringify(vacuous));
+}
+
+// Check 4: actor non-invention.
+{
+  const fine = checkActor({
+    source: 'The Bank shall appoint the auditors of the Company.',
+    subject: 'The Bank',
+    actor: { label: 'the Bank', known: true },
+  });
+  ok('a source-span subject is not invention', fine.engaged && fine.pass && !fine.critical, JSON.stringify(fine));
+  const invented = checkActor({
+    source: 'The Bank shall appoint the auditors of the Company.',
+    subject: 'The Ministry',
+    actor: { label: 'the Ministry', known: true },
+  });
+  ok('an invented actor is caught', !invented.pass && invented.critical, JSON.stringify(invented));
+  const fallback = checkActor({
+    source: 'shall be paid forthwith',
+    subject: 'Someone',
+    actor: { label: 'someone else', known: false },
+  });
+  ok('the declared fallback is not invention', fallback.pass && !fallback.critical && !fallback.engaged, JSON.stringify(fallback));
+}
+
+// Check 5: condition/exception conservation, both directions.
+{
+  const kept = checkQualifiers({
+    source: 'The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.',
+    proposition: { condition: [], exception: ['unless the Reserve Bank extends the period'] },
+    rewrite: 'The applicant must furnish the documents within fifteen days, unless the Reserve Bank extends the period.',
+  });
+  ok('a kept exception conserves', kept.engaged && kept.pass, JSON.stringify(kept));
+  const dropped = checkQualifiers({
+    source: 'The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.',
+    proposition: { condition: [], exception: ['unless the Reserve Bank extends the period'] },
+    rewrite: 'The applicant must furnish the documents within fifteen days.',
+  });
+  ok('an exception lost in the rewrite fails', !dropped.pass, JSON.stringify(dropped));
+  const missed = checkQualifiers({
+    source: 'He may do it, provided that he pays the fee.',
+    proposition: { condition: [], exception: [] },
+    rewrite: 'He may do it, provided that he pays the fee.',
+  });
+  ok('a condition missed by the extractor fails', !missed.pass, JSON.stringify(missed));
+  const vacuous = checkQualifiers({
+    source: 'The Bank shall appoint the auditors.',
+    proposition: { condition: [], exception: [] },
+    rewrite: 'The Bank must appoint the auditors.',
+  });
+  ok('a sentence with no qualifiers does not engage', !vacuous.engaged && vacuous.pass, JSON.stringify(vacuous));
+}
+
+// Check 6: coverage — the minimum viable subset, on every sentence.
+{
+  ok('the minimum subset passes',
+    checkCoverage({ proposition: propose('The Bank shall appoint the auditors.') }).pass);
+  const hole = { ...propose('The Bank shall appoint the auditors.'), action: null };
+  ok('a missing action fails coverage', !checkCoverage({ proposition: hole }).pass);
+}
+
+// compareSentence carries both renderings and a verdict per check.
+{
+  const rec = compareSentence('The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.');
+  ok('both renderings are on the record',
+    typeof rec.substitution === 'string' && rec.substitution.length > 0 && rec.frame.length > 0,
+    JSON.stringify({ substitution: rec.substitution, frame: rec.frame }));
+  ok('every check has a verdict',
+    rec.checks.length === 6 && rec.checks.every((c) => typeof c.pass === 'boolean'),
+    JSON.stringify(rec.checks.map((c) => [c.id, c.engaged, c.pass])));
+  ok('a clean sentence agrees', rec.agree === true, JSON.stringify(rec.checks.filter((c) => !c.pass)));
+
+  const run = compareEngines('The Bank shall appoint the auditors. Every beneficiary shall be entitled to receive the benefits within thirty days.');
+  ok('the rate carries totals',
+    run.rate.total === 2 && run.rate.agreed >= 1 && typeof run.rate.agreement === 'number',
+    JSON.stringify(run.rate));
+  ok('the per-check breakdown engages and passes',
+    run.rate.perCheck.force && typeof run.rate.perCheck.force.engaged === 'number',
+    JSON.stringify(run.rate.perCheck));
+  ok('criticals are counted by class',
+    typeof run.rate.critical.total === 'number' && !!run.rate.critical.byClass,
+    JSON.stringify(run.rate.critical));
+  const again = compareEngines('The Bank shall appoint the auditors. Every beneficiary shall be entitled to receive the benefits within thirty days.');
+  ok('the measurement is deterministic', JSON.stringify(again.rate) === JSON.stringify(run.rate));
+}
+
+// The threshold reads as needs vs has, and the switch is not the agent's to name.
+{
+  ok('the threshold is 95% agreement with zero criticals',
+    THRESHOLD.agreement === 0.95 && THRESHOLD.criticals === 0, JSON.stringify(THRESHOLD));
+  const met = thresholdVerdict({
+    rate: { agreement: 0.97, total: 100, agreed: 97, critical: { total: 0, byClass: {} }, perCheck: {} },
+    humanReview: { passed: 18, of: 20 },
+    founderSignOff: false,
+  });
+  ok('mechanical bars met still needs the founder',
+    met.switch === 'pending' && met.reasons.some((r) => /founder/i.test(r)), JSON.stringify(met));
+  const low = thresholdVerdict({
+    rate: { agreement: 0.9, total: 100, agreed: 90, critical: { total: 2, byClass: { 'force flip': 2 } }, perCheck: {} },
+    humanReview: null,
+    founderSignOff: false,
+  });
+  ok('below threshold is a finding, not a failure',
+    low.switch === 'not-justified' && low.reasons.length > 0, JSON.stringify(low));
+}
+
+// The human-review draw is stratified, sized and repeatable.
+{
+  const run = compareEngines('The Bank shall appoint the auditors of the Company. The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period. In this Act, "scheme" means the scheme notified under section 14.');
+  const sample = drawReviewSample(run.sentences, 3);
+  ok('the draw stays inside its size', sample.length === 3, `${sample.length}`);
+  ok('the draw is repeatable',
+    JSON.stringify(drawReviewSample(run.sentences, 3).map((s) => s.id)) === JSON.stringify(sample.map((s) => s.id)));
+  ok('the drawn records name their stratum',
+    sample.every((s) => typeof s.reviewStratum === 'string' && s.reviewStratum.length > 0),
+    JSON.stringify(sample.map((s) => s.reviewStratum)));
+}
+
+// ---- 10. Extractor gaps the corpus run exposed -------------------------
+//
+// The month "May" is not the modal "may", and a fragment with no predicate
+// still carries the minimum viable subset — its own words.
+import { typeProposition, propositionFromSentence } from '../src/lib/legal/propositions.js';
+
+{
+  ok('a bare month is not a permission', typeProposition('May') === 'statement', typeProposition('May'));
+  ok('a date fragment is not a permission',
+    typeProposition('May 2010, 4 Dec.') === 'statement', typeProposition('May 2010, 4 Dec.'));
+  ok('a real permission still reads as one',
+    typeProposition('The Centre may make rules for carrying out the purposes of this Act.') === 'permission');
+  ok('a modal before a comma still reads as force',
+    typeProposition('It shall come into force on such date as the Central Government may, by notification in the Official Gazette, appoint') !== 'statement');
+  const frag = propositionFromSentence('May');
+  ok('a fragment carries its own words as its predicate',
+    checkCoverage({ proposition: frag }).pass,
+    JSON.stringify({ kind: frag.obligationType, action: frag.action, predicate: frag.predicate }));
+}
+
+// The permission row decision: "permission" is a deontic grant in active
+// voice. A passive possibility ("can be found") and a future ("will depend")
+// are statements — the modal word alone is not the force.
+{
+  ok('a passive possibility is not a permission',
+    typeProposition('The press release regarding the above can be found at the Bank\'s website.') === 'statement',
+    typeProposition('The press release regarding the above can be found at the Bank\'s website.'));
+  ok('a future is not a permission',
+    typeProposition('The timelines for submission of returns will depend on the frequency at which the return is to be submitted.') === 'statement',
+    typeProposition('The timelines for submission of returns will depend on the frequency at which the return is to be submitted.'));
+  ok('a deontic grant stays a permission',
+    typeProposition('Individuals seeking delisting can submit their request to the Ombudsperson.') === 'permission',
+    typeProposition('Individuals seeking delisting can submit their request to the Ombudsperson.'));
+}
+
 console.log(failures === 0 ? '\nAll proposition checks passed.' : `\n${failures} proposition check(s) FAILED.`);
 process.exit(failures === 0 ? 0 : 1);

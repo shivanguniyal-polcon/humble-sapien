@@ -62,7 +62,18 @@ function CitizenPanel({ text, setText }) {
       result.simplifiedText,
     ];
     if (result.obligations.length > 0) {
-      lines.push('', '--- Obligations found: who must do what ---', ...result.obligations.map((o, i) => `${i + 1}. ${o}`));
+      lines.push(
+        '',
+        '--- Obligations found: who must do what ---',
+        ...result.obligations.map((o, i) => {
+          const flags = [
+            o.fragment ? 'fragment' : null,
+            o.split ? 'part of a longer sentence' : null,
+            o.hedged ? 'hedged' : null,
+          ].filter(Boolean);
+          return `${i + 1}. [${o.typeLabel}] ${o.text}${flags.length ? ` (${flags.join('; ')})` : ''}`;
+        }),
+      );
     }
     if (result.hindi.sentences.length > 0) {
       lines.push('', '--- Hindi plain version ---', ...result.hindi.sentences.map((h) => h.text));
@@ -134,6 +145,52 @@ function CitizenPanel({ text, setText }) {
           )}
         </div>
 
+        {result.propositions.length > 0 && (
+          <div className="output-sub" style={{ marginTop: '1.5rem' }}>
+            <h4>Propositions: the frame beside the rewrite</h4>
+            <p className="meta">
+              Every sentence is typed and slotted into one canonical frame —
+              who, with what force, does what, when, and unless what. The
+              frame sits beside today&apos;s rewrite so the two can be
+              compared: a dropped condition, a lost deadline or a softened
+              duty shows up here even when both sentences read well.
+            </p>
+            <ul className="proposition-list">
+              {result.propositions.map((p) => (
+                <li key={p.id}>
+                  <span
+                    className={`obligation-type${p.kind === 'duty' ? ' obligation-action' : ''}`}
+                    title={p.kindNote}
+                  >
+                    {p.kindLabel}
+                  </span>
+                  <div className="proposition-compare">
+                    <div>
+                      <span className="proposition-side">Today&apos;s rewrite</span>
+                      <p className="proposition-rewrite">{p.rewrite}</p>
+                    </div>
+                    <div>
+                      <span className="proposition-side">Canonical frame</span>
+                      <p className="proposition-frame">{p.frame}</p>
+                    </div>
+                  </div>
+                  {(p.flags.fragment || p.flags.hedged || p.split) && (
+                    <span className="obligation-flag">
+                      {[
+                        p.flags.fragment ? 'fragment' : null,
+                        p.split ? 'part of a longer sentence' : null,
+                        p.flags.hedged ? 'hedged' : null,
+                      ]
+                        .filter(Boolean)
+                        .join('; ')}
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
         {result.stats.replacements.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
             <h4>Statutory phrases replaced</h4>
@@ -150,9 +207,35 @@ function CitizenPanel({ text, setText }) {
         {result.obligations.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
             <h4>Obligations found: who must do what</h4>
-            <ul>
-              {result.obligations.map((o, i) => (
-                <li key={i}>{o}</li>
+            <p className="meta">
+              Every line is typed. A duty is something someone has to do. A
+              grant is something they may claim. A composition rule says who
+              sits where. Only the first is a task, so the types are what
+              separates a task list from a list of sentences.
+            </p>
+            <ul className="obligation-list">
+              {result.obligations.map((o) => (
+                <li key={o.id}>
+                  <span className={`obligation-type obligation-${o.type}`}>
+                    {o.typeLabel}
+                  </span>
+                  <span className="obligation-text">{o.text}</span>
+                  {o.fragment && (
+                    <span className="obligation-flag" title="This sentence is cut off in the source. Read it with the sentence around it.">
+                      fragment
+                    </span>
+                  )}
+                  {o.split && (
+                    <span className="obligation-flag" title="This is one part of a sentence that was too long to say in one breath. Read it with the other part.">
+                      part of a longer sentence
+                    </span>
+                  )}
+                  {o.hedged && (
+                    <span className="obligation-flag" title="The source hedges: preferably, endeavour, as far as possible.">
+                      hedged
+                    </span>
+                  )}
+                </li>
               ))}
             </ul>
           </div>

@@ -163,11 +163,26 @@ const PubPage = ({ pub, onBack, onNavigate }) => (
   </article>
 );
 
-export default function Research({ onNavigate, openPub, onOpenPub }) {
-  const [type, setType] = useState('All');
+export default function Research({ onNavigate, openPub, onOpenPub, openType, onTypeChange }) {
+  const [localType, setLocalType] = useState('All');
   const [localId, setLocalId] = useState(null);
   const openId = openPub !== undefined ? openPub : localId;
   const setOpenId = onOpenPub || setLocalId;
+
+  // The type filter rides in the URL, so the dropdown in the nav and the
+  // chips on this page are the same control and cannot disagree. Local state
+  // is only the fallback for a standalone render with no router.
+  const type =
+    openType === undefined
+      ? localType
+      : PUB_TYPES.includes(openType)
+        ? openType
+        : 'All';
+
+  const pickType = (t) => {
+    setLocalType(t);
+    if (onTypeChange) onTypeChange(t);
+  };
 
   const open = publications.find((p) => p.id === openId);
   if (open) {
@@ -198,7 +213,7 @@ export default function Research({ onNavigate, openPub, onOpenPub }) {
             key={t}
             className={`chip ${type === t ? 'chip-active' : ''}`}
             aria-pressed={type === t}
-            onClick={() => setType(t)}
+            onClick={() => pickType(t)}
           >
             {t}
           </button>

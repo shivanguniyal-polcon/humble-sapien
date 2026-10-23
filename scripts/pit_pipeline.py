@@ -88,6 +88,29 @@ RSS_SOURCES = [
                + urllib.parse.quote("site:pib.gov.in/PressReleasePage.aspx")
                + "&hl=en-IN&gl=IN&ceid=IN:en",
     },
+    # ----------------------------------------------------------------------
+    # Regulators. Verified 22 Oct 2026: RBI and SEBI publish RSS 2.0 that
+    # returns HTTP 200 with a browser-like UA. The other four are documented
+    # in REGULATOR_LISTINGS / REGULATOR_SKIPPED below.
+    {
+        "tag": "RBI (Press releases)", "kind": "regulator",
+        "url": "https://www.rbi.org.in/pressreleases_rss.xml",
+    },
+    {
+        "tag": "RBI (Notifications)", "kind": "regulator",
+        "url": "https://www.rbi.org.in/notifications_rss.xml",
+    },
+    {
+        # Flaky: returns valid RSS 2.0 (30 items) when their TLS chain is
+        # complete, but often fails CERTIFICATE_VERIFY_FAILED because the
+        # server omits the intermediate cert (checked 22 Oct 2026: 1 ok,
+        # 11 failures the same day). Kept wired — a failed source is one
+        # log line, not a crash. Do not "fix" this by disabling cert
+        # checks; wait for SEBI to serve its chain.
+        "tag": "SEBI (Press, circulars, orders)", "kind": "regulator",
+        "url": "https://www.sebi.gov.in/sebirss.xml",
+    },
+
     # National press.
     {"tag": "Google News", "kind": "press",
      "url": "https://news.google.com/rss/search?q=india+policy+governance+scheme"
@@ -97,6 +120,31 @@ RSS_SOURCES = [
     {"tag": "Indian Express", "kind": "press",
      "url": "https://indianexpress.com/feed/"},
 ]
+
+# Regulators with no RSS but a parseable HTML listing. PFRDA's circulars page
+# renders <a href="/en/web/pfrda/w/{slug}">Title</a> in plain HTML (verified
+# 22 Oct 2026). Each entry: path_re filters the links worth taking.
+REGULATOR_LISTINGS = [
+    {
+        "tag": "PFRDA (Circulars)", "kind": "regulator",
+        "url": "https://pfrda.org.in/regulatory-framework/circulars/active-circulars",
+        "path_re": r"^/en/web/pfrda/w/",
+    },
+]
+
+# Checked 22 Oct 2026 and deliberately not wired. Kept here so the next run
+# does not re-litigate each one:
+#   NPCI   no feed; robots.txt disallows * (named bots excepted), so we do
+#          not scrape www.npci.org.in/media/press-release without permission.
+#   IRDAI  press-releases and circulars pages render their lists with
+#          JavaScript; only 14 anchors in the raw HTML, none usable.
+#   NABARD circulars.aspx returns 37 anchors, none of them a circular link
+#          (also JS-rendered). PressReleases.aspx exposes only its title.
+REGULATOR_SKIPPED = {
+    "NPCI": "robots.txt disallows crawling; needs permission, not a workaround",
+    "IRDAI": "listing is JavaScript-rendered; no anchors in raw HTML",
+    "NABARD": "listing is JavaScript-rendered; no circular anchors in raw HTML",
+}
 
 # PRS has no RSS and is not WordPress: parse its HTML listing pages for links.
 PRS_LISTINGS = [
@@ -123,6 +171,11 @@ POLICY_TERMS = re.compile(
 
 # Domain buckets for the site's filter chips, first match wins.
 DOMAINS = [
+    # First match wins, so this sits above Finance & Economy: a circular that
+    # mentions "crore" is still a regulatory item, not a macro one.
+    ("Financial Regulation", r"\brbi\b|\bsebi\b|\bpfrda\b|\birdai\b|\bnabard\b|\bnpci\b|"
+                             r"circular|master direction|master circular|regulatory|"
+                             r"banking|nbfc|repo rate|monetary policy|sebiweb"),
     ("Health", r"health|medical|hospital|ayushman|pmjay|nutrition|ayo|disease"),
     ("Sanitation & Water", r"water|sanitation|swachh|toilet|sewage|jal|drainage"),
     ("Governance", r"governance|parliament|act\b|bill\b|ministry|bureaucra|"
@@ -281,6 +334,44 @@ def _is_prs_detail(path: str) -> bool:
     return False
 
 
+def parse_path_listing(data: bytes, base: str, path_re: str) -> list[dict]:
+    """Extract links from a listing whose item hrefs match a path pattern.
+
+    Generic sibling of parse_prs_listing for regulator pages: the filter is a
+    regex on the URL path instead of PRS's hand-written segment rules.
+    """
+    try:
+        text = data.decode("utf-8", errors="replace")
+    except Exception:
+        return []
+
+    p = _HrefParser()
+    p.feed(text)
+
+    rx = re.compile(path_re)
+    seen: set[str] = set()
+    out: list[dict] = []
+    parsed_base = urllib.parse.urlparse(base)
+
+    for href, label in p.hrefs:
+        if not href or not label:
+            continue
+        if href.startswith("/"):
+            href = urllib.parse.urljoin(
+                f"{parsed_base.scheme}://{parsed_base.netloc}", href)
+        elif not href.startswith("http"):
+            continue
+        if not rx.search(urllib.parse.urlparse(href).path):
+            continue
+        if href in seen or len(label) < 8:
+            continue
+        seen.add(href)
+        out.append({"title": strip_html(label), "url": href,
+                    "summary": "", "published": None})
+
+    return out
+
+
 def parse_prs_listing(data: bytes, base: str, prefix: str) -> list[dict]:
     """Extract PRS *article* links from a listing page (no RSS on PRS)."""
     try:
@@ -407,7 +498,7 @@ Return ONLY a JSON object with exactly these keys:
   "pays": "...",
   "missing": "...",
   "explanation": "...",
-  "domain": "one of: Health | Sanitation & Water | Governance | Welfare & Social Security | Data & Technology | Environment & Climate | Finance & Economy"
+  "domain": "one of: Financial Regulation | Health | Sanitation & Water | Governance | Welfare & Social Security | Data & Technology | Environment & Climate | Finance & Economy"
 }}
 
 If the item is too thin to analyse honestly, still answer from what is present; do not
@@ -503,6 +594,17 @@ def gather_candidates(limit_prs: int = 6) -> list[dict]:
             add(got, src["tag"], src["kind"])
         except Exception as e:
             log(f"{src['tag']} failed: {type(e).__name__} {e}")
+
+    # Regulator HTML listings (PFRDA today). One page each, no crawl budget
+    # to protect beyond basic courtesy.
+    for listing in REGULATOR_LISTINGS:
+        try:
+            data = http_get(listing["url"])
+            got = parse_path_listing(data, listing["url"], listing["path_re"])[:limit_prs]
+            log(f"{listing['tag']}: {len(got)} links")
+            add(got, listing["tag"], listing["kind"])
+        except Exception as e:
+            log(f"{listing['tag']} failed: {type(e).__name__} {e}")
 
     # PRS: parse listing pages, respecting the crawl delay.
     for i, listing in enumerate(PRS_LISTINGS):

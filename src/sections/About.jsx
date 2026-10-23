@@ -60,11 +60,11 @@ export default function About({ onNavigate }) {
           <article className="card">
             <h3>The model</h3>
             <p>
-              THS is a private limited company with the mission locked into
+              THS is a limited liability partnership with the mission locked into
               contract rather than into a corporate form. Every published
               engine version ships under a perpetual public licence granting
               free use to individuals and small civil society organisations, so
-              a future board — or an acquirer — cannot reach back and take it
+              future partners — or an acquirer — cannot reach back and take it
               away. Earned revenue from the paid tiers is mission-locked too:
               it funds free public tools and field work rather than distribution.
             </p>

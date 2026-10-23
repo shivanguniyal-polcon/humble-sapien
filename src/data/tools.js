@@ -33,6 +33,11 @@ export const TOOLS = [
     blurb: 'Manifesto promises against delivered evidence, four years on.',
   },
   {
+    id: 'gender-index', label: 'Gender inclusion index',
+    question: 'Where do women actually stand, state by state?',
+    blurb: 'A composite over five public indicators — women\u2019s schooling, institutional births, anaemia, sex ratio and female literacy — with the weights in your hands and the method printed underneath.',
+  },
+  {
     id: 'solutions', label: 'Local solutions',
     question: 'Who already solved this somewhere?',
     blurb: 'A knowledge base of grassroots solutions, documented with their conditions.',

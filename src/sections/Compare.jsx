@@ -1,6 +1,10 @@
-import { useState } from 'react';
-import { sectors, sectorSources, atlasNote } from '../data/sectors';
+import { lazy, Suspense, useState } from 'react';
+import { sectors, sectorSources, atlasNote, PIT_ROWS } from '../data/sectors';
 import { schemes, featureRows, sources as healthSources } from '../data/comparison';
+
+// The world map carries a quarter of a megabyte of geometry, and most
+// visitors never open this tab. It loads on demand instead.
+const AtlasMap = lazy(() => import('../components/AtlasMap'));
 
 const TABS = [
   { id: 'north', label: 'Global North' },
@@ -36,6 +40,15 @@ const PolicyCard = ({ p, region }) => (
     <p className="policy-sig">
       <span className="approach-key">Signature</span> {p.s}
     </p>
+    <h4 className="policy-pit-head">The public interest test</h4>
+    <dl className="policy-pit">
+      {PIT_ROWS.map(([key, label]) => (
+        <div key={key} className="policy-pit-row">
+          <dt>{label}</dt>
+          <dd>{p.pit?.[key]}</dd>
+        </div>
+      ))}
+    </dl>
   </div>
 );
 
@@ -63,10 +76,14 @@ export default function Compare({ onNavigate, openSub }) {
         <h2>The policy atlas: 15 sectors, two hemispheres</h2>
         <p className="section-strap">
           Ninety flagship policies, from data protection to defence. Pick a
-          sector, read what each region built, then see where the two
-          approaches split.
+          sector, read what each region built, run every card through the
+          public interest test, then see where the two approaches split.
         </p>
       </div>
+
+      <Suspense fallback={<div className="atlas-map-placeholder" aria-hidden="true" />}>
+        <AtlasMap sector={sector} sectors={sectors} />
+      </Suspense>
 
       <div className="filter-row" role="group" aria-label="Choose sector">
         {sectors.map((s) => (
@@ -184,6 +201,13 @@ export default function Compare({ onNavigate, openSub }) {
       <div className="card" style={{ marginTop: '2rem' }}>
         <h3>How to read this atlas</h3>
         <p className="meta">{atlasNote}</p>
+        <p className="meta">
+          The public interest test on each card is THS\'s reading of what the
+          instrument does: who gains, who pays for it, and who the design
+          leaves out. The statute does not make that call for us, so the
+          reading is ours to defend and to revise. Send a correction with a
+          source and the card changes.
+        </p>
         <p className="meta" style={{ marginBottom: 0 }}>
           Sources: {sectorSources.join(' · ')}. Where a primary text was not
           readable during research, the card keeps to what the source supports.

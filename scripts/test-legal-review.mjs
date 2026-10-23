@@ -9,6 +9,7 @@ import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { analyse } from '../src/lib/legal/pipeline.js';
+import { assessApplicability } from '../src/lib/legal/applicability.js';
 import {
   scoreConfidence, structuralMarkers, confidenceHistogram, CONFIDENCE_LEVELS,
 } from '../src/lib/legal/confidence.js';
@@ -586,6 +587,81 @@ section('determinism');
   ok(
     'the same text gives the same rewrites',
     a.rows.every((row, i) => row.plain === b.rows[i].plain),
+  );
+}
+
+// ---- 10. applicability: does this bind the reader? -------------------------
+
+section('applicability');
+
+{
+  const text = [
+    'The Central Government shall notify the scheme in the Official Gazette.',
+    'Every scheduled commercial bank shall submit the return by the fifteenth day.',
+    'The statutory auditor shall submit the compliance certificate to the bank.',
+    'In this Act, "bank" means a banking company.',
+  ].join(' ');
+  const r = analyse(text, { mode: 'legal-review', jurisdictionId: 'in-bare-act' });
+  const profile = {
+    profileId: 'test', version: '1', entityType: 'SCB', depositTaking: null,
+    nbfcCategory: null, assetSizeCr: null, layers: null, serviceUnits: null, activities: [],
+  };
+  const a = assessApplicability(r.rows, profile, {
+    circularId: 'instrument',
+    addresseeByCircular: { instrument: 'Scheduled commercial banks' },
+    scopeTextByCircular: { instrument: '' },
+  });
+  const at = (needle) => a.rows.find((row, i) => r.rows[i].sourceText.includes(needle));
+
+  eq('every row is joined, none dropped', a.rows.length, r.rows.length);
+  eq(
+    'the counts add up to the rows',
+    Object.values(a.counts).reduce((sum, n) => sum + n, 0),
+    r.rows.length,
+  );
+
+  const gov = at('Central Government');
+  eq('a duty on the government is out of scope', gov.verdict, 'out-of-scope');
+  ok('the exclusion states why', gov.reasons.some((x) => /government/.test(x)), gov.reasons.join('; '));
+
+  const bank = at('scheduled commercial bank');
+  eq('a duty on the reader is in scope', bank.verdict, 'in-scope');
+  eq('the bearer is named', bank.bearer && bank.bearer.id, 'ENTITY');
+
+  const auditor = at('statutory auditor');
+  eq('a duty on the auditor is a dependency', auditor.verdict, 'dependency');
+  eq('the dependency names who acts', auditor.bearer && auditor.bearer.id, 'AUDITOR');
+  ok(
+    'the dependency names what to read next',
+    typeof auditor.nextRead === 'string' && /certificate/.test(auditor.nextRead),
+    auditor.nextRead,
+  );
+
+  const definition = at('"bank" means');
+  eq('a definition binds nobody', definition.verdict, 'not-a-duty');
+  ok('and says so rather than dropping the row', definition.reasons.length > 0, definition.reasons.join('; '));
+}
+
+{
+  // An unknown profile fact is a conditional, not an exclusion: the filter
+  // cannot prove the row out, so it keeps it and names the fact it needs.
+  const r = analyse('NBFCs-D shall maintain a record of every deposit received.', {
+    mode: 'legal-review', jurisdictionId: 'in-bare-act',
+  });
+  const profile = {
+    profileId: 'test', version: '1', entityType: 'NBFC', depositTaking: null,
+    nbfcCategory: null, assetSizeCr: null, layers: null, serviceUnits: null, activities: [],
+  };
+  const a = assessApplicability(r.rows, profile, {
+    circularId: 'instrument',
+    addresseeByCircular: { instrument: 'NBFCs' },
+    scopeTextByCircular: { instrument: '' },
+  });
+  eq('an unknown fact makes the row conditional', a.rows[0].verdict, 'conditional');
+  ok(
+    'the condition that would change the answer is named',
+    a.rows[0].conditions.some((c) => c.id === 'deposit-taking' && c.value === 'unknown'),
+    JSON.stringify(a.rows[0].conditions),
   );
 }
 

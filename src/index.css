@@ -591,6 +591,53 @@ main {
   color: var(--color-text-secondary);
 }
 
+/* The public interest test on every atlas card. Stacked rather than in two
+   columns, because the atlas grid runs narrow and a label column would
+   squeeze the answer to nothing. */
+.policy-pit-head {
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+  margin: var(--space-4) 0 var(--space-3);
+}
+
+.policy-pit {
+  margin: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.policy-pit-row {
+  display: grid;
+  gap: var(--space-1);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.policy-pit-row dt {
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.policy-pit-row dd {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+/* Missing is the honest column, so it takes the accent, the same way the
+   PIT Desk marks it. */
+.policy-pit-row:last-child dd {
+  color: var(--color-accent-text);
+}
+
 /* ---------- open-data licence badges (maroon + neutrals) ---------- */
 .license-badge {
   font-size: 0.72rem;
@@ -1089,6 +1136,203 @@ select:focus-visible {
   color: var(--color-text-muted);
 }
 
+/* The typed obligation list. The type is the point: a duty is something
+   someone has to do, a grant is something they may claim, and a composition
+   rule says who sits where. Only the first is a task. */
+.obligation-list {
+  list-style: none;
+  padding-inline-start: 0 !important;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.obligation-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  align-items: baseline;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.obligation-list li:last-child {
+  border-bottom: none;
+}
+
+.obligation-type {
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.1rem 0.55rem;
+  white-space: nowrap;
+}
+
+/* The duty type takes the accent: it is the one row in the list that is
+   somebody's task. */
+.obligation-type.obligation-action {
+  color: var(--color-accent-text);
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-soft-border);
+}
+
+.obligation-text {
+  font-size: 0.92rem;
+  color: var(--color-text);
+}
+
+.obligation-flag {
+  grid-column: 2;
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--clay-700);
+}
+
+/* The proposition comparison: the canonical frame set beside today's
+   rewrite, so a reader can check that the rewrite kept what the sentence
+   said — the act, the clock, the condition and the exception. */
+.proposition-list {
+  list-style: none;
+  padding-inline-start: 0 !important;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.proposition-list li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-1) var(--space-3);
+  align-items: baseline;
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.proposition-list li:last-child {
+  border-bottom: none;
+}
+
+.proposition-compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.proposition-side {
+  display: block;
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.proposition-rewrite,
+.proposition-frame {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+}
+
+.proposition-frame {
+  font-family: var(--font-data);
+  color: var(--color-accent-text);
+}
+
+@media (max-width: 720px) {
+  .proposition-compare {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+}
+
+/* The applicability verdict: what the filter decided about this sentence
+   for the profile the reviewer stated. */
+.applic-chip {
+  display: inline-block;
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+
+.applic-in_scope {
+  background: var(--color-accent-soft);
+  color: var(--color-accent-text);
+  border-color: var(--color-accent-soft-border);
+}
+
+.applic-conditional {
+  background: var(--clay-100);
+  color: var(--clay-800);
+  border-color: var(--clay-200);
+}
+
+.applic-dependency {
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  border-color: var(--color-border);
+}
+
+.applic-out_of_scope {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+
+/* A sentence that asks nobody to do anything is not a duty, and saying so
+   is more use to a reviewer than leaving the row unlabelled. The dashed
+   border marks it as a statement about the sentence, not a verdict on the
+   reader. */
+.applic-not_a_duty {
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+  border-style: dashed;
+}
+
+/* The dependency pointer: the document the buyer has to read next. */
+.read-next {
+  color: var(--color-text-primary);
+}
+
+/* The entity profile: stated facts, and the spaces where a fact is
+   deliberately not stated. */
+.profile-activities {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin: 0 0 var(--space-4);
+}
+
+.profile-activities legend {
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding-inline: var(--space-2);
+}
+
+.profile-check {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-weight: 400;
+  font-size: 0.9rem;
+  margin-bottom: var(--space-2);
+}
+
+.profile-check input {
+  margin-top: 0.3rem;
+}
+
 /* ---------- legal review mode ---------- */
 .mode-switch {
   align-items: center;
@@ -1194,9 +1438,21 @@ select:focus-visible {
   outline-offset: -2px;
 }
 
-.ledger-head .flag-chip {
+.ledger-head > .flag-chip {
   grid-area: flag;
   align-self: start;
+}
+
+/* The risk flag and the applicability verdict stack in the same column: they
+   are two different readings of the same sentence, and a reviewer needs
+   both at once without either one pushing the other off the row. */
+.ledger-head .ledger-chips {
+  grid-area: flag;
+  align-self: start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
 }
 
 .ledger-meta {
@@ -1626,6 +1882,55 @@ select:focus-visible {
   font-weight: 650;
   color: var(--color-text-secondary);
   background: var(--color-surface-sunken);
+}
+
+/* The gender index table carries a second line under each cell: the raw
+   value, the weight, or the gap. nowrap is right for the other tables and
+   wrong here. */
+.data-table .table-sub {
+  display: block;
+  white-space: normal;
+  font-size: 0.72rem;
+  margin-top: 0.1rem;
+}
+
+.index-score {
+  font-weight: 650;
+}
+
+.index-unranked td {
+  color: var(--color-text-muted);
+}
+
+/* The business-case brief: one line per cost, benefit, assumption or risk,
+   laid out as a row of fields so an analyst can tab through a column of
+   numbers the way a spreadsheet trains them to. */
+.brief-line {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 0.7fr) minmax(0, 0.7fr) auto;
+  gap: var(--space-3);
+  align-items: end;
+  padding-block: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.brief-line:last-of-type {
+  border-bottom: 0;
+}
+
+.brief-line-label {
+  min-width: 0;
+}
+
+.brief-line-remove {
+  align-self: end;
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 48rem) {
+  .brief-line {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* ---------- about / support ---------- */
@@ -4063,4 +4368,874 @@ input[type='range'] {
   color: #641622;
   border-left: 3px solid #7a1f2b;
   padding-left: 0.6rem;
+}
+
+/* ------------------------------------------------------------------
+   Policy atlas: the world map
+   One accent (maroon) carries the signal. Everything else is warm gray,
+   so "lit" reads as lit rather than as a second colour scheme.
+   ------------------------------------------------------------------ */
+
+.atlas-map {
+  margin: 0 0 var(--space-6);
+  padding: var(--space-4);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.atlas-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+/* Holds the map's shape while its geometry downloads, so the page does not
+   jump when the map arrives. */
+.atlas-map-placeholder {
+  aspect-ratio: 1200 / 620;
+  border-radius: var(--radius-sm);
+  background: var(--paper-200);
+}
+
+.atlas-map-sea {
+  fill: var(--paper-200);
+}
+
+.atlas-map-svg path {
+  stroke: var(--paper-50);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  transition: fill 120ms ease-out;
+}
+
+.atlas-map-svg .is-base {
+  fill: var(--paper-300);
+}
+
+.atlas-map-svg .is-studied {
+  fill: var(--clay-200);
+}
+
+.atlas-map-svg .is-lit {
+  fill: var(--clay-600);
+}
+
+/* India's claimed boundary is the point of the map, so it is drawn with a
+   heavier line than the rest of the world. */
+.atlas-map-svg .atlas-map-india {
+  stroke: var(--clay-800);
+  stroke-width: 1.2;
+}
+
+.atlas-map-svg path:hover {
+  fill: var(--clay-500);
+}
+
+.atlas-map-caption {
+  margin-top: var(--space-3);
+}
+
+.atlas-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  list-style: none;
+  margin: 0 0 var(--space-2);
+  padding: 0;
+  font-family: var(--font-data);
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+}
+
+.atlas-map-legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.atlas-key {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 3px;
+  border: 1px solid var(--color-border-strong);
+}
+
+.atlas-key-lit {
+  background: var(--clay-600);
+}
+
+.atlas-key-studied {
+  background: var(--clay-200);
+}
+
+.atlas-key-base {
+  background: var(--paper-300);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .atlas-map-svg path {
+    transition: none;
+  }
+}
+
+/* ---------- india locator + scheme ladder ----------
+   The locator is a map with a list beside it. The list is not an
+   alternative to the map: it is the same information in a form a keyboard
+   and a screen reader can use, so nothing is reachable only by clicking a
+   shape. The ladder is the answer, and one rung of it is marked as the
+   citizen's own. */
+
+.locator-ladder {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  margin-bottom: var(--space-7);
+}
+
+@media (max-width: 62rem) {
+  .locator-ladder {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.pane-title {
+  font-size: 1rem;
+  color: var(--clay-800);
+  margin: 0 0 var(--space-2);
+}
+
+.pane-note {
+  margin: 0 0 var(--space-3);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  border-left: 3px solid var(--clay-300);
+  padding-left: var(--space-3);
+}
+
+.locator-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+  font-size: 0.9rem;
+}
+
+.locator-crumb-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.locator-crumb-sep {
+  color: var(--color-text-muted);
+}
+
+/* A district and a tehsil can share a name, so the crumb says which one. */
+.locator-crumb-level {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  margin-left: 0.15rem;
+}
+
+.locator-crumb {
+  background: none;
+  border: none;
+  padding: 0.15rem 0.1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--color-accent-text);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color var(--duration-state) var(--ease-out);
+}
+
+.locator-crumb:hover {
+  color: var(--color-accent-solid-hover);
+}
+
+.locator-crumb:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.locator-crumb.is-current {
+  color: var(--color-text);
+  font-weight: 650;
+  text-decoration: none;
+  cursor: default;
+}
+
+.locator-figure {
+  margin: 0 0 var(--space-4);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+}
+
+.locator-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+}
+
+.locator-shape {
+  fill: var(--paper-300);
+  stroke: var(--color-surface);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+  cursor: pointer;
+  transition: fill var(--duration-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .locator-shape:hover {
+    fill: var(--clay-400);
+  }
+}
+
+.locator-caption {
+  margin-top: var(--space-3);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.locator-side {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.locator-search-label {
+  margin-bottom: var(--space-2);
+}
+
+.locator-search input[type='search'] {
+  width: 100%;
+  min-height: 2.75rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.locator-search input[type='search']:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.locator-problem {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--clay-800);
+  background: var(--clay-50);
+  border: 1px solid var(--clay-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+}
+
+.locator-group-title {
+  margin: 0 0 var(--space-1);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.locator-group-note {
+  margin: 0 0 var(--space-2);
+  font-size: 0.85rem;
+}
+
+.locator-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.locator-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  width: 100%;
+  text-align: left;
+  background: var(--color-surface);
+  border: none;
+  padding: var(--space-2) var(--space-3);
+  font: inherit;
+  cursor: pointer;
+  transition: background-color var(--duration-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .locator-item:hover {
+    background: var(--color-surface-sunken);
+  }
+}
+
+.locator-item:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.locator-item-name {
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.locator-item-meta {
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+  font-family: var(--font-data);
+  white-space: nowrap;
+}
+
+.locator-more {
+  margin-top: var(--space-3);
+}
+
+.locator-picked {
+  background: var(--clay-50);
+  border: 1px solid var(--clay-200);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.locator-picked h4 {
+  margin: 0 0 var(--space-1);
+  color: var(--clay-800);
+}
+
+.locator-picked p {
+  margin: 0;
+}
+
+/* ---------- the ladder ---------- */
+.ladder {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ladder-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+  counter-reset: rung;
+}
+
+.ladder-rung {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.ladder-rung.is-yours {
+  background: var(--clay-50);
+  border-color: var(--clay-200);
+  border-left-color: var(--clay-600);
+}
+
+.ladder-rung-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.ladder-level {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.1rem 0.55rem;
+}
+
+.ladder-here {
+  font-size: 0.78rem;
+  font-weight: 650;
+  color: var(--clay-700);
+  background: var(--clay-100);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.6rem;
+}
+
+.ladder-office {
+  margin: 0 0 var(--space-1);
+  font-size: 1rem;
+  color: var(--clay-800);
+}
+
+.ladder-post {
+  margin: 0 0 var(--space-2);
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.ladder-decides {
+  margin: 0 0 var(--space-3);
+  font-size: 0.94rem;
+}
+
+.ladder-facts {
+  margin: 0 0 var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ladder-facts > div {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: var(--space-2);
+  align-items: baseline;
+}
+
+.ladder-facts dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.ladder-facts dd {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.ladder-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.ladder-status-statutory {
+  background: var(--clay-600);
+  border-color: var(--clay-600);
+  color: var(--color-text-on-accent);
+}
+
+.ladder-status-official {
+  background: var(--clay-100);
+  border-color: var(--clay-200);
+  color: var(--clay-800);
+}
+
+.ladder-status-varies {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-secondary);
+}
+
+.ladder-status-portal {
+  background: var(--color-surface-sunken);
+  border-color: var(--color-border);
+  color: var(--color-text-muted);
+}
+
+/* ---------- the clock ---------- */
+/* The clock sits under the ladder in the same column, so it needs the
+   inter-group space. Two bordered boxes with nothing between them read as
+   one broken frame. */
+.clock {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  margin-top: var(--space-5);
+}
+
+.clock-title {
+  margin: 0 0 var(--space-3);
+  font-size: 1rem;
+  color: var(--clay-800);
+}
+
+/* The dates the citizen gives, then the deadlines that come out of them.
+   The rule between the two says: you have finished typing, start reading. */
+.clock-anchors {
+  display: grid;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* The global label rule puts its space *below* the label, which in a grid
+   pushes the next field down and leaves the label glued to its own input.
+   Here the space belongs between the two, so the margin goes. */
+.clock-anchor {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.clock-anchor-label {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.clock-anchor input {
+  min-height: 2.6rem;
+  padding: 0.4rem 0.6rem;
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.clock-anchor input:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.clock-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-4);
+}
+
+.clock-item {
+  border-left: 3px solid var(--color-border-strong);
+  padding-left: var(--space-4);
+}
+
+.clock-item.is-passed {
+  border-left-color: var(--clay-600);
+}
+
+/* The obligation, and then its clock. They are one thing, so they sit
+   close together. */
+.clock-what {
+  margin: 0 0 var(--space-1);
+  font-size: 0.95rem;
+}
+
+/* The date is the answer. It is set in the data face; the words around it
+   are not, so the date is the only thing on the line that looks like data. */
+.clock-count {
+  margin: 0 0 var(--space-2);
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.clock-date {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+  font-weight: 650;
+  color: var(--color-text);
+}
+
+.clock-count.is-passed {
+  color: var(--clay-800);
+}
+
+.clock-count.is-passed .clock-date {
+  color: var(--clay-800);
+}
+
+.clock-count-pending {
+  color: var(--color-text-muted);
+}
+
+/* What the law says about the period. It explains the line above it, so it
+   sits under it and stays out of the way. */
+.clock-note {
+  margin: 0 0 var(--space-3);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+/* What to do now that the date has gone. This is the line the citizen came
+   for, so it is set apart from the note above it and from the receipt
+   below it. */
+.clock-then {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--clay-300);
+  font-size: 0.92rem;
+  color: var(--clay-800);
+}
+
+/* The receipt. It is where the period comes from, so it sits at the foot of
+   the item, and the chip gets a real gap instead of a space character. */
+.clock-source {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.clock-cite {
+  flex: 1 1 16rem;
+  min-width: 0;
+}
+
+/* ---------- scheme card + traps ---------- */
+.scheme-card {
+  margin-bottom: var(--space-5);
+}
+
+.scheme-card h3 {
+  margin-top: 0;
+  font-size: 1.15rem;
+  color: var(--clay-800);
+}
+
+.scheme-what {
+  margin: 0 0 var(--space-2);
+  font-size: 1rem;
+}
+
+.scheme-note {
+  margin: var(--space-3) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  border-top: 1px dashed var(--color-border-strong);
+  padding-top: var(--space-3);
+}
+
+.section-head-tight {
+  margin-top: var(--space-7);
+}
+
+.traps-card {
+  margin-bottom: var(--space-5);
+}
+
+.traps-card h4 {
+  margin: 0 0 var(--space-1);
+  color: var(--clay-800);
+}
+
+.traps {
+  margin: var(--space-3) 0 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.trap dt {
+  font-weight: 650;
+  color: var(--color-text);
+  font-size: 0.95rem;
+}
+
+.trap dd {
+  margin: var(--space-1) 0 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.touchpoint-step {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.touchpoint-step h4 {
+  margin: 0 0 var(--space-1);
+  font-size: 0.98rem;
+  color: var(--clay-800);
+}
+
+/* ---------- the sheet ---------- */
+.sheet-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.sheet {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.sheet-note {
+  margin: 0 0 var(--space-3);
+}
+
+.sheet-title {
+  margin: 0 0 var(--space-1);
+  font-size: 1.25rem;
+  color: var(--clay-800);
+}
+
+.sheet-where {
+  margin: 0 0 var(--space-4);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.sheet-block {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.sheet-block h4 {
+  margin: 0 0 var(--space-2);
+  font-size: 0.95rem;
+  color: var(--clay-800);
+}
+
+.sheet-office {
+  margin: 0 0 var(--space-2);
+  font-size: 1rem;
+}
+
+.sheet-line {
+  margin: 0 0 var(--space-3);
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+}
+
+.sheet-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+}
+
+.sheet-facts dt {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  font-weight: 650;
+}
+
+.sheet-facts dd {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.sheet-source {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.sheet-above {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.92rem;
+}
+
+.sheet-above li + li {
+  margin-top: var(--space-2);
+}
+
+.sheet-dates {
+  margin: 0;
+  padding-inline-start: 1.1rem;
+  font-size: 0.92rem;
+}
+
+.sheet-dates li + li {
+  margin-top: var(--space-2);
+}
+
+.sheet-letter {
+  margin: 0;
+  padding: var(--space-4);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-md);
+  font-family: var(--font-data);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  overflow-x: auto;
+}
+
+/* ---------- printing the sheet ---------- */
+/* The sheet is the one thing on this page that goes on paper. Everything
+   else is navigation, and a printed page of navigation is waste. */
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .site-header,
+  .site-footer,
+  .locator-ladder,
+  .sheet-bar,
+  .sheet-actions,
+  .touchpoint-list,
+  .filter-row,
+  .traps-card,
+  .scheme-card {
+    display: none !important;
+  }
+
+  .shell {
+    max-width: none;
+    padding-inline: 0;
+  }
+
+  main {
+    padding-block: 0;
+  }
+
+  .sheet {
+    border: none;
+    padding: 0;
+  }
+
+  .sheet-block {
+    break-inside: avoid;
+  }
+
+  .sheet-letter {
+    background: none;
+    padding: 0;
+    font-size: 10pt;
+  }
 }

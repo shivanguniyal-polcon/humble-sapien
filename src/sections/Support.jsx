@@ -20,20 +20,22 @@ export default function Support() {
           <div>
             <div className="fund-row">
               <div>
-                <strong>Individual giving</strong>
+                <strong>Institutional sponsorship</strong>
                 <p className="meta" style={{ margin: 0 }}>
-                  One-time and recurring donations from people who want their
-                  policy evidence in the open.
+                  One-time and recurring sponsorship from people who want their
+                  policy evidence in the open. THS is an LLP, so this is a
+                  commercial payment, not a tax-deductible donation.
                 </p>
               </div>
               <span className="fund-tag">Unrestricted</span>
             </div>
             <div className="fund-row">
               <div>
-                <strong>Grants</strong>
+                <strong>Commissioned modules</strong>
                 <p className="meta" style={{ margin: 0 }}>
-                  Institutional funding for named programmes in health,
-                  sanitation, governance and public interest technology.
+                  Funded engineering of new instruments in health, sanitation,
+                  governance and public interest technology, published into the
+                  public engine.
                 </p>
               </div>
               <span className="fund-tag">Programme</span>
@@ -72,13 +74,13 @@ export default function Support() {
             </ul>
             <p className="meta" style={{ marginBottom: 0 }}>
               The long-run goal is deliberate: earned revenue covers the
-              operating base, so donations can fund the work markets never will.
+              operating base, and sponsorship funds the work markets never will.
             </p>
           </article>
           <article className="card">
             <h3>Talk to us about funding</h3>
             <p>
-              Whether you are an individual donor, a foundation or an
+              Whether you are an individual sponsor, a foundation or an
               institution that needs the Commons Plus tier: start with an email
               and we will take it from there.
             </p>

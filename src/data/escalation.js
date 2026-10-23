@@ -29,9 +29,9 @@ export const escalation = {
         {
           level: 'Formal grievance',
           office: 'Central Grievance Redressal Management System (CGRMS)',
-          authority: 'Grievance portal: issues a Unique Grievance Number (UGN)',
+          authority: 'Grievance portal: issues a Unique Ticket Number (UTN)',
           reach: 'cgrms.pmjay.gov.in · helpline 14555 / 1800 111 565',
-          note: 'Save the UGN; it is the reference for every follow-up.',
+          note: 'Save the UTN; it is the reference for every follow-up.',
           verified: true,
           source: 'cgrms.pmjay.gov.in',
         },
@@ -121,7 +121,7 @@ export const escalation = {
         {
           level: 'Formal grievance',
           office: 'CGRMS',
-          authority: 'Grievance portal with UGN tracking',
+          authority: 'Grievance portal with UTN tracking',
           reach: 'cgrms.pmjay.gov.in · 14555 / 1800 111 565',
           note: 'File here in parallel with the insurer dispute.',
           verified: true,

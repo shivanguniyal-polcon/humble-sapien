@@ -15,6 +15,10 @@ import {
 } from '../lib/legal/review.js';
 import { currencyCheck } from '../lib/legal/currency.js';
 import {
+  assessApplicability, cleanAddressee, scopeTextFromInstrument,
+  ENTITY_TYPES, PROFILE_FACTS, PROFILE_ACTIVITIES,
+} from '../lib/legal/applicability.js';
+import {
   MATTER_FIELDS, emptyMatter, normaliseMatter, matterComplete,
   createRunRecord, appendRun, readRuns, clearRuns,
   exportAuditCsv, exportAuditJson, verifyRun,
@@ -59,6 +63,169 @@ const Stat = ({ label, value, tone }) => (
   </div>
 );
 
+// What the four applicability verdicts mean, in the reviewer's words. The
+// filter's names are the join's names; these are the sentences a person
+// reads.
+const APPLIC_LABELS = {
+  'in-scope': 'Binds you',
+  conditional: 'Turns on a fact you have not stated',
+  dependency: 'Binds someone you rely on',
+  'out-of-scope': 'Does not bind you',
+  'not-a-duty': 'Not a duty',
+};
+
+const ApplicChip = ({ verdict }) => (
+  <span className={`applic-chip applic-${verdict.replace(/-/g, '_')}`}>
+    {APPLIC_LABELS[verdict] || verdict}
+  </span>
+);
+
+// The entity profile: who is reading. It is supplied, never guessed — a
+// wrong profile is the one error that produces a confidently wrong list.
+const emptyProfile = () => ({
+  profileId: 'review',
+  version: '1',
+  asOfDate: new Date().toISOString().slice(0, 10),
+  entityType: 'SCB',
+  nbfcCategory: null,
+  depositTaking: null,
+  assetSizeCr: null,
+  layers: null,
+  serviceUnits: null,
+  activities: [],
+});
+
+const ProfileCard = ({ profile, onChange, onClear, counts }) => {
+  const set = (key, value) => onChange({ ...profile, [key]: value });
+  const isNbfc = profile.entityType === 'NBFC' || profile.entityType === 'HFC';
+
+  return (
+    <div className="card legal-meta">
+      <h3>Who is reading this</h3>
+      <p className="meta">
+        An entity profile, stated rather than guessed. With one set, the
+        ledger says for every sentence whether it binds you, binds a third
+        party you rely on, turns on a fact you have not stated, or does not
+        bind you at all. Nothing is removed: an exclusion always carries its
+        reason, because a duty that vanishes is a compliance failure and a
+        duty that takes ten seconds to clear is not.
+      </p>
+
+      <div className="control">
+        <label htmlFor="profile-entity">Entity type</label>
+        <select
+          id="profile-entity"
+          value={profile.entityType}
+          onChange={(e) => set('entityType', e.target.value)}
+        >
+          {ENTITY_TYPES.map((t) => (
+            <option key={t.id} value={t.id}>
+              {t.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {PROFILE_FACTS.map((fact) => (
+        <div className="control" key={fact.key}>
+          <label htmlFor={`profile-${fact.key}`}>{fact.label}</label>
+          <select
+            id={`profile-${fact.key}`}
+            value={fact.options.find((o) => o.id === (profile[fact.key] ?? ''))?.id ?? ''}
+            onChange={(e) => {
+              const raw = e.target.value;
+              if (!raw) return set(fact.key, null);
+              if (fact.key === 'layers') return set(fact.key, [raw]);
+              if (fact.key === 'depositTaking') return set(fact.key, raw === 'yes');
+              return set(fact.key, raw);
+            }}
+          >
+            {fact.options.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      ))}
+
+      <div className="meta-grid">
+        <div className="control">
+          <label htmlFor="profile-asset">Asset size (₹ crore)</label>
+          <input
+            id="profile-asset"
+            type="number"
+            min="0"
+            value={profile.assetSizeCr ?? ''}
+            onChange={(e) =>
+              set('assetSizeCr', e.target.value === '' ? null : Number(e.target.value))
+            }
+          />
+        </div>
+        <div className="control">
+          <label htmlFor="profile-units">Service delivery units</label>
+          <input
+            id="profile-units"
+            type="number"
+            min="0"
+            value={profile.serviceUnits ?? ''}
+            onChange={(e) =>
+              set('serviceUnits', e.target.value === '' ? null : Number(e.target.value))
+            }
+          />
+        </div>
+      </div>
+
+      <fieldset className="profile-activities">
+        <legend>Activities</legend>
+        <p className="meta">
+          Tick only what applies. Anything left blank is treated as unknown,
+          and an unknown fact raises a sentence to &ldquo;turns on a fact you
+          have not stated&rdquo; rather than dropping it.
+        </p>
+        {PROFILE_ACTIVITIES.map((activity) => (
+          <label className="profile-check" key={activity.id}>
+            <input
+              type="checkbox"
+              checked={profile.activities.includes(activity.id)}
+              onChange={(e) =>
+                set(
+                  'activities',
+                  e.target.checked
+                    ? [...profile.activities, activity.id]
+                    : profile.activities.filter((a) => a !== activity.id),
+                )
+              }
+            />
+            {activity.label}
+          </label>
+        ))}
+      </fieldset>
+
+      {counts && (
+        <div className="stat-grid">
+          <Stat label="Bind you" value={counts['in-scope']} />
+          <Stat label="Turn on a fact" value={counts.conditional} />
+          <Stat label="Someone you rely on" value={counts.dependency} />
+          <Stat label="Do not bind you" value={counts['out-of-scope']} />
+          <Stat label="Not a duty" value={counts['not-a-duty']} />
+        </div>
+      )}
+
+      <div className="btn-row">
+        <button type="button" className="btn btn-secondary" onClick={onClear}>
+          Clear the profile
+        </button>
+        <p className="fine-print">
+          {isNbfc
+            ? 'Profile v1, stated in this session and kept in this tab only. Nothing about it leaves the browser.'
+            : 'Profile v1, stated in this session and kept in this tab only. Nothing about it leaves the browser.'}
+        </p>
+      </div>
+    </div>
+  );
+};
+
 export default function LegalReview({ text, onTextChange }) {
   const [jurisdictionId, setJurisdictionId] = useState('in-bare-act');
   const [meta, setMeta] = useState({
@@ -81,6 +248,8 @@ export default function LegalReview({ text, onTextChange }) {
   const [notice, setNotice] = useState(null);
   const [runs, setRuns] = useState([]);
   const [runCheck, setRunCheck] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [scopeFilter, setScopeFilter] = useState('all');
 
   const result = useMemo(
     () => analyse(text, { jurisdictionId, mode: 'legal-review', source: meta }),
@@ -94,6 +263,24 @@ export default function LegalReview({ text, onTextChange }) {
   const matterFields = useMemo(() => normaliseMatter(matter), [matter]);
   const matterOk = matterComplete(matter);
   const reviewStale = Boolean(Object.keys(review).length) && reviewText !== text;
+
+  // The applicability join. It runs over the same rows the ledger shows, so
+  // a verdict and a sentence are never out of step, and it re-runs when the
+  // text changes because the scope of the instrument is read from the text.
+  const applicability = useMemo(() => {
+    if (!profile) return null;
+    return assessApplicability(result.rows, profile, {
+      circularId: 'instrument',
+      addresseeByCircular: { instrument: cleanAddressee('', text) },
+      scopeTextByCircular: { instrument: scopeTextFromInstrument(text) },
+    });
+  }, [result.rows, profile, text]);
+
+  const verdictById = useMemo(() => {
+    const map = new Map();
+    if (applicability) for (const row of applicability.rows) map.set(row.id, row);
+    return map;
+  }, [applicability]);
 
   useEffect(() => {
     let live = true;
@@ -114,9 +301,13 @@ export default function LegalReview({ text, onTextChange }) {
       result.rows.filter((r) => {
         if (filter !== 'all' && r.flag !== filter) return false;
         if (confFilter !== 'all' && (!r.confidence || r.confidence.level !== confFilter)) return false;
+        if (scopeFilter !== 'all') {
+          const verdict = verdictById.get(r.id);
+          if (!verdict || verdict.verdict !== scopeFilter) return false;
+        }
         return true;
       }),
-    [result.rows, filter, confFilter],
+    [result.rows, filter, confFilter, scopeFilter, verdictById],
   );
 
   const setMetaField = (key) => (event) => setMeta({ ...meta, [key]: event.target.value });
@@ -371,6 +562,37 @@ export default function LegalReview({ text, onTextChange }) {
             </p>
           </div>
 
+          {profile ? (
+            <ProfileCard
+              profile={profile}
+              onChange={setProfile}
+              onClear={() => {
+                setProfile(null);
+                setScopeFilter('all');
+              }}
+              counts={applicability ? applicability.counts : null}
+            />
+          ) : (
+            <div className="card legal-meta">
+              <h3>Who is reading this</h3>
+              <p className="meta">
+                Set an entity profile and the ledger will say, for every
+                sentence, whether it binds you, binds a third party you rely
+                on, turns on a fact you have not stated, or does not bind you
+                at all. A profile is stated, never guessed.
+              </p>
+              <div className="btn-row">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  onClick={() => setProfile(emptyProfile())}
+                >
+                  Set an entity profile
+                </button>
+              </div>
+            </div>
+          )}
+
           {result.warnings.length > 0 && (
             <div className="card legal-warnings">
               <h3>What this run found</h3>
@@ -413,6 +635,24 @@ export default function LegalReview({ text, onTextChange }) {
               </button>
             ))}
           </div>
+
+          {profile && applicability && (
+            <div className="filter-row" role="group" aria-label="Filter by applicability">
+              {['all', 'in-scope', 'conditional', 'dependency', 'out-of-scope', 'not-a-duty'].map((v) => (
+                <button
+                  key={v}
+                  type="button"
+                  className={`chip ${scopeFilter === v ? 'chip-active' : ''}`}
+                  onClick={() => setScopeFilter(v)}
+                  aria-pressed={scopeFilter === v}
+                >
+                  {v === 'all'
+                    ? `All ${result.rows.length}`
+                    : `${APPLIC_LABELS[v]} ${applicability.counts[v]}`}
+                </button>
+              ))}
+            </div>
+          )}
 
           {notice && (
             <p className={`notice notice-${notice.tone}`} role="status">{notice.text}</p>
@@ -460,6 +700,7 @@ export default function LegalReview({ text, onTextChange }) {
               visibleRows.map((row) => {
                 const open = openRow === row.id;
                 const decision = reviewDecision(review, row.id);
+                const verdict = verdictById.get(row.id);
                 return (
                   <div key={row.id} className={`ledger-row ledger-${row.flag}`}>
                     <button
@@ -468,7 +709,10 @@ export default function LegalReview({ text, onTextChange }) {
                       onClick={() => setOpenRow(open ? null : row.id)}
                       aria-expanded={open}
                     >
-                      <FlagChip flag={row.flag} />
+                      <span className="ledger-chips">
+                        <FlagChip flag={row.flag} />
+                        {verdict && <ApplicChip verdict={verdict.verdict} />}
+                      </span>
                       <ConfidenceChip confidence={row.confidence} />
                       <span className="ledger-meta">
                         {row.clause ? `${row.clause} · ` : ''}
@@ -529,6 +773,33 @@ export default function LegalReview({ text, onTextChange }) {
                         <p className="ledger-source">
                           <span className="ledger-label">Source</span> {row.sourceText}
                         </p>
+                        {verdict && (
+                          <p className="meta">
+                            <span className="ledger-label">Applicability</span>{' '}
+                            {APPLIC_LABELS[verdict.verdict]}
+                            {verdict.reasons.length > 0 && ` — ${verdict.reasons.join('; ')}`}
+                          </p>
+                        )}
+                        {verdict && verdict.bearer && (
+                          <p className="meta">
+                            <span className="ledger-label">Who acts</span> {verdict.bearer.label}
+                          </p>
+                        )}
+                        {verdict && verdict.nextRead && (
+                          <p className="meta read-next">
+                            <span className="ledger-label">Read next</span> {verdict.nextRead}
+                          </p>
+                        )}
+                        {verdict && verdict.conditions.length > 0 && (
+                          <ul className="ledger-reasons">
+                            {verdict.conditions.map((c) => (
+                              <li key={c.id}>
+                                {c.label}: {c.value}
+                                {c.matched ? ` (${c.matched})` : ''}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
                         <p className="meta">
                           <span className="ledger-label">Source span</span> characters {row.start}–{row.end} of the
                           input · sentence {row.id} · {row.typeLabel}: {row.typeNote}

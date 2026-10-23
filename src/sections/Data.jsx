@@ -99,8 +99,10 @@ export default function Data({ onNavigate, openSub }) {
     setSeenSub(openSub);
     if (openSub === 'methods' || openSub === 'opendata') {
       setView(openSub);
-    } else if (catalog.some((d) => d.id === openSub)) {
-      setActiveId(openSub);
+    } else {
+      // A dataset id, or no sub at all: the playground. Without the else
+      // branch, #/data left the methods page on screen.
+      if (openSub && catalog.some((d) => d.id === openSub)) setActiveId(openSub);
       setView('playground');
     }
   }

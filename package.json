@@ -7,8 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs",
+    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs && node scripts/test-atlas.mjs && node scripts/test-india-locator.mjs",
     "test:api": "node scripts/test-api.mjs",
+    "test:atlas": "node scripts/test-atlas.mjs",
+    "test:india": "node scripts/test-india-locator.mjs",
+    "build:map": "node scripts/build-world-map.mjs",
+    "build:india": "node --max-old-space-size=6144 scripts/build-india-admin.mjs",
     "api": "wrangler dev -c api/wrangler.toml",
     "preview": "vite preview"
   },
@@ -20,7 +24,9 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
+    "d3-geo": "^3.1.1",
     "oxlint": "^1.81.0",
+    "tesseract.js": "^6.0.1",
     "vite": "^8.3.0"
   }
 }

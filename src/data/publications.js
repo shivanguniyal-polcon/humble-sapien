@@ -5,6 +5,73 @@
 
 export const publications = [
   {
+    id: 'dpi-corridor',
+    type: 'Report',
+    domain: 'Governance',
+    title: 'The DPI corridor: what UPI, Pix and NIP actually chose',
+    date: 'October 2026',
+    author: 'THS Research',
+    abstract:
+      '“Learn from India’s UPI” is repeated in ministerial decks with almost no structural comparison behind it. UPI, Brazil’s Pix and Nigeria’s NIP are three different designs solving three different problems. This puts them on one fixed frame — who runs the rail, what account it rides on, how it is priced, whether it interoperates and works offline, and who it leaves out — so a new adopter can see which choices travel and which only look copyable. Every figure carries its source and its as-of date; where a number is not published, it is named as a gap rather than estimated.',
+    findings: [
+      'Three governance models, not one: UPI runs on NPCI, a broad-based payments utility owned by member banks; Pix is run directly by Brazil’s central bank (BCB), which also operates the settlement system; NIP runs on NIBSS, owned by Nigerian banks under CBN oversight. The governance choice — industry pool versus central bank — is the first thing a copyist must decide, and it is not the same across the three.',
+      'All three are account-based. UPI links an app to an existing bank account; Pix keys and UPI virtual addresses are aliases that resolve to an account, they do not create one; NIP is explicitly account-number-based. None of the three reaches an unbanked user directly — the rail assumes the account layer already exists.',
+      'Pricing points three ways: Pix is free for individuals with provider-set business fees; UPI has run at zero merchant discount rate, and the announced 0.4% MDR on select person-to-merchant transactions above ₹2,000 did not take effect on 15 October 2026 — NPCI deferred it on 13 October 2026 to “immediately post Diwali”, date to be notified separately, so no UPI MDR was in force as of 23 October 2026; NIP charges institutions a reported ₦3.75 per transaction, with the current end-user tariff unverifiable against the revised 2026 CBN guide.',
+      'The deferred UPI terms are reported, not verified: 0.4% standard rate on P2M above ₹2,000 at medium and large merchants, ₹5 flat for named essential-service categories, 0.02% capped at ₹300 for capital-markets transactions, merchant-paid, with a reported ₹300 cap above ₹75,000. None of this could be read in a primary NPCI circular — the deferral date and terms rest on contemporaneous press reports, and the merchant classification, exemption list and settlement split are named gaps, not facts. Pricing moved after the frame was frozen; the lesson for an adopter is that the pricing row is the most volatile line on it.',
+      'Offline and low-connectivity behaviour differs sharply: UPI offers USSD (*99#) and feature-phone 123PAY access, and an offline-capable Lite product; NIP reaches feature phones by USSD but is online and real-time; no general offline or USSD mode for Pix was verifiable in the primary materials.',
+      'The inclusion data that would settle the comparison does not exist in public. None of the three operators publishes a current breakdown of rail use by gender, rurality or banked status. National financial-inclusion surveys exist but are country-wide, not rail-specific — a named gap, not a number to guess.',
+    ],
+    methods:
+      'Primary sources only for the numbers: NPCI product statistics and scheme documentation, Brazil’s BCB Pix documentation and management reports, Nigeria’s CBN payment statistics and NIBSS reports. Every figure carries its source and as-of date; where two primary sources disagree both are printed; where a figure is genuinely unpublished the page says so. The comparison is scored on a fixed frame — governance, account model, pricing, interoperability, offline, inclusion — so it is structural rather than narrative. Figures current to 7 October 2026, except the UPI pricing row, re-checked 23 October 2026 after the announced 15 October 2026 MDR start slipped. This is a regulatory and structural landscape with named data gaps, not a market-share study: commercial volume data by private operator is paywalled.',
+    citations: [
+      'NPCI, UPI product statistics (September 2026) and UPI product documentation, npci.org.in.',
+      'Reserve Bank of India, Payment System Report, December 2025 (published 18 May 2026); Digitalisation and Payment Revolution in India (29 July 2024).',
+      'Banco Central do Brasil, Pix overview and Pix Management Report 2023–2025 (2026); SPI Annual Report 2024.',
+      'Central Bank of Nigeria, Payment Modes and e-Payment Statistics (as of 30 June 2024); NIBSS NIP documentation.',
+      'AfricaNenda, State of Instant and Inclusive Payment Systems 2025 — Nigeria case study (12 November 2025); EFInA Nigeria financial inclusion surveys (2020, 2023).',
+      'Department of Financial Services, FAQ: Merchant Discount Rate (MDR) on Select UPI (P2M) Transactions (15 September 2026) — listed but not machine-readable at fetch time.',
+      'The Hindu (13 October 2026), “UPI MDR on select merchant transactions shall be implemented post-Diwali”; The New Indian Express (13 October 2026), “NPCI defers 0.4% MDR on UPI transactions above ₹2,000 until after Diwali” — press reports of the deferral and reported terms; the underlying NPCI circular text was not publicly readable.',
+    ],
+    pit: {
+      benefits: 'Funders, regulators and operators comparing DPI across regions, and new adopters deciding which design choices to copy given their own account infrastructure.',
+      pays: 'THS research time on the two non-India corridors; the India side is grounded in the organisation’s own field record, including a UPI-as-DPI parliamentary question drafted for the 17th Lok Sabha.',
+      missing: 'State and municipal rails, and every private-operator commercial volume figure (paywalled). No operator publishes rail use by gender, rurality or banked status, so the inclusion read rests on country-wide surveys that cannot isolate the rail.',
+    },
+    downloads: [['ths_dpi_corridor_sources.txt', 'text']],
+    related: { label: 'Compare policies on the Atlas', tab: 'compare' },
+  },
+  {
+    id: 'regulator-obligation-monitor',
+    type: 'Tool',
+    domain: 'Governance',
+    title: 'Regulator Obligation Monitor: does the extractor clear the bar?',
+    date: 'October 2026',
+    author: 'THS Research',
+    abstract:
+      'A machine reads RBI, SEBI and IRDAI circulars and lists what they oblige a regulated firm to do. The claim a compliance buyer cares about is not "it finds sentences" but "the list is right". This is the accuracy the extractor was measured at, on circulars the classifier had never seen, judged by hand against a fixed rubric.',
+    findings: [
+      'Duty precision clears 90% on every blind holdout: 92.1%, 94.4% and 95.7% strict across three 50-row holdouts judged without the classifier labels. Strict means a hedged duty or a cut span scores as a miss; lenient it is 97-100%.',
+      'Duty recall is 100% on all four holdouts and 31/31 on three hand-coded circulars: the machine does not miss binding sentences that belong on the list.',
+      'Type accuracy — telling an action the firm must take apart from a composition rule or an eligibility grant — is 98-100%.',
+      'The applicability filter, which decides whose obligation each row is for a named entity profile, passed its hard gate with zero binding obligations silently dropped across 110 judged drops on two buyer profiles.',
+      'The one weak claim is the bearer tag at 41-59%: tagging which entity a duty falls on. That is the layer applicability filtering is built to take over, not a failure of finding or typing.',
+    ],
+    methods:
+      '50 of the newest RBI circulars touching the NBFC family (June-October 2026), collected from the circular index with source URLs. The extractor runs the existing legal pipeline (offset-preserving sentence segmentation and clause classification) over a typed obligation schema. Precision is measured on a deterministic 200-row development sample plus three separate 50-row holdouts drawn from rows never judged and judged by hand against a stated rubric, without seeing the classifier labels. Recall is measured on three length-stratified circulars hand-coded in full. Every error class found on a holdout was documented and left unfixed rather than patched against the holdout, so each new number comes from a genuinely unseen set. Scoring is reproducible from the fixed gold in one command. This exhibit reports the measured accuracy of the extraction layer; it is not a shipped product, and the review-gated product shape remains an open founder decision.',
+    citations: [
+      'THS Regulator Obligation Monitor precision test (22 October 2026), private/verification/2026-10-22-rbi-precision-test/report.md, sections 8-12.',
+      'Reserve Bank of India, circular index (NBFC-family circulars, ids 13742-13493, June-October 2026).',
+      'THS applicability-filter design and two-round blind evaluation (private/applicability-filter-design.md).',
+    ],
+    pit: {
+      benefits: 'Compliance heads, company secretaries and legal teams at regulated firms — NBFCs, insurers, asset managers — who today hold the obligation register by reading circulars by hand or paying a vendor with no published accuracy figure.',
+      pays: 'THS build time for four rounds of classifier work and the holdout judging; a licensee pays for a reviewed deliverable, since human review is retained by design rather than removed.',
+      missing: 'State regulators and municipal bylaws are outside this corpus, which is Central-bank circulars only. Duties on forum bodies and third parties are tagged poorly, and the addressee field in the source corpus is scraped HTML — clean extraction is a prerequisite before the filter touches buyer-facing output.',
+    },
+    downloads: [['ths_monitor_precision_summary.txt', 'text']],
+    related: { label: 'Simplify a regulation you bring', tab: 'work' },
+  },
+  {
     id: 'rules-reading',
     type: 'Brief',
     domain: 'Governance',

@@ -16,6 +16,8 @@ import {
   checkLegalGate, LEGAL_GATE_QUESTIONS, methodologyCard,
 } from '../src/lib/legal/exports.js';
 import { simplify, SAMPLE_TEXT, LEGAL_SAMPLE_TEXT } from '../src/lib/simplify.js';
+import { classifyObligation, bearerOf } from '../src/lib/legal/obligations.js';
+import { propositionFromSentence } from '../src/lib/legal/propositions.js';
 
 let failures = 0;
 function ok(name, cond, detail = '') {
@@ -201,7 +203,12 @@ function approx(name, got, want, tol = 1e-6) {
   ok('the citizen rewrite is produced', r.simplifiedText.length > 0);
   ok('the rewrite is easier to read', r.readability.simplified.score > r.readability.original.score,
     `${r.readability.original.score} -> ${r.readability.simplified.score}`);
-  ok('obligations are still found', r.obligations.length >= 1, r.obligations.join(' | '));
+  ok('obligations are still found', r.obligations.length >= 1,
+    r.obligations.map((o) => o.typeLabel).join(' | '));
+  ok('every obligation carries its type', r.obligations.every((o) => o.type && o.typeLabel));
+  ok('the proviso is not listed as a duty of its own',
+    !r.obligations.some((o) => /^provided that/i.test(o.text)),
+    r.obligations.map((o) => o.text.slice(0, 40)).join(' | '));
   ok('the replacements are still counted', r.stats.replacements.length > 0, `${r.stats.replacements.length}`);
   ok('the hindi layer still renders', r.hindi.sentences.length === r.sentences.length);
 }
@@ -212,6 +219,91 @@ function approx(name, got, want, tol = 1e-6) {
   const segs = segment(text);
   ok('the abbreviation did not split the sentence', segs.length === 3, `${segs.length}: ${segs.map((s) => s.text).join(' / ')}`);
   for (const s of segs) ok('the slice matches', text.slice(s.start, s.end) === s.text, s.text);
+}
+
+// 17. The obligation taxonomy: a "shall" sentence is typed before it is
+// listed, because a composition rule and a grant are not tasks.
+{
+  const types = [
+    ['The Bank shall appoint the auditors of the Company.', 'action'],
+    ['Every beneficiary shall be entitled to receive the benefits.', 'entitlement'],
+    ['Membership of the BLBC shall comprise of banks and officers.', 'constitutive'],
+    ['In this Act, "scheme" shall mean the scheme notified under section 14.', 'definition'],
+  ];
+  for (const [sentence, want] of types) {
+    const cls = classifyObligation(sentence);
+    ok(`typed as ${want}`, cls.type === want, `${cls.type}: ${sentence.slice(0, 50)}`);
+  }
+
+  const cut = simplify('The Bank shall appoint the auditors of');
+  ok('a span cut mid-clause is marked a fragment',
+    cut.obligations.length > 0 && cut.obligations[0].fragment === true,
+    JSON.stringify(cut.obligations.map((o) => o.fragment)));
+
+  // "the Bank" in an instrument addressed to banks is the reader, not RBI.
+  // Reading it as the regulator marks the reader's own duty out of scope.
+  const self = bearerOf('The Bank shall disclose the divergence in its annual report.');
+  ok('a bare "the Bank" is the entity, not the regulator',
+    self.side === 'entity', JSON.stringify(self));
+  const rbi = bearerOf('The Reserve Bank shall issue directions to all banks.');
+  ok('the Reserve Bank is the regulator', rbi.side === 'regulator', JSON.stringify(rbi));
+}
+
+// 18. The proposition layer: a typed proposition per sentence, in one
+// canonical frame, set beside today's rewrite.
+{
+  const types = [
+    ['The Bank shall appoint the auditors of the Company.', 'duty'],
+    ['The Company shall not transfer the shares.', 'prohibition'],
+    ['No such rules shall be made without prior consultation.', 'prohibition'],
+    ['The Centre may make rules for carrying out the purposes of this Act.', 'permission'],
+    ['Every beneficiary shall be entitled to receive the benefits.', 'entitlement'],
+    ['In this Act, "authorised officer" means an officer appointed in writing.', 'definition'],
+    ['Membership of the BLBC shall comprise of banks and officers.', 'constitutive'],
+    ['These Directions shall come into effect from January 1, 2027.', 'meta'],
+  ];
+  for (const [sentence, want] of types) {
+    const p = propositionFromSentence(sentence);
+    ok(`proposition typed as ${want}`, p.kind === want, `${p.kind}: ${sentence.slice(0, 50)}`);
+    ok(`the frame is rendered for ${want}`, p.frame.length > 0, p.frame);
+  }
+
+  // The frame keeps the slots separate: the act, the clock, the condition
+  // and the exception are not allowed to blur into each other.
+  const timed = propositionFromSentence(
+    'The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.',
+  );
+  ok('the clock is in its own slot', timed.timing.length === 1 && /fifteen days/.test(timed.timing[0]), JSON.stringify(timed.timing));
+  ok('the exception is in its own slot', timed.exceptions.length === 1 && /unless/.test(timed.exceptions[0]), JSON.stringify(timed.exceptions));
+  ok('the frame carries act, clock and exception',
+    /furnish the documents/.test(timed.frame) && /fifteen days/.test(timed.frame) && /unless/.test(timed.frame),
+    timed.frame);
+  ok('a prohibition puts the negation in the force',
+    propositionFromSentence('The Company shall not transfer the shares, provided that the Board approves the transfer.')
+      .frame === 'The Company must not transfer the shares, provided that the Board approves the transfer.',
+    propositionFromSentence('The Company shall not transfer the shares, provided that the Board approves the transfer.').frame);
+
+  // One proposition per source sentence, each beside its rewrite.
+  const r = simplify(SAMPLE_TEXT);
+  ok('every sentence gets a proposition', r.propositions.length === r.stats.sentences,
+    `${r.propositions.length} vs ${r.stats.sentences}`);
+  ok('every proposition carries its rewrite for comparison',
+    r.propositions.every((p) => typeof p.rewrite === 'string' && p.rewrite.length > 0));
+  ok('every proposition carries a rendered frame',
+    r.propositions.every((p) => p.frame.length > 0),
+    r.propositions.map((p) => p.frame.slice(0, 40)).join(' | '));
+  ok('every proposition carries its type and actor',
+    r.propositions.every((p) => p.kind && p.kindLabel && p.actor && p.actor.side));
+  ok('the sample proviso lands in the condition slot, not the act',
+    r.propositions.some((p) => p.conditions.some((c) => /prior consultation/.test(c))),
+    r.propositions.map((p) => JSON.stringify(p.conditions)).join(' | '));
+
+  const one = propositionFromSentence('It shall be the obligation of the auditor to file the return within thirty days.');
+  ok('a duty-of construction names its bearer in the frame',
+    one.kind === 'duty' && /^The auditor must file the return/.test(one.frame), one.frame);
+  ok('the frame is deterministic',
+    propositionFromSentence('The Bank shall appoint the auditors.').frame ===
+      propositionFromSentence('The Bank shall appoint the auditors.').frame);
 }
 
 console.log(failures === 0 ? '\nAll simplifier checks passed.' : `\n${failures} simplifier check(s) FAILED.`);

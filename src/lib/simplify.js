@@ -11,9 +11,61 @@
 
 import { analyse } from './legal/pipeline.js';
 import { hindiNote, translateTerms } from '../data/hindi.js';
+import {
+  classifyObligation, getObligationType, isDutyTrigger, OBLIGATION_ORDER,
+} from './legal/obligations.js';
+import { extractPropositions } from './legal/propositions.js';
 
 export const simplify = (text) => {
   const result = analyse(text, { mode: 'citizen', jurisdictionId: 'in-bare-act' });
+
+  // The previous source sentence, so a sentence that inherits its sense from
+  // the one before it ("Illustratively:" tells the next sentence what it is)
+  // is typed against that context rather than in the dark.
+  const sourceTextById = new Map();
+  for (const row of result.rows) {
+    if (!sourceTextById.has(row.sourceId)) sourceTextById.set(row.sourceId, row.sourceText);
+  }
+
+  // A binding sentence, typed. The type is what makes this a task list
+  // rather than a list of sentences with a duty word in them: a duty is
+  // something someone has to do, a grant is something they may claim, a
+  // composition rule says who sits where. A sentence that carries binding
+  // language but was cut out of a longer sentence is marked as a fragment,
+  // because a fragment read on its own reads as a duty it may not be.
+  //
+  // One entry per source sentence, not per row. A sentence too long to say
+  // in one breath becomes several rows, and listing each of them separately
+  // would put the same duty on the list three times.
+  const obligations = [];
+  const seenSource = new Set();
+  for (const row of result.rows) {
+    if (seenSource.has(row.sourceId)) continue;
+    seenSource.add(row.sourceId);
+    if (!isDutyTrigger(row.sourceText)) continue;
+    const cls = classifyObligation(row.sourceText, {
+      prev: sourceTextById.get(row.sourceId - 1) || '',
+    });
+    const type = getObligationType(cls.type);
+    const parts = result.rows.filter((r) => r.sourceId === row.sourceId);
+    obligations.push({
+      id: row.id,
+      text: row.fullPlain,
+      clause: row.clause,
+      type: cls.type,
+      typeLabel: type.label,
+      typeNote: type.note,
+      fragment: cls.fragment,
+      split: parts.length > 1,
+      hedged: cls.hedged,
+      bearer: cls.bearer,
+    });
+  }
+  obligations.sort(
+    (a, b) =>
+      OBLIGATION_ORDER.indexOf(a.type) - OBLIGATION_ORDER.indexOf(b.type) ||
+      a.id.localeCompare(b.id, 'en', { numeric: true }),
+  );
 
   return {
     simplifiedText: result.simplifiedText,
@@ -33,13 +85,8 @@ export const simplify = (text) => {
       long: row.sourceText.trim().split(/\s+/).length > 22,
       flag: row.flag,
     })),
-    // The citizen panel keeps its own, simpler reading of "obligation": any
-    // sentence that binds someone by a duty word. The legal review mode shows
-    // the full clause taxonomy instead, where a proviso or a prohibition is
-    // its own kind rather than an obligation.
-    obligations: result.rows
-      .filter((row) => /\b(must|required to|is liable to|shall)\b/i.test(row.sourceText))
-      .map((row) => row.plain),
+    obligations,
+    propositions: extractPropositions(result.rows),
     definitions: result.definitions.definitions,
     hindi: {
       note: hindiNote,

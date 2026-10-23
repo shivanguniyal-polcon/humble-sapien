@@ -18,6 +18,8 @@ import {
   budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
   GENERAL_RULES, MODULE_FORMATS, BATTERY_VERSION, formatINRCompact,
 } from '../battery';
+import BriefForm from '../components/BriefForm';
+import { briefToInput, briefToParams } from '../battery/businessCase';
 
 const STAGES = [
   { id: 1, label: 'Ingest', note: 'Unorganised data becomes an organised dataset with a validation report.' },
@@ -162,6 +164,10 @@ const ValidationCard = ({ validation, notes }) => (
 
 export default function Battery({ onNavigate }) {
   const [stage, setStage] = useState(1);
+  // The business-case brief is a front end, not a second engine: it builds
+  // the CBA input and gets out of the way. 'paste' is the original path.
+  const [entry, setEntry] = useState('paste');
+  const [briefParams, setBriefParams] = useState(null);
   const [moduleId, setModuleId] = useState('cba');
   const moduleChoice = MODULES.find((m) => m.id === moduleId);
 
@@ -246,6 +252,24 @@ export default function Battery({ onNavigate }) {
 
   // The reverse flow: rows shared by the evaluation engine go through the
   // ingest adapter for the selected module and come out as structured input.
+  const buildFromBrief = (brief) => {
+    const input = briefToInput(brief);
+    const check = cba.validate(input);
+    setModuleId('cba');
+    setInputText(JSON.stringify(input, null, 2));
+    setStructErrors(check.errors);
+    setStructWarnings(check.warnings);
+    setAdapterNotes([
+      'Built from the business-case brief. The question is the report title; the assumptions and risks travel into the parameter table.',
+    ]);
+    setBriefParams(briefToParams(brief));
+    setHorizon(brief.horizonYears);
+    setResults(null);
+    setManifest(null);
+    setReport(null);
+    setStage(2);
+  };
+
   const loadShared = (d) => {
     setValidation(d.validation);
     setIngested({ dataset: d.dataset, validation: d.validation });
@@ -399,7 +423,12 @@ export default function Battery({ onNavigate }) {
       const out = await buildReport({
         module: moduleChoice.mod,
         input,
-        params,
+        params: briefParams && moduleId === 'cba'
+          ? {
+              values: { ...params.values, ...briefParams.values },
+              meta: { ...params.meta, ...briefParams.meta },
+            }
+          : params,
         results,
         pit,
         source: 'THS Policy Battery sample or user-supplied data; see the validation report.',
@@ -482,7 +511,38 @@ export default function Battery({ onNavigate }) {
       <p className="fine-print">{STAGES.find((s) => s.id === stage).note}</p>
 
       {stage === 1 && (
-        <div className="lab-grid">
+        <div>
+          <div className="card">
+            <h3>Start from</h3>
+            <div className="filter-row" role="group" aria-label="Entry mode">
+              <button
+                type="button"
+                className={`chip ${entry === 'brief' ? 'chip-active' : ''}`}
+                onClick={() => setEntry('brief')}
+                aria-pressed={entry === 'brief'}
+              >
+                A business case brief
+              </button>
+              <button
+                type="button"
+                className={`chip ${entry === 'paste' ? 'chip-active' : ''}`}
+                onClick={() => setEntry('paste')}
+                aria-pressed={entry === 'paste'}
+              >
+                Pasted data or module JSON
+              </button>
+            </div>
+            <p className="fine-print" style={{ marginBottom: 0 }}>
+              {entry === 'brief'
+                ? 'The five questions a consulting brief starts with. It builds the cost-benefit input below; the run and the manifest are unchanged.'
+                : 'The original path: bring a table or a ready-made module input.'}
+            </p>
+          </div>
+          {entry === 'brief' && (
+            <BriefForm onBuild={buildFromBrief} />
+          )}
+          {entry === 'paste' && (
+          <div className="lab-grid">
           <div className="card lab-spec">
             <h3>Input</h3>
             <div className="control">
@@ -679,6 +739,8 @@ export default function Battery({ onNavigate }) {
             </div>
             <ValidationCard validation={validation} notes={adapterNotes} />
           </div>
+          </div>
+        )}
         </div>
       )}
 
@@ -725,6 +787,12 @@ export default function Battery({ onNavigate }) {
                     {[5, 15, 20, 25, 30].map((y) => (
                       <option key={y} value={y}>{y} years</option>
                     ))}
+                    {/* A brief can set any horizon in 1 to 50. Without this
+                        option the control would silently show the first entry
+                        while the run used the brief's number. */}
+                    {horizon > 0 && ![30, 10, 5, 15, 20, 25].includes(horizon) && (
+                      <option value={horizon}>{horizon} years (from the brief)</option>
+                    )}
                   </select>
                 </div>
                 <div className="control">

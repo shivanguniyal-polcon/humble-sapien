@@ -5252,3 +5252,605 @@ input[type='range'] {
     font-size: 10pt;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Regulatory monitor
+   A library rail, the instrument beside it, and the profile above both.
+   The row colours are the four verdicts, not a decoration: a reader should
+   be able to skim for "binds you" without reading every label.
+   -------------------------------------------------------------------------- */
+
+.monitor {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.monitor .eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-600);
+}
+
+.monitor-list {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.9rem;
+  border: 1px solid var(--paper-300);
+  border-radius: var(--radius-md);
+  background: var(--paper-50);
+}
+
+.monitor-controls {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.monitor-controls label,
+.monitor-profile-grid label,
+.monitor-reviewer,
+.monitor-edit label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.78rem;
+  color: var(--paper-700);
+}
+
+.monitor-controls input,
+.monitor-controls select,
+.monitor-controls textarea,
+.monitor-profile-grid input,
+.monitor-profile-grid select,
+.monitor-reviewer input,
+.monitor-edit textarea {
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--paper-300);
+  border-radius: var(--radius-sm);
+  background: var(--paper-50);
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--paper-900);
+}
+
+.monitor-count {
+  margin: 0;
+}
+
+.monitor-paste {
+  display: grid;
+  gap: 0.5rem;
+  border-top: 1px dashed var(--paper-300);
+  padding-top: 0.6rem;
+}
+
+.monitor-paste summary {
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--paper-700);
+}
+
+.monitor-paste summary:focus-visible {
+  outline: 2px solid var(--clay-600);
+  outline-offset: 2px;
+}
+
+.monitor-paste textarea {
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.monitor-paste .btn {
+  justify-self: start;
+}
+
+/* The file picker is a button-shaped label, not a browser-default control:
+   a native file input is the one control that cannot be restyled to match. */
+.monitor-file {
+  position: relative;
+  justify-items: start;
+}
+
+.monitor-file input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.monitor-file::after {
+  content: 'Choose file';
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--paper-300);
+  border-radius: var(--radius-sm);
+  background: var(--paper-50);
+  color: var(--paper-900);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.monitor-file:focus-within::after {
+  outline: 2px solid var(--clay-600);
+  outline-offset: 2px;
+}
+
+.monitor-file:has(input:disabled)::after {
+  opacity: 0.55;
+  cursor: progress;
+}
+
+.monitor-file-note {
+  margin: 0;
+  min-height: 1.4em;
+}
+
+.monitor-ocr {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid var(--paper-300);
+  border-radius: var(--radius-sm);
+  background: var(--paper-50);
+}
+
+.monitor-ocr .btn {
+  justify-self: start;
+}
+
+.monitor-ocr p {
+  margin: 0;
+}
+
+.monitor-ocr-trail {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.78rem;
+  color: var(--paper-700);
+}
+
+.monitor-ocr-badge {
+  color: var(--clay-700, var(--clay-600));
+}
+
+.monitor-live {
+  display: grid;
+  gap: 0.35rem;
+  border-top: 1px dashed var(--paper-300);
+  padding-top: 0.55rem;
+}
+
+.monitor-live p {
+  margin: 0;
+}
+
+.monitor-live ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+  max-height: 11rem;
+  overflow-y: auto;
+}
+
+.monitor-live-item {
+  display: grid;
+  gap: 0.1rem;
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  font: inherit;
+  font-size: 0.76rem;
+  line-height: 1.3;
+  text-align: left;
+  color: var(--paper-800);
+  cursor: pointer;
+}
+
+.monitor-live-item:hover:not(:disabled) {
+  border-color: var(--paper-300);
+  background: var(--paper-50);
+}
+
+.monitor-live-item:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.monitor-live-active {
+  border-color: var(--clay-600);
+  background: var(--paper-50);
+}
+
+.monitor-live-item .data-num {
+  color: var(--paper-600);
+  font-size: 0.7rem;
+}
+
+.monitor-instruments {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.monitor-item {
+  width: 100%;
+  display: grid;
+  gap: 0.15rem;
+  text-align: left;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: none;
+  cursor: pointer;
+}
+
+.monitor-item:hover {
+  background: var(--paper-100);
+}
+
+.monitor-item:focus-visible {
+  outline: 2px solid var(--clay-600);
+  outline-offset: 1px;
+}
+
+.monitor-item-active {
+  border-color: var(--clay-200);
+  background: var(--clay-50);
+}
+
+.monitor-item-date {
+  font-size: 0.7rem;
+  color: var(--paper-600);
+}
+
+.monitor-item-title {
+  font-size: 0.84rem;
+  line-height: 1.3;
+  color: var(--paper-900);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.monitor-item-meta {
+  font-size: 0.7rem;
+  color: var(--paper-600);
+}
+
+.monitor-main {
+  display: grid;
+  gap: 0.9rem;
+  min-width: 0;
+}
+
+.monitor-head h3 {
+  margin: 0.15rem 0 0.5rem;
+  text-wrap: balance;
+}
+
+.monitor-head-meta {
+  margin: 0.2rem 0;
+  font-size: 0.84rem;
+  color: var(--paper-700);
+}
+
+.monitor-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.monitor-head-actions .meta {
+  margin: 0;
+}
+
+.monitor-head-actions .btn {
+  padding: 0.35rem 0.7rem;
+  font-size: 0.78rem;
+}
+
+.monitor-profile-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.monitor-profile-head h4 {
+  margin: 0 0 0.5rem;
+}
+
+.monitor-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.65rem 0.9rem;
+}
+
+.monitor-activities {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  border: 1px dashed var(--paper-300);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.7rem;
+}
+
+.monitor-activities legend {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper-600);
+  padding: 0 0.3rem;
+}
+
+.monitor-activities label {
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.monitor-check {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.monitor-check input {
+  width: auto;
+}
+
+.monitor-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  border-bottom: 1px solid var(--paper-300);
+  padding-bottom: 0.35rem;
+}
+
+.monitor-tab {
+  border: 1px solid transparent;
+  background: none;
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--radius-sm);
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--paper-700);
+  cursor: pointer;
+}
+
+.monitor-tab:hover {
+  background: var(--paper-100);
+}
+
+.monitor-tab-active {
+  border-color: var(--paper-300);
+  background: var(--paper-50);
+  color: var(--paper-900);
+  font-weight: 600;
+}
+
+.monitor-duties {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.monitor-verdicts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.monitor-verdict {
+  border: 1px solid var(--paper-300);
+  background: var(--paper-50);
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.65rem;
+  font: inherit;
+  font-size: 0.76rem;
+  color: var(--paper-700);
+  cursor: pointer;
+}
+
+.monitor-verdict-active {
+  border-color: var(--clay-600);
+  color: var(--clay-600);
+  font-weight: 600;
+}
+
+.monitor-row {
+  border-left: 3px solid var(--paper-300);
+}
+
+.monitor-row-in { border-left-color: var(--clay-600); }
+.monitor-row-conditional { border-left-color: #b07d2b; }
+.monitor-row-dependency { border-left-color: #4d6b86; }
+.monitor-row-out { border-left-color: var(--paper-400); }
+
+.monitor-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.monitor-badge {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--paper-300);
+  color: var(--paper-700);
+}
+
+.monitor-badge-in { border-color: var(--clay-300); background: var(--clay-50); color: var(--clay-600); }
+.monitor-badge-conditional { border-color: #e2cfa8; background: #fbf6ea; color: #7a5a1d; }
+.monitor-badge-dependency { border-color: #c8d4de; background: #f1f5f8; color: #3d5568; }
+.monitor-badge-out { color: var(--paper-600); }
+
+.monitor-clause {
+  font-size: 0.74rem;
+  color: var(--paper-600);
+}
+
+.monitor-review-state {
+  margin-left: auto;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--paper-600);
+}
+
+.monitor-obligation {
+  margin: 0 0 0.45rem;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--paper-900);
+}
+
+.monitor-quote {
+  margin: 0 0 0.45rem;
+  padding: 0.45rem 0.65rem;
+  border-left: 2px solid var(--paper-300);
+  background: var(--paper-100);
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: var(--paper-700);
+}
+
+.monitor-reason {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  color: var(--paper-600);
+}
+
+.monitor-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+
+.monitor-edit {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px dashed var(--paper-300);
+}
+
+.monitor-edit textarea {
+  resize: vertical;
+  line-height: 1.4;
+}
+
+.monitor-changes,
+.monitor-pack {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.monitor-change-list {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.change-add { border-left: 2px solid #4d7a4d; padding-left: 0.5rem; list-style: none; margin-left: -1.1rem; }
+.change-rem { border-left: 2px solid var(--clay-400); padding-left: 0.5rem; list-style: none; margin-left: -1.1rem; color: var(--paper-600); }
+.change-chg { border-left: 2px solid #b07d2b; padding-left: 0.5rem; list-style: none; margin-left: -1.1rem; }
+.change-old { color: var(--paper-600); text-decoration: line-through; }
+
+.monitor-change-quote {
+  margin: 0.25rem 0 0;
+  font-size: 0.78rem;
+  color: var(--paper-600);
+}
+
+.monitor-trail {
+  margin: 0.4rem 0 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--paper-700);
+}
+
+.monitor-reviewer {
+  max-width: 26rem;
+  margin-bottom: 0.5rem;
+}
+
+.monitor-manifest {
+  margin-top: 0.5rem;
+}
+
+.monitor-error {
+  margin: 0.5rem 0 0;
+  color: var(--clay-600);
+  font-size: 0.82rem;
+}
+
+.monitor-empty p {
+  margin: 0;
+  color: var(--paper-700);
+}
+
+.monitor-source {
+  margin: 0.5rem 0 0;
+  max-height: 60vh;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  color: var(--paper-800);
+  background: var(--paper-100);
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+}
+
+@media (max-width: 900px) {
+  .monitor {
+    grid-template-columns: 1fr;
+  }
+
+  .monitor-list {
+    position: static;
+    max-height: none;
+  }
+
+  .monitor-instruments {
+    max-height: 40vh;
+  }
+}

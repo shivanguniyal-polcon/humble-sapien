@@ -7,16 +7,25 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "oxlint",
-    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-proposition.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-datapoint.mjs && node scripts/test-atlas.mjs && node scripts/test-india-locator.mjs && node scripts/test-redteam.mjs",
+    "test": "node scripts/test-battery.mjs && node scripts/test-econometrics.mjs && node scripts/test-pit.mjs && node scripts/test-simplifier.mjs && node scripts/test-proposition.mjs && node scripts/test-sanitize.mjs && node scripts/test-legal-review.mjs && node scripts/test-api.mjs && node scripts/test-docx.mjs && node scripts/test-monitor.mjs && node scripts/test-monitor-fetcher.mjs && node scripts/test-ingest.mjs && node scripts/test-datapoint.mjs && node scripts/test-atlas.mjs && node scripts/test-india-locator.mjs && node scripts/test-redteam.mjs",
     "test:api": "node scripts/test-api.mjs",
     "test:atlas": "node scripts/test-atlas.mjs",
     "test:india": "node scripts/test-india-locator.mjs",
+    "build:monitor": "node scripts/build-monitor-data.mjs",
+    "build:site": "VITE_MONITOR_API=https://ths-monitor-api.shivang-uniyal27.workers.dev vite build",
+    "smoke:site": "node scripts/smoke-site.mjs",
+    "deploy:site": "npm run build:site && wrangler pages deploy dist --project-name the-humble-sapien --branch main --commit-dirty=true && node scripts/smoke-site.mjs",
     "build:map": "node scripts/build-world-map.mjs",
     "build:india": "node --max-old-space-size=6144 scripts/build-india-admin.mjs",
     "api": "wrangler dev -c api/wrangler.toml",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:monitor-fetch": "node scripts/test-monitor-fetcher.mjs",
+    "monitor:fetch": "node scripts/fetch-monitor.mjs",
+    "monitor:drain": "node scripts/fetch-monitor.mjs --skip-fetch --drain 3",
+    "monitor:api": "wrangler dev -c api/monitor.wrangler.toml --local --port 8788"
   },
   "dependencies": {
+    "pdfjs-dist": "^4.10.38",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
@@ -27,6 +36,7 @@
     "d3-geo": "^3.1.1",
     "oxlint": "^1.81.0",
     "tesseract.js": "^6.0.1",
-    "vite": "^8.3.0"
+    "vite": "^8.3.0",
+    "wrangler": "^4.152.0"
   }
 }

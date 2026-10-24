@@ -1,4 +1,4 @@
-// The nine instruments of the analysis floor. Shared by the Tools page and
+// The instruments of the analysis floor. Shared by the Tools page and
 // the nav dropdown, which needs the same ids and labels for deep links.
 
 export const TOOLS = [
@@ -26,6 +26,11 @@ export const TOOLS = [
     id: 'simplifier', label: 'Policy simplifier',
     question: 'What does this notification actually say?',
     blurb: 'Plain-language rewriting of policy text, with readability scoring you can check.',
+  },
+  {
+    id: 'monitor', label: 'Regulatory monitor',
+    question: 'What changed, and does it bind us?',
+    blurb: 'Fifty RBI instruments read as obligations, plus a live library that checks for new circulars twice a day: who must act, what changed since the previous circular, whether it binds your entity profile, and a board pack with the reviewer trail and a manifest.',
   },
   {
     id: 'scorecards', label: 'Promise scorecards',

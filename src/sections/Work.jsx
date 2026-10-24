@@ -7,6 +7,7 @@ import { TOOLS } from '../data/tools';
 const Solutions = lazy(() => import('./Solutions'));
 const GenderIndex = lazy(() => import('./GenderIndex'));
 const Simplifier = lazy(() => import('./Simplifier'));
+const Monitor = lazy(() => import('./Monitor'));
 const Touchpoints = lazy(() => import('./Touchpoints'));
 const Scorecards = lazy(() => import('./Scorecards'));
 const FieldNotes = lazy(() => import('./FieldNotes'));
@@ -37,6 +38,9 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
       break;
     case 'simplifier':
       view = <Simplifier />;
+      break;
+    case 'monitor':
+      view = <Monitor />;
       break;
     case 'touchpoints':
       view = <Touchpoints query={query} onQueryChange={onQueryChange} />;
@@ -108,7 +112,7 @@ export default function Work({ onNavigate, openTool, onToolChange, query, onQuer
         <span className="overline">The instruments</span>
         <h2>Public tools for reading the state</h2>
         <p className="section-strap">
-          Nine instruments, free to use, running entirely in your browser. Each
+          {TOOLS.length} instruments, free to use, running entirely in your browser. Each
           one answers a question a citizen, a reporter or a civil servant
           actually asks. Open one and it takes the page.
         </p>

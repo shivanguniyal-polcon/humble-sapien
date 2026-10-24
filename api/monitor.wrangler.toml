@@ -1,0 +1,47 @@
+# The regulatory monitor: D1 + R2 + a cron.
+#
+# Deploy with:
+#
+#   wrangler d1 create ths-monitor
+#   wrangler r2 bucket create ths-monitor-files
+#   # put the returned database_id below, replacing the zeros
+#   wrangler secret put ADMIN_TOKEN        -c api/monitor.wrangler.toml
+#   wrangler secret put REPLICATE_API_TOKEN -c api/monitor.wrangler.toml
+#   wrangler deploy -c api/monitor.wrangler.toml
+#
+# Local development needs none of that:
+#
+#   npm run monitor:api     # wrangler dev, local D1 and R2
+#   npm run monitor:fetch   # one discovery run against a local SQLite file
+#   npm run monitor:drain   # extract three queued instruments
+#
+# The IDs here are placeholders. Local mode creates its own database under
+# .wrangler/ and never contacts Cloudflare.
+
+name = "ths-monitor-api"
+main = "monitor-worker.js"
+compatibility_date = "2026-10-21"
+compatibility_flags = ["nodejs_compat"]
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ths-monitor"
+database_id = "de647c59-cc31-4755-8eda-324fd4e847de"
+
+[[r2_buckets]]
+binding = "FILES"
+bucket_name = "ths-monitor-files"
+
+# Discovery twice a day, as promised on the page. The drain runs on the same
+# trigger; the second pattern only drains, so a backlog clears in a day.
+[triggers]
+crons = ["0 6,18 * * *", "15 */6 * * *"]
+
+[vars]
+# The deployed site. Local development against this Worker must send this
+# origin too, or the OCR route refuses the call.
+ALLOWED_ORIGIN = "https://the-humble-sapien.pages.dev"

@@ -180,7 +180,7 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 - [x] A `compareEngines(text, options)` function returns both renderings per sentence, a per-sentence agreement verdict, and an overall rate. — `src/lib/legal/shadow.js`: substitution rewrite + canonical frame + Task 6 render per sentence, six checks with engagement counts, all-or-nothing verdict, blended rate with per-check breakdown
 - [x] A written agreement report exists for a corpus pinned by manifest (documents, segmentation version, sentence set, exact count), plus the stratified 20-sentence human review drawn before the run — every obligation kind and the old engine's failure classes represented. — `private/proposition-shadow-report.md`: 50 RBI instruments pinned by text hash, 32,686 sentences (the exact count segmentation yields), the stratified 20 drawn mechanically (stratum + source-text hash only — no verdict enters the draw). The 20 human verdicts await the founder; the table is in the report
 - [x] The report is reproducible: the corpus manifest hash, the dictionary version and the proposition `schemaVersion` are recorded with the result, and a per-check breakdown accompanies the blended rate. — manifest hash `sha256:1ca76433…`, dictionary `ths-statutory-1.0.0`, schema v1; three consecutive regenerations byte-identical
-- [x] The report states the threshold and whether the switch is justified. — verdict `not-justified` on the mechanical bars (93.5% < 95%; 32 criticals > 0), stated as a finding per the design note
+- [x] The report states the threshold and whether the switch is justified. — verdict `not-justified` on the mechanical bars, stated as a finding per the design note (first run 93.5%; re-measured 2026-10-24 at 99.2%, which clears the rate bar — 32 criticals > 0 keep the verdict)
 
 **Verification:**
 - [x] Tests pass: `npm test` — 12 suites, exit 0 (shadow section in `scripts/test-proposition.mjs`)
@@ -203,15 +203,15 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 **Description:** Replace the citizen panel's paragraph of substituted text with a rule card: the rendered obligation, the fields the engine read, the source sentence, and the confidence. The substitution view stays available beside it, so the change is visible and reversible.
 
 **Acceptance criteria:**
-- [ ] The citizen panel shows a rule card per obligation: who must do what, by when, unless what.
-- [ ] The card lists the fields the engine read and the ones it could not.
-- [ ] The substitution view remains available as a second tab.
-- [ ] A sentence that no dictionary rule touches now renders as a rule card with a structural confidence — it is no longer presented as a green, unchanged sentence.
+- [x] The citizen panel shows a rule card per obligation: who must do what, by when, unless what.
+- [x] The card lists the fields the engine read and the ones it could not.
+- [x] The substitution view remains available as a second tab.
+- [x] A sentence that no dictionary rule touches now renders as a rule card with a structural confidence — it is no longer presented as a green, unchanged sentence.
 
 **Verification:**
-- [ ] Tests pass: `node scripts/test-simplifier.mjs`
-- [ ] Build succeeds: `npm run build`
-- [ ] Manual check: paste a 60-word nested-clause sentence with no dictionary phrase; it renders as a rule card with the unresolved condition visible
+- [x] Tests pass: `node scripts/test-simplifier.mjs`
+- [x] Build succeeds: `npm run build`
+- [x] Manual check: paste a 60-word nested-clause sentence with no dictionary phrase; it renders as a rule card with the unresolved condition visible — now a test in `scripts/test-simplifier.mjs` (no dictionary phrase, one rule card, the unresolved condition visible)
 
 **Dependencies:** Tasks 6, 7
 
@@ -253,8 +253,8 @@ Verification commands used throughout: `npm test` (11 suites), `npm run build`, 
 
 ### Checkpoint: Proposition layer
 - [x] Shadow-mode agreement rate recorded and ≥ the threshold set in Task 4 — **re-measured 2026-10-24: 99.2%** (32,427 of 32,686 sentences), above the 95% threshold; 32 criticals remain (1 force flip, 31 invented actors) so the switch verdict stays `not-justified`. Both design decisions are made and recorded in the design note: `permission` pairs with `entitlement` only and never with `action`; a fragment with no predicate carries its own words as its action
-- [ ] `npm test` passes; the existing simplifier suite is unchanged and green
-- [ ] A sentence no dictionary rule touches now renders as a rule card with a structural confidence, not a green tick
+- [x] `npm test` passes; the existing simplifier suite is unchanged and green
+- [x] A sentence no dictionary rule touches now renders as a rule card with a structural confidence, not a green tick
 - [ ] Human review of 20 real instrument sentences before the switch
 
 ---

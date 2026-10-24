@@ -605,5 +605,81 @@ import { typeProposition, propositionFromSentence } from '../src/lib/legal/propo
     typeProposition('Individuals seeking delisting can submit their request to the Ombudsperson.'));
 }
 
+// ---- 11. Critical violations the corpus run exposed --------------------
+//
+// The shadow run's 32 criticals, sentence for sentence. Two root causes:
+// invented actors — the meta branch hardcodes "These Directions" and the
+// subject falls back to a bearer tag ("the entity itself") that the source
+// never uses — and one force flip, where a leading condition ("Where ... is
+// not possible,") is never captured, so the frame drops its negation. The
+// contract under test: the subject is a source span or the declared
+// fallback, and a leading or intervening qualifier clause is read into the
+// condition slot, so the frame keeps every negation the source carries.
+
+const actorOk = (sentence) => {
+  const p = propositionFromSentence(sentence);
+  return checkActor({ source: sentence, subject: p.subject, actor: p.actor });
+};
+const subjectOf = (sentence) => propositionFromSentence(sentence).subject;
+
+const META_TITLE = '3. These Amendment Directions shall be called the Reserve Bank of India (Non-Banking Financial Companies – Concentration Risk Management) Fourth Amendment Directions, 2026.';
+const META_COMMENCE = '4. These Amendment Directions shall come into force with immediate effect.';
+const META_ABOVE = '5. The above amendments shall come into force with immediate effect.';
+const COMMS = '(8) Written communication, if any, sent by an employee / recovery agent to the borrower / guarantor shall have prior approval of the NBFC and shall contain the name and contact details of the sender.';
+const HOWEVER = 'However, if an audit firm engaged with audit / non- audit works for the Group Entities (which are not regulated by RBI) is being considered by any of the RBI regulated entities in the Group for appointment as SCAs / SAs, it shall be the responsibility of the Board / ACB / LM of the concerned RBI regulated entity to ensure that there is no conflict of interest and independence of auditors is ensured, and this should be suitably recorded in the minutes of the meetings of Board / ACB / LM.';
+const INTERVENING = '33. The NBFC, if using or intending to use mobile financial services, shall develop a mechanism for safeguarding information assets that are used by mobile applications to provide services to customers.';
+const UNDER = 'Under unavoidable circumstances, if the PT is conducted in test environment, the NBFC shall ensure that the version and configuration of the test environment resembles the production environment.';
+const IN_THOSE = 'In those cases, where the source code is not owned by the NBFC, the NBFC shall obtain a certificate from the application developer stating that the application is free of known vulnerabilities, malware, and any covert channels in the code.';
+const APART = '9. Apart from the matters enumerated in Paragraph 6(1) above, where a company has obtained a specific advice from RBI that it is not required to hold a CoR from RBI, the auditor shall include a statement that the company is complying with the conditions as stipulated by RBI.';
+const FOR_EG = 'For example, if an IDF-NBFC which is a group entity of a Scheduled Commercial Bank, the regulations as applicable to NBFC – Upper Layer, other than the requirement of listing, shall be applicable to the IDF-NBFC.';
+const BEFORE = "101P. Before a financial product / service, other than those determined as suitable for all customers as per the NBFC's policy, is sold to an individual customer, its suitability and appropriateness for the customer shall be determined by the NBFC based on an analysis of the features, risk-return attributes, time horizon, complexity, fee structure, etc. vis-à-vis the customer's age, income, level of financial literacy, risk tolerance, etc. Wherever the financial sector regulator has prescribed any specific suitability assessment analysis for determining the suitability and appropriateness of the product / service regulated by it, an NBFC shall ensure adherence to the same.";
+const FORCE_LEAD = 'Where obtaining of the source code is not possible, the NBFC shall put in place a source code escrow arrangement or other arrangements to adequately mitigate the risk of default by the vendor.';
+
+for (const [name, sentence] of [
+  ['a meta title names its own instrument', META_TITLE],
+  ['a commencement names its own instrument', META_COMMENCE],
+  ['a commencement with an addressee subject', META_ABOVE],
+  ['a subject phrase interrupted by a parenthetical', COMMS],
+  ['a duty-of sentence with a leading if-clause', HOWEVER],
+  ['a subject interrupted by an if-clause', INTERVENING],
+  ['a sentence with two fronted clauses', UNDER],
+  ['a sentence with a where-clause between subject and verb', IN_THOSE],
+  ['an apart-from sentence with a where-clause', APART],
+  ['an illustration with an if-clause before the subject', FOR_EG],
+  ['a before-clause with an embedded exception', BEFORE],
+]) {
+  const verdict = actorOk(sentence);
+  ok(`no invented actor: ${name}`, verdict.pass, JSON.stringify(verdict.detail));
+  const subject = subjectOf(sentence);
+  ok(`the subject is a source span: ${name}`,
+    subject === 'Someone' || sentence.includes(subject),
+    JSON.stringify(subject));
+}
+
+ok('a meta subject is the sentence\'s own words',
+  subjectOf(META_TITLE) === '3. These Amendment Directions',
+  JSON.stringify(subjectOf(META_TITLE)));
+ok('a duty-of subject is read from after the verb',
+  subjectOf(HOWEVER) === 'the Board / ACB / LM of the concerned RBI regulated entity',
+  JSON.stringify(subjectOf(HOWEVER)));
+ok('a leading where-clause is not the subject',
+  subjectOf(FORCE_LEAD) === 'the NBFC',
+  JSON.stringify(subjectOf(FORCE_LEAD)));
+
+// The force flip: the frame must keep the negation the source carries.
+{
+  const p = propositionFromSentence(FORCE_LEAD);
+  const verdict = checkForce({
+    source: FORCE_LEAD,
+    frame: p.frame,
+    rewrite: p.frame,
+  });
+  ok('a leading condition keeps the frame\'s negation', verdict.pass,
+    JSON.stringify(verdict.detail));
+  ok('the leading condition is captured',
+    p.condition.some((c) => /^Where obtaining/.test(c)),
+    JSON.stringify(p.condition));
+}
+
 console.log(failures === 0 ? '\nAll proposition checks passed.' : `\n${failures} proposition check(s) FAILED.`);
 process.exit(failures === 0 ? 0 : 1);

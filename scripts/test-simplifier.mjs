@@ -306,5 +306,83 @@ function approx(name, got, want, tol = 1e-6) {
       propositionFromSentence('The Bank shall appoint the auditors.').frame);
 }
 
+// 19. The rule card (Task 8): who must do what, by when, unless what — and
+// what the engine could not read. The substitution view stays beside it.
+{
+  const r = simplify(SAMPLE_TEXT);
+  ok('a rule card per source sentence', r.ruleCards.length === r.stats.sentences,
+    `${r.ruleCards.length} vs ${r.stats.sentences}`);
+  const grant = r.ruleCards[r.ruleCards.length - 1];
+  ok('the card names who must do what',
+    /beneficiar/i.test(grant.who) && /receive/i.test(grant.mustDo),
+    JSON.stringify({ who: grant.who, force: grant.force, mustDo: grant.mustDo }));
+  ok('the card keeps the source sentence',
+    grant.source.length > 0 && SAMPLE_TEXT.includes(grant.source.slice(0, 20)),
+    grant.source.slice(0, 40));
+  ok('the card lists the fields it read and the ones it could not',
+    Array.isArray(grant.fieldsRead) && Array.isArray(grant.fieldsMissing)
+      && grant.fieldsRead.includes('action'),
+    JSON.stringify({ read: grant.fieldsRead, missing: grant.fieldsMissing }));
+  ok('the card carries structural confidence',
+    ['high', 'medium', 'low'].includes(grant.confidence.band) && grant.confidence.expected > 0,
+    JSON.stringify(grant.confidence));
+  ok('the sample proviso lands in unless what',
+    r.ruleCards[0].unlessWhat.some((q) => /prior consultation/.test(q)),
+    JSON.stringify(r.ruleCards[0].unlessWhat));
+
+  const timed = simplify('The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.');
+  ok('a deadline lands in by when',
+    timed.ruleCards[0].byWhen.some((d) => /fifteen days/.test(d)),
+    JSON.stringify(timed.ruleCards[0].byWhen));
+  ok('an exception lands in unless what',
+    timed.ruleCards[0].unlessWhat.some((q) => /unless/.test(q)),
+    JSON.stringify(timed.ruleCards[0].unlessWhat));
+
+  const quiet = simplify('The Reserve Bank has examined the feedback received on the draft Directions.');
+  const card = quiet.ruleCards[0];
+  ok('an untouched sentence still gets a rule card', !!card && card.source.length > 0);
+  ok('with a structural confidence, not a tick',
+    card.structural === true && ['high', 'medium', 'low'].includes(card.confidence.band),
+    JSON.stringify({ structural: card.structural, confidence: card.confidence }));
+
+  const vague = simplify('The applicant shall furnish the documents where the Reserve Bank so directs.');
+  ok('an unread condition is named on the card, not hidden',
+    vague.ruleCards[0].fieldsMissing.includes('condition'),
+    JSON.stringify(vague.ruleCards[0].fieldsMissing));
+
+  // Clause-level rendering: every card carries the clause it sits in, so
+  // the panel renders the cards under their clause rather than as one flat
+  // list of sentences.
+  const cl = simplify('Section 4. The Bank shall appoint the auditors. Section 5. The auditors shall report within thirty days.');
+  ok('a card carries the clause it sits in',
+    cl.ruleCards.map((c) => c.clause).join('|') === 's. 4|s. 5',
+    cl.ruleCards.map((c) => c.clause).join('|'));
+
+  // The DoD's manual check, as a test: a 60-word nested-clause sentence
+  // with no dictionary phrase renders as a rule card with the unresolved
+  // condition visible — read into "unless what" or named as not read, but
+  // never dropped.
+  const nested = simplify(
+    'Where a scheduled bank, after giving the borrower a notice of not less than thirty days, proposes to enforce a security interest created in its favour, unless the borrower has discharged the outstanding dues with interest, and no suit concerning the security interest is pending before any court, the bank shall follow the procedure laid down by the Reserve Bank.',
+  );
+  ok('no dictionary phrase touches the sentence',
+    nested.stats.replacements.every((x) => x.term === 'shall'),
+    JSON.stringify(nested.stats.replacements));
+  ok('a 60-word nested clause becomes one rule card',
+    nested.ruleCards.length === 1, `${nested.ruleCards.length}`);
+  const nc = nested.ruleCards[0];
+  ok('with the unresolved condition visible on the card',
+    nc.unlessWhat.some((q) => /unless/.test(q)) || nc.fieldsMissing.includes('condition'),
+    JSON.stringify({ unlessWhat: nc.unlessWhat, missing: nc.fieldsMissing }));
+  ok('and the source sentence kept whole',
+    nc.source.includes('thirty days') && nc.source.includes('Reserve Bank'));
+  ok('with a structural confidence, not a green tick',
+    ['high', 'medium', 'low'].includes(nc.confidence.band) && nc.confidence.expected > 0,
+    JSON.stringify(nc.confidence));
+
+  ok('the substitution view is still produced beside the cards',
+    r.simplifiedText.length > 0 && r.stats.replacements.length > 0);
+}
+
 console.log(failures === 0 ? '\nAll simplifier checks passed.' : `\n${failures} simplifier check(s) FAILED.`);
 process.exit(failures === 0 ? 0 : 1);

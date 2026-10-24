@@ -14,7 +14,66 @@ import { hindiNote, translateTerms } from '../data/hindi.js';
 import {
   classifyObligation, getObligationType, isDutyTrigger, OBLIGATION_ORDER,
 } from './legal/obligations.js';
-import { extractPropositions } from './legal/propositions.js';
+import {
+  extractPropositions, getPropositionKind, structuralConfidence,
+} from './legal/propositions.js';
+import { render } from './legal/render.js';
+import { renderGenre } from './legal/glossary.js';
+
+// The rule card (Task 8): one card per source sentence — who must do what,
+// by when, unless what — with the fields the engine read, the ones it could
+// not, and a structural confidence. A sentence no dictionary rule touched
+// gets a card like any other: read for structure, not certified green.
+const FORCE_LABEL = {
+  duty: 'must',
+  prohibition: 'must not',
+  permission: 'may',
+  entitlement: 'is entitled to',
+  definition: 'means',
+  constitutive: 'is',
+  method: 'is computed as',
+  meta: '',
+  illustration: 'must',
+  statement: '',
+};
+
+const ruleCardFor = (p) => {
+  const kind = getPropositionKind(p.obligationType);
+  const confidence = structuralConfidence(p);
+  const rendered = render(p);
+  const fieldsRead = [];
+  if (p.actor && p.actor.known) fieldsRead.push('actor');
+  if (p.action) fieldsRead.push('action');
+  if (p.object) fieldsRead.push('object');
+  if (p.qualifier) fieldsRead.push('qualifier');
+  if (p.condition.length) fieldsRead.push('condition');
+  if (p.exception.length) fieldsRead.push('exception');
+  if (p.consequence) fieldsRead.push('consequence');
+  if (p.deadline.length) fieldsRead.push('deadline');
+  if (p.threshold.length) fieldsRead.push('threshold');
+  if (p.authority) fieldsRead.push('authority');
+  return {
+    id: p.id,
+    clause: p.clause,
+    kind: p.obligationType,
+    kindLabel: kind.label,
+    kindNote: kind.note,
+    who: p.subject || (p.actor && p.actor.known ? p.actor.label : 'Someone'),
+    force: p.modality || FORCE_LABEL[p.obligationType] || 'must',
+    mustDo: [p.action, p.object].filter(Boolean).join(' '),
+    byWhen: p.deadline,
+    unlessWhat: [...p.condition, ...p.exception],
+    fieldsRead,
+    fieldsMissing: [...new Set([...(p.unreadable || []), ...confidence.missing])],
+    source: p.sourceText,
+    frame: p.frame,
+    rewrite: p.rewrite,
+    substitutions: rendered.substitutions,
+    structural: p.obligationType === 'statement' || rendered.substitutions.length === 0,
+    confidence,
+    flags: p.flags,
+  };
+};
 
 export const simplify = (text) => {
   const result = analyse(text, { mode: 'citizen', jurisdictionId: 'in-bare-act' });
@@ -67,15 +126,49 @@ export const simplify = (text) => {
       a.id.localeCompare(b.id, 'en', { numeric: true }),
   );
 
+  const propositions = extractPropositions(result.rows);
+
+  // Genre rendering: a long title or a circular's letterhead cannot reach
+  // ease 60 by substitution alone, so those inputs are rendered as short
+  // sentences by the genre path (glossary.js). Ordinary prose keeps the
+  // engine's output untouched; every genre rewrite is appended to the
+  // change list beside the dictionary's own rules.
+  const items = [];
+  const seenIds = new Set();
+  for (const row of result.rows) {
+    if (seenIds.has(row.sourceId)) continue;
+    seenIds.add(row.sourceId);
+    items.push({
+      source: row.sourceText,
+      plain: result.rows
+        .filter((r) => r.sourceId === row.sourceId)
+        .map((r) => r.plain)
+        .join(' '),
+    });
+  }
+  const genre = renderGenre(items);
+  const simplifiedText = genre
+    ? [genre.plain, ...items.slice(genre.consumed).map((it) => it.plain)]
+        .filter(Boolean)
+        .join(' ')
+    : result.simplifiedText;
+  const genreChanges = genre ? genre.changes.map((c) => ({
+    term: 'genre rendering', from: c.from, to: c.to, risk: c.risk,
+    removed: c.removed, count: c.count,
+  })) : [];
+
   return {
-    simplifiedText: result.simplifiedText,
+    simplifiedText,
     stats: {
       words: result.stats.words,
       sentences: result.stats.sentences,
-      replacements: result.stats.replacements.map((r) => ({
-        term: r.term, from: r.from, to: r.to, risk: r.risk,
-        removed: r.removed, count: r.count,
-      })),
+      replacements: [
+        ...result.stats.replacements.map((r) => ({
+          term: r.term, from: r.from, to: r.to, risk: r.risk,
+          removed: r.removed, count: r.count,
+        })),
+        ...genreChanges,
+      ],
     },
     readability: {
       original: result.readability.original,
@@ -89,7 +182,8 @@ export const simplify = (text) => {
       flag: row.flag,
     })),
     obligations,
-    propositions: extractPropositions(result.rows),
+    propositions,
+    ruleCards: propositions.map(ruleCardFor),
     definitions: result.definitions.definitions,
     hindi: {
       note: hindiNote,

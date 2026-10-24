@@ -44,6 +44,7 @@ const ModeSwitch = ({ mode, onChange }) => (
 function CitizenPanel({ text, setText }) {
   const result = useMemo(() => simplify(text), [text]);
   const [pit, setPit] = useState({ whoBenefits: '', whoPays: '', whoMissing: '' });
+  const [view, setView] = useState('cards');
   const [copied, setCopied] = useState(false);
   const pitDraft = usePitDraft();
   const pitCheck = checkPit(pit);
@@ -138,6 +139,86 @@ function CitizenPanel({ text, setText }) {
       </div>
 
       <div className="simplifier-output">
+        <div className="filter-row mode-switch" role="group" aria-label="Output view">
+          <button
+            type="button"
+            className={`chip ${view === 'cards' ? 'chip-active' : ''}`}
+            onClick={() => setView('cards')}
+            aria-pressed={view === 'cards'}
+          >
+            Rule cards
+          </button>
+          <button
+            type="button"
+            className={`chip ${view === 'substitution' ? 'chip-active' : ''}`}
+            onClick={() => setView('substitution')}
+            aria-pressed={view === 'substitution'}
+          >
+            Substitution view
+          </button>
+          <span className="fine-print">
+            {view === 'cards'
+              ? 'One card per sentence: who must do what, by when, unless what — and what the engine could not read.'
+              : 'The rewritten paragraph as it stands today, with every phrase the dictionary replaced.'}
+          </span>
+        </div>
+
+        {view === 'cards' && (
+          <div className="output-sub">
+            <label>Rule cards: who must do what, by when, unless what</label>
+            <p className="meta">
+              Every sentence becomes a card, read for structure and grouped
+              under the clause it sits in. The chips say which fields the
+              engine read and which it could not. A sentence no rule
+              touched is still read — its confidence is structural, never a
+              green tick.
+            </p>
+            {result.ruleCards
+              .reduce((groups, card) => {
+                const key = card.clause || '';
+                const last = groups[groups.length - 1];
+                if (last && last.clause === key) last.cards.push(card);
+                else groups.push({ clause: key, cards: [card] });
+                return groups;
+              }, [])
+              .map((group, i) => (
+                <section key={`clause-${i}`} className="clause-group">
+                  {group.clause ? <h4>{group.clause}</h4> : null}
+                  <ul className="obligation-list">
+                    {group.cards.map((card) => (
+                      <li key={card.id}>
+                        <span
+                          className={`obligation-type${card.kind === 'duty' ? ' obligation-action' : ''}`}
+                          title={card.kindNote}
+                        >
+                          {card.kindLabel}
+                        </span>
+                        <span className="obligation-text">
+                          <strong>{card.who}</strong> {card.force} {card.mustDo}
+                          {card.byWhen.length > 0 ? `; by when: ${card.byWhen.join(', ')}` : ''}
+                          {card.unlessWhat.length > 0 ? `; unless: ${card.unlessWhat.join('; ')}` : ''}
+                        </span>
+                        <span
+                          className="obligation-flag"
+                          title={`Structural confidence: needs ${card.confidence.expected} expected slots; has ${card.confidence.found}.${card.confidence.missing.length ? ` Missing: ${card.confidence.missing.join(', ')}.` : ''}`}
+                        >
+                          {card.structural ? 'structural read' : 'frame read'} · {card.confidence.band}
+                        </span>
+                        <span className="obligation-flag" title="What the engine read, and what it could not.">
+                          read: {card.fieldsRead.join(', ') || 'the sentence itself'}
+                          {card.fieldsMissing.length > 0 ? ` · not read: ${card.fieldsMissing.join(', ')}` : ''}
+                        </span>
+                        <p className="meta">Source: {card.source}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
+          </div>
+        )}
+
+        {view === 'substitution' && (
+          <>
         <label>Plain-language version</label>
         <div className="output-box">
           {result.simplifiedText || (
@@ -203,6 +284,8 @@ function CitizenPanel({ text, setText }) {
               ))}
             </ul>
           </div>
+        )}
+          </>
         )}
 
         {result.obligations.length > 0 && (

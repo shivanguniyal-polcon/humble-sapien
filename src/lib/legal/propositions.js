@@ -56,6 +56,40 @@ export const PROPOSITION_KINDS = [
 export const getPropositionKind = (id) =>
   PROPOSITION_KINDS.find((k) => k.id === id) || PROPOSITION_KINDS[PROPOSITION_KINDS.length - 1];
 
+// Structural confidence: expected slots present ÷ slots expected for the
+// kind (the per-kind expected sets from the design note's frame table).
+// A different axis from the review tool's engagement confidence — the two
+// are independent on purpose. Bands: all expected present → high; one
+// missing → medium; more → low.
+export const EXPECTED_SLOTS = {
+  duty: ['actor', 'action'],
+  prohibition: ['actor', 'action'],
+  permission: ['actor', 'action'],
+  entitlement: ['actor', 'action'],
+  definition: ['action', 'object'],
+  constitutive: ['actor', 'action'],
+  method: ['actor', 'action'],
+  meta: ['actor', 'action'],
+  illustration: ['actor', 'action'],
+  statement: ['action'],
+};
+
+export const structuralConfidence = (p) => {
+  const prop = p || {};
+  const expected = EXPECTED_SLOTS[prop.obligationType] || ['actor', 'action'];
+  const found = (slot) => (slot === 'actor'
+    ? Boolean(prop.actor && prop.actor.known)
+    : Boolean(String(prop[slot] || '').trim()));
+  const missing = expected.filter((slot) => !found(slot));
+  return {
+    expected: expected.length,
+    found: expected.length - missing.length,
+    missing,
+    slots: expected,
+    band: missing.length === 0 ? 'high' : missing.length === 1 ? 'medium' : 'low',
+  };
+};
+
 // A quoted term given a meaning: "authorised officer" means an officer...
 const DEFINITION_RE =
   /["“']([^"”']{1,80})["”']\s*(?:shall\s+)?mean(?:s)?(?:\s+and\s+includes)?\s+([^.;]{0,220})/i;
@@ -76,13 +110,8 @@ const DUTY_OF_RE =
   /\b(?:it\s+(?:shall|will|is)\s+be\s+the\s+(?:obligation|duty|responsibility)|the\s+(?:duty|obligation|responsibility))\s+of\s+([^,.;]{2,60}?)(?=\s+to\s+|[,.;]|$)/i;
 
 const CONDITION_HEAD = /^(?:provided that|provided|subject to|where|if)\b/i;
-const EXCEPTION_HEAD = /^(?:unless|other than|except)\b/i;
-
-// The joints at which the main clause ends and a condition or exception
-// begins. The connective travels with the qualifier, so the frame can say
-// "provided that ..." exactly as the drafter wrote it.
-const BOUNDARY_RE =
-  /[,;]\s*(?=(?:provided that|provided|subject to|where|if|unless|other than|except)\b)/gi;
+const EXCEPTION_HEAD = /^(?:unless|other than|except|apart from)\b/i;
+const HEAD_RE = /^(?:provided that|provided|subject to|where|if|unless|other than|except|apart from)\b/i;
 
 // Timing phrases: constraints on when or how often, kept in their own slot
 // so the frame separates the act from its clock.
@@ -155,35 +184,170 @@ const timingPhrases = (text) => phrasesFrom([TIMING_SOURCE], text);
 const stripTiming = (text) =>
   tidy(String(text || '').replace(new RegExp(TIMING_SOURCE, 'gi'), ' '));
 
-// Cut the sentence at the first condition or exception joint, then sort the
-// tail pieces into their slots.
+// The clause walk. A sentence is cut at every comma or semicolon into
+// pieces, and the pieces are read into runs:
+//
+//   - a piece led by a qualifier connective opens a condition or exception
+//     run, and the connective travels with it, so the frame says
+//     "provided that ..." exactly as the drafter wrote it;
+//   - a piece carrying the sentence's own force (modal, duty verb, "means")
+//     opens or extends the main clause — except a coordinator-led piece,
+//     which extends the run already open ("...provided that X, and the
+//     scheme shall be published" is still the proviso);
+//   - any other piece extends the open run. With no run open it waits:
+//     fronted material ("However", "Under unavoidable circumstances", "In
+//     those cases") joins the next qualifier run, subject-like material
+//     ("33. The NBFC") waits for the main clause, and an auxiliary-led
+//     piece ("is sold to an individual customer") extends a qualifier run
+//     when one is open.
+//
+// Before this walk the splitter cut at the first qualifier joint and threw
+// the rest of the sentence away: "The NBFC, if using X, shall develop ..."
+// lost its main clause, and a leading "Where ... ," was never seen at all.
+const FORCE_PIECE =
+  /\b(?:shall|must|may|will|can|should|could|would|might)(?:\s*,)?\s+(?:not\s+)?[a-z]|\b(?:shall|must|may|will|can|should|could|would|might)\s*$|\b(?:is|are)\s+(?:required|liable|obliged|bound)\s+to\b|\b(?:has|have)\s+to\b|\bmandatorily\b|\bmeans?\b|\b(?:is|are)\s+entitled\s+to\b/i;
+const CONTINUATION_PIECE =
+  /^(?:and|or|but|nor|yet|so|which|that|wherein|whilst|while|albeit|though|although)\b/i;
+const AUX_LEAD =
+  /^(?:is|are|was|were|be|being|been|shall|must|may|will|can|could|should|would|has|have|had|do|does|did)\b/i;
+const FRONTED_KEEP = new Set([
+  'in', 'under', 'before', 'after', 'upon', 'during', 'within', 'without',
+  'notwithstanding', 'despite', 'apart', 'whereas', 'whereupon', 'while',
+  'whilst', 'albeit', 'though', 'although', 'however', 'moreover',
+  'furthermore', 'besides', 'also', 'otherwise', 'instead', 'accordingly',
+  'consequently', 'hence', 'thus', 'therefore', 'for', 'given', 'pending',
+]);
+
+// A piece's enumeration ("33.", "(8)", "101P.", "•") is scaffolding, not
+// grammar: it is stripped before the piece is classified, and kept in every
+// span the proposition emits.
+const ENUM_RE = /^[\s•\-–—]*(?:\d+[A-Za-z]?|\([a-z\d]{1,4}\)|[a-z]|[ivx]+)[.)]\s*/i;
+const cleanPiece = (text) => String(text || '').replace(ENUM_RE, '');
+
+const pieceKind = (text) => {
+  const clean = cleanPiece(text);
+  if (HEAD_RE.test(clean)) return 'head';
+  const word = (clean.match(/^[a-z]+/i) || [''])[0].toLowerCase();
+  if (FRONTED_KEEP.has(word)) return 'fronted';
+  if (AUX_LEAD.test(clean)) return 'aux';
+  return 'np';
+};
+
+// Cut at every comma or semicolon, keeping exact source spans.
+const cutPieces = (source) => {
+  const out = [];
+  const re = /[,;]/g;
+  let start = 0;
+  let m;
+  while ((m = re.exec(source)) !== null) {
+    out.push({ start, end: m.index });
+    start = m.index + m[0].length;
+  }
+  out.push({ start, end: source.length });
+  return out
+    .map((p) => {
+      const raw = source.slice(p.start, p.end);
+      const lead = (raw.match(/^\s*/) || [''])[0].length;
+      const tail = (raw.match(/\s*$/) || [''])[0].length;
+      return { start: p.start + lead, end: p.end - tail, text: raw.trim() };
+    })
+    .filter((p) => p.text);
+};
+
 const splitQualifiers = (text) => {
   const source = String(text || '');
-  const boundary = new RegExp(BOUNDARY_RE.source, 'gi');
-  const marks = [];
-  let m;
-  while ((m = boundary.exec(source)) !== null) {
-    marks.push({ cut: m.index, from: m.index + m[0].length });
-  }
-  if (marks.length === 0) {
-    return { main: source, conditions: [], exceptions: [] };
-  }
-  const main = source.slice(0, marks[0].cut).replace(/[,;]\s*$/, '').trim();
-  const pieces = [];
-  for (let i = 0; i < marks.length; i += 1) {
-    const from = marks[i].from;
-    const to = i + 1 < marks.length ? marks[i + 1].cut : source.length;
-    const piece = source.slice(from, to).replace(/\s+/g, ' ').trim();
-    if (piece) pieces.push(piece);
-  }
-  const conditions = [];
-  const exceptions = [];
+  const pieces = cutPieces(source);
+  const runs = [];
+  const fronted = [];
+  const subjectish = [];
+  let current = null;
+
   for (const piece of pieces) {
-    if (EXCEPTION_HEAD.test(piece)) exceptions.push(piece);
-    else if (CONDITION_HEAD.test(piece)) conditions.push(piece);
-    else exceptions.push(piece);
+    const kind = pieceKind(piece.text);
+    const clean = cleanPiece(piece.text);
+    const force = FORCE_PIECE.test(clean);
+    const cont = CONTINUATION_PIECE.test(clean);
+
+    if (kind === 'head') {
+      current = {
+        kind: EXCEPTION_HEAD.test(clean) ? 'exception' : 'condition',
+        pieces: [...fronted, piece],
+      };
+      fronted.length = 0;
+      runs.push(current);
+    } else if (force && !cont && current && current.kind === 'main') {
+      current.pieces.push(piece);
+    } else if (force && !cont) {
+      current = { kind: 'main', pieces: [...fronted, piece] };
+      fronted.length = 0;
+      runs.push(current);
+    } else if (current && (cont || current.kind === 'main' || kind === 'aux')) {
+      current.pieces.push(piece);
+    } else if (kind === 'fronted' || kind === 'aux') {
+      fronted.push(piece);
+    } else {
+      subjectish.push(piece);
+    }
   }
-  return { main, conditions, exceptions };
+
+  const span = (run) => source.slice(run.pieces[0].start, run.pieces[run.pieces.length - 1].end);
+  // The main clause is everything outside the qualifier runs — the force
+  // run, the subject material that waits for it, and any fronted material
+  // left over. A sentence with no force of its own keeps all of its words:
+  // a statement's frame is its own words.
+  const inQualifier = new Set();
+  for (const run of runs) {
+    if (run.kind !== 'main') for (const piece of run.pieces) inQualifier.add(piece);
+  }
+  const mainPieces = pieces.filter((p) => !inQualifier.has(p));
+  return {
+    main: mainPieces.map((p) => p.text).join(', '),
+    conditions: runs.filter((r) => r.kind === 'condition').map(span),
+    exceptions: runs.filter((r) => r.kind === 'exception').map(span),
+  };
+};
+
+// The qualifier clauses of a sentence, in source order — the shared reader
+// the proposition and the shadow check both use, so a phrase read on one
+// side is read the same way on the other.
+export const qualifierClauses = (text) => {
+  const { conditions, exceptions } = splitQualifiers(text);
+  return [
+    ...conditions.map((phrase) => ({ phrase, head: qualifierHead(phrase), kind: 'condition' })),
+    ...exceptions.map((phrase) => ({ phrase, head: qualifierHead(phrase), kind: 'exception' })),
+  ];
+};
+
+// The connective a clause turns on, wherever it sits: "However, if X" turns
+// on "if", and "9. Apart from X" turns on "apart from".
+export const qualifierHead = (phrase) => {
+  const m = /\b(provided that|provided|subject to|where|if|unless|other than|except|apart from)\b/i
+    .exec(String(phrase || ''));
+  return m ? m[1].toLowerCase() : '';
+};
+
+// The subject as a span of the source: the text before the sentence's first
+// force word, less its leading and trailing qualifier clauses ("Where ... ,
+// the NBFC" -> "the NBFC"; "33. The NBFC, if using X" -> "33. The NBFC").
+// Fronted material the sentence attaches to its subject ("For instance, the
+// bank") stays with it. Whatever remains is contiguous source text — or the
+// declared fallback, never a label the sentence does not use.
+const SUBJECT_CUT =
+  /\b(?:shall|will|must|may|can|should|could|would|might|is required to|are required to|is liable to|are liable to|is obliged to|are obliged to|is bound to|are bound to|has to|have to|will have to|mandatorily)\b/i;
+
+const subjectSpan = (text) => {
+  const source = String(text || '');
+  const dutyOf = DUTY_OF_RE.exec(source);
+  if (dutyOf) return dutyOf[1].trim();
+  const m = SUBJECT_CUT.exec(source);
+  if (!m) return '';
+  const pieces = cutPieces(source.slice(0, m.index));
+  let lo = 0;
+  while (lo < pieces.length && pieceKind(pieces[lo].text) === 'head') lo += 1;
+  let hi = pieces.length;
+  while (hi > lo && pieceKind(pieces[hi - 1].text) === 'head') hi -= 1;
+  const kept = pieces.slice(lo, hi);
+  return kept.length ? source.slice(kept[0].start, kept[kept.length - 1].end).trim() : '';
 };
 
 // Type the sentence. A sentence with no binding language and no definition
@@ -326,24 +490,22 @@ export const propositionFromSentence = (sentence, context = {}) => {
   } else if (kind === 'meta') {
     const titled = TITLE_RE.exec(text);
     const amend = AMEND_OP_RE.exec(text);
+    subject = subjectSpan(text) || 'Someone';
+    const metaPlural = /^(?:these|those)\b|^the above\b/i.test(cleanPiece(subject));
     if (titled) {
-      subject = 'These Directions';
-      modality = /^these\b/i.test(text) ? 'are called' : 'is called';
+      modality = metaPlural ? 'are called' : 'is called';
       predicate = titled[1].trim();
       metaOp = 'be called';
     } else if (COMMENCEMENT_RE.test(text)) {
-      subject = 'These Directions';
       modality = 'come into force';
       predicate = stripTiming(text.slice(text.search(COMMENCEMENT_RE) + text.match(COMMENCEMENT_RE)[0].length)).replace(/^[:,\s]+/, '').trim();
       metaOp = text.match(COMMENCEMENT_RE)[0].replace(/^shall\s+/i, '');
     } else if (amend) {
-      subject = dutySubjectOf(main);
-      modality = 'is';
+      modality = metaPlural ? 'are' : 'is';
       predicate = afterVerb.replace(/^(?:be|stand)\s+/i, '').replace(/[\s:.]+$/, '').trim();
       metaOp = amend[0].replace(/^shall\s+/i, '');
     } else {
-      subject = dutySubjectOf(main) || 'These Directions';
-      modality = 'is';
+      modality = metaPlural ? 'are' : 'is';
       predicate = afterVerb.replace(/^be\s+/i, '').replace(/[\s:.]+$/, '').trim();
     }
   } else if (kind === 'statement') {
@@ -359,18 +521,18 @@ export const propositionFromSentence = (sentence, context = {}) => {
     predicate = stripTiming(main.slice(dutyOf.index + dutyOf[0].length)).replace(/^to\s+/i, '').replace(/[\s:.]+$/, '').trim();
   } else if (kind === 'permission') {
     const mayAt = main.search(/\bmay\b/i);
-    subject = main.slice(0, mayAt).trim();
+    subject = subjectSpan(text) || 'Someone';
     modality = 'may';
     predicate = stripTiming(main.slice(mayAt + 3)).replace(/[\s:.]+$/, '').trim();
   } else if (kind === 'entitlement') {
-    subject = namedSubject(main, actor);
+    subject = subjectSpan(text) || 'Someone';
     modality = 'is entitled to';
     predicate = stripTiming(afterVerb)
       .replace(/^be\s+(?:entitled|permitted|allowed|eligible(?:\s+to\s+be\sclassified)?)\s+(?:to\s+)?/i, '')
       .replace(/[\s:.]+$/, '')
       .trim();
   } else if (kind === 'constitutive') {
-    subject = namedSubject(main, actor);
+    subject = subjectSpan(text) || 'Someone';
     if (/^there\s+shall\b/i.test(main.trim())) {
       subject = 'There';
       modality = 'must be';
@@ -392,7 +554,7 @@ export const propositionFromSentence = (sentence, context = {}) => {
     // duty, prohibition, method, illustration: the act is what follows the
     // force word. A prohibition carries its negation in the force, not in
     // the act, so "shall not exceed" reads "must not exceed".
-    subject = namedSubject(main, actor);
+    subject = subjectSpan(text) || 'Someone';
     modality = kind === 'prohibition' ? 'must not' : kind === 'method' ? 'is computed as' : 'must';
     predicate = stripTiming(afterVerb.replace(/^not\s+/i, ''))
       .replace(/^be\s+(?:calculated|computed)\s+on\s+the\s+basis\s+of\s+/i, '')
@@ -524,6 +686,7 @@ export const propositionFromSentence = (sentence, context = {}) => {
 
 // The frame is one sentence in fixed slot order:
 //   who, force, act, when, condition, exception.
+// A tail clause already inside the head is shown once, not twice.
 export const renderFrame = (p) => {
   const head = [capitalize(p.subject), p.modality, p.predicate]
     .map((s) => String(s || '').trim())
@@ -532,28 +695,13 @@ export const renderFrame = (p) => {
     .replace(/\s+/g, ' ')
     .replace(/\s+([,;:])/g, '$1')
     .trim();
-  const tail = [...p.deadline, ...p.condition, ...p.exception]
+  const flat = (s) => String(s || '').replace(/\s+/g, ' ').toLowerCase();
+  const headFlat = flat(head);
+  const tail = [p.qualifier, ...p.deadline, ...p.condition, ...p.exception]
     .map((s) => String(s || '').trim())
-    .filter(Boolean);
+    .filter(Boolean)
+    .filter((s) => !headFlat.includes(flat(s)));
   return punctuate(tail.length ? `${head}, ${tail.join(', ')}` : head);
-};
-
-// The subject as the sentence names it. A duty the sentence names gets its
-// own words; a duty only the bearer tag can place gets the tag's label.
-const namedSubject = (main, actor) => {
-  const head = dutySubjectOf(main);
-  if (head) return head;
-  return actor && actor.known ? actor.label : 'Someone';
-};
-
-const dutySubjectOf = (main) => {
-  const m = DUTY_VERB.exec(String(main || ''));
-  if (!m) return '';
-  return String(main || '')
-    .slice(0, m.index)
-    .replace(/^(?:in order to [^,.;]{2,60},|where[^,.;]{2,60},)\s*/i, '')
-    .replace(/\s+/g, ' ')
-    .trim();
 };
 
 // One proposition per source sentence. A sentence too long to say in one

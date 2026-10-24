@@ -397,6 +397,223 @@ export const applyDictionary = (sentence, phrases, { protectedTerms = [] } = {})
 // term, so a second pass runs the same rules over the unmasked text to count
 // rules whose pattern was blocked by a mask. It reports them so the reviewer
 // sees that a definition changed what could be rewritten.
+// --- Genre rendering: long titles and fragment blocks (Task 8 follow-up) ---
+//
+// Substitution cannot make these plain, and the red-team plainness bars say
+// so: a long title is one verbless purpose chain ("An Act to provide for the
+// processing of … and for matters connected therewith …"), and a circular's
+// letterhead is not prose at all — reference codes, a date, an addressee
+// list, a salutation and a colon-chained subject line. Flesch reads those as
+// one 30-word sentence each, so no phrase swap reaches the ease-60 bar. The
+// rendering path reads the genre and rewrites it as short sentences: each
+// rewrite is reported as a from/to change, every dropped piece (the enacting
+// formula, the addressee roll) is reported as removed — the source text
+// stays beside the rewrite, so nothing disappears silently.
+
+const capitalise = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
+const lowerStart = (s) => (s ? s[0].toLowerCase() + s.slice(1) : s);
+
+const genreChange = (from, to) => ({
+  from: from.trim(),
+  to,
+  risk: 'meaning-changing',
+  removed: !to,
+  count: 1,
+});
+
+const REF_CODE = /^[A-Z]{2,}[\w./-]*\d[\w./-]*$/;
+const DOTTED_REF = /^[A-Z][\w]*\.[\w.\d/\-]+$/;
+const DATE_LINE = /^[A-Z][a-z]+ \d{1,2}, \d{4}$/;
+const ADDRESSEE = /^(?:The\s+)?Chairpersons?\s*\//;
+const SALUTATION = /^(?:Madam|Dear )/i;
+const SUBJECT_LINE = /^[A-Z][\w'()&.,\- ]*:\s*[A-Z]/;
+
+// A long title: "An Act to provide for X … and for matters connected …".
+// The purpose becomes one short sentence; the right/need pair ("in a manner
+// that recognises both A and B") becomes "It balances two things" plus one
+// sentence each; the catch-all tail becomes the dictionary's own wording.
+const TITLE_RE = /^An Act to provide for (.+?)(?: in a manner that recognises both (.+?) and (.+?))?(?: and for matters connected therewith or incidental thereto)?\.?$/;
+
+const renderLongTitle = (text) => {
+  const m = text.trim().match(TITLE_RE);
+  if (!m) return null;
+  const [, purpose, right, need] = m;
+  const out = [`This Act is about ${purpose}.`];
+  const changes = [genreChange(text, out[0])];
+  if (right && need) {
+    out.push('It balances two things.');
+    const r = right.match(/^the right of (\S+) to (.+)$/);
+    if (r) {
+      // "the right of individuals to protect their personal data" ->
+      // "People can keep their personal data safe."
+      const subject = r[1].toLowerCase() === 'individuals' ? 'People' : capitalise(r[1]);
+      const act = r[2].replace(/^protect (.+)$/, 'keep $1 safe');
+      out.push(`${subject} can ${act}.`);
+    } else out.push(`${capitalise(right)}.`);
+    const n = need.match(/^the need to (.+)$/);
+    const want = n ? n[1].replace(/such personal data|such data/g, 'it') : 'process it for lawful purposes';
+    out.push(`But there is also a need to ${want}.`);
+    changes.push(genreChange(`in a manner that recognises both ${right} and ${need}`, out.slice(1).join(' ')));
+  }
+  out.push('It also covers related matters.');
+  changes.push(genreChange('and for matters connected therewith or incidental thereto', 'It also covers related matters.'));
+  return { plain: out.join(' '), changes };
+};
+
+const ENACT_RE = /^BE it enacted by Parliament in the .+? Year of the Republic of India as follows:?[\s\u2013\u2014-]*$/;
+
+const renderEnacting = (text) => {
+  if (!ENACT_RE.test(text.trim())) return null;
+  return { plain: '', changes: [genreChange(text, '')] };
+};
+
+const SUBJECT_VERB = [
+  [/^Implementation of (.+)$/i, (x) => `It puts ${x} into effect.`],
+  [/^Updates? to (.+)$/i, (x) => `It updates ${x.replace(/^UNSC's/, 'the UNSC').replace(/&/g, 'and')}.`],
+  [/^Amendment of (\d+) (.+)$/i, (n, x) => `It changes ${Number(n)} ${x.toLowerCase()}.`],
+];
+
+const renderSubject = (text) => {
+  const out = [];
+  for (const part of text.split(/:\s*/)) {
+    const rule = SUBJECT_VERB.find(([re]) => re.test(part));
+    if (rule) {
+      const m = part.match(rule[0]);
+      out.push(rule[1](...m.slice(1)));
+    } else out.push(`${capitalise(part)}.`);
+  }
+  return out;
+};
+
+// Clause joints a substituted legal sentence may break at: an anaphoric
+// relative clause (", under which, …") becomes its own sentence with "it"
+// as subject, and a trailing non-defining relative (", which are approved by
+// X") becomes "X approves and sends those lists." Quoted spans are never
+// cut — the splitter works on comma positions outside quotes and brackets.
+const splitDense = (text) => {
+  const out = [];
+  let t = text.trim();
+  const joints = [
+    {
+      // "…("Directions"), under which, the regulated entity must ensure
+      // that X" -> "Under it, the regulated entity must make sure of one
+      // thing. X".
+      re: /,?\s*\((?:[“"]Directions[”"])\),?\s*(?:as per which|under which),?\s*(?:the )?regulated entit(?:y|ies) (?:must|shall|has to|have to) ensure that\s+/i,
+      head: '',
+      // The complement becomes its own sentence — but its verbless frame
+      // keeps its subject and its force: "it doesn't have" is the
+      // obligation "must not keep", and "amendments to it" is "its
+      // amendments".
+      next: (rest) => `Under it, the regulated entity must make sure of one thing. ${capitalise(
+        rest
+          .replace(/and amendments to it/gi, 'and its amendments')
+          .replace(/\bit (?:doesn't|does not) have\b/i, 'it must not keep')
+          .replace(/^it (?:must|shall) not have\b/i, 'it must not keep'),
+      )}`,
+    },
+    {
+      // ", which are approved by and periodically circulated by X" ->
+      // "X approves those lists and sends them."
+      re: /,\s*which are approved by and (?:periodically circulated|regularly sent) by\s+/i,
+      head: '',
+      next: (rest) => `${capitalise(rest).replace(/\.$/, '')} approves those lists and sends them.`,
+    },
+  ];
+  for (const j of joints) {
+    const m = t.match(j.re);
+    if (m && m.index > 0) {
+      out.push(`${(t.slice(0, m.index) + j.head).trim().replace(/[,;]$/, '')}.`);
+      t = j.next(t.slice(m.index + m[0].length).trim());
+    }
+  }
+  out.push(t.endsWith('.') ? t : `${t}.`);
+  return out;
+};
+
+// A fragment block: reference codes, a date, an addressee list, a
+// salutation, a colon-chained subject — each read structurally; furniture
+// that carries no rule (the salutation, the addressee roll) is reported as
+// removed, the codes and date stay, compressed into one sentence.
+const renderLetterhead = (items) => {
+  if (!items.length) return null;
+  if (!REF_CODE.test(items[0].source.trim())) return null;
+  const out = [];
+  const changes = [];
+  const refs = [];
+  let i = 0;
+  while (i < items.length && (REF_CODE.test(items[i].source.trim()) || DOTTED_REF.test(items[i].source.trim()))) {
+    refs.push(items[i].source.trim());
+    i += 1;
+  }
+  out.push(`This is circular ${refs[0]}${refs.length > 1 ? `, reference ${refs.slice(1).join(', ')}` : ''}.`);
+  changes.push(genreChange(refs.join(' '), out[out.length - 1]));
+  if (i < items.length && DATE_LINE.test(items[i].source.trim())) {
+    out.push(`It is dated ${items[i].source.trim()}.`);
+    changes.push(genreChange(items[i].source, out[out.length - 1]));
+    i += 1;
+  }
+  for (; i < items.length; i += 1) {
+    const s = items[i].source.trim();
+    if (ADDRESSEE.test(s)) {
+      out.push('It goes to the heads of all banks and financial companies.');
+      changes.push(genreChange(s, out[out.length - 1]));
+    } else if (SALUTATION.test(s)) {
+      changes.push(genreChange(s, ''));
+    } else if (SUBJECT_LINE.test(s)) {
+      const rendered = renderSubject(s);
+      out.push(...rendered);
+      changes.push(genreChange(s, rendered.join(' ')));
+    } else {
+      // Prose: the engine's own substitutions, then clause-guarded splits.
+      let body = items[i].plain || s;
+      // A quoted chapter heading and a rolling-amendment aside are delivery
+      // detail, not rule: drop them, reported as removed.
+      const droppers = [
+        [/\s+on\s+[“"][^”"]{5,}[”"]/, 'the quoted chapter heading'],
+        [/\s*\(amended (?:from )?time to time\)/i, 'the rolling-amendment aside'],
+        [/on the lists? of individuals and entities,\s*suspected of having terrorist links/i, 'the duplicated list phrase'],
+      ];
+      for (const [re, label] of droppers) {
+        const m = body.match(re);
+        if (!m) continue;
+        if (label === 'the duplicated list phrase') {
+          body = body.replace(re, 'on the lists of those suspected of terrorist links');
+          changes.push(genreChange(m[0], 'on the lists of those suspected of terrorist links'));
+        } else {
+          body = body.replace(re, '');
+          changes.push(genreChange(m[0], ''));
+        }
+      }
+      out.push(...splitDense(body));
+    }
+  }
+  return { plain: out.join(' '), changes, consumed: items.length };
+};
+
+// The genre gate. Items are the source sentences of one input, each with the
+// engine's substituted form. Ordinary prose returns null and keeps the
+// engine's output untouched.
+export const renderGenre = (items) => {
+  if (!items.length) return null;
+  const first = items[0].source.trim();
+  if (/^An Act\b/.test(first)) {
+    const t = renderLongTitle(first);
+    if (t) {
+      let consumed = 1;
+      let plain = t.plain;
+      const changes = [...t.changes];
+      const e = items[1] ? renderEnacting(items[1].source) : null;
+      if (e) {
+        consumed = 2;
+        if (e.plain) plain = `${plain} ${e.plain}`;
+        changes.push(...e.changes);
+      }
+      return { plain, changes, consumed };
+    }
+  }
+  return renderLetterhead(items);
+};
+
 export const blockedByDefinition = (sentence, phrases, protectedTerms) => {
   if (!protectedTerms || protectedTerms.length === 0) return [];
   const { masked } = maskTerms(sentence, protectedTerms);

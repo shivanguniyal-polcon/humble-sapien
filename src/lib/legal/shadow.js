@@ -34,6 +34,7 @@
 import { classifyObligation } from './obligations.js';
 import {
   PROPOSITION_KINDS, getPropositionKind, propositionFromSentence, renderFrame,
+  qualifierClauses, qualifierHead,
 } from './propositions.js';
 import { render } from './render.js';
 import { simplify } from '../simplify.js';
@@ -171,24 +172,11 @@ export const checkActor = ({ source = '', subject = '', actor = null }) => {
 // proposition. Matching is head connective plus content-word overlap — the
 // drafter's connective and the substance of the clause, not exact strings.
 
-const QUALIFIER_HEAD = /^(?:provided that|provided|subject to|where|if|unless|other than|except)\b/i;
-const EXCEPTION_HEAD = /^(?:unless|other than|except)\b/i;
-const QUALIFIER_JOINT = /[,;]\s*(?=(?:provided that|provided|subject to|where|if|unless|other than|except)\b)/gi;
+// The shared clause reader — the proposition extractor's own — so a
+// qualifier phrase is read the same way on both sides of the comparison.
+export const qualifierPhrases = (text) => qualifierClauses(text);
 
-export const qualifierPhrases = (text) => {
-  const parts = String(text || '').split(QUALIFIER_JOINT);
-  return parts
-    .slice(1)
-    .map((part) => part.trim())
-    .filter((part) => QUALIFIER_HEAD.test(part))
-    .map((phrase) => ({
-      phrase,
-      head: (QUALIFIER_HEAD.exec(phrase) || [''])[0].toLowerCase(),
-      kind: EXCEPTION_HEAD.test(phrase) ? 'exception' : 'condition',
-    }));
-};
-
-const headOf = (phrase) => ((QUALIFIER_HEAD.exec(String(phrase || '').trim()) || [''])[0]).toLowerCase();
+const headOf = (phrase) => qualifierHead(phrase);
 
 const overlap = (phrase, text) => {
   const toks = tokenise(phrase);

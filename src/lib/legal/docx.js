@@ -286,6 +286,7 @@ const buildDocument = (result, { author, date, review = null }) => {
     ['Reviewer', result.source.reviewer],
     ['Jurisdiction', result.jurisdiction.label],
     ['Dictionary', `${result.jurisdictionId}@${result.dictionaryVersion}`],
+    ['Manifest', result.manifest],
   ].filter(([, value]) => value);
   for (const [key, value] of meta) {
     body.push(paragraph(`${key}: ${value}`, { style: 'Normal' }));

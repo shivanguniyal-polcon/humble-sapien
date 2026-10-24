@@ -375,6 +375,22 @@ export const typeProposition = (sentence, { prev = '' } = {}) => {
   // sentence decide: a proviso that binds still keeps the sentence on the
   // binding side.
   const { main } = splitQualifiers(text);
+  // The operative verb comes first. A "shall" that sits inside a relative
+  // clause after the grant ("the manner in which benefits shall be availed
+  // of") belongs to that clause: "the Central Government may ... make rules"
+  // is a permission, not a duty. A bare coordination ("may ..., and shall
+  // ...") keeps the binding read, and a negated permission ("may not") or a
+  // passive possibility ("can be") is not a grant at all.
+  const permissionAt = main.search(/\b(?:may|can)(?:\s*,)?\s+(?!not\b)(?!be\b)(?!there\b)[a-z]/i);
+  if (permissionAt >= 0) {
+    const binding = main.slice(permissionAt).match(/\b(?:shall|must|will|should|could|would|might)\b/i);
+    if (binding) {
+      const between = main.slice(permissionAt, permissionAt + binding.index);
+      if (/\b(?:which|that|wherein|whereby|where|whose|manner in which)\b/i.test(between)) {
+        return 'permission';
+      }
+    }
+  }
   const force = isDutyTrigger(main) || MODAL_RE.test(main) || NEGATED_RE.test(main)
     ? main : text;
   if (!isDutyTrigger(force)) return PERMISSION_RE.test(force) ? 'permission' : 'statement';

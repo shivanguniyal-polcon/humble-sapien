@@ -3,6 +3,7 @@ import { simplify, SAMPLE_TEXT, LEGAL_SAMPLE_TEXT } from '../lib/simplify.js';
 import LegalReview from '../components/LegalReview.jsx';
 import { PIT_QUESTIONS, checkPit } from '../battery/report.js';
 import { usePitDraft } from '../lib/pitStore.js';
+import { LEVELS, DEFAULT_LEVEL } from '../lib/legal/levels.js';
 
 const Readability = ({ label, data, tone }) => (
   <div className="stat">
@@ -42,7 +43,8 @@ const ModeSwitch = ({ mode, onChange }) => (
 );
 
 function CitizenPanel({ text, setText }) {
-  const result = useMemo(() => simplify(text), [text]);
+  const [levelId, setLevelId] = useState(DEFAULT_LEVEL);
+  const result = useMemo(() => simplify(text, { level: levelId }), [text, levelId]);
   const [pit, setPit] = useState({ whoBenefits: '', whoPays: '', whoMissing: '' });
   const [view, setView] = useState('cards');
   const [copied, setCopied] = useState(false);
@@ -139,6 +141,30 @@ function CitizenPanel({ text, setText }) {
       </div>
 
       <div className="simplifier-output">
+        <div className="filter-row mode-switch" role="group" aria-label="Reading level">
+          {[...LEVELS].reverse().map((level) => (
+            <button
+              key={level.id}
+              type="button"
+              className={`chip ${levelId === level.id ? 'chip-active' : ''}`}
+              onClick={() => setLevelId(level.id)}
+              aria-pressed={levelId === level.id}
+            >
+              {level.label}
+            </button>
+          ))}
+          <span className="fine-print">
+            {result.level.note}
+          </span>
+        </div>
+        <p className="meta" aria-live="polite">
+          Target ease {result.level.band[0]}–{result.level.band[1]} · this text scores{' '}
+          <strong>{result.level.achieved}</strong>{' '}
+          {result.level.reached ? '— in band.' : '— below band.'}
+          {result.level.floors.length > 0
+            ? ` The cap of ${result.level.cap} words could not be reached in ${result.level.floors.length} sentence${result.level.floors.length > 1 ? 's' : ''}: names and quoted references set the floor.`
+            : ''}
+        </p>
         <div className="filter-row mode-switch" role="group" aria-label="Output view">
           <button
             type="button"
@@ -184,7 +210,7 @@ function CitizenPanel({ text, setText }) {
               .map((group, i) => (
                 <section key={`clause-${i}`} className="clause-group">
                   {group.clause ? <h4>{group.clause}</h4> : null}
-                  <ul className="obligation-list">
+                  <ul className="obligation-list rule-card-list">
                     {group.cards.map((card) => (
                       <li key={card.id}>
                         <span
@@ -194,7 +220,10 @@ function CitizenPanel({ text, setText }) {
                           {card.kindLabel}
                         </span>
                         <span className="obligation-text">
-                          <strong>{card.who}</strong> {card.force} {card.mustDo}
+                          {card.who ? <strong>{card.who}</strong> : null}
+                          {card.who ? ' ' : ''}
+                          {card.force ? `${card.force} ` : ''}
+                          {card.mustDo}
                           {card.byWhen.length > 0 ? `; by when: ${card.byWhen.join(', ')}` : ''}
                           {card.unlessWhat.length > 0 ? `; unless: ${card.unlessWhat.join('; ')}` : ''}
                         </span>
@@ -277,8 +306,8 @@ function CitizenPanel({ text, setText }) {
             <h4>Statutory phrases replaced</h4>
             <ul className="replace-list">
               {result.stats.replacements.map((r) => (
-                <li key={r.term}>
-                  <code>{r.term}</code> <span>× {r.count}</span>
+                <li key={`${r.from ?? r.term}-${r.to ?? ''}`}>
+                  <code>{r.from ?? r.term}</code> <span>× {r.count}</span>
                   <span>{' → '}{r.removed ? 'removed' : <code>{r.to}</code>}</span>
                 </li>
               ))}

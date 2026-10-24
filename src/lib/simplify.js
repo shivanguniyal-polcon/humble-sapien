@@ -10,6 +10,7 @@
 // Runs entirely client-side; no data leaves the page.
 
 import { analyse } from './legal/pipeline.js';
+import { flesch } from './flesch.js';
 import { hindiNote, translateTerms } from '../data/hindi.js';
 import {
   classifyObligation, getObligationType, isDutyTrigger, OBLIGATION_ORDER,
@@ -19,6 +20,7 @@ import {
 } from './legal/propositions.js';
 import { render } from './legal/render.js';
 import { renderGenre } from './legal/glossary.js';
+import { renderLevel, DEFAULT_LEVEL } from './legal/levels.js';
 
 // The rule card (Task 8): one card per source sentence — who must do what,
 // by when, unless what — with the fields the engine read, the ones it could
@@ -37,9 +39,21 @@ const FORCE_LABEL = {
   statement: '',
 };
 
+// A decimal clause label ("3.3 District Development Manager …") is furniture
+// all the way through: strip "3.3", not "3." and leave a stray "3".
+const CLAUSE_MARK = /^(?:\d+[A-Za-z]?(?:\.\d+)+\s+(?=[A-Z(‘"])|(?:(?:section|sec|article|regulation|rule|part|chapter|schedule)\s+\d+[A-Za-z]?(?:\.\d+)*|\d+[A-Za-z]?(?:\.\d+)*)\s*[.:]\s*)/i;
+
 const ruleCardFor = (p) => {
   const kind = getPropositionKind(p.obligationType);
   const confidence = structuralConfidence(p);
+  // A statement or an illustration carries no force. The label table's empty
+  // string is a decision, not a missing value: falling through to "must"
+  // would print "Someone must An Act to provide for …" at the citizen.
+  const force = p.modality || (FORCE_LABEL[p.obligationType] ?? 'must');
+  // The clause marker ("Section 4.") is furniture: it labels the group the
+  // card sits under, so it is not part of who the sentence binds.
+  const who = (p.subject || (p.actor && p.actor.known ? p.actor.label : force ? 'Someone' : ''))
+    .replace(CLAUSE_MARK, '')
   const rendered = render(p);
   const fieldsRead = [];
   if (p.actor && p.actor.known) fieldsRead.push('actor');
@@ -58,8 +72,8 @@ const ruleCardFor = (p) => {
     kind: p.obligationType,
     kindLabel: kind.label,
     kindNote: kind.note,
-    who: p.subject || (p.actor && p.actor.known ? p.actor.label : 'Someone'),
-    force: p.modality || FORCE_LABEL[p.obligationType] || 'must',
+    who,
+    force,
     mustDo: [p.action, p.object].filter(Boolean).join(' '),
     byWhen: p.deadline,
     unlessWhat: [...p.condition, ...p.exception],
@@ -75,7 +89,7 @@ const ruleCardFor = (p) => {
   };
 };
 
-export const simplify = (text) => {
+export const simplify = (text, { level = DEFAULT_LEVEL } = {}) => {
   const result = analyse(text, { mode: 'citizen', jurisdictionId: 'in-bare-act' });
 
   // The previous source sentence, so a sentence that inherits its sense from
@@ -138,12 +152,11 @@ export const simplify = (text) => {
   for (const row of result.rows) {
     if (seenIds.has(row.sourceId)) continue;
     seenIds.add(row.sourceId);
+    const rows = result.rows.filter((r) => r.sourceId === row.sourceId);
     items.push({
       source: row.sourceText,
-      plain: result.rows
-        .filter((r) => r.sourceId === row.sourceId)
-        .map((r) => r.plain)
-        .join(' '),
+      plain: rows.map((r) => r.plain).join(' '),
+      fullPlain: rows[0].fullPlain || rows.map((r) => r.plain).join(' '),
     });
   }
   const genre = renderGenre(items);
@@ -157,8 +170,26 @@ export const simplify = (text) => {
     removed: c.removed, count: c.count,
   })) : [];
 
+  // The reading level renders the rewrite. College keeps each sentence as
+  // drafted, so it needs the substituted sentence before the splitter cut
+  // it; Homosapien is built from the rule cards.
+  const cards = propositions.map(ruleCardFor);
+  const unsplitText = [
+    genre ? genre.plain : '',
+    ...items.slice(genre ? genre.consumed : 0).map((it) => it.fullPlain || it.plain),
+  ].filter(Boolean).join(' ');
+  const rendered = renderLevel({
+    text: simplifiedText,
+    unsplit: unsplitText,
+    cards,
+    rules: result.stats.replacements,
+    levelId: level,
+  });
+  const finalText = rendered.text;
+
   return {
-    simplifiedText,
+    simplifiedText: finalText,
+    level: rendered.level,
     stats: {
       words: result.stats.words,
       sentences: result.stats.sentences,
@@ -168,11 +199,14 @@ export const simplify = (text) => {
           removed: r.removed, count: r.count,
         })),
         ...genreChanges,
+        ...rendered.changes,
       ],
     },
+    // The panel's number must measure the text on the page — the level's
+    // text, not the engine's pre-level output.
     readability: {
       original: result.readability.original,
-      simplified: result.readability.simplified,
+      simplified: flesch(finalText),
     },
     sentences: result.rows.map((row) => ({
       id: row.id,
@@ -183,7 +217,7 @@ export const simplify = (text) => {
     })),
     obligations,
     propositions,
-    ruleCards: propositions.map(ruleCardFor),
+    ruleCards: cards,
     definitions: result.definitions.definitions,
     hindi: {
       note: hindiNote,

@@ -1195,6 +1195,19 @@ select:focus-visible {
   color: var(--clay-700);
 }
 
+/* The rule card carries more furniture than a typed obligation line: two
+   flag rows and the source sentence. The source spans both columns, so the
+   type stays a narrow gutter instead of sizing the first track to the
+   longest paragraph and crushing the rewrite into a sliver. */
+.rule-card-list .meta {
+  grid-column: 1 / -1;
+  margin: 0;
+}
+
+.rule-card-list .obligation-text {
+  line-height: 1.5;
+}
+
 /* The proposition comparison: the canonical frame set beside today's
    rewrite, so a reader can check that the rewrite kept what the sentence
    said — the act, the clock, the condition and the exception. */

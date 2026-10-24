@@ -330,6 +330,19 @@ function approx(name, got, want, tol = 1e-6) {
     r.ruleCards[0].unlessWhat.some((q) => /prior consultation/.test(q)),
     JSON.stringify(r.ruleCards[0].unlessWhat));
 
+  // A statement has no force. The label table's empty string is a decision,
+  // not a missing value, so the card must not fall back to "must" and print
+  // "Someone must An Act to provide for …" at the citizen.
+  const statement = simplify('An Act to provide for the processing of digital personal data and for matters connected therewith or incidental thereto.');
+  ok('a statement card does not invent a force',
+    statement.ruleCards[0].force === '',
+    JSON.stringify({
+      kind: statement.ruleCards[0].kind,
+      who: statement.ruleCards[0].who,
+      force: statement.ruleCards[0].force,
+      mustDo: statement.ruleCards[0].mustDo,
+    }));
+
   const timed = simplify('The applicant shall furnish the documents within fifteen days, unless the Reserve Bank extends the period.');
   ok('a deadline lands in by when',
     timed.ruleCards[0].byWhen.some((d) => /fifteen days/.test(d)),
@@ -357,6 +370,11 @@ function approx(name, got, want, tol = 1e-6) {
   ok('a card carries the clause it sits in',
     cl.ruleCards.map((c) => c.clause).join('|') === 's. 4|s. 5',
     cl.ruleCards.map((c) => c.clause).join('|'));
+  // The clause marker is furniture: the heading says "s. 4", so the card's
+  // who must not repeat "Section 4." as if it were part of the actor.
+  ok('the clause marker stays out of the who',
+    !cl.ruleCards.some((c) => /^section\s+\d/i.test(c.who)),
+    JSON.stringify(cl.ruleCards.map((c) => c.who)));
 
   // The DoD's manual check, as a test: a 60-word nested-clause sentence
   // with no dictionary phrase renders as a rule card with the unresolved
@@ -382,6 +400,65 @@ function approx(name, got, want, tol = 1e-6) {
 
   ok('the substitution view is still produced beside the cards',
     r.simplifiedText.length > 0 && r.stats.replacements.length > 0);
+}
+
+// 20. Reading levels: four grades of the same rewrite, each with a declared
+// Flesch band, its own swaps reported, and an honest ceiling.
+{
+  const plain = simplify(SAMPLE_TEXT);
+  ok('the default level is school-graduate', plain.level.id === 'school');
+  ok('the reported score is the level\'s own text',
+    plain.readability.simplified.score === plain.level.achieved,
+    JSON.stringify({ reported: plain.readability.simplified.score, achieved: plain.level.achieved }));
+
+  const byId = {};
+  for (const id of ['college', 'school', 'child', 'homosapien']) {
+    byId[id] = simplify(SAMPLE_TEXT, { level: id });
+  }
+  ok('the four levels carry the declared bands',
+    ['college', 'school', 'child', 'homosapien']
+      .map((id) => byId[id].level.band.join('-')).join(' ')
+      === '40-60 60-80 80-90 90-100');
+  ok('each level is a different text',
+    new Set(Object.values(byId).map((r) => r.simplifiedText)).size === 4);
+  ok('every level\'s score measures the text on the page',
+    Object.values(byId).every((r) => r.readability.simplified.score === r.level.achieved));
+  ok('the child level reports its swaps',
+    byId.child.stats.replacements.some((c) => c.term === 'level: child'),
+    JSON.stringify(byId.child.stats.replacements.filter((c) => String(c.term).startsWith('level'))));
+  ok('the homosapien level is a card summary, and says so',
+    /^Who: /.test(byId.homosapien.simplifiedText) && byId.homosapien.level.summary === true,
+    byId.homosapien.simplifiedText.slice(0, 80));
+  ok('a level reports what its cap could not reach',
+    Array.isArray(byId.child.level.floors),
+    JSON.stringify(byId.child.level.floors));
+  ok('the homosapien summary keeps the duty and the deadline',
+    /must|can/.test(byId.homosapien.simplifiedText)
+      && byId.homosapien.simplifiedText.length > 0);
+
+  // A section number is furniture, not a sentence: the summary must never
+  // collapse to the marker and drop the sentence it labels (the corpus run
+  // found 209 numbers that way, and a summary that read "37.").
+  const marked = simplify(
+    '37. All pending high and medium risk paras and persisting irregularities should be reported to the Board / ACB in order to highlight key areas in which risk mitigation has not been undertaken.',
+    { level: 'homosapien' },
+  );
+  ok('a section marker does not become the whole summary',
+    marked.simplifiedText.startsWith('37. ') && marked.simplifiedText.length > 60,
+    marked.simplifiedText);
+  ok('a section marker is never reported as a dropped body',
+    !marked.stats.replacements.some((c) => c.removed && /All pending high/.test(c.from)),
+    JSON.stringify(marked.stats.replacements.filter((c) => c.removed)));
+
+  // "3.3 District Development Manager …" is one label: strip it whole, and
+  // keep it on the card so the reader can find the paragraph again.
+  const decimal = simplify(
+    '3.3 District Development Manager (DDM): NABARD shall appoint a District Development Manager (DDM) for each district to act as a liaison between NABARD and the district administration.',
+    { level: 'homosapien' },
+  );
+  ok('a decimal clause label is stripped whole and kept on the summary',
+    decimal.simplifiedText.startsWith('3.3 ') && !/\b3 District/.test(decimal.simplifiedText),
+    decimal.simplifiedText);
 }
 
 console.log(failures === 0 ? '\nAll simplifier checks passed.' : `\n${failures} simplifier check(s) FAILED.`);

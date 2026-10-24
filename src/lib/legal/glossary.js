@@ -411,7 +411,6 @@ export const applyDictionary = (sentence, phrases, { protectedTerms = [] } = {})
 // stays beside the rewrite, so nothing disappears silently.
 
 const capitalise = (s) => (s ? s[0].toUpperCase() + s.slice(1) : s);
-const lowerStart = (s) => (s ? s[0].toLowerCase() + s.slice(1) : s);
 
 const genreChange = (from, to) => ({
   from: from.trim(),
@@ -422,7 +421,7 @@ const genreChange = (from, to) => ({
 });
 
 const REF_CODE = /^[A-Z]{2,}[\w./-]*\d[\w./-]*$/;
-const DOTTED_REF = /^[A-Z][\w]*\.[\w.\d/\-]+$/;
+const DOTTED_REF = /^[A-Z][\w]*\.[\w.\d/-]+$/;
 const DATE_LINE = /^[A-Z][a-z]+ \d{1,2}, \d{4}$/;
 const ADDRESSEE = /^(?:The\s+)?Chairpersons?\s*\//;
 const SALUTATION = /^(?:Madam|Dear )/i;

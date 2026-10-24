@@ -93,6 +93,12 @@ for (const [name, text] of CASES) {
   }
   ok(`reaches the declared plain-English target (${name})`, out.score >= EASE_TARGET,
     `${out.score} < ${EASE_TARGET} (${out.band})`);
+  // The panel's number must measure the text the user reads, not the
+  // engine's pre-genre output: the bar is worthless if the UI reports a
+  // different sentence set from the one on the page.
+  ok(`the reported score measures the text on the page (${name})`,
+    r.readability.simplified.score === out.score,
+    `reported ${r.readability.simplified.score} vs page ${out.score}`);
 
   // Bar 2: organisation.
   ok(`no doubled punctuation (${name})`,

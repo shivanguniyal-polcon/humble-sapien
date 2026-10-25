@@ -6,14 +6,19 @@
 
 import { normalizeProject, fieldLabel, SECTOR_TEMPLATES } from './schema.js';
 
-const crore = (value) => (value == null || !Number.isFinite(Number(value)) ? 'n/a' : Number(value).toFixed(2));
-const money = (value) => {
-  if (value == null || !Number.isFinite(Number(value))) return 'n/a';
-  const n = Number(value);
-  return `${n < 0 ? '-' : ''}₹${Math.abs(n).toFixed(2)}`;
+const formatters = (digits) => {
+  const fixed = (value) => (value == null || !Number.isFinite(Number(value)) ? 'n/a' : Number(value).toFixed(digits));
+  return {
+    crore: fixed,
+    money: (value) => {
+      if (value == null || !Number.isFinite(Number(value))) return 'n/a';
+      const n = Number(value);
+      return `${n < 0 ? '-' : ''}₹${Math.abs(n).toFixed(digits)}`;
+    },
+    ratio: fixed,
+    percent: fixed,
+  };
 };
-const ratio = (value) => (value == null || !Number.isFinite(Number(value)) ? 'n/a' : Number(value).toFixed(2));
-const percent = (value) => (value == null || !Number.isFinite(Number(value)) ? 'n/a' : Number(value).toFixed(2));
 
 const EVIDENCE_RANK = {
   verified: 4,
@@ -37,7 +42,8 @@ function lowestEvidence(provenance = {}) {
   return lowest;
 }
 
-function liquidityComparisonTable(comparison) {
+function liquidityComparisonTable(comparison, fmt) {
+  const { crore, ratio } = fmt;
   const off = comparison.off;
   const on = comparison.on;
   const row = (label, left, right) => `| ${label} | ${left} | ${right} |`;
@@ -59,7 +65,10 @@ function liquidityComparisonTable(comparison) {
   ].join('\n');
 }
 
-export function buildMemo(result, rawInput = {}) {
+export function buildMemo(result, rawInput = {}, options = {}) {
+  const precision = Number.isInteger(options.precision) ? options.precision : 2;
+  const fmt = formatters(precision);
+  const { crore, money, ratio, percent } = fmt;
   const input = normalizeProject(rawInput);
   const projectName = result?.meta?.projectName || input.projectName || 'Unnamed project';
   const sectorLabel = SECTOR_TEMPLATES[result?.meta?.sector || input.sector]?.label || input.sector || 'project';
@@ -88,7 +97,7 @@ export function buildMemo(result, rawInput = {}) {
     const periodText = row.metric === 'minDscr' && p.bindingPeriod != null
       ? ` in operating period ${p.bindingPeriod} (year ${p.bindingYear})`
       : '';
-    return `${row.label} ${verb} ${sign} ${Math.abs(p.alphaPct).toFixed(2)}% (to ₹${p.parameterValue.toFixed(2)} ${row.unit.replace('₹ ', '')}) ${connector} ${targetText}${periodText}.`;
+    return `${row.label} ${verb} ${sign} ${Math.abs(p.alphaPct).toFixed(precision)}% (to ₹${p.parameterValue.toFixed(precision)} ${row.unit.replace('₹ ', '')}) ${connector} ${targetText}${periodText}.`;
   };
   const revenueCover = findSwitch('annualRevenueCr', 'minDscr', 1.0);
   const revenueDefault = findSwitch('annualRevenueCr', 'minDscr', defaultDscr);
@@ -109,9 +118,9 @@ export function buildMemo(result, rawInput = {}) {
   } else if (minDscr < 1) {
     verdict = 'The case does not cover debt service on the 1.00x test in at least one period.';
   } else if (minDscr < lockup) {
-    verdict = `The case covers debt service but stays below the ${lockup.toFixed(2)}x lock-up in at least one period.`;
+    verdict = `The case covers debt service but stays below the ${lockup.toFixed(precision)}x lock-up in at least one period.`;
   } else {
-    verdict = `The case covers debt service and stays above the ${lockup.toFixed(2)}x lock-up on the base case.`;
+    verdict = `The case covers debt service and stays above the ${lockup.toFixed(precision)}x lock-up on the base case.`;
   }
 
   const sections = [];
@@ -120,8 +129,8 @@ export function buildMemo(result, rawInput = {}) {
     id: 'breach',
     title: 'What would have to break',
     text: firstCover != null
-      ? `The first breach of the 1.00x cover test is operating period ${firstCover} (year ${Math.ceil(firstCover / 2)}). The minimum DSCR is ${ratio(minDscr)}x in operating period ${minPeriod ?? 'n/a'} (year ${minYear ?? 'n/a'}). ${firstDefault != null ? `The default covenant of ${defaultDscr.toFixed(2)}x is first breached in period ${firstDefault}. ` : ''}${firstLockup != null ? `The lock-up of ${lockup.toFixed(2)}x is first breached in period ${firstLockup}. ` : ''}The switching section below converts those breach points into the input change that would reach them.`
-      : `No period breaches the 1.00x cover test. The minimum DSCR is ${ratio(minDscr)}x in operating period ${minPeriod ?? 'n/a'} (year ${minYear ?? 'n/a'}). ${firstDefault != null ? `The default covenant of ${defaultDscr.toFixed(2)}x is first breached in period ${firstDefault}. ` : 'The default covenant is not breached. '}${firstLockup != null ? `The lock-up of ${lockup.toFixed(2)}x is first breached in period ${firstLockup}. ` : 'The lock-up is not breached. '}A positive base case is not a statement that the project is safe; the demand and cost assumptions still carry the case.`,
+      ? `The first breach of the 1.00x cover test is operating period ${firstCover} (year ${Math.ceil(firstCover / 2)}). The minimum DSCR is ${ratio(minDscr)}x in operating period ${minPeriod ?? 'n/a'} (year ${minYear ?? 'n/a'}). ${firstDefault != null ? `The default covenant of ${defaultDscr.toFixed(precision)}x is first breached in period ${firstDefault}. ` : ''}${firstLockup != null ? `The lock-up of ${lockup.toFixed(precision)}x is first breached in period ${firstLockup}. ` : ''}The switching section below converts those breach points into the input change that would reach them.`
+      : `No period breaches the 1.00x cover test. The minimum DSCR is ${ratio(minDscr)}x in operating period ${minPeriod ?? 'n/a'} (year ${minYear ?? 'n/a'}). ${firstDefault != null ? `The default covenant of ${defaultDscr.toFixed(precision)}x is first breached in period ${firstDefault}. ` : 'The default covenant is not breached. '}${firstLockup != null ? `The lock-up of ${lockup.toFixed(precision)}x is first breached in period ${firstLockup}. ` : 'The lock-up is not breached. '}A positive base case is not a statement that the project is safe; the demand and cost assumptions still carry the case.`,
   });
 
   const switchLines = [];
@@ -133,9 +142,9 @@ export function buildMemo(result, rawInput = {}) {
   if (capexLine) switchLines.push(capexLine);
   const opexLine = describeSwitch(opexCover, 'the 1.00x cover test');
   if (opexLine) switchLines.push(opexLine);
-  const defaultLine = describeSwitch(revenueDefault, `the ${defaultDscr.toFixed(2)}x default covenant`);
+  const defaultLine = describeSwitch(revenueDefault, `the ${defaultDscr.toFixed(precision)}x default covenant`);
   if (defaultLine) switchLines.push(defaultLine);
-  const tariffDefaultLine = describeSwitch(tariffDefault, `the ${defaultDscr.toFixed(2)}x default covenant`);
+  const tariffDefaultLine = describeSwitch(tariffDefault, `the ${defaultDscr.toFixed(precision)}x default covenant`);
   if (tariffDefaultLine) switchLines.push(tariffDefaultLine);
   const npvLines = [
     describeSwitch(revenueNpv, 'project NPV zero'),
@@ -180,7 +189,7 @@ export function buildMemo(result, rawInput = {}) {
     sections.push({
       id: 'liquidity',
       title: 'Liquidity support, off versus on',
-      text: liquidityComparisonTable(comparison),
+      text: liquidityComparisonTable(comparison, fmt),
     });
   } else if (liquidity) {
     let text;

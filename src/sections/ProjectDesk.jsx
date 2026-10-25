@@ -43,6 +43,12 @@ const USER_EVIDENCE = {
   source: 'Entered in the project desk.',
 };
 
+// The page is a screening view, not a working model. Two decimals keep the
+// verdict and tables readable; the downloaded memo keeps the full precision
+// a reviewer needs to reproduce the arithmetic.
+const DISPLAY_PRECISION = 2;
+const MEMO_PRECISION = 6;
+
 const clone = (value) => JSON.parse(JSON.stringify(value));
 
 const firstOperation = (result) =>
@@ -54,26 +60,35 @@ const firstCoverage = (result) => {
 };
 
 const formatRatio = (value) =>
-  value == null || !Number.isFinite(Number(value)) ? '—' : `${Number(value).toFixed(6)}x`;
+  value == null || !Number.isFinite(Number(value))
+    ? '—'
+    : `${Number(value).toFixed(DISPLAY_PRECISION)}x`;
 
-const formatCr = (value, digits = 2) => {
+const formatCr = (value, digits = DISPLAY_PRECISION) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   const n = Number(value);
   return `${n < 0 ? '−' : ''}₹${Math.abs(n).toFixed(digits)} crore`;
 };
 
-const formatNum = (value, digits = 2) => {
+const formatNum = (value, digits = DISPLAY_PRECISION) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   return Number(value).toFixed(digits);
 };
 
-const formatPct = (value, digits = 1) =>
+const formatPct = (value, digits = DISPLAY_PRECISION) =>
   value == null || !Number.isFinite(Number(value)) ? '—' : `${Number(value).toFixed(digits)}%`;
 
 const formatSignedPct = (value) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   const n = Number(value);
-  return `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(2)}%`;
+  return `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(DISPLAY_PRECISION)}%`;
+};
+
+const formatDisplayValue = (value) => {
+  if (value == null) return '—';
+  return typeof value === 'number' && Number.isFinite(value)
+    ? formatNum(value)
+    : String(value);
 };
 
 const toError = (error) => ({
@@ -129,8 +144,9 @@ function computeRun(values, mode, compareBoth) {
     ? { ...memoBase, comparison: comparison.comparison, switching }
     : { ...memoBase, switching };
   const memo = buildMemo(memoResult, raw);
+  const memoFull = buildMemo(memoResult, raw, { precision: MEMO_PRECISION });
 
-  return { raw, comparison, base, supported, headline: selected, switching, memo };
+  return { raw, comparison, base, supported, headline: selected, switching, memo, memoFull };
 }
 
 function download(name, text, type) {
@@ -318,11 +334,11 @@ function ComparisonTable({ run, selectedSupport }) {
           <tbody>
             <tr>
               <th scope="row">First-period gap</th>
-              <td colSpan={2} className="data-num">{formatCr(comparison.firstPeriodGapCr, 6)}</td>
+              <td colSpan={2} className="data-num">{formatCr(comparison.firstPeriodGapCr)}</td>
             </tr>
             <tr>
               <th scope="row">Covered by a DSRA draw</th>
-              <td colSpan={2} className="data-num">{formatCr(comparison.coveredByDsraCr, 6)}</td>
+              <td colSpan={2} className="data-num">{formatCr(comparison.coveredByDsraCr)}</td>
             </tr>
             <tr>
               <th scope="row">First-period coverage</th>
@@ -340,33 +356,33 @@ function ComparisonTable({ run, selectedSupport }) {
             </tr>
             <tr>
               <th scope="row">Uncovered shortfall</th>
-              <td className="data-num">{formatCr(off.uncoveredShortfallCr, 6)}</td>
-              <td className="data-num">{formatCr(on.uncoveredShortfallCr, 6)}</td>
+              <td className="data-num">{formatCr(off.uncoveredShortfallCr)}</td>
+              <td className="data-num">{formatCr(on.uncoveredShortfallCr)}</td>
             </tr>
             <tr>
               <th scope="row">Total DSRA drawn</th>
-              <td className="data-num">{formatCr(off.totalDsraDrawnCr, 6)}</td>
-              <td className="data-num">{formatCr(on.totalDsraDrawnCr, 6)}</td>
+              <td className="data-num">{formatCr(off.totalDsraDrawnCr)}</td>
+              <td className="data-num">{formatCr(on.totalDsraDrawnCr)}</td>
             </tr>
             <tr>
               <th scope="row">Total replenished</th>
-              <td className="data-num">{formatCr(off.totalDsraReplenishedCr, 6)}</td>
-              <td className="data-num">{formatCr(on.totalDsraReplenishedCr, 6)}</td>
+              <td className="data-num">{formatCr(off.totalDsraReplenishedCr)}</td>
+              <td className="data-num">{formatCr(on.totalDsraReplenishedCr)}</td>
             </tr>
             <tr>
               <th scope="row">Released at debt maturity</th>
-              <td className="data-num">{formatCr(off.dsraReleasedCr, 6)}</td>
-              <td className="data-num">{formatCr(on.dsraReleasedCr, 6)}</td>
+              <td className="data-num">{formatCr(off.dsraReleasedCr)}</td>
+              <td className="data-num">{formatCr(on.dsraReleasedCr)}</td>
             </tr>
             <tr>
               <th scope="row">Project NPV</th>
-              <td className="data-num">{formatCr(off.projectNpvCr, 6)}</td>
-              <td className="data-num">{formatCr(on.projectNpvCr, 6)}</td>
+              <td className="data-num">{formatCr(off.projectNpvCr)}</td>
+              <td className="data-num">{formatCr(on.projectNpvCr)}</td>
             </tr>
             <tr>
               <th scope="row">Equity NPV</th>
-              <td className="data-num">{formatCr(off.equityNpvCr, 6)}</td>
-              <td className="data-num">{formatCr(on.equityNpvCr, 6)}</td>
+              <td className="data-num">{formatCr(off.equityNpvCr)}</td>
+              <td className="data-num">{formatCr(on.equityNpvCr)}</td>
             </tr>
           </tbody>
         </table>
@@ -556,7 +572,7 @@ function ProvenanceTable({ run, caseId }) {
                   <td className="data-num">
                     {key === 'liquiditySupport'
                       ? (value === 'dsra-draw' ? 'DSRA draw' : 'None')
-                      : shown == null ? '—' : String(shown)}
+                      : formatDisplayValue(shown)}
                     {field?.unit ? ` ${field.unit}` : ''}
                   </td>
                   <td><span className="chip chip-tag">{evidence.status}</span></td>
@@ -699,7 +715,7 @@ export default function ProjectDesk() {
         : minimum < Number(values.lockupDscr)
           ? `The case covers debt service but stays below the ${Number(values.lockupDscr).toFixed(2)}x lock-up.`
           : `The case covers debt service and stays above the ${Number(values.lockupDscr).toFixed(2)}x lock-up.`;
-  const memoText = run?.memo?.text || '';
+  const memoText = run?.memoFull?.text || run?.memo?.text || '';
   const downloadMemo = () => {
     if (memoText) download(`project-memo-${caseId}.txt`, memoText, 'text/plain;charset=utf-8');
   };
@@ -903,7 +919,7 @@ export default function ProjectDesk() {
                     <span className="stat-label">First-period coverage</span>
                   </div>
                   <div className="stat">
-                    <span className="stat-num">{formatCr(headline.npv.projectNpvCr, 6)}</span>
+                    <span className="stat-num">{formatCr(headline.npv.projectNpvCr)}</span>
                     <span className="stat-label">Project NPV</span>
                   </div>
                   <div className="stat">
@@ -915,7 +931,7 @@ export default function ProjectDesk() {
                     <span className="stat-label">LLCR at COD</span>
                   </div>
                   <div className="stat">
-                    <span className="stat-num">{formatCr(headline.npv.equityNpvCr, 6)}</span>
+                    <span className="stat-num">{formatCr(headline.npv.equityNpvCr)}</span>
                     <span className="stat-label">Equity NPV</span>
                   </div>
                 </div>

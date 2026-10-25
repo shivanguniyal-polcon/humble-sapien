@@ -66,9 +66,11 @@ const ORDINALS = {
 
 // The base instrument as the text names it: "Reserve Bank of India (<scope>)
 // Directions, <year>" — without "Amendment", so the instrument's own title
-// never matches.
-const BASE_TITLE_RE =
-  /(Reserve Bank of India \([^)]{3,140}\) (?![^,.;]{0,40}Amendment)[^()]{0,40}?Directions, \d{4})/i;
+// never matches. The scope is captured because an amendment can cite another
+// direction in its opening paragraph; the base is the candidate whose scope
+// matches the amending title, not whichever reference happens to come first.
+const BASE_REF_RE =
+  /Reserve Bank of India\s*\(([^)]{3,140})\)\s+(?![^,.;]{0,40}Amendment)[^()]{0,40}?Directions,?\s*\d{4}/gi;
 
 // The drafter's numbering: "(2) ", "i. ", "4.". It labels the operation;
 // it is not part of the target address.
@@ -133,8 +135,15 @@ export const resolveInstrument = (doc) => {
   out.form = isAmendment ? 'AMENDMENT' : 'BASE';
   if (title[2]) out.ordinal = ORDINALS[title[2]] || null;
 
-  const base = BASE_TITLE_RE.exec(text);
-  if (base) out.baseTitle = base[1].replace(/\s+/g, ' ').trim();
+  const candidates = [...text.matchAll(BASE_REF_RE)];
+  const base = candidates.find((match) => idFromScope(match[1]) === out.instrumentId)
+    || candidates[0]
+    || null;
+  // "Non-Banking Financial Companies – Responsible Business Conduct" matches
+  // itself through the canonical scope id, so a cross-reference to the
+  // Undertaking of Financial Services directions in the opening paragraph
+  // cannot become the base.
+  if (base) out.baseTitle = base[0].replace(/\s+/g, ' ').trim();
 
   if (out.form === 'AMENDMENT' && !out.baseTitle) {
     out.reason = 'amendment title read, but no base instrument reference found';
@@ -147,7 +156,13 @@ export const resolveInstrument = (doc) => {
 // ---- 2. operation extraction ---------------------------------------------
 
 const OP_ANCHOR =
-  /the following [^.;]{0,70}? shall be inserted (after|before|at) ([^,.;:]{2,80})(?:,\s*)?namely\s*:/i;
+  /(?:(?:the following)|(?:a new)) [^.;]{0,70}? shall be inserted (after|before|at) ([^,.;:]{2,80})(?:,\s*)?(?:namely)?\s*:/i;
+
+// "deleted and substituted with a new sub-section" is one replacement, not
+// a bare deletion followed by an unrelated insertion. Read as a DELETE the
+// payload after the colon would be lost, and the diff would show a clause
+// dying with nothing taking its place.
+const REPLACED = /\b(?:deleted|omitted)\b[^.;]{0,40}\b(?:and|or)\b[^.;]{0,40}\b(?:substituted|replaced)\b/i;
 
 // The evidence span of one operation: from the sentence that states it to
 // its colon ("as below:", "namely:") or full stop. The sentence starts at
@@ -155,7 +170,7 @@ const OP_ANCHOR =
 // the drafter's own numbering ("(1)", "i.") is left outside the quote.
 const sentenceStartBefore = (text, index) => {
   const head = text.slice(0, index);
-  const stops = [/[.!?](?=\s|$)/g, /[:;](?=\s|$)/g, /\n/g];
+  const stops = [/[.!?](?=\s|$)/g, /[:;](?=\s|$)/g];
   let cut = 0;
   for (const re of stops) {
     let m;
@@ -163,12 +178,23 @@ const sentenceStartBefore = (text, index) => {
     while ((m = re.exec(head)) !== null) last = m.index + m[0].length;
     if (last > cut) cut = last;
   }
+  // A wrapped line is not a sentence boundary. "For paragraph 32 of the
+  // Master Direction,\nthe following shall be substituted" lost its address when
+  // the newline after the comma was treated as a stop, leaving "the
+  // following" as the target.
+  for (const m of head.matchAll(/\n/g)) {
+    if (!/,\s*$/.test(head.slice(0, m.index))) cut = Math.max(cut, m.index + 1);
+  }
   return cut;
 };
 
 const sentenceEndAfter = (text, index) => {
   const tail = text.slice(index);
-  const stop = /[:.](?=\s|$)|[:.](?=\n)/.exec(tail);
+  // A colon that introduces a payload can be followed by a dash, a quote or
+  // a line break ("namely:-", "as under: ‘…’"). Stopping only at whitespace
+  // ran the operation sentence through the inserted text and handed the next
+  // operation back as this one's payload.
+  const stop = /[:.](?=\s|$|[-–—"“'‘])/.exec(tail);
   return stop ? index + stop.index + 1 : text.length;
 };
 
@@ -178,7 +204,11 @@ const sentenceEndAfter = (text, index) => {
 const payloadEnd = (text, from) => {
   // A fresh regex every call: the shared trigger carries lastIndex state.
   const nextOp = new RegExp(OP_TRIGGER.source, 'gi').exec(text.slice(from));
-  const next = nextOp ? from + nextOp.index : text.length;
+  // A payload ends where the next operation's sentence begins, not at the
+  // trigger word. Cutting at the trigger leaves the next drafter's list
+  // marker and address ("(4) For paragraph 24, the following shall be")
+  // glued to the end of this payload.
+  const next = nextOp ? sentenceStartBefore(text, from + nextOp.index) : text.length;
   const signature = /\(\s*[A-Z][A-Za-z .]{3,60}\s*\)\s*\n\s*Chief General Manager/.exec(text.slice(from));
   const commence = /These Directions shall come into (?:force|effect|operation)/.exec(text.slice(from));
   const annex = /\n\s*Annex(?:ure)?\s*[-–—:]?\s*\d*/i.exec(text.slice(from));
@@ -203,10 +233,11 @@ export const extractAmendmentEdges = async (doc) => {
   const trigger = new RegExp(OP_TRIGGER.source, 'gi');
   let m;
   while ((m = trigger.exec(text)) !== null) {
-    const op = OP_WORDS[m[1].toLowerCase()];
+    let op = OP_WORDS[m[1].toLowerCase()];
     const start = sentenceStartBefore(text, m.index);
     const end = sentenceEndAfter(text, m.index + m[0].length);
     const sentence = quoteOf(text, start, end);
+    if (op === 'DELETE' && REPLACED.test(sentence)) op = 'SUBSTITUTE';
 
     let targetRef = '';
     let anchor = null;
@@ -228,7 +259,7 @@ export const extractAmendmentEdges = async (doc) => {
         .replace(/^[^A-Za-z0-9]+/, '')
         .replace(/^(?:Further|However|Accordingly),?\s+/i, '')
         .trim();
-      const contextMatch = /^(?:In|Under)\s+((?:Chapter|Paragraph|Section|Part)\s+[^,]{2,60}),\s*/i.exec(before);
+      const contextMatch = /^(?:In|Under)\s+((?:Chapter|Paragraph|Section|Part)(?:[\s-][^,]{1,70})?)\s*,\s*/i.exec(before);
       if (contextMatch) {
         context = contextMatch[1].trim();
         before = before.slice(contextMatch[0].length);
@@ -241,13 +272,38 @@ export const extractAmendmentEdges = async (doc) => {
       if (/^a new\s+/i.test(targetRef)) targetRef = targetRef.replace(/^a new\s+/i, '');
     }
 
+    // "For paragraphs 98 and 99, the following shall be substituted" names
+    // the address before the comma; the drafter's "the following" is not a
+    // clause number. "For" is the same scaffolding as "In".
+    targetRef = targetRef
+      .replace(/^[a-z]\)\s*/i, '')
+      .replace(/^(?:after|before|at)\s+/i, '')
+      .replace(/^For\s+/i, '')
+      .replace(/,\s*the following(?:\s+[a-z-]+)*$/i, '')
+      .trim();
+
     if (!targetRef) {
       unresolved.push({ reason: 'operation without a readable target address', quote: sentence });
       continue;
     }
 
     let payload = null;
-    if (op === 'INSERT' || op === 'SUBSTITUTE') {
+    // "shall stand modified as ‘Code of Conduct for Recovery Agents’" puts
+    // the new text inside the operation sentence. Reading forward from the
+    // full stop instead would make the next operation the payload.
+    const inline = /\bas\s+[‘“"']([^’“”"']{2,500})[’“”"']/i.exec(sentence);
+    if ((op === 'SUBSTITUTE' || op === 'RENAME') && inline) {
+      const quote = inline[1].trim();
+      const start2 = start + sentence.indexOf(inline[1]);
+      const end2 = start2 + quote.length;
+      payload = {
+        quote,
+        start: start2,
+        end: end2,
+        sha256: await sha256Hex(text.slice(start2, end2)),
+      };
+    }
+    if (!payload && (op === 'INSERT' || op === 'SUBSTITUTE')) {
       const rawSlice = text.slice(end, payloadEnd(text, end));
       const lead = rawSlice.length - rawSlice.trimStart().length;
       const start2 = end + lead;

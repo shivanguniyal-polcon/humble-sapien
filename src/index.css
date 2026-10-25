@@ -5744,6 +5744,13 @@ input[type='range'] {
   color: var(--paper-700);
 }
 
+/* The clause a deletion or substitution removes. Tinted like the DELETE
+   badge so the born and the dead halves of a diff read apart at a glance. */
+.monitor-dead-quote {
+  border-left-color: var(--clay-400);
+  background: var(--clay-50);
+}
+
 .monitor-reason {
   margin: 0 0 0.35rem;
   font-size: 0.78rem;
@@ -5795,6 +5802,224 @@ input[type='range'] {
   margin: 0.25rem 0 0;
   font-size: 0.78rem;
   color: var(--paper-600);
+}
+
+.monitor-amendments,
+.monitor-amendment-ops {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.monitor-amendment-summary h4 {
+  margin: 0.45rem 0 0.35rem;
+}
+
+.monitor-amendment-op {
+  border-left: 3px solid var(--paper-300);
+}
+
+.monitor-amendment-label {
+  margin: 0.5rem 0 0.2rem;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper-600);
+}
+
+.monitor-op {
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.15rem 0.45rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--paper-300);
+  color: var(--paper-700);
+}
+
+.monitor-op-insert {
+  border-color: #b7d0b7;
+  background: #f2f7f2;
+  color: #3d6b3d;
+}
+
+.monitor-op-delete,
+.monitor-op-repeal {
+  border-color: var(--clay-300);
+  background: var(--clay-50);
+  color: var(--clay-600);
+}
+
+.monitor-op-substitute {
+  border-color: #e2cfa8;
+  background: #fbf6ea;
+  color: #7a5a1d;
+}
+
+.monitor-op-renumber,
+.monitor-op-rename {
+  border-color: #c8d4de;
+  background: #f1f5f8;
+  color: #3d5568;
+}
+
+.monitor-hash {
+  margin: 0.2rem 0 0.5rem;
+  font-size: 0.7rem;
+  color: var(--paper-600);
+  overflow-wrap: anywhere;
+}
+
+.monitor-hash code {
+  font-size: 0.68rem;
+}
+
+.monitor-payload {
+  margin: 0.45rem 0;
+  padding-top: 0.4rem;
+  border-top: 1px dashed var(--paper-300);
+}
+
+.monitor-payload summary {
+  cursor: pointer;
+  font-size: 0.78rem;
+  color: var(--paper-700);
+}
+
+.monitor-payload .monitor-quote {
+  margin-top: 0.4rem;
+}
+
+.monitor-born-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.monitor-born-list li {
+  overflow-wrap: anywhere;
+}
+
+.monitor-born-list p {
+  margin: 0.15rem 0 0;
+  color: var(--paper-700);
+}
+
+.monitor-born-type {
+  display: inline-block;
+  margin-right: 0.35rem;
+  padding: 0.05rem 0.3rem;
+  border: 1px solid var(--paper-300);
+  border-radius: var(--radius-pill);
+  font-size: 0.64rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--paper-600);
+}
+
+.monitor-amendment-family {
+  list-style: none;
+  margin: 0.4rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.monitor-amendment-current {
+  color: var(--paper-600);
+  cursor: default;
+}
+
+.monitor-collection {
+  scroll-margin-top: 6rem;
+}
+
+.monitor-collection > summary {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem 0.75rem;
+}
+
+.monitor-collection-title {
+  font-weight: 600;
+  color: var(--paper-900);
+}
+
+.monitor-collection > summary .meta {
+  margin: 0;
+}
+
+.monitor-collection-scroll {
+  margin: 0.75rem 0 0.5rem;
+  overflow-x: auto;
+}
+
+.monitor-collection-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+
+.monitor-collection-table th,
+.monitor-collection-table td {
+  padding: 0.45rem 0.55rem;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--paper-200);
+}
+
+.monitor-collection-table thead th {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--paper-600);
+  font-weight: 500;
+}
+
+.monitor-collection-table tbody th {
+  font-weight: 500;
+  color: var(--paper-800);
+  min-width: 16rem;
+}
+
+.monitor-collection-date {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper-600);
+}
+
+.monitor-collection-need,
+.monitor-collection-have {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--paper-300);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.monitor-collection-need {
+  border-color: var(--clay-300);
+  background: var(--clay-50);
+  color: var(--clay-600);
+}
+
+.monitor-collection-have {
+  color: var(--paper-600);
+}
+
+.monitor-collection-unresolved {
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--paper-300);
 }
 
 .monitor-trail {

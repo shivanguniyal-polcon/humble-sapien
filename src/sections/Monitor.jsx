@@ -13,6 +13,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import INDEX from '../data/monitor/index.json';
+import COLLECTION from '../data/monitor/collection.json';
 import {
   ENTITY_TYPES,
   PROFILE_ACTIVITIES,
@@ -21,6 +22,8 @@ import {
   scopeTextFromInstrument,
   summarise,
 } from '../lib/legal/applicability.js';
+import { extractAmendmentGraph } from '../lib/legal/amendments.js';
+import { baseExcerpts, baseRefFor } from '../lib/legal/base.js';
 import { instrumentFromText } from '../lib/monitor/read.js';
 import { diffObligations, diffSentences } from '../lib/monitor/diff.js';
 import {
@@ -367,6 +370,493 @@ const Pack = ({
   );
 };
 
+// The excerpt starts at the numbered clause, so its label is already the
+// first token. Do not print it twice ("19 19. A Government NBFC…").
+const dyingTextOf = (excerpt) => {
+  const label = String(excerpt.label || '');
+  if (label && excerpt.text.startsWith(`${label}.`)) {
+    return excerpt.text.slice(label.length + 1).trimStart();
+  }
+  // "15(4)" already names the child marker, so do not print "(4)" again.
+  const child = /\(([0-9A-Za-z]+)\)$/.exec(label);
+  if (child && excerpt.text.startsWith(`(${child[1]})`)) {
+    return excerpt.text.slice(child[0].length).trimStart();
+  }
+  return excerpt.text;
+};
+
+const baseMetaFor = (baseTitle) => {
+  const normalise = (value) => String(value || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  const wanted = normalise(baseTitle);
+  if (!wanted) return null;
+  return (INDEX.bases || []).find((entry) => {
+    const candidate = normalise(entry.title);
+    return candidate === wanted || candidate.includes(wanted) || wanted.includes(candidate);
+  }) || null;
+};
+
+// The clause-level version diff. The graph is the extractor's own output:
+// every operation keeps the sentence that states it and the exact span hash;
+// insertions keep the clauses they create. A DELETE names the address it
+// removes; where the base snapshot holds that address, the dying text is
+// quoted from it, and where it does not, the interface says so.
+const AmendmentDiff = ({ graph, busy, error, instrument, meta, base, onOpen }) => {
+  if (busy) {
+    return (
+      <div className="card monitor-empty">
+        <p>Reading the amendment operations…</p>
+      </div>
+    );
+  }
+  if (error) {
+    return (
+      <div className="card monitor-empty">
+        <p className="monitor-error" role="alert">{error}</p>
+      </div>
+    );
+  }
+  if (!graph) {
+    return (
+      <div className="card monitor-empty">
+        <p>The amendment graph has not been read yet.</p>
+      </div>
+    );
+  }
+
+  const resolved = graph.instrument;
+  const bornByEdge = new Map();
+  const diedByEdge = new Map();
+  graph.edges
+    .filter((edge) => edge.op === 'INSERT' || edge.op === 'SUBSTITUTE')
+    .forEach((edge, index) => bornByEdge.set(edge, graph.born[index]?.rows || []));
+  graph.edges
+    .filter((edge) => edge.op === 'DELETE' || edge.op === 'REPEAL')
+    .forEach((edge, index) => diedByEdge.set(edge, graph.died[index]?.refs || []));
+
+  const bornCount = graph.born.reduce((sum, entry) => sum + entry.rows.length, 0);
+  const diedCount = graph.died.reduce((sum, entry) => sum + entry.refs.length, 0);
+  const baseMeta = baseMetaFor(resolved.baseTitle);
+  const family = meta?.family ? INDEX.families.find((group) => group.id === meta.family) : null;
+  const members = family
+    ? family.members.map(metaById).filter(Boolean).sort((a, b) => String(a.dateISO).localeCompare(String(b.dateISO)))
+    : [];
+
+  // The addresses an operation kills, with a bare sub-paragraph joined to
+  // the paragraph its context names. INSERT operations kill nothing.
+  const deadRefsOf = (edge) => {
+    const refs = diedByEdge.get(edge) || [];
+    return (edge.op === 'DELETE' || edge.op === 'REPEAL'
+      ? (refs.length ? refs : [edge.targetRef])
+      : edge.op === 'SUBSTITUTE'
+        ? [edge.targetRef]
+        : []).map((ref) => baseRefFor(edge, ref));
+  };
+  const excerptsOf = (edge) => {
+    const refs = deadRefsOf(edge);
+    return { refs, excerpts: base && refs.length ? baseExcerpts(base.text, refs) : [] };
+  };
+
+  const downloadDiff = () => {
+    const slug = String(resolved.refNo || instrument?.refNo || resolved.docId || 'instrument')
+      .replace(/[^a-z0-9]+/gi, '-')
+      .replace(/^-+|-+$/g, '')
+      .toLowerCase();
+    const dying = graph.edges
+      .map((edge) => {
+        const { refs, excerpts } = excerptsOf(edge);
+        return refs.length ? { op: edge.op, targetRef: edge.targetRef, addresses: refs, excerpts } : null;
+      })
+      .filter(Boolean);
+    download(
+      `amendment-diff-${slug}.json`,
+      JSON.stringify({
+        extractor: graph.version,
+        instrument: resolved,
+        library: {
+          corpusHash: INDEX.corpusHash,
+          instruments: INDEX.instruments.length,
+          instrumentHash: instrument?.hash || null,
+        },
+        base: baseMeta
+          ? {
+            id: baseMeta.id,
+            refNo: baseMeta.refNo,
+            versionDate: baseMeta.versionDate || baseMeta.date,
+            hash: baseMeta.hash,
+            loaded: Boolean(base),
+          }
+          : null,
+        edges: graph.edges,
+        born: graph.born,
+        died: graph.died,
+        dying,
+        unresolved: graph.unresolved,
+      }, null, 2),
+      'application/json',
+    );
+  };
+
+  const formLabel = resolved.form === 'AMENDMENT'
+    ? 'Amendment'
+    : resolved.form === 'BASE'
+      ? 'Base direction'
+      : 'Form unresolved';
+
+  const empty = !graph.edges.length ? (
+    <div className="card monitor-empty">
+      {resolved.form === 'BASE' ? (
+        <>
+          <h4>This is a base direction</h4>
+          <p>
+            The instrument is the baseline, not an amendment. Its changes against the
+            previous circular in the library are in the Changes tab; there is no earlier
+            version in its own text to diff against.
+          </p>
+        </>
+      ) : resolved.form === 'UNKNOWN' ? (
+        <>
+          <h4>The form could not be resolved</h4>
+          <p>
+            The title does not read as an RBI Directions instrument, so no amendment
+            operation was attempted. Notifications, lists and press releases live in the
+            source tab unchanged.
+          </p>
+        </>
+      ) : (
+        <>
+          <h4>No operation sentence was recognised</h4>
+          <p>
+            The title reads as an amendment, but the fixed rules found no insert, delete,
+            substitute, renumber, rename or repeal sentence. Anything that looked like an
+            operation but could not be addressed is listed below rather than guessed.
+          </p>
+        </>
+      )}
+    </div>
+  ) : null;
+
+  return (
+    <div className="monitor-amendments">
+      <div className="card monitor-amendment-summary">
+        <div className="monitor-row-head">
+          <span className="monitor-badge">{formLabel}</span>
+          <span className="monitor-clause">
+            {graph.edges.length} operation{graph.edges.length === 1 ? '' : 's'}
+          </span>
+          <span className="monitor-review-state">
+            {bornCount} born · {diedCount} removed
+          </span>
+        </div>
+        <h4>Version diff: what this instrument changes</h4>
+        <p className="meta">
+          Every operation below is quoted from the instrument and hashed at its exact
+          source span. The extractor never rewrites the instrument.
+        </p>
+        {resolved.baseTitle ? (
+          <p className="monitor-head-meta">
+            Base instrument: {resolved.baseTitle}
+            {baseMeta
+              ? ` · ${baseMeta.refNo} as on ${baseMeta.versionDate || baseMeta.date}`
+              : ' · not in this library'}
+          </p>
+        ) : resolved.reason ? (
+          <p className="monitor-head-meta">
+            Base instrument: not resolved — {resolved.reason}
+          </p>
+        ) : null}
+        <p className="monitor-head-meta">
+          Effective: {resolved.effectiveDate || resolved.date || 'not stated'} · extractor{' '}
+          <code>{graph.version}</code>
+        </p>
+        <div className="btn-row">
+          <button type="button" className="btn btn-secondary" onClick={downloadDiff}>
+            Download the diff (.json)
+          </button>
+        </div>
+      </div>
+
+      {empty}
+
+      {graph.edges.length ? (
+        <div className="monitor-amendment-ops">
+          {graph.edges.map((edge, index) => {
+            const rows = bornByEdge.get(edge) || [];
+            const { refs: baseRefs, excerpts } = excerptsOf(edge);
+            return (
+              <article className="card monitor-amendment-op" key={`${edge.op}-${edge.targetRef}-${index}`}>
+                <div className="monitor-row-head">
+                  <span className={`monitor-op monitor-op-${edge.op.toLowerCase()}`}>{edge.op}</span>
+                  <span className="monitor-clause">{edge.targetRef}</span>
+                  {edge.anchor ? <span className="meta">anchor: {edge.anchor}</span> : null}
+                  {edge.context ? <span className="meta">{edge.context}</span> : null}
+                </div>
+
+                <p className="monitor-amendment-label">Operation</p>
+                <blockquote className="monitor-quote">{edge.evidence.quote}</blockquote>
+                <p className="monitor-hash">
+                  SHA-256 <code>{edge.evidence.sha256}</code>
+                </p>
+
+                {edge.payload ? (
+                  <details className="monitor-payload">
+                    <summary>
+                      Payload · {edge.payload.quote.length.toLocaleString()} characters
+                    </summary>
+                    <blockquote className="monitor-quote">{edge.payload.quote}</blockquote>
+                    <p className="monitor-hash">
+                      SHA-256 <code>{edge.payload.sha256}</code>
+                    </p>
+                  </details>
+                ) : null}
+
+                {rows.length ? (
+                  <div className="monitor-amendment-born">
+                    <p className="monitor-amendment-label">Clauses born ({rows.length})</p>
+                    <ul className="monitor-born-list">
+                      {rows.slice(0, 8).map((row, bornIndex) => (
+                        <li key={`${edge.targetRef}-born-${bornIndex}`}>
+                          <span className="monitor-born-type">{row.type}</span>{' '}
+                          <span className="meta">{row.bearer?.label || row.bearer || 'bearer unclear'}</span>
+                          <p>{row.quote}</p>
+                        </li>
+                      ))}
+                    </ul>
+                    {rows.length > 8 ? (
+                      <p className="meta">…and {rows.length - 8} more in the downloaded diff.</p>
+                    ) : null}
+                  </div>
+                ) : edge.op === 'INSERT' || edge.op === 'SUBSTITUTE' ? (
+                  <p className="meta">No binding or definition sentence was recognised in the payload.</p>
+                ) : null}
+
+                {baseRefs.length ? (
+                  <div className="monitor-amendment-died">
+                    <p className="monitor-amendment-label">
+                      {edge.op === 'SUBSTITUTE' ? 'Clause replaced' : 'Addresses removed'}
+                    </p>
+                    <ul className="monitor-born-list">
+                      {baseRefs.map((ref) => <li key={ref}>{ref}</li>)}
+                    </ul>
+
+                    {excerpts.length ? (
+                      <>
+                        <p className="monitor-amendment-label">Text that dies</p>
+                        {excerpts.map((excerpt) => (
+                          <blockquote
+                            className="monitor-quote monitor-dead-quote"
+                            key={`${edge.targetRef}-died-${excerpt.label}`}
+                          >
+                            <span className="monitor-clause">{excerpt.label}</span>{' '}
+                            {dyingTextOf(excerpt)}
+                          </blockquote>
+                        ))}
+                        <p className="monitor-hash">
+                          From {baseMeta.refNo} as on {baseMeta.versionDate || baseMeta.date} · SHA-256{' '}
+                          <code>{String(baseMeta.hash).replace('sha256:', '').slice(0, 16)}…</code>
+                        </p>
+                      </>
+                    ) : !base ? (
+                      <p className="meta">Reading the base snapshot…</p>
+                    ) : (
+                      <p className="meta">
+                        The snapshot does not hold this address verbatim. The address is quoted
+                        from the operation; the text is not inferred.
+                      </p>
+                    )}
+                  </div>
+                ) : null}
+              </article>
+            );
+          })}
+        </div>
+      ) : null}
+
+      {graph.unresolved.length ? (
+        <div className="card">
+          <h4>Operations not paired ({graph.unresolved.length})</h4>
+          <p className="meta">
+            These sentences read as operations, but the target address or payload could not
+            be read. They are listed rather than turned into an invented edge.
+          </p>
+          <ul className="monitor-change-list">
+            {graph.unresolved.map((entry, index) => (
+              <li key={`unresolved-${index}`} className="change-rem">
+                <p>{entry.quote}</p>
+                <p className="meta">{entry.reason}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      <div className="card monitor-amendment-coverage">
+        <h4>What this diff can see</h4>
+        <p>
+          This is a clause-level record of the operations the instrument itself states.
+          Insertions carry the clauses they create; deletions and substitutions quote
+          the text they remove from the base snapshot. It is not a consolidated version
+          of the base direction.
+        </p>
+        {resolved.baseTitle ? (
+          <p className="meta">
+            Base instrument: {resolved.baseTitle} ·{' '}
+            {baseMeta
+              ? `${baseMeta.refNo}, snapshot of ${baseMeta.versionDate || baseMeta.date}`
+              : 'snapshot not in this library'}.
+          </p>
+        ) : null}
+        {family ? (
+          <>
+            <p className="meta">
+              Series: {family.label} · {members.length} instrument{members.length === 1 ? '' : 's'} in this library.
+            </p>
+            <ul className="monitor-amendment-family">
+              {members.map((entry) => (
+                <li key={entry.id}>
+                  <button
+                    type="button"
+                    className={`linklike ${entry.id === instrument?.id ? 'monitor-amendment-current' : ''}`}
+                    onClick={() => onOpen?.(entry.id)}
+                    disabled={entry.id === instrument?.id}
+                  >
+                    {entry.refNo} · {entry.date}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : null}
+        <p className="meta">
+          The library is a pinned corpus of {INDEX.instruments.length} instruments. An
+          operation in a circular the library has not collected is invisible here. A full
+          before/after needs every base direction in the series, from the date the series
+          began.
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// The corpus-wide collection plan. A clause-level diff needs both sides of
+// every operation. The library holds the amendments and, beside them, the
+// base snapshots they amend; this panel names any base still missing, the
+// window it has to be harvested from, and the amendments that stay one-sided
+// until it arrives. It is corpus-wide because a reviewer needs to know
+// whether the gap is one instrument or the whole shelf.
+const CollectionPlan = ({ plan, onOpen }) => {
+  if (!plan?.bases?.length) return null;
+  const totals = plan.totals;
+  const downloadPlan = () => {
+    download(
+      'amendment-collection-plan.json',
+      JSON.stringify(plan, null, 2),
+      'application/json',
+    );
+  };
+
+  return (
+    <details className="card monitor-collection" id="collection-plan">
+      <summary>
+        <span className="monitor-collection-title">
+          {totals.missingBases
+            ? `Collection plan · ${totals.missingBases} base direction${totals.missingBases === 1 ? '' : 's'} missing`
+            : `Collection plan · all ${totals.baseDirections} base directions in the library`}
+        </span>
+        <span className="meta">
+          {plan.window.from} → {plan.window.to} · {totals.amendments} amendment{totals.amendments === 1 ? '' : 's'} need a base
+        </span>
+      </summary>
+      <p>
+        {totals.missingBases ? (
+          <>
+            The Version diff reads each amendment's own operations, but the clauses a
+            deletion removes live in the base direction. {totals.missingBases} of the{' '}
+            {totals.baseDirections} base directions named by this library are absent, so the diff
+            shows the address that dies, not the text that dies. Collecting every RBI instrument
+            published in the window above closes the gap; the named bases are the minimum.
+          </>
+        ) : (
+          <>
+            Every base direction named by this library is present. Each is held at the
+            version in force immediately before the first amendment in its series, so a
+            clause changed by an earlier amendment in the same series may not read as it
+            stood on the day. The address is always quoted from the operation; the text
+            is shown only where it matches that snapshot.
+          </>
+        )}
+      </p>
+      <div className="monitor-collection-scroll">
+        <table className="monitor-collection-table">
+          <thead>
+            <tr>
+              <th scope="col">Base direction</th>
+              <th scope="col">Amendments</th>
+              <th scope="col">First needed</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {plan.bases.map((entry) => (
+              <tr key={entry.key}>
+                <th scope="row">{entry.title}</th>
+                <td>
+                  {entry.amendments.map((amendment, index) => (
+                    <span key={amendment.id}>
+                      {index ? ' · ' : ''}
+                      <button
+                        type="button"
+                        className="linklike"
+                        onClick={() => onOpen?.(amendment.id)}
+                      >
+                        {amendment.refNo}
+                      </button>
+                    </span>
+                  ))}
+                </td>
+                <td className="monitor-collection-date">{entry.firstDate}</td>
+                <td>
+                  <span className={entry.inLibrary ? 'monitor-collection-have' : 'monitor-collection-need'}>
+                    {entry.inLibrary ? 'In library' : 'Collect'}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      {plan.unresolved.length ? (
+        <div className="monitor-collection-unresolved">
+          <p className="monitor-amendment-label">Amendments with no readable base title</p>
+          <p className="meta">
+            These may name a base older than the harvest window. They are listed so the
+            window can be widened by hand instead of silently missing a predecessor.
+          </p>
+          <ul className="monitor-change-list">
+            {plan.unresolved.map((entry) => (
+              <li key={entry.id}>
+                <button type="button" className="linklike" onClick={() => onOpen?.(entry.id)}>
+                  {entry.refNo} · {entry.dateISO}
+                </button>{' '}
+                <span className="meta">{entry.reason}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+      <div className="btn-row">
+        <button type="button" className="btn btn-secondary" onClick={downloadPlan}>
+          Download the collection plan (.json)
+        </button>
+      </div>
+      <p className="meta">
+        Window: {plan.window.from} → {plan.window.to} · {totals.operations} operations ·{' '}
+        {totals.born} born rows · {totals.removed} removed addresses ·{' '}
+        {totals.unresolvedOperations} operation{totals.unresolvedOperations === 1 ? '' : 's'} unpaired
+      </p>
+    </details>
+  );
+};
+
 export default function Monitor() {
   const [profile, setProfile] = useState(() => ({ ...DEFAULT_PROFILE, ...(loadProfile() || {}) }));
   const [search, setSearch] = useState('');
@@ -374,6 +864,10 @@ export default function Monitor() {
   const [selectedId, setSelectedId] = useState(INDEX.instruments[0]?.id ?? null);
   const [loaded, setLoaded] = useState(null);
   const [previous, setPrevious] = useState(null);
+  const [amendmentGraph, setAmendmentGraph] = useState(null);
+  const [amendmentBusy, setAmendmentBusy] = useState(false);
+  const [amendmentError, setAmendmentError] = useState('');
+  const [baseLoaded, setBaseLoaded] = useState(null);
   const [tab, setTab] = useState('duties');
   const [review, setReview] = useState(emptyReview());
   const [filter, setFilter] = useState('all');
@@ -457,6 +951,64 @@ export default function Monitor() {
       live = false;
     };
   }, [loaded]);
+
+  // The amendment graph is read from the instrument's own operation
+  // sentences. It is recomputed for a pasted or live instrument too, so the
+  // same tab answers the same question outside the pinned corpus.
+  useEffect(() => {
+    if (!loaded?.text) {
+      setAmendmentGraph(null);
+      setAmendmentBusy(false);
+      setAmendmentError('');
+      return undefined;
+    }
+    let live = true;
+    setAmendmentBusy(true);
+    setAmendmentError('');
+    extractAmendmentGraph(loaded)
+      .then((graph) => {
+        if (!live) return;
+        setAmendmentGraph(graph);
+        setAmendmentBusy(false);
+      })
+      .catch(() => {
+        if (!live) return;
+        setAmendmentGraph(null);
+        setAmendmentError('The amendment operations could not be read in this browser.');
+        setAmendmentBusy(false);
+      });
+    return () => {
+      live = false;
+    };
+  }, [loaded]);
+
+  // The base direction is a second chunk. It is loaded only when the
+  // amendment graph names one, and kept separate from the "previous
+  // instrument" used by the Changes tab: the previous instrument is the
+  // last amendment, the base is the consolidated text being amended.
+  const amendmentBaseMeta = amendmentGraph?.instrument?.baseTitle
+    ? baseMetaFor(amendmentGraph.instrument.baseTitle)
+    : null;
+  const amendmentBaseId = amendmentBaseMeta?.id ?? null;
+  useEffect(() => {
+    if (!amendmentBaseId) {
+      setBaseLoaded(null);
+      return undefined;
+    }
+    let live = true;
+    const load = chunks[`../data/monitor/instruments/${amendmentBaseId}.json`];
+    if (!load) return undefined;
+    load()
+      .then((module) => {
+        if (live) setBaseLoaded(module.default);
+      })
+      .catch(() => {
+        if (live) setBaseLoaded(null);
+      });
+    return () => {
+      live = false;
+    };
+  }, [amendmentBaseId]);
 
   const instrumentMeta = loaded ? metaById(loaded.id) : metaById(selectedId);
   const predecessorId = instrumentMeta?.predecessor || null;
@@ -692,10 +1244,13 @@ export default function Monitor() {
         <p className="meta" style={{ marginBottom: 0 }}>
           Library: {INDEX.instruments.length} instruments pinned by text hash ·{' '}
           {INDEX.instruments.reduce((sum, entry) => sum + entry.duties, 0).toLocaleString('en-IN')} duty
-          sentences · last instrument {INDEX.instruments[0]?.date} · corpus{' '}
+          sentences · {INDEX.bases?.length || 0} base snapshots for the version diff · last
+          instrument {INDEX.instruments[0]?.date} · corpus{' '}
           <code>{INDEX.corpusHash.replace('sha256:', '').slice(0, 16)}…</code>
         </p>
       </div>
+
+      <CollectionPlan plan={COLLECTION} onOpen={setSelectedId} />
 
       <div className="monitor">
         <aside className="monitor-list" aria-label="Instruments">
@@ -960,6 +1515,7 @@ export default function Monitor() {
                 {[
                   ['duties', `Obligations (${rows.length})`],
                   ['changes', changes ? `Changes (${changes.obligations.summary.added + changes.obligations.summary.removed + changes.obligations.summary.changed})` : 'Changes'],
+                  ['amendments', amendmentGraph ? `Version diff (${amendmentGraph.edges.length})` : 'Version diff'],
                   ['pack', 'Review & pack'],
                   ['source', 'Source'],
                 ].map(([id, label]) => (
@@ -1109,6 +1665,18 @@ export default function Monitor() {
                 ) : (
                   <Changes changes={changes} previous={predecessor} expected={!!predecessorId} />
                 )
+              ) : null}
+
+              {tab === 'amendments' ? (
+                <AmendmentDiff
+                  graph={amendmentGraph}
+                  busy={amendmentBusy}
+                  error={amendmentError}
+                  instrument={loaded}
+                  meta={instrumentMeta}
+                  base={baseLoaded}
+                  onOpen={setSelectedId}
+                />
               ) : null}
 
               {tab === 'pack' ? (

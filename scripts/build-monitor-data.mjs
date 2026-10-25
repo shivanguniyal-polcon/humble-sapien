@@ -16,7 +16,7 @@
 // The per-instrument split is deliberate: the library page must not ship
 // 1.1 MB of circular text to render a list of fifty titles.
 
-import { readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { createHash } from 'crypto';
@@ -27,6 +27,7 @@ import { DICTIONARY_VERSION } from '../src/lib/legal/glossary.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const corpusPath = join(root, 'private/verification/2026-10-22-rbi-precision-test/corpus.jsonl');
+const basePath = join(root, 'private/verification/2026-10-22-rbi-precision-test/base-directions.jsonl');
 const outDir = join(root, 'src/data/monitor');
 const instDir = join(outDir, 'instruments');
 
@@ -177,10 +178,30 @@ const docs = readFileSync(corpusPath, 'utf8')
   .map((line) => JSON.parse(line));
 const corpusHash = sha256(readFileSync(corpusPath, 'utf8'));
 
+// The base directions are a second, separately hashed collection: the
+// amendments are the pinned precision corpus, the bases are the snapshots
+// their diffs are read against. Keeping the hashes separate says which
+// collection changed without rebuilding an argument about the other.
+const baseDocs = existsSync(basePath)
+  ? readFileSync(basePath, 'utf8').trim().split('\n').filter(Boolean).map((line) => {
+    const row = JSON.parse(line);
+    return {
+      ...row,
+      subject: row.title,
+      baseDirection: true,
+    };
+  })
+  : [];
+const baseHash = baseDocs.length ? sha256(readFileSync(basePath, 'utf8')) : null;
+
 rmSync(instDir, { recursive: true, force: true });
 mkdirSync(instDir, { recursive: true });
 
-const instruments = docs.map((doc) => {
+// Base directions are snapshots, not members of the monitored library: they
+// are written as chunks the version diff can load, but they do not join the
+// fifty, the families or the predecessor chain. A snapshot at April 2026 is
+// not a later circular than the amendment that cites it.
+const buildRecord = (doc) => {
   const text = stripFurniture(doc.text);
   const title = titleFrom(doc);
   const ihash = sha256(text);
@@ -232,6 +253,10 @@ const instruments = docs.map((doc) => {
       sourceUrl: doc.sourceUrl,
       addressee: cleanAddressee(doc.addressee, text),
       hash: ihash,
+      kind: doc.baseDirection ? 'base-direction' : 'instrument',
+      versionDate: doc.versionDate || null,
+      issued: doc.issued || null,
+      sourceTitle: doc.sourceTitle || null,
       text,
       sentences,
       duties,
@@ -249,8 +274,15 @@ const instruments = docs.map((doc) => {
     file: `instruments/${doc.id}.json`,
     duties: duties.length,
     words: text.split(/\s+/).filter(Boolean).length,
+    kind: doc.baseDirection ? 'base-direction' : 'instrument',
+    versionDate: doc.versionDate || null,
+    issued: doc.issued || null,
+    sourceTitle: doc.sourceTitle || null,
   };
-});
+};
+
+const instruments = docs.map(buildRecord);
+const bases = baseDocs.map(buildRecord);
 
 // ---- families and predecessors --------------------------------------------
 
@@ -288,17 +320,21 @@ writeFileSync(
   `${JSON.stringify({
     generatedAt: new Date().toISOString(),
     corpusHash,
+    baseHash,
+    corpusInstruments: docs.length,
+    baseInstruments: baseDocs.length,
     dictionaryVersion: DICTIONARY_VERSION,
     regulator: 'Reserve Bank of India',
     corpus: 'private/verification/2026-10-22-rbi-precision-test/corpus.jsonl',
     instruments,
+    bases,
     families,
   })}\n`,
 );
 
 const totalDuties = instruments.reduce((a, i) => a + i.duties, 0);
 const multi = families.filter((f) => f.size > 1);
-console.log(`instruments: ${instruments.length}, duties: ${totalDuties}, families: ${families.length} (${multi.length} with a predecessor)`);
+console.log(`instruments: ${instruments.length}, duties: ${totalDuties}, families: ${families.length} (${multi.length} with a predecessor), base snapshots: ${bases.length}`);
 for (const instrument of instruments.slice(0, 6)) {
   console.log(`  ${instrument.id} | ${instrument.dateISO} | ${instrument.duties} duties | ${instrument.title.slice(0, 90)}`);
 }

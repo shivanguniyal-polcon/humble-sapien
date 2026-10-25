@@ -1,0 +1,344 @@
+{
+  "generatedAt": "2026-10-25T08:50:59.267Z",
+  "corpusHash": "sha256:b4b115e5bd7147364b81f6da95dd5df79344ff9af52e3c9f3b50446ef4c62aa5",
+  "regulator": "Reserve Bank of India",
+  "window": {
+    "from": "2025-01-01",
+    "to": "2026-10-19"
+  },
+  "totals": {
+    "instruments": 50,
+    "amendments": 19,
+    "baseDirections": 16,
+    "missingBases": 0,
+    "unresolvedAmendments": 2,
+    "operations": 74,
+    "born": 741,
+    "removed": 25,
+    "unresolvedOperations": 2
+  },
+  "bases": [
+    {
+      "title": "Reserve Bank of India (Housing Finance Companies) Directions, 2025",
+      "key": "reserve bank of india housing finance companies directions 2025",
+      "family": "housing-directions",
+      "amendments": [
+        {
+          "id": 13494,
+          "refNo": "RBI/2026-27/124",
+          "dateISO": "2026-06-15",
+          "title": "Reserve Bank of India (Housing Finance Companies) Second Amendment Directions, 2026"
+        },
+        {
+          "id": 13673,
+          "refNo": "RBI/2026-2027/231",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Housing Finance Companies) Third Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12939,
+      "versionDate": "2026-04-15",
+      "firstDate": "2026-06-15",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies responsible business conduct directions 2025",
+      "family": "nbfc-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13493,
+          "refNo": "RBI/2026-27/123",
+          "dateISO": "2026-06-15",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Responsible Business Conduct) Second Amendment Directions, 2026"
+        },
+        {
+          "id": 13672,
+          "refNo": "RBI/2026-27/230",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies - Responsible Business Conduct) Third Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12942,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-06-15",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Undertaking of Financial Services) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies undertaking of financial services directions 2025",
+      "family": "nbfc-undertak-financial-servic",
+      "amendments": [
+        {
+          "id": 13501,
+          "refNo": "RBI/DoR/2026-27/131",
+          "dateISO": "2026-06-15",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Undertaking of Financial Services) Second Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12961,
+      "versionDate": "2026-04-27",
+      "firstDate": "2026-06-15",
+      "lastDate": "2026-06-15"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Prudential Norms on Capital Adequacy) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies prudential norms on capital adequacy directions 2025",
+      "family": "nbfc-prudential-norm-capital",
+      "amendments": [
+        {
+          "id": 13507,
+          "refNo": "RBI/2026-27/136",
+          "dateISO": "2026-06-16",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Prudential Norms on Capital Adequacy) Third Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12959,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-06-16",
+      "lastDate": "2026-06-16"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Concentration Risk Management) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies concentration risk management directions 2025",
+      "family": "nbfc-concentration-risk-management",
+      "amendments": [
+        {
+          "id": 13540,
+          "refNo": "RBI/2026-27/164",
+          "dateISO": "2026-06-24",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Concentration Risk Management) Third Amendment Directions, 2026"
+        },
+        {
+          "id": 13679,
+          "refNo": "RBI/2026-27/237",
+          "dateISO": "2026-08-25",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Concentration Risk Management) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12953,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-06-24",
+      "lastDate": "2026-08-25"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Financial Statements: Presentation and Disclosures) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies financial statements presentation and disclosures directions 2025",
+      "family": "nbfc-financial-statement-presentation",
+      "amendments": [
+        {
+          "id": 13542,
+          "refNo": "RBI/2026-27/166",
+          "dateISO": "2026-06-24",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Financial Statements: Presentation and Disclosures) Second Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12945,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-06-24",
+      "lastDate": "2026-06-24"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Registration, Exemptions and Framework for Scale Based Regulation) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies registration exemptions and framework for scale based regulation directions 2025",
+      "family": "nbfc-registration-exemption-framework",
+      "amendments": [
+        {
+          "id": 13539,
+          "refNo": "RBI/2026-27/163",
+          "dateISO": "2026-06-24",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Registration, Exemptions and Framework for Scale Based Regulation) Second Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12965,
+      "versionDate": "2025-11-28",
+      "firstDate": "2026-06-24",
+      "lastDate": "2026-06-24"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Credit Facilities) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies credit facilities directions 2025",
+      "family": "nbfc-credit-facilit",
+      "amendments": [
+        {
+          "id": 13561,
+          "refNo": "RBI/2026-27/183",
+          "dateISO": "2026-07-15",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Credit Facilities) Second Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12957,
+      "versionDate": "2026-07-01",
+      "firstDate": "2026-07-15",
+      "lastDate": "2026-07-15"
+    },
+    {
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Resolution of Stressed Assets) Directions, 2025",
+      "key": "reserve bank of india non banking financial companies resolution of stressed assets directions 2025",
+      "family": "nbfc-resolution-stress-asset",
+      "amendments": [
+        {
+          "id": 13567,
+          "refNo": "RBI/2026-27/189",
+          "dateISO": "2026-07-16",
+          "title": "Reserve Bank of India (Non-Banking Financial Companies – Resolution of Stressed Assets) Second Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12947,
+      "versionDate": "2026-07-01",
+      "firstDate": "2026-07-16",
+      "lastDate": "2026-07-16"
+    },
+    {
+      "title": "Reserve Bank of India (All India Financial Institutions – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india all india financial institutions responsible business conduct directions 2025",
+      "family": "aifi-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13671,
+          "refNo": "RBI/2026-27/229",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (All India Financial Institutions - Responsible Business Conduct) Third Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12968,
+      "versionDate": "2025-11-28",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Commercial Banks - Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india commercial banks responsible business conduct directions 2025",
+      "family": "commercial-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13665,
+          "refNo": "RBI/2026-27/223",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Commercial Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 13140,
+      "versionDate": "2026-07-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Local Area Banks - Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india local area banks responsible business conduct directions 2025",
+      "family": "lab-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13667,
+          "refNo": "RBI/2026-27/225",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Local Area Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 13063,
+      "versionDate": "2026-07-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Regional Rural Banks – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india regional rural banks responsible business conduct directions 2025",
+      "family": "rrb-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13668,
+          "refNo": "RBI/2026-2027/226",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Regional Rural Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 13039,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Rural Co-operative Banks – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india rural co operative banks responsible business conduct directions 2025",
+      "family": "rural-coop-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13670,
+          "refNo": "RBI/2026-2027/228",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Rural Co-operative Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 12987,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Small Finance Banks – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india small finance banks responsible business conduct directions 2025",
+      "family": "small-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13666,
+          "refNo": "RBI/2026-2027/224",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Small Finance Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 13108,
+      "versionDate": "2026-07-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    },
+    {
+      "title": "Reserve Bank of India (Urban Co-operative Banks – Responsible Business Conduct) Directions, 2025",
+      "key": "reserve bank of india urban co operative banks responsible business conduct directions 2025",
+      "family": "ucb-responsible-busines-conduct",
+      "amendments": [
+        {
+          "id": 13669,
+          "refNo": "RBI/2026-27/227",
+          "dateISO": "2026-08-06",
+          "title": "Reserve Bank of India (Urban Co-operative Banks - Responsible Business Conduct) Fourth Amendment Directions, 2026"
+        }
+      ],
+      "inLibrary": true,
+      "baseId": 13013,
+      "versionDate": "2026-04-01",
+      "firstDate": "2026-08-06",
+      "lastDate": "2026-08-06"
+    }
+  ],
+  "unresolved": [
+    {
+      "id": 13541,
+      "refNo": "RBI/2026-27/165",
+      "dateISO": "2026-06-24",
+      "title": "Reserve Bank of India (Non-Banking Financial Companies – Governance) Amendment Directions, 2026",
+      "reason": "amendment title read, but no base instrument reference found"
+    },
+    {
+      "id": 13575,
+      "refNo": "RBI/2026-27/197",
+      "dateISO": "2026-07-16",
+      "title": "Reserve Bank of India (Non-Banking Financial Companies Income Recognition, Asset Classification and Provisioning) Third Amendment Directions, 2026",
+      "reason": "amendment title read, but no base instrument reference found"
+    }
+  ]
+}

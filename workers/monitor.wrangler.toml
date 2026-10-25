@@ -5,9 +5,9 @@
 #   wrangler d1 create ths-monitor
 #   wrangler r2 bucket create ths-monitor-files
 #   # put the returned database_id below, replacing the zeros
-#   wrangler secret put ADMIN_TOKEN        -c api/monitor.wrangler.toml
-#   wrangler secret put REPLICATE_API_TOKEN -c api/monitor.wrangler.toml
-#   wrangler deploy -c api/monitor.wrangler.toml
+#   wrangler secret put ADMIN_TOKEN        -c workers/monitor.wrangler.toml
+#   wrangler secret put REPLICATE_API_TOKEN -c workers/monitor.wrangler.toml
+#   wrangler deploy -c workers/monitor.wrangler.toml
 #
 # Local development needs none of that:
 #
@@ -42,6 +42,6 @@ bucket_name = "ths-monitor-files"
 crons = ["0 6,18 * * *", "15 */6 * * *"]
 
 [vars]
-# The deployed site. Local development against this Worker must send this
-# origin too, or the OCR route refuses the call.
-ALLOWED_ORIGIN = "https://the-humble-sapien.pages.dev"
+# The single public site. Local development against this Worker must send
+# this origin too, or the OCR route refuses the call.
+ALLOWED_ORIGIN = "https://humble-sapien.vercel.app"

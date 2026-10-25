@@ -9,8 +9,8 @@
 // deployed. The Worker runs exactly this code against D1 and R2.
 
 import { resolve } from 'node:path';
-import { ensureSchema } from '../api/src/monitor/schema.js';
-import { drainQueue, runFetch, SOURCES } from '../api/src/monitor/fetch.js';
+import { ensureSchema } from '../workers/src/monitor/schema.js';
+import { drainQueue, runFetch, SOURCES } from '../workers/src/monitor/fetch.js';
 import { DiskBucket, NodeD1 } from './lib/node-d1.mjs';
 
 const args = process.argv.slice(2);

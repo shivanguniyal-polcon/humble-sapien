@@ -12,6 +12,7 @@ const Touchpoints = lazy(() => import('./Touchpoints'));
 const Scorecards = lazy(() => import('./Scorecards'));
 const FieldNotes = lazy(() => import('./FieldNotes'));
 const EconometricsLab = lazy(() => import('./EconometricsLab'));
+const ProjectDesk = lazy(() => import('./ProjectDesk'));
 const Battery = lazy(() => import('./Battery'));
 const Stakeholders = lazy(() => import('./Stakeholders'));
 const PolicyGame = lazy(() => import('../components/PolicyGame'));
@@ -23,6 +24,9 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
   switch (id) {
     case 'battery':
       view = <Battery onNavigate={onNavigate} />;
+      break;
+    case 'project':
+      view = <ProjectDesk />;
       break;
     case 'lab':
       view = <EconometricsLab onNavigate={onNavigate} />;

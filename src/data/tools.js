@@ -8,6 +8,11 @@ export const TOOLS = [
     blurb: 'Unorganised data in, auditable analysis out: ingestion with a loud validation report, parameters with provenance, deterministic execution with an audit manifest, and a report that cannot be exported until the public interest check is answered.',
   },
   {
+    id: 'project', label: 'Project desk',
+    question: 'Does the project cover its debt?',
+    blurb: 'A half-yearly project-finance screening case with contractual DSCR, a DSRA liquidity comparison, switching values and a memo. Solar and HAM road cases run entirely in your browser.',
+  },
+  {
     id: 'lab', label: 'Evaluation engine',
     question: 'Does the policy actually change the outcome?',
     blurb: 'Run difference-in-differences, regression discontinuity, synthetic control and matching live, on complete census and health-survey coverage.',

@@ -2932,6 +2932,7 @@ input[type='range'] {
 
 .lab-results {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-5);
   min-width: 0;
 }

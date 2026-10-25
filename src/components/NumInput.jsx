@@ -11,7 +11,7 @@ const parse = (s) => {
 // as typed (so a half-typed "-" is not a NaN smuggled into the run), the
 // parent receives a number or null — never NaN, never a blank read as 0 — and
 // an unparseable or out-of-range draft is reported inline instead of guessed.
-export default function NumInput({ id, value, onChange, min, max, step }) {
+export default function NumInput({ id, value, onChange, min, max, step, describedBy }) {
   const [draft, setDraft] = useState(value == null ? '' : String(value));
   const [lastValue, setLastValue] = useState(value);
 
@@ -36,7 +36,10 @@ export default function NumInput({ id, value, onChange, min, max, step }) {
         step={step}
         value={draft}
         aria-invalid={showError || undefined}
-        aria-describedby={showError ? `${id}-num-error` : undefined}
+        aria-describedby={[
+          showError ? `${id}-num-error` : null,
+          describedBy || null,
+        ].filter(Boolean).join(' ') || undefined}
         onChange={(e) => {
           setDraft(e.target.value);
           const p = parse(e.target.value);
@@ -47,7 +50,11 @@ export default function NumInput({ id, value, onChange, min, max, step }) {
         <span id={`${id}-num-error`} className="input-error" role="alert">
           {parsed == null
             ? 'Enter a number.'
-            : `Enter a number between ${min} and ${max}.`}
+            : min != null && max != null
+              ? `Enter a number between ${min} and ${max}.`
+              : min != null
+                ? `Enter a number of at least ${min}.`
+                : `Enter a number of at most ${max}.`}
         </span>
       )}
     </>

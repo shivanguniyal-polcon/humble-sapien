@@ -3,7 +3,7 @@
 # Stateless and binding-free: the engine is a pure function of the request, so
 # there is no database, no bucket and no secret to provision. Deploy with:
 #
-#     wrangler deploy -c api/wrangler.toml
+#     wrangler deploy -c workers/wrangler.toml
 #
 # Paths are relative to this file, so `worker.js` is the handler in this
 # directory. The site is a separate surface and deploys separately — this

@@ -7,18 +7,18 @@
 // exercised without depending on rbi.org.in being up.
 
 import { readFile } from 'node:fs/promises';
-import { ensureSchema } from '../api/src/monitor/schema.js';
-import { parseDate, parseListing, refFromTitle } from '../api/src/monitor/parse.js';
+import { ensureSchema } from '../workers/src/monitor/schema.js';
+import { parseDate, parseListing, refFromTitle } from '../workers/src/monitor/parse.js';
 import {
   claimNext, enqueue, getInstrument, insertInstrument, latestByPdfUrl,
   releaseOcrSlot, saveExtraction, search, stats, takeOcrSlot,
-} from '../api/src/monitor/store.js';
-import { drainQueue, runFetch } from '../api/src/monitor/fetch.js';
-import { articleText, looksLikeInstrument } from '../api/src/monitor/article.js';
-import { readSourcePage } from '../api/src/monitor/extract.js';
-import { ocrProviderConfigured, readPage } from '../api/src/monitor/ocr.js';
-import worker from '../api/monitor-worker.js';
-import { API_VERSION } from '../api/src/monitor/config.js';
+} from '../workers/src/monitor/store.js';
+import { drainQueue, runFetch } from '../workers/src/monitor/fetch.js';
+import { articleText, looksLikeInstrument } from '../workers/src/monitor/article.js';
+import { readSourcePage } from '../workers/src/monitor/extract.js';
+import { ocrProviderConfigured, readPage } from '../workers/src/monitor/ocr.js';
+import worker from '../workers/monitor-worker.js';
+import { API_VERSION } from '../workers/src/monitor/config.js';
 import { MemoryBucket, NodeD1 } from './lib/node-d1.mjs';
 import { ocrPage } from '../src/lib/monitor/ocr.js';
 import { buildMonitorManifest, buildPackMarkdown } from '../src/lib/monitor/pack.js';
@@ -36,10 +36,10 @@ const ok = (name, cond, detail = '') => {
 const eq = (name, got, want) => ok(name, JSON.stringify(got) === JSON.stringify(want), `got ${JSON.stringify(got)}, want ${JSON.stringify(want)}`);
 const section = (title) => console.log(`\n${title}`);
 
-const notifications = await readFile(new URL('../api/test-fixtures/rbi-notifications.html', import.meta.url), 'utf8');
-const directions = await readFile(new URL('../api/test-fixtures/rbi-master-directions.html', import.meta.url), 'utf8');
-const notificationPage = await readFile(new URL('../api/test-fixtures/rbi-detail-notification.html', import.meta.url), 'utf8');
-const directionPage = await readFile(new URL('../api/test-fixtures/rbi-detail-master-direction.html', import.meta.url), 'utf8');
+const notifications = await readFile(new URL('../workers/test-fixtures/rbi-notifications.html', import.meta.url), 'utf8');
+const directions = await readFile(new URL('../workers/test-fixtures/rbi-master-directions.html', import.meta.url), 'utf8');
+const notificationPage = await readFile(new URL('../workers/test-fixtures/rbi-detail-notification.html', import.meta.url), 'utf8');
+const directionPage = await readFile(new URL('../workers/test-fixtures/rbi-detail-master-direction.html', import.meta.url), 'utf8');
 
 // ---- the listing parser ---------------------------------------------------
 

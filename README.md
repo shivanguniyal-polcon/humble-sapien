@@ -27,7 +27,27 @@ Run by the learners of today, for the leaders of tomorrow.
 
 ## Live site
 
-**https://humble-sapien.vercel.app/**
+**https://humble-sapien.vercel.app/** — the only public deployment. The old
+Cloudflare Pages site is retired and must not be deployed again.
+
+## Deployment
+
+Vercel builds with `npm run build:vercel`, which bakes the Monitor API URL into
+the bundle. `vercel.json` sets that build command and the CSP `connect-src`
+entry for the Worker. `npm run smoke:site` checks the deployed bundle, the Vercel
+CSP and the Worker's CORS answer.
+
+The regulatory monitor and Legal Simplifier Workers live in [`workers/`](workers/),
+not under `api/`. Vercel turns every root-level `api/*.js` into a public
+Serverless Function, so the Worker source is deliberately outside that path.
+Deploy the monitor backend with:
+
+```bash
+wrangler deploy -c workers/monitor.wrangler.toml
+```
+
+See [`workers/MONITOR.md`](workers/MONITOR.md) for the D1/R2 setup and
+[`workers/README.md`](workers/README.md) for the Legal Simplifier API.
 
 ## Development
 

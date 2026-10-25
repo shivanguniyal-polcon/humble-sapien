@@ -1,6 +1,7 @@
 import SprawlStory from './SprawlStory';
 import Flood from './Flood';
 import DeepTime from '../components/DeepTime';
+import { TOOLS } from '../data/tools';
 
 // Home is the institutional front page, built as a deliberate arc:
 // the flood of government output (you land inside the overwhelm), then the
@@ -33,8 +34,8 @@ const DOORS = [
   {
     tab: 'work',
     label: 'Tools',
-    count: '9 instruments',
-    what: 'Nine instruments that run live in your browser, from cost-benefit analysis to the evaluation engine. Every one ends by telling you what it cannot prove.',
+    count: `${TOOLS.length} instruments`,
+    what: 'Twelve instruments that run live in your browser, from cost-benefit analysis to the evaluation engine and the project desk. Every one ends by telling you what it cannot prove.',
   },
   {
     tab: 'research',

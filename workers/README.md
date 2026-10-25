@@ -216,13 +216,13 @@ The handler is a plain ES module with a `fetch` method, so it runs anywhere
 Workers run, and it runs in Node for tests:
 
 ```js
-import worker from './api/worker.js';
+import worker from './workers/worker.js';
 const res = await worker.fetch(new Request('https://api.example.test/v1/health'));
 ```
 
 ```bash
 npm run test:api     # 125 checks against the live handler
-npx wrangler deploy  # deploys api/worker.js
+npx wrangler deploy -c workers/wrangler.toml  # deploys workers/worker.js
 ```
 
 Local development against the browser site runs on `http://127.0.0.1:5173/`. The

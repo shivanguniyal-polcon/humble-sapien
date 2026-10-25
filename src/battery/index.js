@@ -20,6 +20,13 @@ export {
 } from './params.js';
 export { decisionTree, decisionTreeSample, escapeHtml } from './modules/decisionTree.js';
 export { cba, cbaSample } from './modules/cba.js';
+export {
+  runProject, runProjectWithSwitching, runProjectWithLiquidityComparison, solveSwitching,
+  ProjectInputError, ENGINE_VERSION, CONVENTION_VERSION, SWITCHING_RANGE,
+} from './project/engine.js';
+export { buildMemo } from './project/memo.js';
+export { HAM_ROAD_CASE, HAM_ROAD_EXPECTED, HAM_ROAD_SWITCHING } from './project/fixtures/ham-road.js';
+export { SOLAR_CASE, SOLAR_EXPECTED, SOLAR_LIQUIDITY, SOLAR_SWITCHING } from './project/fixtures/solar.js';
 export { mcda, mcdaSample } from './modules/mcda.js';
 export { cea, ceaSample } from './modules/cea.js';
 export { equity, equitySample } from './modules/equity.js';

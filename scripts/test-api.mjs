@@ -8,7 +8,7 @@
 // rather than stack traces, and a request through the API produces the same
 // output hash as the same request through the library.
 
-import worker, { API_VERSION, INDEX, FORMATS } from '../api/worker.js';
+import worker, { API_VERSION, INDEX, FORMATS } from '../workers/worker.js';
 import { analyse, PIPELINE_VERSION, JURISDICTIONS } from '../src/lib/legal/pipeline.js';
 import { buildManifest, MANIFEST_VERSION } from '../src/lib/legal/exports.js';
 import { REVIEW_FILE_SCHEMA } from '../src/lib/legal/review.js';

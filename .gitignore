@@ -44,9 +44,9 @@ private/
 *.sln
 *.sw?
 
-# Cloudflare local state (D1/R2 under api/)
+# Cloudflare local state (D1/R2 under workers/)
 .wrangler/
-api/.wrangler/
+workers/.wrangler/
 
 # Local fetcher store
 private/monitor.db

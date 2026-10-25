@@ -23,17 +23,21 @@ with `bobcmn`/`TSPD_101` challenge HTML.
 ## Layout
 
 ```
-api/monitor-worker.js        routes, cron, admin trigger
-api/monitor.wrangler.toml    D1 + R2 + cron
-api/src/monitor/
-  schema.js                  D1 schema (instruments, queue, FTS5, OCR usage)
-  parse.js                   listing page -> items (fixtures in api/test-fixtures)
-  article.js                 detail page -> instrument body
-  extract.js                 body -> instrument chunk (same reader as the browser)
-  fetch.js                   discovery, fingerprints, queue drain
-  store.js                   D1 queries
-  ocr.js                     Replicate / OpenAI-compatible OCR adapter
+workers/monitor-worker.js        routes, cron, admin trigger
+workers/monitor.wrangler.toml    D1 + R2 + cron
+workers/src/monitor/
+  schema.js                      D1 schema (instruments, queue, FTS5, OCR usage)
+  parse.js                       listing page -> items (fixtures in workers/test-fixtures)
+  article.js                     detail page -> instrument body
+  extract.js                     body -> instrument chunk (same reader as the browser)
+  fetch.js                       discovery, fingerprints, queue drain
+  store.js                       D1 queries
+  ocr.js                         Replicate / OpenAI-compatible OCR adapter
 ```
+
+The source lives outside `api/` on purpose. Vercel turns every root-level
+`api/*.js` into a public Serverless Function, and this repository has no Vercel
+API surface. The Worker is deployed separately with Wrangler.
 
 ## Local
 
@@ -52,18 +56,27 @@ VITE_MONITOR_API=http://127.0.0.1:8788 npm run dev
 Without `VITE_MONITOR_API` the OCR button is disabled and says so. Page text
 extraction still works: it happens in the browser and uploads nothing.
 
+The committed Worker config points `ALLOWED_ORIGIN` at the Vercel site. For OCR
+against a local Worker, start it with `--var ALLOWED_ORIGIN:*` (local only) or
+with the local site origin, for example:
+
+```bash
+npm run monitor:api -- --var ALLOWED_ORIGIN:http://localhost:5173
+```
+
 ## Deploy
 
 ```bash
 wrangler d1 create ths-monitor
 wrangler r2 bucket create ths-monitor-files
 # put the returned database_id in monitor.wrangler.toml
-wrangler secret put ADMIN_TOKEN -c api/monitor.wrangler.toml
-wrangler secret put REPLICATE_API_TOKEN -c api/monitor.wrangler.toml
-wrangler deploy -c api/monitor.wrangler.toml
+wrangler secret put ADMIN_TOKEN -c workers/monitor.wrangler.toml
+wrangler secret put REPLICATE_API_TOKEN -c workers/monitor.wrangler.toml
+wrangler deploy -c workers/monitor.wrangler.toml
 ```
 
-Set `ALLOWED_ORIGIN` in `[vars]` to the site origin. `*` is for local work.
+Set `ALLOWED_ORIGIN` in `[vars]` to the Vercel site origin
+(`https://humble-sapien.vercel.app`). `*` is for local work only.
 
 ## Deployed
 
@@ -71,32 +84,33 @@ The monitor runs at **https://ths-monitor-api.shivang-uniyal27.workers.dev**
 (deployed 24 October 2026) with D1 `ths-monitor`, R2 `ths-monitor-files` and
 both cron patterns registered. `ADMIN_TOKEN` is a Worker secret.
 
-The site is on Cloudflare Pages at
-**https://the-humble-sapien.pages.dev**. Use the scripts, not raw commands:
+The site is on Vercel at **https://humble-sapien.vercel.app** and is the only
+public site. `vercel.json` runs `npm run build:vercel` for production, which
+bakes the API URL into the Monitor chunk. Use the scripts, not raw commands:
 
 ```bash
-npm run build:site    # vite build with the production API baked in
-npm run smoke:site    # check the live bundle still carries that API URL
-npm run deploy:site   # build:site, deploy, then smoke:site
+npm run build:vercel   # vite build with the production API baked in
+npm run smoke:site     # check the live bundle, CSP and Worker CORS
 ```
 
 The API URL is baked in at build time, so a plain `npm run build` produces a
-site with no live library and no OCR. `deploy:site` always builds through
-`build:site` first for that reason; it also passes `--commit-dirty` because
-this tree normally carries uncommitted work, and it ends by running
-`smoke:site` against the production alias.
+site with no live library and no OCR. Vercel's Build Command is set to
+`npm run build:vercel` in `vercel.json` for that reason; do not override it in
+the dashboard with `npm run build`. There is no Pages deploy script; Pages is
+retired.
 
 `smoke-site.mjs` first calls `/v1/health` and fails unless the API answers
-with `status: ok` and an instrument count, then walks the deployed bundle the
-way the browser does — root HTML, index chunk, Work chunk, the dependency map
-that names the Monitor chunk — and fails with exit 1 if that chunk no longer
+with `status: ok` and an instrument count. It then calls `/v1/instruments`
+with the Vercel `Origin` and checks that the Worker returns that origin in
+`access-control-allow-origin`, so a CORS regression is a failing smoke, not a
+silent one. Next it reads the Vercel `content-security-policy` and requires
+`connect-src` to name the API host, then walks the deployed bundle the way the
+browser does — root HTML, index chunk, Work chunk, the dependency map that
+names the Monitor chunk — and fails with exit 1 if that chunk no longer
 contains the API host. It reads the site and the API from its defaults, or
-from `SITE_URL` and `MONITOR_API`. Hashed chunk names mean a build-tool
-rename fails the check loudly instead of passing it silently. `ALLOWED_ORIGIN` is now the Pages
-origin; the read API is open, but OCR returns 403 for any other origin. Local
-work against the deployed Worker therefore needs
-`--var ALLOWED_ORIGIN:*` on `wrangler dev`, or its own origin added here and
-redeployed.
+from `SITE_URL` and `MONITOR_API`. Hashed chunk names mean a build-tool rename
+fails the check loudly instead of passing it silently. `ALLOWED_ORIGIN` is the
+Vercel origin; the read API is open, but OCR returns 403 for any other origin.
 
 The cron is `0 6,18 * * *` for discovery, plus `15 */6 * * *` to drain a
 backlog. Free-plan cron invocations get 10 ms of CPU, which will not parse a

@@ -11,3 +11,10 @@
 
 export const VILLAGES = {"3593":["N.Khawlek","Vanbawng","Daido","Lamherh","Suangpuilawn","Phullen","Thanglailung","Khawlian","Zawngin","Luangpawn","N.E.Tlangnuam","Phuaibuang"],"3594":["N.E.Khawdungsei","Teikhang","Mimbung","Selam","Saichal","Pawlrang","Hliappui","Hrianghmun","Kawlbem","Lamzawl","Chiahpui","Khawkawn","Ngopa","Changzawl","Tualbung","Hliappui S."]};
 export const VILLAGE_KINDS = {};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"3593":["271217","271218","271228","271219","271220","271222","271223","271226","271221","271224","271227","271225"],"3594":["271290","271294","271292","","271304","271300","271302","271293","271295","271299","271289","271291","271297","271301","",""]};

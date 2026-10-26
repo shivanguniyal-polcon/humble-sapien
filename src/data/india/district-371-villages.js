@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"2793":["Minicoy","Viringili"],"2794":["Kadmat"],"2795":["Kavaratti","Suheli Cheriyakara","Suheli Valiyakara"],"2796":["Kiltan"],"2797":["Amini"],"2798":["Kalpeni","Cheriyam"],"2799":["Agatti","Bangaram","Parali","Tinnakara"],"2800":["Andrott"],"2801":["Chetlat"],"2802":["Bitra"]};
 export const VILLAGE_KINDS = {"2793":{"Minicoy":"CT"},"2794":{"Kadmat":"CT"},"2795":{"Kavaratti":"CT"},"2797":{"Amini":"CT"},"2798":{"Kalpeni":"CT"},"2799":{"Parali":"I"},"2800":{"Andrott":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"2793":["627056","627055"],"2794":["627034"],"2795":["627038","627037","627036"],"2796":["627033"],"2797":["627030"],"2798":["627054","627047"],"2799":["627044","627043","","627039"],"2800":["627046"],"2801":["627032"],"2802":["627031"]};

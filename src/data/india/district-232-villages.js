@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"909":["Yembung Camp","26th Mile","29th Mile Camp","Poklek","Boleng","Kebang-Denki","Radha","Koreng","Lokpeng","Yibuk","Kallek","Babuk","Messing","Rottung","Sole","Mopit","Supsing","Lissing","Yeksi","Tarak","Pangin","Pangin H.Q.","Yemsing"],"912":["Riga(Mongku)Mobuk","Ugeng","Dite Dime","Sitang","Parong","Pangkang(Kumku)Pangkang Jorkong","Riga H.Q."],"927":["Rebo-Perging","Pangi","Jorsing","Riew","Komsing","Begging","Komsing","Sissen"],"928":["Rengo","Lileng","Sine","Dosing","Pareng","Yingku"]};
 export const VILLAGE_KINDS = {"909":{"Boleng":"NT"},"927":{"Komsing":"Karo"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"909":["263795","263794","263802","263807","","263809","263810","263797","263799","","263806","263812","","263805","263808","","","","263796","263798","263800","263801","263811"],"912":["263789","263788","263792","263791","263793","",""],"927":["263819","263803","263813","","","263817","","263804"],"928":["263779","263778","263783","263777","263780","263782"]};

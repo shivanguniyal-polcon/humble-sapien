@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1699":["Chandigarh","Mani Majra (R) Basti Kishangarh Basti Bhagwanpura","Khuda Alisher","Behlana","Mauli Jagran","Daria"]};
 export const VILLAGE_KINDS = {"1699":{"Chandigarh":"M Corp.  OG","Mani Majra (R) Basti Kishangarh Basti Bhagwanpura":"CT","Khuda Alisher":"CT","Behlana":"CT","Mauli Jagran":"CT","Daria":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1699":["","","","","",""]};

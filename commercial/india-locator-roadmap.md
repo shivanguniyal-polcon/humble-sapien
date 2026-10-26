@@ -14,6 +14,8 @@ The delivery maps carry 2 policies and 21 escalation steps, each with the office
 
 The geography is the Local Government Directory of the Ministry of Panchayati Raj, taken through geoBoundaries gbOpen under ODbL 1.0. It covers 36 States and Union Territories, 735 districts, 6,824 sub-districts, 7,143 blocks and 649,708 village names, in 72 chunks and 12 MB on disk. The Uttar Pradesh village chunk ships as 1.25 MB, 512 kB of it over the wire, and it arrives only when somebody picks UP.
 
+**Shipped 26 October 2026, as the first Pillar B slice.** Every rung in the chosen path shows a directory key for this build and its official LGD code, and the path exports as CSV with its parent chain. The codes come from the 26 October 2026 Local Government Directory snapshot, joined by name with an explicit rename table for districts that have moved since the geoBoundaries extract: 36/36 States, 719/735 districts, 6,906/7,143 blocks and 562,404 of 649,708 village names now carry one. A repeated or unmatched name stays blank rather than taking a neighbour's code, and 3,583 codes that two different names tried to claim were cleared. The 87,304 villages still blank (75,833 ambiguous or absent, 11,471 inside a block with no code) need the panchayat-level mapping, not more name matching.
+
 ## 2. The gaps a citizen can still feel
 
 **The tool names an office, not a place.** "Programme Officer at the intermediate Panchayat" is the right job. Where is the counter, what is the phone number, which room, when is it open? The last two hundred metres of the visit are missing.

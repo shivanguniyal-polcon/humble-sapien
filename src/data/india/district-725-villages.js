@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"3612":["Leite","Kutkawk","Darzo","Lungpuitlang","S.Vanlaiphai","Khawhri","Old Ngharchhip","S.Lungleng","Rawpui","Thiltlang","S.Chawngtui","Cherhlun","Thingsai","Bualpui H","E.Rotlang","Tuipui","Denlung","Pangzawl","Tarpho","Aithur","Muallianpui","Khawhlum","Khawnglung","Hnahthial","New Ngharchhip","Maudarh"]};
 export const VILLAGE_KINDS = {"3612":{"Tuipui":"Darzokai","Hnahthial":"NT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"3612":["271606","","271610","271612","","271596","","","271589","271592","","271598","271601","271602","","271609","271604","","271595","271597","271611","","","","271600",""]};

@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1710":["Pul Pehlad","Taj Pul","Molar Band","Shakar Pur Baramad","Mithe Pur","Saidabad","Jait Pur","Kotla Mahigiran","Aali"]};
 export const VILLAGE_KINDS = {"1710":{"Pul Pehlad":"CT","Taj Pul":"CT","Molar Band":"CT","Shakar Pur Baramad":"CT","Mithe Pur":"CT","Saidabad":"CT","Jait Pur":"CT","Kotla Mahigiran":"CT","Aali":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1710":["","","","","","","","",""]};

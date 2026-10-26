@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"6952":["Chogal Pora","Gaudwana","Chak Rambir Pora","Asnur","Chachmolla","Yaroo","Awil","Rewtan","Mir Wani","Manzgam","Wari Pora","Ahmad Abad","Lisar Pora","Yari Khah","Tang Marg","Khuri Bata Pora Khalsa","Kounser Bal","Durhama","Koreal","Chaki Samad Rather","Ragi Pora","Autoo","Khuri Bata Pora Jagir","Herdumand Gori","Bathi Pora","Damhal Hanji Pora","Wati Gam","Halan"],"6999":["Malwan","Lanker Pambi","Khulora","Pahlu","Bata Pora Vailoo","Bani Mulla","Shahoo Shachan","Asthal","Dard Gund","Laisoo","Chandergi","Gasi Raina","Brinial Lamar","Gudar","Paranhal","Chamb Gund","Akhal","Chatri Pora","Arigutnoo"],"7039":["Marg Bal","Gojri Pora Dayani Pora","Nandimarg","Forest Block"]};
 export const VILLAGE_KINDS = {"6952":{"Chachmolla":"Sunamull"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"6952":["4072","","4101","","","4069","","4096","4073","4077","4080","","4093","4102","4095","","4090","4078","4076","4100","4097","","","","4071","","4070","4094"],"6999":["4010","4006","4008","3999","3997","4012","4000","3995","","","4011","4007","","","","4009","","3998","4013"],"7039":["4105","","4103",""]};

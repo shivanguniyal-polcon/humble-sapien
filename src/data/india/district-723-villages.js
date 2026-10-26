@@ -11,3 +11,10 @@
 
 export const VILLAGES = {"915":["New Daring","Kadi","Old Daring","Zirdo","Tapo","Rilu","Chisi","Jime","Taba","Echi SikuEdijog","Dali Camp","Ego Camp","Padi","Dali"],"919":["Essi Yordo","Jirigi","Essi Bege","Essi Lite","Lama Doke","Essi Yegri","Yiga","Lite","Degom","Pira","Tiri","Gako - Dapo","Ratak Gamlin","Gite","Moba Doke","Old Takom","Tirbin","Essi Riche","Tai","Kardo","Ragi Doke","Kagi","Sodo Doke","Deke","Chekor Lombi","Lutak","Ngensi","Essi Rite","Badak","Dedu Doke"],"929":["Chirne","Nyobom","Ego - Yamin","Pajo","Ampir","Lipu Bam","Old Bam","Rete Potu","Basar","Bumpek","New Bam","Angu","Gori","Regi","Sago","Piri","Siru","Echi Chiku","Sibe","Kamdak","Pagi","Disi","Tare","Nyodu","Galu","Nyigam","Soi","Lipu Namchi"]};
 export const VILLAGE_KINDS = {"915":{"Taba":"Everest","Dali Camp":"including Dali Hydel"},"919":{"Jirigi":"New Takom","Tirbin":"HQ"},"929":{"Nyobom":"Old Market","Basar":"NT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"915":["","263655","","","","","","","263663","","","","",""],"919":["263635","","","263637","","","263641","","263622","263626","263628","263631","263638","263643","263617","263619","263630","","263639","263642","263615","263618","263614","263621","263625","263627","263629","263632","263640","263616"],"929":["","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};

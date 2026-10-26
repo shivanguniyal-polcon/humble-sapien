@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1704":["Gharonda Neemka Bangar alias Patpar Ganj","Shamas Pur","Gharoli","Dallo Pura","Chilla Saroda Bangar","Kondli"]};
 export const VILLAGE_KINDS = {"1704":{"Gharonda Neemka Bangar alias Patpar Ganj":"CT","Gharoli":"CT","Dallo Pura":"CT","Chilla Saroda Bangar":"CT","Kondli":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1704":["","","","","",""]};

@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"149":["Raihion","Kakana","Batti Malv Island"],"151":["Sastri Nagar","Gandhi Nagar","Laxmi Nagar","Vijoy Nagar","Joginder Nagar","Govinda Nagar","Kondul","Pulomilo","Campbell Bay","Pulobaha","Kiyang","Miroe Island","Trak Island","Treis Island","Menchal Island","Kabra Island"],"152":["Knot","Trinket","Bompoka Island","Tillang Chong Island","Kamriak","Mus","Luxi","Isle of Man"]};
 export const VILLAGE_KINDS = {};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"149":["645032","",""],"151":["645191","645192","645193","645194","645195","645199","645163","645140","645200","645187","645149","","","","",""],"152":["645122","645137","645045","645033","645056","","645037",""]};

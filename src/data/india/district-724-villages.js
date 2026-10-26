@@ -11,3 +11,10 @@
 
 export const VILLAGES = {"916":["Bumpek","Roma Village","Litemori","Liduk","Ringi","Lutak","Tatamori","Garu","Bomte","Takso","Gensi H.Q.","Gensi","Gengi","Dibe","Yachungi Garuh","Yachungi","Garu Camp","New Bomte","Bigi","Taramori","Ossumpuri","Tango","Paimori","Sibe","Ditten","Sibe Rite"],"918":["Kanu","Kamte","New Ngopi","Laipulia","Ngopi","Ruti","Pompek","Likabali H.Q.","Upper Colony Likabali","Siji Labour Camp","Soi","Silli Liche","Kuntor","Sogum","New Mingmang Village","Germe","Siloni","Lika","Liru","Kane","Malini","Gogar","Pale - 8","Rate","Kangku","Bali","Jipu","Champak - chojo","Mingmang","Hime","New Hime","Torajan","Richi - Rite","Bali Sori","Nijir - Koche","Kamcham","Uli","Nilok","Likabali Check Post","Silli","Silli Ete","Pale","Dipa","Durpai","Upper Borajan","Lipu Likabali","Magi","Siji","Lower Borajan"]};
 export const VILLAGE_KINDS = {};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"916":["263696","263697","263694","263700","263702","263704","263693","263686","263689","263690","263692","263695","263698","263703","263705","263706","263687","263688","263691","263699","263707","263710","263701","263708","263709","263711"],"918":["","263760","263755","263756","263754","263740","263741","263722","263724","263717","263718","263730","263731","263737","263739","263744","263747","263714","263715","263719","263725","263726","263732","263745","263750","263713","263727","","263738","263742","263743","263746","263748","263749","263751","263757","263759","263712","263721","263728","263729","263733","263734","263735","263752","263723","263720","263716","263753"]};

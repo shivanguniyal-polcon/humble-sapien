@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1706":["Hastsal","Tilang Pur Kotla","Jaffar Pur alias Hiran Kudna","Mundka","Nangloi Jat","Neel Wal","Raja Pur Khurd","Quammruddin Nagar","Bapraula","Shafi Pur Ranhola","Bakkar Wala","Tikri Kalan","Nilothi"]};
 export const VILLAGE_KINDS = {"1706":{"Hastsal":"CT","Tilang Pur Kotla":"CT","Mundka":"CT","Nangloi Jat":"CT","Raja Pur Khurd":"CT","Quammruddin Nagar":"CT","Bapraula":"CT","Shafi Pur Ranhola":"CT","Bakkar Wala":"CT","Tikri Kalan":"CT","Nilothi":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1706":["","","","","","","","","","","","",""]};

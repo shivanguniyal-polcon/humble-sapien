@@ -11,3 +11,10 @@
 
 export const VILLAGES = {"898":["GREF Camp","Kamhua Noksa","Kamhua Nonku","Komhua Nonku II","Bonia","Khasa","Jagan","Pangchao H.Q.","Konnu","Konsa","Votnu","Pangchao","Lower Pangchao"],"899":["Longding","Chanu","Langmai","Zedua","Niausa","Chatting","Pumao","Pumao H.Q.","Senua","Senua S.C.T.C Camp","Ozakho","Longsom","Longkhaw","Nianu","Longphong","Senua Noksa","Mintong","Tissa Camp","Chattong","Maihua"],"900":["Longnakshie","Ngamding","Sangsatham","Kamku Rusa","Ringpong","Lawnu","Tiru-Russa","Ranlamri","Banfera","Orok","Hasse Rusa","Linglam-Russa","Rusa","Tanglan Rusa","Kamkah","Longhua","Kamnu","Dasatong","MopakhatMope T.E.","Tewai","Chopnu","Nokfan","Naitong","Longkhojan","Kanubari H.Q.","Ranglua Rusa","Luaksim","Wanu","Tissing","Chopsa","Otongkhua","Olingtong"],"901":["Wakka","Kaiho","Khogla","Kaimoi","Wakka H.Q.","Changkhao","Chop","Nginu","Khanu","Lower Nginu","Ngissa","Longkai","Kampong"]};
 export const VILLAGE_KINDS = {};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"898":["264553","264552","264550","264551","264547","264554","264555","264559","264548","264549","264556","264557","264558"],"899":["","264537","264538","264529","264531","264544","264545","264546","264528","264534","264539","264540","264542","264530","264533","264536","264532","264535","264541","264543"],"900":["264504","264510","264509","","","","","","264502","","","","","","264503","264501","","264498","","264507","","","","","264496","","264499","264505","264506","","","264497"],"901":["264569","264570","264567","264566","264572","","264562","264563","264561","264564","264565","264568","264571"]};

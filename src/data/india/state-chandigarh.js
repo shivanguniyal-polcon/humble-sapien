@@ -11,6 +11,6 @@
 
 export const STATE_ID = 30;
 export const STATE_NAME = "Chandigarh";
-export const DISTRICTS = [{"id":217,"name":"Chandigarh","kind":"","path":"M339.5,206.5L339.1,206.7L339.1,206.0L338.2,206.2L337.9,205.4L337.9,206.0L337.5,205.7L336.1,206.6L337.1,208.6L337.9,208.8L338.6,209.7L339.1,209.7L340.0,208.0L339.5,206.5Z"}];
-export const SUBDISTRICTS = [{"id":1576,"name":"Chandigarh","kind":"","district":217}];
-export const BLOCKS = [{"id":1699,"name":"Chandigarh","kind":"","district":217,"subdistrict":1576,"path":"M338.6,209.4L340.0,208.1L339.8,206.5L338.9,206.4L339.0,205.8L338.2,206.1L338.0,205.4L336.1,207.1L337.1,208.7L338.6,209.4Z"}];
+export const DISTRICTS = [{"id":217,"name":"Chandigarh","kind":"","path":"M339.5,206.5L339.1,206.7L339.1,206.0L338.2,206.2L337.9,205.4L337.9,206.0L337.5,205.7L336.1,206.6L337.1,208.6L337.9,208.8L338.6,209.7L339.1,209.7L340.0,208.0L339.5,206.5Z","lgd_code":"44"}];
+export const SUBDISTRICTS = [{"id":1576,"name":"Chandigarh","kind":"","district":217,"lgd_code":"277"}];
+export const BLOCKS = [{"id":1699,"name":"Chandigarh","kind":"","district":217,"subdistrict":1576,"path":"M338.6,209.4L340.0,208.1L339.8,206.5L338.9,206.4L339.0,205.8L338.2,206.1L338.0,205.4L336.1,207.1L337.1,208.7L338.6,209.4Z","lgd_code":"351"}];

@@ -11,3 +11,10 @@
 
 export const VILLAGES = {"3259":["Leishabithol","Mahadebpur","Sonapur","Sabughat","Nungkhal","Kamaranga Kuki","Boroikhal","Jarolpokpi","Kamaranga","Rasidpur","Ahamadabad","Hilghat","Uchathol","Chindong Leikai","Islamabad","Narandhor Basa","Kashimpur","Babukhal","Champanagar Muslim","Bakhal","Champanagar Meitei","Lalpani","Aglapur","Dibong","Mullargao","Jiribam"]};
 export const VILLAGE_KINDS = {"3259":{"Jiribam":"M Cl"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"3259":["913401","270161","","270157","270176","","","270172","270162","270171","270177","913435","270154","270159","270167","270155","270173","270156","270170","","270168","270166","","270160","270174",""]};

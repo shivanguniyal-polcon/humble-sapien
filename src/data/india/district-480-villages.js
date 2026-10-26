@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"3157":["Greater Mumbai (M Corp.)"]};
 export const VILLAGE_KINDS = {"3157":{"Greater Mumbai (M Corp.)":"Part"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"3157":[""]};

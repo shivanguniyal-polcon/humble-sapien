@@ -183,6 +183,94 @@ export function parsePlace(place) {
   };
 }
 
+// The `code` column is a stable key for this build: the source geography
+// carries geoBoundaries feature names and build indices, and those ids are
+// not official codes. The `lgd_code` column is the real Local Government
+// Directory code, joined by name against the 26 October 2026 snapshot. A
+// blank there means the name matched more than one directory entry, or none,
+// and the join refuses to guess.
+export const HIERARCHY_CODE_SYSTEM = 'ths-geoboundaries-index';
+
+export const HIERARCHY_NOTE =
+  'The code column is a directory key for this build. The lgd_code column is the official Local Government Directory code, joined by name against the directory snapshot shipped with this build. A blank lgd_code means the name was ambiguous or absent, and no code was guessed.';
+
+// A village's LGD code is aligned by index with the block's village list.
+// A shared link carries only the name, so a name that repeats inside the
+// block has no single code and stays blank.
+export function villageLgdCode(codes, villages, blockId, name, index = -1) {
+  const key = String(blockId);
+  const names = villagesOf(villages, blockId);
+  const list = codes?.[key];
+  if (!names.length || !Array.isArray(list)) return '';
+  if (index >= 0 && names[index] === name) return list[index] || '';
+  const matchesForName = [];
+  for (let i = 0; i < names.length; i += 1) {
+    if (names[i] === name) matchesForName.push(i);
+  }
+  if (matchesForName.length !== 1) return '';
+  return list[matchesForName[0]] || '';
+}
+
+const CODE_PREFIX = {
+  state: 'S',
+  district: 'D',
+  tehsil: 'T',
+  block: 'B',
+  village: 'V',
+};
+
+// A village id is its block id, and a block can hold two villages with the
+// same name, so the village key is the block id plus the slugged name.
+export function directoryCode(entry) {
+  if (!entry) return '';
+  const prefix = CODE_PREFIX[entry.level];
+  if (!prefix) return '';
+  if (entry.level === 'village') {
+    const slug = slugify(entry.name);
+    return `${prefix}-${entry.id}${slug ? `-${slug}` : ''}`;
+  }
+  return `${prefix}-${entry.id}`;
+}
+
+// The chosen path as flat rows, in top-down order. Every row names its
+// parent so the file can rebuild the tree without a parser.
+export function hierarchyRows(path = []) {
+  return path.map((entry, index) => {
+    const parent = index > 0 ? path[index - 1] : null;
+    return {
+      level: entry.level,
+      name: entry.name,
+      code: directoryCode(entry),
+      parent_code: parent ? directoryCode(parent) : '',
+      parent_name: parent ? parent.name : '',
+      code_system: HIERARCHY_CODE_SYSTEM,
+      lgd_code: entry.lgd_code || '',
+    };
+  });
+}
+
+const CSV_HEADERS = [
+  'level',
+  'name',
+  'code',
+  'parent_code',
+  'parent_name',
+  'code_system',
+  'lgd_code',
+];
+
+const csvCell = (value) => {
+  const text = String(value == null ? '' : value);
+  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+};
+
+export function hierarchyCsv(path = []) {
+  const rows = hierarchyRows(path).map((row) =>
+    CSV_HEADERS.map((key) => csvCell(row[key])).join(',')
+  );
+  return [CSV_HEADERS.join(','), ...rows].join('\n') + '\n';
+}
+
 // The scheme ladder speaks in five rungs. The geography has five levels too,
 // but they are not the same five. A tehsil has no rung of its own: it is
 // where a counter often physically sits, while the office with the authority

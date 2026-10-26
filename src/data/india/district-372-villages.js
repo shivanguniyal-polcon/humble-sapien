@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"6800":["Lachen","Chungthang","Shipgyer","Lachung","Hema"],"6801":["Zimchung","Ringhim","Meyong","Tung","Pakshep","Kazor","Nampatam","Singhik","Singchit","U. Mangshila","Sentam","Naga-namgor","Tingchim","L. Mangshila"],"6802":["Lingdem","Sangtok","Salim Pakel","Salim Pakel","Hee-gyathang","Gnon-samdong","Lingzah-tolung","Lum","Lingdong","Sakyong-pentong","Barfok","Gor","Tingbong","Sheyam","Lingthem","Namok"],"6803":["Phamtam","Rongong","Labi","Chawang","Kabi","Tumlong","Paney-phensong","Phodong","Men-rongong","Tangyek","Ramthang","Tingda"]};
 export const VILLAGE_KINDS = {};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"6800":["260925","260927","260928","260926",""],"6801":["260953","260955","260935","","260937","260938","260956","260954","260936","260958","260939","260934","260957","260959"],"6802":["260942","","","","260950","260949","","260946","260952","","260951","","260943","","260941",""],"6803":["260968","260964","260971","260967","260972","260965","260970","260966","260969","","","260973"]};

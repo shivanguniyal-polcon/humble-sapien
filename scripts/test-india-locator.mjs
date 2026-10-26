@@ -26,7 +26,12 @@ import {
   viewBoxFor,
   buildTree,
   villagesOf,
+  villageLgdCode,
   searchVillages,
+  directoryCode,
+  hierarchyRows,
+  hierarchyCsv,
+  HIERARCHY_CODE_SYSTEM,
   LADDER_RUNG_FOR,
   LADDER_RUNG_NOTE,
 } from '../src/lib/india/hierarchy.js';
@@ -44,6 +49,12 @@ function ok(name, cond, detail = '') {
 const HERE = dirname(fileURLToPath(import.meta.url));
 const INDIA_DIR = join(HERE, '..', 'src', 'data', 'india');
 
+// Spellings that differ only in a parenthetical qualifier or an ampersand
+// are one village in the directory, and the join folds them. Use the same
+// rule here so the check catches real collisions rather than punctuation.
+const lgdNameKey = (name) =>
+  normalize(String(name).replace(/\([^)]*\)/g, ' ').replace(/&/g, ' and '));
+
 // The viewbox the build script projects into.
 const [, , VB_W, VB_H] = INDIA_VIEWBOX.split(' ').map(Number);
 
@@ -52,6 +63,9 @@ const [, , VB_W, VB_H] = INDIA_VIEWBOX.split(' ').map(Number);
 ok('states are listed', STATES.length >= 30, `${STATES.length}`);
 ok('state names are unique', new Set(STATES.map((s) => s.name)).size === STATES.length);
 ok('state ids are unique', new Set(STATES.map((s) => s.id)).size === STATES.length);
+ok('every State carries a numeric LGD code',
+  STATES.every((s) => /^\d+$/.test(String(s.lgd_code || ''))),
+  STATES.filter((s) => !/^\d+$/.test(String(s.lgd_code || ''))).map((s) => s.name).join(', '));
 
 for (const s of STATES) {
   const points = pathPoints(s.path);
@@ -76,6 +90,16 @@ let totalVillages = 0;
 let orphanBlocks = 0;
 let orphanSubdistricts = 0;
 let villagesInNoBlock = 0;
+let districtsSeen = 0;
+let districtsCoded = 0;
+let blocksSeen = 0;
+let blocksCoded = 0;
+let villagesSeen = 0;
+let villagesCoded = 0;
+let villageCodesMisaligned = 0;
+let villageSharedCodeConflicts = 0;
+let badLgd = 0;
+const villageCodeName = new Map();
 
 for (const s of STATES) {
   const slug = slugify(s.name);
@@ -89,6 +113,17 @@ for (const s of STATES) {
     chunk.DISTRICTS.length === s.districts, `${chunk.DISTRICTS.length} vs ${s.districts}`);
   ok(`${s.name} chunk block count matches the index`,
     chunk.BLOCKS.length === s.blocks, `${chunk.BLOCKS.length} vs ${s.blocks}`);
+
+  for (const d of chunk.DISTRICTS) {
+    districtsSeen += 1;
+    if (d.lgd_code) districtsCoded += 1;
+    if (d.lgd_code && !/^\d+$/.test(String(d.lgd_code))) badLgd += 1;
+  }
+  for (const b of chunk.BLOCKS) {
+    blocksSeen += 1;
+    if (b.lgd_code) blocksCoded += 1;
+    if (b.lgd_code && !/^\d+$/.test(String(b.lgd_code))) badLgd += 1;
+  }
 
   const districtIds = new Set(chunk.DISTRICTS.map((d) => d.id));
   const subdistrictIds = new Set(chunk.SUBDISTRICTS.map((x) => x.id));
@@ -121,6 +156,33 @@ for (const s of STATES) {
     villagesInNoBlock += bad.length;
     ok(`${s.name} · ${d.name} village keys are real blocks`, bad.length === 0,
       `${bad.length} bad`);
+    // The code array is positional: a list of the wrong length would shift
+    // every code after the gap onto the wrong village.
+    for (const k of keys) {
+      const names = vchunk.VILLAGES[k];
+      const codes = vchunk.VILLAGE_CODES ? vchunk.VILLAGE_CODES[k] : null;
+      if (!Array.isArray(codes) || codes.length !== names.length) {
+        villageCodesMisaligned += 1;
+        continue;
+      }
+      const namesForCode = new Map();
+      for (let i = 0; i < codes.length; i += 1) {
+        const code = codes[i];
+        villagesSeen += 1;
+        if (!code) continue;
+        villagesCoded += 1;
+        if (!/^\d+$/.test(String(code))) badLgd += 1;
+        const norm = lgdNameKey(names[i]);
+        if (!namesForCode.has(code)) namesForCode.set(code, new Set());
+        namesForCode.get(code).add(norm);
+        const known = villageCodeName.get(code);
+        if (known === undefined) villageCodeName.set(code, norm);
+        else if (known !== norm) villageCodeName.set(code, null);
+      }
+      for (const namesUnderCode of namesForCode.values()) {
+        if (namesUnderCode.size > 1) villageSharedCodeConflicts += 1;
+      }
+    }
     stateVillages += keys.reduce((n, k) => n + vchunk.VILLAGES[k].length, 0);
   }
   ok(`${s.name} village count matches the index`, stateVillages === s.villages,
@@ -154,6 +216,20 @@ ok('no village sits outside a block', villagesInNoBlock === 0, `${villagesInNoBl
 ok('the country is covered', totalDistricts >= 700, `${totalDistricts} districts`);
 ok('the blocks are covered', totalBlocks >= 7000, `${totalBlocks} blocks`);
 ok('the villages are covered', totalVillages >= 600000, `${totalVillages.toLocaleString('en-IN')} villages`);
+ok('most districts carry an official LGD code',
+  districtsCoded / districtsSeen >= 0.9, `${districtsCoded}/${districtsSeen}`);
+ok('most blocks carry an official LGD code',
+  blocksCoded / blocksSeen >= 0.9, `${blocksCoded}/${blocksSeen}`);
+ok('every village code array is aligned with its name list', villageCodesMisaligned === 0,
+  `${villageCodesMisaligned} misaligned`);
+ok('most villages carry an official LGD code',
+  villagesCoded / villagesSeen >= 0.8, `${villagesCoded}/${villagesSeen}`);
+ok('every LGD code that is present is numeric', badLgd === 0, `${badLgd} bad`);
+ok('no two different village names share an LGD code',
+  villageSharedCodeConflicts === 0, `${villageSharedCodeConflicts} shared`);
+ok('no LGD village code points at two different names anywhere in the country',
+  [...villageCodeName.values()].every((name) => name !== null),
+  `${[...villageCodeName.values()].filter((name) => name === null).length} codes`);
 
 const stateTotalVillages = STATES.reduce((n, s) => n + s.villages, 0);
 ok('the state index and the chunks agree on villages',
@@ -556,6 +632,66 @@ for (const t of NAME_TRAPS) {
     Boolean(t.truth && t.truth.length > 60));
   ok(`the trap "${t.confusion}" has no em dash`, !t.truth.includes('—'));
 }
+
+// ------------------------------------------- 4b. directory codes and export
+//
+// A place is only portable if the spreadsheet row carries the same keys the
+// page shows. The build key and the official LGD code are different things;
+// the export carries both and a blank LGD cell has to mean "not guessed"
+// rather than "not attempted".
+
+const samplePath = [
+  { level: 'state', name: 'Uttar Pradesh', id: 9, lgd_code: '9' },
+  { level: 'district', name: 'Rampur', id: 901, lgd_code: '153' },
+  { level: 'tehsil', name: 'Rampur', id: 9011, lgd_code: '801' },
+  { level: 'block', name: 'Rampur', id: 90111, lgd_code: '1234' },
+  { level: 'village', name: 'Rampur', id: 90111, lgd_code: '567890' },
+];
+
+const codes = samplePath.map(directoryCode);
+ok('every level in the path has a directory code', codes.every(Boolean), codes.join(' '));
+ok('directory codes are unique within a path', new Set(codes).size === codes.length, codes.join(' '));
+ok('a village code differs from its block code', codes[4] !== codes[3], `${codes[4]} / ${codes[3]}`);
+ok('a district and a tehsil of the same name get different codes', codes[1] !== codes[2]);
+
+const rows = hierarchyRows(samplePath);
+ok('the hierarchy export has one row per level', rows.length === samplePath.length);
+ok('every exported row names its parent', rows.slice(1).every((r) => r.parent_code));
+ok('the top row has no parent', rows[0].parent_code === '');
+ok('the export says which code system it uses',
+  rows.every((r) => r.code_system === HIERARCHY_CODE_SYSTEM));
+ok('the export carries the official LGD code from the path',
+  rows.every((r, i) => r.lgd_code === samplePath[i].lgd_code),
+  rows.map((r) => r.lgd_code).join(' '));
+ok('an entry with no LGD code exports a blank cell, not a guess',
+  hierarchyRows([{ level: 'state', name: 'Test', id: 1 }])[0].lgd_code === '');
+
+// A village code is positional. A name that repeats inside the block has no
+// single code, and a wrong-length array would shift codes silently.
+const sampleVillages = { 7: ['Rampur', 'Rampur', 'Bilaspur'] };
+const sampleVillageCodes = { 7: ['11', '22', '33'] };
+ok('a repeated village name gets no LGD code',
+  villageLgdCode(sampleVillageCodes, sampleVillages, 7, 'Rampur') === '');
+ok('an unambiguous village name gets its aligned code',
+  villageLgdCode(sampleVillageCodes, sampleVillages, 7, 'Bilaspur') === '33');
+ok('a known position resolves a repeated village name',
+  villageLgdCode(sampleVillageCodes, sampleVillages, 7, 'Rampur', 1) === '22');
+ok('a block with no code array yields a blank',
+  villageLgdCode(null, sampleVillages, 7, 'Bilaspur') === '');
+ok('a short code array yields a blank rather than a shifted code',
+  villageLgdCode({ 7: ['11'] }, sampleVillages, 7, 'Bilaspur') === '');
+
+const csv = hierarchyCsv(samplePath);
+const csvLines = csv.trim().split('\n');
+ok('the CSV has a header and one line per level', csvLines.length === samplePath.length + 1, `${csvLines.length} lines`);
+ok('the CSV header names the LGD column', csvLines[0] === 'level,name,code,parent_code,parent_name,code_system,lgd_code', csvLines[0]);
+ok('the CSV carries the village code', csvLines[csvLines.length - 1].includes(codes[4]), csvLines[csvLines.length - 1]);
+ok('the CSV carries the village LGD code',
+  csvLines[csvLines.length - 1].includes('567890'), csvLines[csvLines.length - 1]);
+
+const quoted = hierarchyCsv([{ level: 'village', name: 'Rampur, "East"', id: 7 }]);
+ok('the CSV quotes a name with a comma and a quote',
+  quoted.includes('"Rampur, ""East"""'), quoted);
 
 // ------------------------------------------------------ 5. the lazy loader
 //

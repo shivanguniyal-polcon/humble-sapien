@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"4160":["Thirumalairayanpattinam","Karaikal","Puducherry"]};
 export const VILLAGE_KINDS = {"4160":{"Thirumalairayanpattinam":"CT","Karaikal":"M","Puducherry":"MCT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"4160":["","948027",""]};

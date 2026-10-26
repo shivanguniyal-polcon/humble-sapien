@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"5182":["Chennai"]};
 export const VILLAGE_KINDS = {"5182":{"Chennai":"M Corp."}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"5182":[""]};

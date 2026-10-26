@@ -18,6 +18,7 @@
     "smoke:site": "node scripts/smoke-site.mjs",
     "build:map": "node scripts/build-world-map.mjs",
     "build:india": "node --max-old-space-size=6144 scripts/build-india-admin.mjs",
+    "build:lgd": "node --max-old-space-size=4096 scripts/build-lgd-codes.mjs",
     "api": "wrangler dev -c workers/wrangler.toml",
     "preview": "vite preview",
     "test:monitor-fetch": "node scripts/test-monitor-fetcher.mjs",

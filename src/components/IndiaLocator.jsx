@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { STATES, INDIA_VIEWBOX } from '../data/india/indiaAdmin';
+import { LGD_SNAPSHOT_LABEL, LGD_SOURCE } from '../data/india/lgd-meta';
 import { loadState, loadVillages } from '../lib/india/load';
 import {
   buildTree,
@@ -7,9 +8,13 @@ import {
   viewBoxFor,
   searchVillages,
   villagesOf,
+  villageLgdCode,
   matches,
   placeFromPath,
   parsePlace,
+  directoryCode,
+  hierarchyCsv,
+  HIERARCHY_NOTE,
   LADDER_RUNG_FOR,
   LADDER_RUNG_NOTE,
 } from '../lib/india/hierarchy';
@@ -63,7 +68,6 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
   const stateId = stateEntry ? stateEntry.id : null;
   const stateName = stateEntry ? stateEntry.name : null;
   const districtId = districtEntry ? districtEntry.id : null;
-  const blockId = blockEntry ? blockEntry.id : null;
 
   // A chunk is only the chunk of the State that is on screen. Holding the
   // State id alongside it means a walk back to the country drops the old
@@ -71,6 +75,8 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
   const chunk = chunkState && chunkState.id === stateId ? chunkState.mod : null;
   const villages =
     villageState && villageState.districtId === districtId ? villageState.mod : null;
+  const villageCodes =
+    villageState && villageState.districtId === districtId ? villageState.codes : null;
   const busy = Boolean(stateId) && !chunk;
 
   // One chunk per State, fetched when a State is first chosen.
@@ -99,7 +105,11 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     loadVillages(districtId)
       .then((mod) => {
         if (!cancelled) {
-          setVillageState({ districtId, mod: mod ? mod.VILLAGES : null });
+          setVillageState({
+            districtId,
+            mod: mod ? mod.VILLAGES : null,
+            codes: mod ? mod.VILLAGE_CODES : null,
+          });
         }
       })
       .catch(() => {
@@ -148,19 +158,30 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     (async () => {
       const mod = await loadState(slugify(state.name));
       if (cancelled) return;
-      const next = [{ level: 'state', name: state.name, id: state.id }];
+      const next = [{ level: 'state', name: state.name, id: state.id, lgd_code: state.lgd_code }];
       const district = want.districtId && mod.DISTRICTS.find((d) => d.id === want.districtId);
-      if (district) next.push({ level: 'district', name: district.name, id: district.id });
+      if (district) {
+        next.push({ level: 'district', name: district.name, id: district.id, lgd_code: district.lgd_code });
+      }
       const tehsil = want.tehsilId && mod.SUBDISTRICTS.find((t) => t.id === want.tehsilId);
-      if (tehsil) next.push({ level: 'tehsil', name: tehsil.name, id: tehsil.id });
+      if (tehsil) {
+        next.push({ level: 'tehsil', name: tehsil.name, id: tehsil.id, lgd_code: tehsil.lgd_code });
+      }
       const block = want.blockId && mod.BLOCKS.find((b) => b.id === want.blockId);
-      if (block) next.push({ level: 'block', name: block.name, id: block.id });
+      if (block) {
+        next.push({ level: 'block', name: block.name, id: block.id, lgd_code: block.lgd_code });
+      }
       if (block && want.village && want.districtId) {
         const vmod = await loadVillages(want.districtId);
         if (cancelled) return;
         const list = vmod && vmod.VILLAGES ? vmod.VILLAGES[String(block.id)] : null;
         if (list && list.includes(want.village)) {
-          next.push({ level: 'village', name: want.village, id: block.id });
+          next.push({
+            level: 'village',
+            name: want.village,
+            id: block.id,
+            lgd_code: villageLgdCode(vmod.VILLAGE_CODES, vmod.VILLAGES, block.id, want.village),
+          });
         }
       }
       setPath(next);
@@ -181,6 +202,12 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       label,
       note: LADDER_RUNG_NOTE[level],
       path: path.map((p) => p.name),
+      codes: path.map((p) => ({
+        level: p.level,
+        name: p.name,
+        code: directoryCode(p),
+        lgd_code: p.lgd_code || '',
+      })),
     });
   }, [level, path, onChange]);
 
@@ -223,7 +250,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             key: `s${s.id}`,
             name: s.name,
             meta: `${s.districts} districts · ${s.blocks} blocks`,
-            pick: () => push({ level: 'state', name: s.name, id: s.id }),
+            pick: () => push({ level: 'state', name: s.name, id: s.id, lgd_code: s.lgd_code }),
           })),
         },
       ];
@@ -239,7 +266,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               key: `d${d.id}`,
               name: d.name,
               meta: `${d.subdistricts.length} tehsils · ${d.blocks.length} blocks`,
-              pick: () => push({ level: 'district', name: d.name, id: d.id }),
+              pick: () => push({ level: 'district', name: d.name, id: d.id, lgd_code: d.lgd_code }),
             })),
         },
       ];
@@ -253,7 +280,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
           key: `t${t.id}`,
           name: t.name,
           meta: `${d.blocks.filter((b) => b.subdistrict === t.id).length} blocks`,
-          pick: () => push({ level: 'tehsil', name: t.name, id: t.id }),
+          pick: () => push({ level: 'tehsil', name: t.name, id: t.id, lgd_code: t.lgd_code }),
         }));
       const blocks = d.blocks
         .filter((b) => !q || matches(b.name, q))
@@ -261,7 +288,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
           key: `b${b.id}`,
           name: b.name,
           meta: 'block',
-          pick: () => push({ level: 'block', name: b.name, id: b.id }),
+          pick: () => push({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
         }));
       return [
         { title: 'Tehsils', items: tehsils, note: 'A revenue division. The office that decides sits at the block or the district, not here.' },
@@ -280,7 +307,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               key: `b${b.id}`,
               name: b.name,
               meta: 'block',
-              pick: () => push({ level: 'block', name: b.name, id: b.id }),
+              pick: () => push({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
             })),
         },
       ];
@@ -298,25 +325,46 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             key: `v${name}-${index}`,
             name,
             meta: 'village',
-            pick: () => push({ level: 'village', name, id }),
+            pick: () => push({
+              level: 'village',
+              name,
+              id,
+              lgd_code: villageLgdCode(villageCodes, villages, id, name),
+            }),
           })),
         },
       ];
     }
     return [];
-  }, [level, chunk, tree, query, villages, limit, districtEntry, tehsilEntry, blockEntry]);
+  }, [level, chunk, tree, query, villages, villageCodes, limit, districtEntry, tehsilEntry, blockEntry]);
 
   const totalVillages =
     level === 'block' && blockEntry ? villagesOf(villages, blockEntry.id).length : 0;
 
+  // The hierarchy is the smallest useful thing a citizen can hand to a
+  // spreadsheet or a colleague. It carries the official LGD code where the
+  // directory join found one, and a blank where it refused to guess.
+  const downloadHierarchy = () => {
+    if (!path.length) return;
+    const blob = new Blob([hierarchyCsv(path)], { type: 'text/csv;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ths-hierarchy-${slugify(path[path.length - 1].name) || 'place'}.csv`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 0);
+  };
+
   const handleShape = (shape) => {
     if (level === 'india') {
       const s = STATES.find((x) => x.id === shape.key);
-      if (s) push({ level: 'state', name: s.name, id: s.id });
-    } else if (level === 'state') {
-      push({ level: 'district', name: shape.name, id: shape.key });
-    } else if (level === 'district' || level === 'tehsil') {
-      push({ level: 'block', name: shape.name, id: shape.key });
+      if (s) push({ level: 'state', name: s.name, id: s.id, lgd_code: s.lgd_code });
+    } else if (level === 'state' && chunk) {
+      const d = chunk.DISTRICTS.find((x) => x.id === shape.key);
+      push({ level: 'district', name: shape.name, id: shape.key, lgd_code: d && d.lgd_code });
+    } else if ((level === 'district' || level === 'tehsil') && chunk) {
+      const b = chunk.BLOCKS.find((x) => x.id === shape.key);
+      push({ level: 'block', name: shape.name, id: shape.key, lgd_code: b && b.lgd_code });
     }
   };
 
@@ -346,6 +394,33 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
           </span>
         ))}
       </nav>
+
+      {path.length > 0 && (
+        <section className="locator-codes" aria-label="Directory codes for this place">
+          <div className="locator-codes-head">
+            <h4 className="locator-group-title">Directory and LGD codes</h4>
+            <button type="button" className="btn btn-secondary locator-codes-download" onClick={downloadHierarchy}>
+              Download hierarchy (CSV)
+            </button>
+          </div>
+          <ol className="locator-code-list">
+            {path.map((p) => (
+              <li key={`${p.level}-${p.id}`} className="locator-code-row">
+                <span className="locator-code-level">{LEVEL_NAME[p.level]}</span>
+                <span className="locator-code-name">{p.name}</span>
+                <code className="locator-code">
+                  {directoryCode(p)}
+                  {p.lgd_code ? ` · LGD ${p.lgd_code}` : ' · no LGD'}
+                </code>
+              </li>
+            ))}
+          </ol>
+          <p className="meta locator-codes-note">{HIERARCHY_NOTE}</p>
+          <p className="meta locator-codes-note">
+            Source: {LGD_SOURCE}, snapshot {LGD_SNAPSHOT_LABEL}.
+          </p>
+        </section>
+      )}
 
       <div className="locator-grid">
         <figure className="locator-figure">
@@ -436,6 +511,9 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
                 {blockEntry ? `${blockEntry.name} block` : ''}
                 {districtEntry ? `, ${districtEntry.name} district` : ''}
                 {stateEntry ? `, ${stateEntry.name}` : ''}
+              </p>
+              <p className="meta locator-picked-code">
+                Directory key <code>{directoryCode(villageEntry)}</code>
               </p>
             </div>
           )}

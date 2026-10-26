@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1703":["Nangal Dewat","Rajokri","Malik Pur Kohi alias Rang Puri","Sambhalka","Kusum Pur","Moradabad Pahari","Municipal Corporations"]};
 export const VILLAGE_KINDS = {"1703":{"Nangal Dewat":"CT","Rajokri":"CT","Malik Pur Kohi alias Rang Puri":"CT","Sambhalka":"CT","Kusum Pur":"CT","Moradabad Pahari":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1703":["","","","","","",""]};

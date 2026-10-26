@@ -11,3 +11,6 @@
 
 export const VILLAGES = {"1705":["Mitraon","Ghalib Pur","Roshan Pura alias Dichaon Khurd","Mundhela Khurd","Jain Pur","Sher Pur Deri","Darya Pur Khurd","Surera","Kharkhari Rond","Dichaon Kalan","Samas Pur Khalsa","Pindwala Khurd","Jhuljhuli","Khera Dabar","Nanak Heri","Raota","Kangan Heri","Badhosra","Mundhela Kalan","Rewla Kham Pur","Pindwala Kalan","Isa Pur","Daulat Pur","Jhatikra","Surakh Pur","Goela Khurd","Taj Pur Khurd","Malik Pur zer-Najafgarh","Asalat Pur Khawad","Qazi Pur","Salah Pur","Goman Hera","Sarang Pur","Dhansa","Paprawat","Qutab Pur","Kharkhari Jatmal","Baqar Garh","Shikar Pur","Kharkhari Nahar","Kapas Hera","Jaffar Pur Kalan","Chhawala","Nangli Sakrawati","Dindar Pur","Jharoda Kalan","Ujwa","Khera","Kair","Deorala","Hasan Pur","Raghu Pur"]};
 export const VILLAGE_KINDS = {"1705":{"Mitraon":"CT","Roshan Pura alias Dichaon Khurd":"CT","Kapas Hera":"CT","Jaffar Pur Kalan":"CT","Chhawala":"CT","Nangli Sakrawati":"CT","Dindar Pur":"CT","Jharoda Kalan":"CT","Ujwa":"CT","Khera":"CT","Kair":"CT"}};
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
+export const VILLAGE_CODES = {"1705":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};

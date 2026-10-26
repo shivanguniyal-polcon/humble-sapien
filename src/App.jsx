@@ -5,6 +5,7 @@ import Logo from './components/Logo';
 import { TOOLS } from './data/tools';
 import { PUB_TYPES } from './data/publications';
 import { SECTOR_NAV } from './data/sectorNav';
+import { requestRouteFocus } from './lib/routeFocus';
 
 // Every section behind the nav is its own chunk. The shell — header, nav,
 // footer, assistant — and Home, the front door, stay eager so the first paint
@@ -137,6 +138,9 @@ export default function App() {
       // Jump to the top whenever the screen itself changes, so a tool page
       // opens at its own top rather than wherever the index left off.
       if (pageKey(next) !== prevPage.current) {
+        // The new page's heading takes focus, so the next Tab starts inside
+        // the page rather than wherever the old page left the keyboard.
+        requestRouteFocus();
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
       prevPage.current = pageKey(next);

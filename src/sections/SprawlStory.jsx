@@ -33,9 +33,9 @@ export default function SprawlStory({ onNavigate }) {
     <section className="sprawl">
       <div className="shell">
         <div className="section-head">
-          <h1 className="sprawl-title">
+          <h2 className="sprawl-title">
             The rules exist. The reading does not.
-          </h1>
+          </h2>
           <p className="section-strap">
             India publishes more policy and more data than almost any democracy
             on earth. Very little of it is written for the people it describes.

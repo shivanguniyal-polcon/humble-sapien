@@ -1228,6 +1228,29 @@ export default function Monitor() {
     setDraft('');
   };
 
+  const views = [
+    ['duties', `Obligations (${rows.length})`],
+    ['changes', changes ? `Changes (${changes.obligations.summary.added + changes.obligations.summary.removed + changes.obligations.summary.changed})` : 'Changes'],
+    ['amendments', amendmentGraph ? `Version diff (${amendmentGraph.edges.length})` : 'Version diff'],
+    ['pack', 'Review & pack'],
+    ['source', 'Source'],
+  ];
+
+  // A tablist is one tab stop. Arrow keys move between tabs, Home and End jump
+  // to the ends, and the selected tab is the only one in the Tab order.
+  const onTabKeyDown = (event, index) => {
+    let nextIndex = null;
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % views.length;
+    else if (event.key === 'ArrowLeft') nextIndex = (index - 1 + views.length) % views.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = views.length - 1;
+    if (nextIndex === null) return;
+    event.preventDefault();
+    setTab(views[nextIndex][0]);
+    const tabs = event.currentTarget.parentElement?.querySelectorAll('[role="tab"]');
+    tabs?.[nextIndex]?.focus();
+  };
+
   return (
     <div>
       <PageHead
@@ -1516,26 +1539,30 @@ export default function Monitor() {
               </div>
 
               <div className="monitor-tabs" role="tablist" aria-label="Instrument views">
-                {[
-                  ['duties', `Obligations (${rows.length})`],
-                  ['changes', changes ? `Changes (${changes.obligations.summary.added + changes.obligations.summary.removed + changes.obligations.summary.changed})` : 'Changes'],
-                  ['amendments', amendmentGraph ? `Version diff (${amendmentGraph.edges.length})` : 'Version diff'],
-                  ['pack', 'Review & pack'],
-                  ['source', 'Source'],
-                ].map(([id, label]) => (
+                {views.map(([id, label], index) => (
                   <button
                     key={id}
+                    id={`monitor-tab-${id}`}
                     type="button"
                     role="tab"
                     aria-selected={tab === id}
+                    aria-controls="monitor-panel"
+                    tabIndex={tab === id ? 0 : -1}
                     className={tab === id ? 'monitor-tab monitor-tab-active' : 'monitor-tab'}
                     onClick={() => setTab(id)}
+                    onKeyDown={(event) => onTabKeyDown(event, index)}
                   >
                     {label}
                   </button>
                 ))}
               </div>
 
+              <div
+                className="monitor-tabpanel"
+                role="tabpanel"
+                id="monitor-panel"
+                aria-labelledby={`monitor-tab-${tab}`}
+              >
               {tab === 'duties' ? (
                 <div className="monitor-duties">
                   <div className="monitor-verdicts">
@@ -1705,6 +1732,7 @@ export default function Monitor() {
                   <pre className="monitor-source">{loaded.text}</pre>
                 </div>
               ) : null}
+              </div>
             </>
           )}
         </div>

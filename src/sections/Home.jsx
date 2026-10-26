@@ -1,7 +1,9 @@
+import { useEffect, useRef } from 'react';
 import SprawlStory from './SprawlStory';
 import Flood from './Flood';
 import DeepTime from '../components/DeepTime';
 import { TOOLS } from '../data/tools';
+import { takeRouteFocus } from '../lib/routeFocus';
 
 // Home is the institutional front page, built as a deliberate arc:
 // the flood of government output (you land inside the overwhelm), then the
@@ -76,8 +78,20 @@ const DOORS = [
 ];
 
 export default function Home({ onNavigate }) {
+  const titleRef = useRef(null);
+
+  useEffect(() => {
+    document.title = 'THS: The Humble Sapien · Public interest technology for every policy';
+    if (takeRouteFocus()) titleRef.current?.focus({ preventScroll: true });
+  }, []);
+
   return (
     <section className="home-flow">
+      {/* The front page opens inside the flood, so its h1 is the site's name,
+          held for screen readers, and the first visible heading is an h2. */}
+      <h1 id="page-title" className="visually-hidden" tabIndex={-1} ref={titleRef}>
+        THS: The Humble Sapien
+      </h1>
       <Flood />
       <SprawlStory onNavigate={onNavigate} />
 

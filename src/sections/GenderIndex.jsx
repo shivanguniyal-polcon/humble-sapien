@@ -46,7 +46,7 @@ export default function GenderIndex() {
       </PageHead>
 
       <div className="card">
-        <h4>Weights</h4>
+        <h3 className="card-heading">Weights</h3>
         <p className="meta">
           Zero removes an indicator entirely. The default is equal weights.
           {!isDefault && (
@@ -92,9 +92,9 @@ export default function GenderIndex() {
       </div>
 
       <div className="card">
-        <h4>
+        <h3 className="card-heading">
           Ranking <span className="meta">({ranked.length} of {ranked.length + unranked.length} units scored)</span>
-        </h4>
+        </h3>
         <div className="table-scroll">
           <table className="data-table">
             <thead>
@@ -156,7 +156,7 @@ export default function GenderIndex() {
       </div>
 
       <div className="card">
-        <h4>Method note</h4>
+        <h3 className="card-heading">Method note</h3>
         <p>
           <strong>Scaling.</strong> Each indicator is min-max scaled across the
           units that have it, so a score is a position in the distribution from
@@ -193,7 +193,7 @@ export default function GenderIndex() {
 
       {UNJOINED_UNITS.length > 0 && (
         <div className="card">
-          <h4>Units that do not join cleanly</h4>
+          <h3 className="card-heading">Units that do not join cleanly</h3>
           <ul className="evidence-list">
             {UNJOINED_UNITS.map((u) => (
               <li key={u.unit}>

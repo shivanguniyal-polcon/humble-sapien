@@ -210,7 +210,7 @@ function CitizenPanel({ text, setText }) {
               }, [])
               .map((group, i) => (
                 <section key={`clause-${i}`} className="clause-group">
-                  {group.clause ? <h4>{group.clause}</h4> : null}
+                  {group.clause ? <h3 className="card-heading">{group.clause}</h3> : null}
                   <ul className="obligation-list rule-card-list">
                     {group.cards.map((card) => (
                       <li key={card.id}>
@@ -258,7 +258,7 @@ function CitizenPanel({ text, setText }) {
 
         {result.propositions.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
-            <h4>Propositions: the frame beside the rewrite</h4>
+            <h3 className="card-heading">Propositions: the frame beside the rewrite</h3>
             <p className="meta">
               Every sentence is typed and slotted into one canonical frame —
               who, with what force, does what, when, and unless what. The
@@ -304,7 +304,7 @@ function CitizenPanel({ text, setText }) {
 
         {result.stats.replacements.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
-            <h4>Statutory phrases replaced</h4>
+            <h3 className="card-heading">Statutory phrases replaced</h3>
             <ul className="replace-list">
               {result.stats.replacements.map((r) => (
                 <li key={`${r.from ?? r.term}-${r.to ?? ''}`}>
@@ -320,7 +320,7 @@ function CitizenPanel({ text, setText }) {
 
         {result.obligations.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
-            <h4>Obligations found: who must do what</h4>
+            <h3 className="card-heading">Obligations found: who must do what</h3>
             <p className="meta">
               Every line is typed. A duty is something someone has to do. A
               grant is something they may claim. A composition rule says who
@@ -357,7 +357,7 @@ function CitizenPanel({ text, setText }) {
 
         {result.definitions.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
-            <h4>Definitions read, and left alone</h4>
+            <h3 className="card-heading">Definitions read, and left alone</h3>
             <ul>
               {result.definitions.map((d) => (
                 <li key={d.term}>
@@ -374,7 +374,7 @@ function CitizenPanel({ text, setText }) {
         )}
 
         <div className="hindi-panel">
-          <h4>हिंदी सरल सारांश · Hindi plain version</h4>
+          <h3 className="card-heading">हिंदी सरल सारांश · Hindi plain version</h3>
           {result.hindi.sentences.map((h, i) => (
             <p key={i} className={`hindi-line ${h.template ? 'hindi-tpl' : ''}`}>
               {h.text}
@@ -402,7 +402,7 @@ function CitizenPanel({ text, setText }) {
         </div>
 
         <div className="output-sub" style={{ marginTop: '1.5rem' }}>
-          <h4>Public interest check (required to copy)</h4>
+          <h3 className="card-heading">Public interest check (required to copy)</h3>
           <p className="meta">
             Every exported rewrite names who the obligations bind. All three
             answers travel in the copied text; the gate opens when they are in.

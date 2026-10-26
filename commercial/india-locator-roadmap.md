@@ -172,3 +172,59 @@ The ODbL share-alike attaches to the derived locality database. The code and the
 Items 1 to 6 are about two weeks of work, and they take the tool from naming the office to handing over a sheet. That is the point at which a CSR fund has something worth sponsoring.
 
 Then pick three pilot States, one from the north, one from the south, and one where the directory is hardest, and do items 7 and 8 for them. A State edition that is right in three States is worth more than a tool that is nominally right in thirty-six.
+
+## 8. The next slice: name the Gram Panchayat
+
+The codes made a village identifiable. They did not name the office the ladder already calls the first rung. `LADDER_RUNG_NOTE.village` tells a citizen that their Gram Panchayat is the first stop; the page cannot say which panchayat that is. That is the next build.
+
+**The data is current and in the same release.** `gp_mapping.26Oct2026.csv.7z` (10 MB compressed, 72 MB extracted) is the same 26 October 2026 snapshot as the codes. It carries 694,614 village-to-local-body rows, 637,102 of them with a panchayat, across 242,687 Gram Panchayats in 31 States. Of the 557,812 distinct village codes in this build, 529,092 (94.9%) already resolve to a GP. Village code `500429` (Menai, Ashoknagar) resolves to GP Menai `131876`; `500587` (Muhal Dehar) has local body `0`, and the page must say so rather than invent one.
+
+### 8.1 What ships
+
+- A village selection shows `Gram Panchayat: Menai (GP 131876)` under the village row, or `No Gram Panchayat recorded`.
+- The hierarchy CSV gains `gp_code` and `gp_name` on the village row; every other row keeps them blank.
+- The written letter's place line becomes village, Gram Panchayat, block, district. When no GP is recorded it falls back to the current line.
+- The ladder's village rung names the panchayat beside the note it already prints.
+
+A shared place link carries only names and ids, so the GP is resolved from the village code when the link is opened. If the village name is ambiguous and the code cannot be resolved, the GP stays blank along with the code.
+
+### 8.2 How it is stored
+
+The village chunks already hold `VILLAGES` and `VILLAGE_CODES`, aligned by index. Add `GP_CODES` in the same shape, aligned with `VILLAGE_CODES`, plus one `GPS` map per district from GP code to GP name. The name is stored once per district, not once per village. The row stays positional; an empty string means no GP was recorded, never "same as the row above".
+
+The join should live in the existing LGD build, or in a sibling script that is the only writer of the village chunks. Two scripts writing the same files is how the duplicate-export bug happened.
+
+Rough size: 6 to 8 MB across all chunks, and only the selected district's chunk loads.
+
+### 8.3 Order and effort
+
+1. Join and write the GP arrays, with coverage counts in `lgd-meta.js`. Assert the arrays are the same length as `VILLAGE_CODES`. Half a day.
+2. Resolve the GP on village selection and on a shared link, and show it in the code panel. Half a day.
+3. Add the two CSV columns and the letter line. Half a day.
+4. Tests and the build. Half a day.
+
+Two to three days, no new dependency and no new source.
+
+### 8.4 Acceptance
+
+- A village with a GP shows its name and official code; a village with local body 0 shows "not recorded" and a blank CSV cell.
+- `gp_code` values are numeric, unique per GP, and one GP may hold many villages.
+- Two panchayats in different districts may share a name; the code separates them and the UI never uses the name as the identity.
+- The letter still reads correctly when there is no GP.
+- `npm run test:india` and `npm run build:vercel` pass.
+
+### 8.5 Boundaries
+
+The GP is not a map level. The directory has no panchayat boundary geometry, so a polygon would be invented. Show the GP as a row in the place panel and in the export, not as a shape on the map.
+
+Do not backfill from the 2022 `village-directory.csv`. Four years of mergers and renumbering sit between it and this snapshot; a stale GP is worse than a blank.
+
+Do not infer a GP from the block or from a similar name. The same refusal rule as the code join applies.
+
+The report covers 31 States because the other States and Union Territories do not run Panchayati Raj institutions in this frame. A blank there is correct.
+
+### 8.6 After this
+
+The office directory is the next gap: the LGD organisation tables carry addresses and contacts for a good number of local bodies, and the block and GP rows are where a citizen actually stands. After that, the 87,304 blank village names can be revisited with the GP report's own names and subdistricts, and the 16 unmatched districts and 237 blocks can be reviewed by hand.
+
+The panchayat name is the smallest thing that turns a code into an address.

@@ -39,7 +39,10 @@ const TABS = [
   {
     id: 'work',
     label: 'Tools',
-    children: TOOLS.map((t) => ({ id: t.id, label: t.label })),
+    // The dropdown carries both lines: the name a reader saw on the card, and
+    // the plain-English category that says what it is. A menu of Sanskrit
+    // names alone would be a quiz.
+    children: TOOLS.map((t) => ({ id: t.id, label: t.name, hint: t.name === t.label ? '' : t.label })),
   },
   {
     id: 'research',
@@ -119,6 +122,7 @@ const pageKey = (r) => `${r.tab}/${r.sub || ''}`;
 export default function App() {
   const [route, setRoute] = useState(parseHash);
   const prevPage = useRef(pageKey(route));
+  const menuRef = useRef(null);
 
   // The research library filters by publication type. The filter rides in the
   // URL, so the nav dropdown and the chips on the page are one control.
@@ -152,6 +156,16 @@ export default function App() {
     }
   };
 
+  // The phone menu is a disclosure, not a separate route state. Close it
+  // whenever navigation lands anywhere, including a browser Back.
+  useEffect(() => {
+    if (menuRef.current) menuRef.current.open = false;
+  }, [route.tab, route.sub]);
+
+  const closeMenu = () => {
+    if (menuRef.current) menuRef.current.open = false;
+  };
+
   // Keep an open dropdown inside the viewport: measure the panel as if open,
   // and flip it to right-anchored when it would hang past the edge. Measured
   // on every open rather than guessed from tab order, because the nav wraps
@@ -173,9 +187,47 @@ export default function App() {
     <div className="app">
       <header className="site-header">
         <div className="shell">
-          <button className="brand" onClick={() => go('home')}>
+          <button className="brand" onClick={() => { closeMenu(); go('home'); }}>
             <Logo />
           </button>
+          {/* The desktop tabs wrap into three rows on a phone. Below the
+              tablet breakpoint they are replaced by one disclosure, so the
+              header stays a single brand row and no tab is parked on a
+              second line. */}
+          <details
+            className="mobile-menu"
+            ref={menuRef}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && menuRef.current?.open) {
+                event.preventDefault();
+                closeMenu();
+                // Escape is a keyboard exit: return focus to the toggle so the
+                // next Tab continues from the header, not from the document top.
+                menuRef.current?.querySelector('summary')?.focus();
+              }
+            }}
+          >
+            <summary className="mobile-menu-toggle">
+              Menu
+              <span aria-hidden="true">▾</span>
+            </summary>
+            <nav className="mobile-menu-panel" aria-label="Primary">
+              {TABS.map((t) => (
+                <button
+                  type="button"
+                  key={t.id}
+                  className={route.tab === t.id ? 'mobile-menu-active' : ''}
+                  aria-current={route.tab === t.id ? 'page' : undefined}
+                  onClick={() => {
+                    go(t.id);
+                    closeMenu();
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </nav>
+          </details>
           <nav className="site-nav" aria-label="Primary">
             {TABS.map((t) => (
               <div
@@ -214,7 +266,8 @@ export default function App() {
                           e.currentTarget.blur();
                         }}
                       >
-                        {c.label}
+                        <span className="nav-menu-label">{c.label}</span>
+                        {c.hint && <span className="nav-menu-hint">{c.hint}</span>}
                       </button>
                     ))}
                   </div>
@@ -269,7 +322,10 @@ export default function App() {
         </div>
       </main>
 
-      <PitAssistant route={route} />
+      <PitAssistant
+        route={route}
+        flow={route.tab === 'work' && route.sub === 'passbook'}
+      />
 
       <footer className="site-footer">
         <div className="shell">

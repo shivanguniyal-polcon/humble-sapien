@@ -302,6 +302,119 @@ main {
   }
 }
 
+/* ---------- phone header ----------
+   Ten tabs cannot wrap into three rows above the page. Below the desktop
+   breakpoint they become one disclosure at the right of the brand row, and
+   the menu opens as a paper panel over the page rather than moving it. */
+
+.mobile-menu {
+  display: none;
+  position: relative;
+}
+
+.mobile-menu-toggle {
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.mobile-menu-toggle::-webkit-details-marker {
+  display: none;
+}
+
+.mobile-menu-toggle span {
+  display: inline-block;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+  transition: transform 140ms var(--ease-out);
+}
+
+.mobile-menu[open] .mobile-menu-toggle span {
+  transform: rotate(180deg);
+}
+
+.mobile-menu-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 40;
+  width: min(20rem, calc(100vw - 2 * var(--space-5)));
+  max-height: calc(100dvh - 6rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-4) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-top: 3px solid var(--color-accent-solid);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 32px rgb(27 24 21 / 0.18);
+}
+
+.mobile-menu-panel button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.2rem;
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  background: none;
+  color: var(--color-text-secondary);
+  font: inherit;
+  font-size: 0.95rem;
+  text-align: start;
+  cursor: pointer;
+}
+
+.mobile-menu-panel button:last-child {
+  border-bottom: 0;
+}
+
+.mobile-menu-panel .mobile-menu-active {
+  color: var(--color-accent-text);
+  font-weight: 650;
+}
+
+/* The ten tabs need more than a tablet's width to sit on one line with the
+   brand. Until they fit, the disclosure replaces them rather than allowing a
+   wrapped second header row. */
+@media (max-width: 68rem) {
+  .site-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: block;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 48rem) {
+  .site-header .shell {
+    flex-wrap: nowrap;
+    padding-block: var(--space-2);
+  }
+
+  .brand-lockup {
+    height: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu-toggle span {
+    transition: none;
+  }
+}
+
 /* ---------- buttons (verb-first labels in copy) ---------- */
 .btn {
   display: inline-flex;
@@ -779,6 +892,16 @@ main {
   color: var(--color-text-muted);
 }
 
+/* Long issue and note titles become multi-line pills rather than widening
+   the whole page on a phone. */
+@media (max-width: 48rem) {
+  .filter-row .chip {
+    max-width: 100%;
+    white-space: normal;
+    text-align: start;
+  }
+}
+
 .filter-row {
   display: flex;
   flex-wrap: wrap;
@@ -825,6 +948,27 @@ table + .fine-print {
   margin: 0;
 }
 
+/* The fixed page head: category, name, question, explanation. The question
+   carries the display face and a little air, because it is the line a reader
+   uses to decide whether the page is for them. */
+.page-head-title {
+  margin-bottom: var(--space-2);
+}
+
+.page-head-question {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.9vw, 1.28rem);
+  line-height: 1.3;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-3);
+  text-wrap: balance;
+}
+
+.page-head .section-strap {
+  margin: 0;
+}
+
 .card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -846,7 +990,7 @@ table + .fine-print {
 }
 
 .grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(21rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(21rem, 100%), 1fr));
 }
 
 .stack {
@@ -1676,6 +1820,13 @@ select:focus-visible {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--space-4) var(--space-5);
+  min-width: 0;
+}
+
+/* Source notes carry bare URLs; without a break they set the card's
+   min-content width and push the page past a phone screen. */
+.escalation-source {
+  overflow-wrap: anywhere;
 }
 
 .touchpoint-card h3 {
@@ -1874,6 +2025,14 @@ select:focus-visible {
 
 .preview-fade table {
   width: 100%;
+}
+
+/* A wide table scrolls inside its card instead of widening the page. */
+.table-scroll {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overscroll-behavior: contain;
 }
 
 .data-table {
@@ -3155,8 +3314,16 @@ input[type='range'] {
 
 .tool-card h3 {
   font-family: var(--font-display);
-  font-size: 1.2rem;
+  font-size: 1.35rem;
   margin: 0;
+}
+
+.tool-card-label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
 }
 
 .tool-question {
@@ -3170,6 +3337,12 @@ input[type='range'] {
 .tool-card .btn {
   margin-top: auto;
   align-self: flex-start;
+}
+
+.tool-how {
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
 }
 
 /* data commons: theme groups + list rows */
@@ -3351,6 +3524,14 @@ input[type='range'] {
   box-shadow: 0 6px 20px rgb(0 0 0 / 0.18);
 }
 
+.pit-fab-text {
+  display: none;
+}
+
+.pit-fab-mark {
+  font-family: var(--font-data);
+}
+
 .pit-fab:hover {
   filter: brightness(1.08);
 }
@@ -3431,6 +3612,75 @@ input[type='range'] {
     width: auto;
     bottom: max(0.75rem, env(safe-area-inset-bottom));
   }
+}
+
+/* A fixed companion is a cover on a phone. Wherever the desktop nav gives way
+   to the phone menu, the check joins the page between main and footer, where
+   it can be read without sitting on top of a ledger or a works table. */
+@media (max-width: 68rem) {
+  .pit-card {
+    position: static;
+    width: min(calc(100% - 2 * var(--space-5)), 34rem);
+    margin: var(--space-5) auto;
+    z-index: auto;
+  }
+
+  .pit-fab {
+    position: static;
+    display: flex;
+    width: fit-content;
+    height: 2.75rem;
+    margin: var(--space-4) auto var(--space-6);
+    padding-inline: 1rem;
+    border-radius: var(--radius-pill);
+    z-index: auto;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  .pit-fab-mark {
+    display: none;
+  }
+
+  .pit-fab-text {
+    display: inline;
+  }
+}
+
+/* On the passbook the card sits in the page at every width. A fixed corner
+   companion covers the paid-out and closing columns of the ledger. */
+.pit-card.pit-flow {
+  position: static;
+  width: min(calc(100% - 2 * var(--space-5)), 34rem);
+  margin: var(--space-5) auto;
+  z-index: auto;
+}
+
+.pit-fab.pit-flow {
+  position: static;
+  display: flex;
+  width: fit-content;
+  height: 2.75rem;
+  margin: var(--space-4) auto var(--space-6);
+  padding-inline: 1rem;
+  border-radius: var(--radius-pill);
+  z-index: auto;
+  gap: 0.5rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+.pit-fab.pit-flow .pit-fab-mark {
+  display: none;
+}
+
+.pit-fab.pit-flow .pit-fab-text {
+  display: inline;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -3618,7 +3868,10 @@ input[type='range'] {
 }
 
 .nav-menu-item {
-  display: block;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.45rem;
   width: 100%;
   text-align: start;
   background: none;
@@ -3647,6 +3900,25 @@ input[type='range'] {
 .nav-menu-item:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: -2px;
+}
+
+/* A tool item carries two lines: the name and its English category. Those
+   wrap instead of ellipsizing, because the category is what makes the name
+   legible in a menu. */
+.nav-menu-item:has(.nav-menu-hint) {
+  white-space: normal;
+  text-overflow: clip;
+  row-gap: 0.1rem;
+}
+
+.nav-menu-label {
+  font-weight: 650;
+}
+
+.nav-menu-hint {
+  font-size: 0.76rem;
+  font-weight: 400;
+  color: rgb(255 255 255 / 0.72);
 }
 
 /* Long menus (Atlas sectors, Research titles) scroll; keep the
@@ -4627,6 +4899,7 @@ input[type='range'] {
 
 .locator-side {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
   align-content: start;
 }
@@ -6078,5 +6351,540 @@ input[type='range'] {
 
   .monitor-instruments {
     max-height: 40vh;
+  }
+}
+
+/* ---------- village passbook (three-GP pilot) ----------
+   A public reading surface, not an analyst's dashboard. The ledger keeps the
+   numbers in tabular figures; the prose stays at body size and measure. */
+
+/* khata: the place picker, above the record */
+
+.khata-picker {
+  margin-bottom: var(--space-4);
+}
+
+.khata-fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-3);
+}
+
+.khata-field {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.76rem;
+  font-weight: 650;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.khata-field select {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text);
+}
+
+.khata-count {
+  margin: var(--space-3) 0 0;
+}
+
+.khata-map {
+  margin: 0 0 var(--space-5);
+}
+
+.khata-map summary {
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-accent-text);
+  padding-block: 0.35rem;
+}
+
+.khata-map[open] summary {
+  margin-bottom: var(--space-4);
+}
+
+.khata-busy {
+  padding-block: var(--space-4);
+}
+
+.khata-empty h3 {
+  margin-bottom: var(--space-2);
+}
+
+.passbook-banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--color-accent-soft-border);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+}
+
+.passbook-kicker {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.passbook-gps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.passbook-gp {
+  display: grid;
+  gap: 0.15rem;
+  justify-items: start;
+  text-align: start;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  cursor: pointer;
+  transition-property: background-color, border-color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+@media (hover: hover) {
+  .passbook-gp:hover {
+    background: var(--color-surface-sunken);
+    border-color: var(--color-border-strong);
+  }
+}
+
+.passbook-gp[aria-pressed='true'] {
+  border-color: var(--color-accent-solid);
+  border-width: 1.5px;
+  background: var(--color-accent-soft);
+}
+
+.passbook-gp:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.passbook-gp-name {
+  font-family: var(--font-display);
+  font-size: 1.12rem;
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.passbook-gp-hi {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-gp-meta {
+  margin-top: 0.25rem;
+  font-size: 0.76rem;
+  color: var(--color-text-muted);
+}
+
+.passbook-id {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-5);
+  margin-bottom: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-sunken);
+}
+
+.passbook-id h3 {
+  margin-bottom: 0.25rem;
+}
+
+.passbook-id p {
+  margin: 0.1rem 0;
+}
+
+.passbook-hi {
+  font-size: 0.78em;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+}
+
+.passbook-actions {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: end;
+}
+
+.passbook-share-note {
+  max-width: 32rem;
+  text-align: end;
+}
+
+.passbook-section {
+  margin-top: var(--space-6);
+}
+
+.passbook-section > h3 {
+  margin-bottom: var(--space-2);
+}
+
+.passbook-stats {
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+}
+
+.passbook-stat-sub {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--color-text-muted);
+}
+
+.passbook-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  margin-block: var(--space-4);
+}
+
+.passbook-ledger {
+  min-width: 40rem;
+}
+
+.passbook-ledger th[scope='row'] {
+  white-space: normal;
+  min-width: 11rem;
+}
+
+.passbook-ledger tfoot th,
+.passbook-ledger tfoot td {
+  border-top: 1.5px solid var(--color-border-strong);
+  border-bottom: 0;
+  font-weight: 650;
+  background: var(--color-surface-sunken);
+}
+
+.passbook-table-note {
+  max-width: 72ch;
+  margin-top: var(--space-3);
+}
+
+.passbook-mobile-note {
+  display: none;
+}
+
+.passbook-check {
+  margin: var(--space-3) 0 var(--space-5);
+  padding: var(--space-3) var(--space-4);
+  border-inline-start: 3px solid var(--clay-300);
+  background: var(--color-surface-sunken);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-check-warn {
+  border-inline-start-color: var(--clay-600);
+  color: var(--color-accent-text);
+}
+
+.passbook-chart {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 4px;
+  align-items: end;
+  height: 11rem;
+  margin: var(--space-4) 0 var(--space-2);
+  padding-top: var(--space-2);
+}
+
+.passbook-chart-month {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  gap: 0.35rem;
+  height: 100%;
+  min-width: 0;
+}
+
+.passbook-bars {
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: 2px;
+  width: 100%;
+  height: 9rem;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.passbook-bar {
+  width: min(0.7rem, 42%);
+  min-height: 1px;
+  border-radius: 2px 2px 0 0;
+}
+
+.passbook-bar-in {
+  background: var(--color-series-1);
+}
+
+.passbook-bar-out {
+  background: var(--color-series-2);
+}
+
+.passbook-chart-label {
+  font-family: var(--font-data);
+  font-size: 0.66rem;
+  color: var(--color-text-muted);
+}
+
+.passbook-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-swatch {
+  display: inline-block;
+  width: 0.65rem;
+  height: 0.65rem;
+  margin-inline-end: 0.3rem;
+  border-radius: 2px;
+  vertical-align: -0.05rem;
+}
+
+.passbook-swatch-in {
+  background: var(--color-series-1);
+}
+
+.passbook-swatch-out {
+  background: var(--color-series-2);
+}
+
+.passbook-details {
+  margin-top: var(--space-4);
+}
+
+.passbook-details summary {
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-details summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.passbook-details .data-table {
+  margin-top: var(--space-3);
+  max-width: 34rem;
+}
+
+.passbook-fallback {
+  max-width: 72ch;
+  margin: var(--space-3) 0 var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+  font-size: 0.88rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-works th[scope='row'] {
+  white-space: normal;
+  min-width: 15rem;
+}
+
+.passbook-works td:last-child {
+  white-space: nowrap;
+}
+
+.passbook-ask {
+  align-items: start;
+  margin-top: var(--space-6);
+}
+
+.passbook-questions {
+  padding-inline-start: 1.2rem;
+  margin-bottom: 0;
+  color: var(--color-text-secondary);
+}
+
+.passbook-questions li + li {
+  margin-top: var(--space-2);
+}
+
+.passbook-vendor-list {
+  padding-inline-start: 1.1rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.passbook-vendor-list li + li {
+  margin-top: 0.2rem;
+}
+
+.passbook-source-list {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: grid;
+  gap: var(--space-3);
+  font-size: 0.8rem;
+}
+
+.passbook-source-list li {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.passbook-source-list li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+
+.passbook-source-list a {
+  color: var(--color-accent-text);
+}
+
+.passbook-source-list code,
+.passbook-provenance code {
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  word-break: break-all;
+  color: var(--color-text-muted);
+}
+
+.passbook-provenance {
+  margin-top: var(--space-4);
+  max-width: 78ch;
+}
+
+@media (max-width: 40rem) {
+  /* minmax(21rem, 1fr) is wider than a narrow phone's content box, so the
+     shared two-column grid would push these cards past the screen edge. */
+  .passbook .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  /* Opening and closing balances exist only for the XVFC ledger, and they
+     push the two numbers a reader came for off the screen. Keep scheme,
+     received and paid on the phone; the XVFC balance is in the stat card. */
+  .passbook-ledger {
+    min-width: 0;
+    font-size: 0.78rem;
+  }
+
+  .passbook-ledger th:nth-child(2),
+  .passbook-ledger td:nth-child(2),
+  .passbook-ledger th:nth-child(5),
+  .passbook-ledger td:nth-child(5) {
+    display: none;
+  }
+
+  .passbook-ledger th,
+  .passbook-ledger td {
+    padding-inline: 0.35rem;
+  }
+
+  .passbook-ledger th[scope='row'] {
+    min-width: 0;
+  }
+
+  .passbook-ledger .data-num {
+    white-space: nowrap;
+  }
+
+  .passbook-works {
+    font-size: 0.78rem;
+  }
+
+  .passbook-works th,
+  .passbook-works td {
+    padding-inline: 0.35rem;
+  }
+
+  .passbook-works th[scope='row'] {
+    min-width: 0;
+  }
+
+  .passbook-wide-note {
+    display: none;
+  }
+
+  .passbook-mobile-note {
+    display: inline;
+  }
+
+  .passbook-id {
+    padding: var(--space-4);
+  }
+
+  .passbook-actions {
+    justify-items: start;
+  }
+
+  .passbook-share-note {
+    text-align: start;
+  }
+
+  .passbook-chart {
+    height: 9rem;
+  }
+
+  .passbook-bars {
+    height: 7rem;
+  }
+
+  .passbook-chart-label {
+    font-size: 0.625rem;
+  }
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .pit-card,
+  .pit-fab,
+  .tool-panel > .linklike,
+  .passbook-gps,
+  .passbook-actions,
+  .passbook-details summary {
+    display: none !important;
+  }
+
+  .passbook-section {
+    break-inside: avoid;
+  }
+
+  .passbook-id,
+  .passbook-check,
+  .card {
+    background: transparent;
+  }
+
+  .passbook-table-wrap {
+    overflow: visible;
+  }
+
+  .passbook-ledger,
+  .passbook-works {
+    min-width: 0;
   }
 }

@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState } from 'react';
 import NumInput from '../components/NumInput';
+import PageHead from '../components/PageHead';
 import { shareDataset, useSharedDatasets, togglePin } from '../lib/datasetStore';
 import { usePitDraft } from '../lib/pitStore';
 import { findUnitColumn, coverageLines } from '../lib/coverage';
@@ -247,7 +248,7 @@ export default function Battery({ onNavigate }) {
       validation: ingested.validation,
       source: 'battery',
     });
-    setSharedNote('Shared with the evaluation engine: open Tools → Evaluation engine and pick it under "Shared datasets".');
+    setSharedNote('Shared with Mulyankan: open Tools → Mulyankan and pick it under "Shared datasets".');
   };
 
   // The reverse flow: rows shared by the evaluation engine go through the
@@ -482,18 +483,19 @@ export default function Battery({ onNavigate }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">The policy battery</span>
-        <h2>Unorganised data in, auditable analysis out</h2>
-        <p className="section-strap">
-          The same input and parameters produce the same output today and in ten
-          years, and the report carries the proof. Four stages, four modules: a
-          decision tree, a full cost-benefit analysis, multi-criteria ranking,
-          and scenario runs against the calibrated PM-JAY reference model. Each
-          ends in a report that cannot be exported until the public interest
-          check is answered.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Analysis battery"
+        title="Manthan"
+        question="Can your analysis run again tomorrow and give the same answer?"
+      >
+        The same input and parameters produce the same output today and in ten
+        years, and the report carries the proof. Four stages, four modules: a
+        decision tree, a full cost-benefit analysis, multi-criteria ranking, and
+        scenario runs against the calibrated PM-JAY reference model. Start with
+        your own data or a worked example, answer the module’s questions, and
+        read the manifest before you export; the report will not leave the page
+        until the public interest check is answered.
+      </PageHead>
 
       <div className="battery-steps" role="group" aria-label="Battery stages">
         {STAGES.map((s) => (

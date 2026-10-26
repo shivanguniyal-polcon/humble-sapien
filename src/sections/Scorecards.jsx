@@ -4,6 +4,7 @@ import {
   promiseSources,
   corpusFacts,
 } from '../data/promises';
+import PageHead from '../components/PageHead';
 
 const STATUS_ORDER = ['delivered', 'partial', 'announced', 'none'];
 
@@ -15,21 +16,23 @@ export default function Scorecards({ onNavigate, onTool }) {
 
   return (
     <div>
-      <div className="card">
-        <h3>Promise scorecards</h3>
-        <p>
-          Every manifesto is written in the future tense. We read it in the past
-          tense. Below are four health promises from the BJP Gujarat 2022
-          manifesto, checked line by line against public evidence up to October
-          2026.
-        </p>
-        <p style={{ marginBottom: 0 }}>
-          The vocabulary is strict on purpose.{' '}
-          <strong>No public evidence found</strong> does not mean a thing did
-          not happen. It means the promise was made in public and the receipt
-          was not. That gap is what this scorecard measures.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Promise scorecards"
+        title="Sankalp"
+        question="What was promised, what is the record?"
+      >
+        Every manifesto is written in the future tense; we read it in the past
+        tense. Four health promises from the BJP Gujarat 2022 manifesto, checked
+        line by line against public evidence up to October 2026. Pick a promise,
+        read the evidence beside it, and use the scorecard in a campaign, a
+        classroom or a newsroom.
+      </PageHead>
+      <p className="fine-print">
+        The vocabulary is strict on purpose.{' '}
+        <strong>No public evidence found</strong> does not mean a thing did not
+        happen. It means the promise was made in public and the receipt was
+        not. That gap is what this scorecard measures.
+      </p>
 
       <div className="scorecard-summary">
         {counts.map(({ s, n }) => (

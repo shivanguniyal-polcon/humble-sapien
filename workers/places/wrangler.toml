@@ -1,0 +1,26 @@
+# The places and passbook API behind Khata.
+#
+#   wrangler d1 create ths-places
+#   wrangler d1 execute ths-places --remote --file=workers/places/schema.sql
+#   node scripts/seed-places.mjs && wrangler d1 execute ... (see the script)
+#   wrangler deploy -c workers/places/wrangler.toml
+#
+# Local development:
+#
+#   wrangler dev -c workers/places/wrangler.toml --local --port 8789
+#
+# Nothing here is secret. The database holds public directory data and public
+# eGramSwaraj returns, so the Worker has no auth surface and no write path.
+
+name = "ths-places-api"
+main = "worker.js"
+compatibility_date = "2026-10-26"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ths-places"
+database_id = "bd5f1359-8ea5-43f2-83ff-a977f17dae35"

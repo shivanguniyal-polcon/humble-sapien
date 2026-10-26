@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { stakeholderPolicies, effectLabels, effectScore } from '../data/stakeholders';
 import { PIT_QUESTIONS } from '../battery/report.js';
 import { setPitDraft } from '../lib/pitStore';
+import PageHead from '../components/PageHead';
 
 const EFFECT_COLOR = {
   benefits: 'var(--color-series-2)',
@@ -140,15 +141,16 @@ export default function Stakeholders({ onNavigate, onTool }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Stakeholder mapper</span>
-        <h2>Who does this policy move, and in which direction?</h2>
-        <p className="section-strap">
-          A policy is a distribution: someone gains protection or latitude,
-          someone else carries the cost or the restriction. Map the parties,
-          set the direction, and read the distribution back.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Stakeholder mapper"
+        title="Sutra."
+        question="Who gains, who is restricted, and who decided?"
+      >
+        A policy is a distribution: someone gains protection or latitude,
+        someone else carries the cost or the restriction. Add each party, set
+        the direction and size of the effect, record who held the decision, and
+        read the verdict back before a policy is announced.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Policies to map">
         {stakeholderPolicies.map((p) => (

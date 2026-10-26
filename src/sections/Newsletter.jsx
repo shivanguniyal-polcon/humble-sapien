@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { NEWSLETTER } from '../data/newsletter';
+import PageHead from '../components/PageHead';
 
 // The Newsletter: a fixed branded template rendered from issues authored as
 // Markdown (newsletter/issues/*.md) and compiled by scripts/newsletter_prepare
@@ -25,19 +26,18 @@ export default function Newsletter({ onNavigate, openSub }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Newsletter</span>
-        <h2>Evidence with receipts, in your inbox</h2>
-        <p className="section-strap">
-          The same work that goes into the research library and the tools,
-          written weekly in plain language: one number worth keeping, the
-          finding behind it, a policy term in ordinary words, a chart you can
-          take apart, and what to read next. Once a month we go deeper — one
-          policy taken apart end to end, from the citizen's journey to who
-          gains, who pays and who is missing. Every issue is a page you can
-          keep.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Newsletter"
+        title="Evidence with receipts, in your inbox"
+        question="How do I follow the work?"
+      >
+        The same work that goes into the research library and the tools, written
+        weekly in plain language: one number worth keeping, the finding behind
+        it, a policy term in ordinary words, a chart you can take apart, and what
+        to read next. Once a month we go deeper — one policy taken apart end to
+        end, from the citizen's journey to who gains, who pays and who is
+        missing. Every issue is a page you can keep.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Choose an issue">
         {NEWSLETTER.map((n) => (

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import NumInput from '../components/NumInput';
+import PageHead from '../components/PageHead';
 import { FIELD_GROUPS, fieldByKey, publicFieldKeys } from '../battery/project/schema.js';
 import {
   buildMemo,
@@ -722,15 +723,18 @@ export default function ProjectDesk() {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Project finance</span>
-        <h2>Does the project cover its debt?</h2>
-        <p className="section-strap">
-          A half-yearly project-finance screening case. It separates the contractual DSCR
-          from the liquidity a DSRA draw can provide, and shows what would have to change
-          before the case reaches the covenant tests. Everything runs in your browser.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Infrastructure"
+        title="Nirmaan"
+        question="Does the project cover its debt?"
+      >
+        A half-yearly project-finance screening case. It separates the
+        contractual DSCR from the liquidity a DSRA draw can provide, and shows
+        what would have to change before the case reaches the covenant tests.
+        Open the solar or HAM road case, change one assumption at a time, and
+        watch the covenant tests and the memo move with it. Everything runs in
+        your browser.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Project case">
         {CASES.map((entry) => (

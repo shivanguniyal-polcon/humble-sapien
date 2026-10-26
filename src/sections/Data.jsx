@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import datasets from '../data/datasets.json';
+import PageHead from '../components/PageHead';
 import { catalog, byId } from '../data/catalog';
 import { pearson, ols, readingFor, formatNumber } from '../lib/stats';
 import { censusCoverage, coverageLines, panelReceipt } from '../lib/coverage';
@@ -237,15 +238,15 @@ export default function Data({ onNavigate, openSub }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">THS Data Commons</span>
-        <h2>Pick a dataset. Break it. See what holds.</h2>
-        <p className="section-strap">
-          A playground, not a catalogue. Chart any series, pair two datasets and
-          run the relationship yourself: correlation, fit and reading update as
-          you explore. Everything runs in your browser.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="THS Data Commons"
+        title="Pick a dataset. Break it. See what holds."
+        question="What does the data actually show?"
+      >
+        A playground, not a catalogue. Chart any series, pair two datasets and
+        run the relationship yourself: correlation, fit and reading update as you
+        explore. Everything runs in your browser.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Data view">
         <button

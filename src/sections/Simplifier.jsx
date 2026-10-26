@@ -4,6 +4,7 @@ import LegalReview from '../components/LegalReview.jsx';
 import { PIT_QUESTIONS, checkPit } from '../battery/report.js';
 import { usePitDraft } from '../lib/pitStore.js';
 import { LEVELS, DEFAULT_LEVEL } from '../lib/legal/levels.js';
+import PageHead from '../components/PageHead';
 
 const Readability = ({ label, data, tone }) => (
   <div className="stat">
@@ -468,15 +469,18 @@ export default function Simplifier() {
 
   return (
     <section>
-      <div className="section-head">
-        <h2>Policy Simplifier</h2>
-        <p className="section-strap">
-          Paste any policy or legal text. The pipeline rewrites statutory
-          phrasing into plain, almost spoken language, splits what&apos;s too
-          long to say in one breath, scores readability before and after, and
-          renders recognized clauses in Hindi. Everything runs in your browser.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Policy simplifier"
+        title="Saral"
+        question="What does this notification actually say?"
+      >
+        Paste any policy or legal text. The pipeline rewrites statutory phrasing
+        into plain, almost spoken language, splits what&apos;s too long to say
+        in one breath, scores readability before and after, and renders
+        recognised clauses in Hindi. Read it sentence by sentence, note the
+        flags that need a lawyer, and export the review file with the source
+        text attached. Everything runs in your browser.
+      </PageHead>
 
       <ModeSwitch mode={mode} onChange={switchMode} />
 

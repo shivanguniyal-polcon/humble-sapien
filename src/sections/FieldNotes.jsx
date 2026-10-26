@@ -1,12 +1,17 @@
+import PageHead from '../components/PageHead';
+
 export default function FieldNotes() {
   return (
     <section>
-      <div className="section-head">
-        <h2>Field Notes</h2>
-        <p className="section-strap">
-          The thinking behind THS, from the founder’s notebook.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Field notes"
+        title="Field notes"
+        question="What did the work teach?"
+      >
+        The thinking behind THS, from the founder’s notebook. Each note says what
+        broke and what changed after it, so the instruments on the floor can be
+        read against the mistakes that shaped them.
+      </PageHead>
 
       <article className="note">
         <h3>Tapri-fication</h3>

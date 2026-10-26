@@ -12,13 +12,23 @@ Run by the learners of today, for the leaders of tomorrow.
 
 ## What's inside
 
-- **Local solutions** — a knowledge base of grassroots fixes documented like
-  evidence: what it is, where it lives, how it works, what backs the claim.
-- **Policy simplifier** — a client-side pipeline that rewrites statutory
+Every tool opens with the same three lines: its name, the question it answers,
+and what it does plus how to use it.
+
+- **Ankur** (Local solutions) — a knowledge base of grassroots fixes documented
+  like evidence: what it is, where it lives, how it works, what backs the claim.
+- **Saral** (Policy simplifier) — a client-side pipeline that rewrites statutory
   phrasing into plain language, flags long sentences and extracts obligations
   (who must do what).
-- **Touchpoint maps** — major schemes (PM-JAY, Swachh Bharat) broken into the
-  citizen's journey, with what to measure at each touchpoint and the evidence.
+- **Sampark** (Touchpoint maps) — major schemes (PM-JAY, Swachh Bharat) broken
+  into the citizen's journey, with what to measure at each touchpoint and the
+  evidence.
+- **Khata** (The village money tool) — every State, district and village in the
+  Local Government Directory, with a captured Gram Panchayat passbook where one
+  exists: receipts, payments, the 15th Finance Commission balance, completed
+  works and plan activities, and the questions a Gram Sabha can ask. Every source
+  response is hashed. The directory and the passbooks are served from D1; the
+  page ships none of it.
 - **THS Data Commons** — a playground, not a catalogue: chart series, pair
   datasets, run correlation and OLS fits yourself. Open tiers are free
   forever; the Commons Plus tier is the mission-locked revenue engine that
@@ -48,6 +58,15 @@ wrangler deploy -c workers/monitor.wrangler.toml
 
 See [`workers/MONITOR.md`](workers/MONITOR.md) for the D1/R2 setup and
 [`workers/README.md`](workers/README.md) for the Legal Simplifier API.
+
+The places API behind Khata is its own Worker and D1 database:
+
+```bash
+npx wrangler d1 execute ths-places --remote --file=workers/places/schema.sql
+node scripts/seed-places.mjs          # writes SQL to private/places-seed/
+# apply the files it prints, then:
+wrangler deploy -c workers/places/wrangler.toml
+```
 
 ## Development
 

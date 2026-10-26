@@ -1,20 +1,21 @@
 import Logo from '../components/Logo';
+import PageHead from '../components/PageHead';
 import { works } from '../data/works';
 
 export default function About({ onNavigate }) {
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">About THS</span>
-        <h2>Mission-locked, for the public: a free tier that cannot be taken back</h2>
-        <p className="section-strap">
-          The Humble Sapien (THS) works the way organisations like Upturn work on
-          technology policy: close to the systems that shape people&apos;s
-          lives, adversarial to weak evidence, useful to the public. But we
-          work across the whole policy surface: health, sanitation,
-          governance, technology and whatever comes next.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="About THS"
+        title="Mission-locked, for the public: a free tier that cannot be taken back"
+        question="Who is behind this, and what binds them?"
+      >
+        The Humble Sapien (THS) works the way organisations like Upturn work on
+        technology policy: close to the systems that shape people&apos;s lives,
+        adversarial to weak evidence, useful to the public. But we work across
+        the whole policy surface: health, sanitation, governance, technology and
+        whatever comes next.
+      </PageHead>
 
       {/* The identity at size: the brain glows as you scroll past. */}
       <Logo mode="scroll" className="brand-lockup-scroll" />

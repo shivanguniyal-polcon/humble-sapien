@@ -1,18 +1,19 @@
+import PageHead from '../components/PageHead';
+
 export default function Support() {
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Support THS</span>
-        <h2>Fund the evidence, not the influence</h2>
-        <p className="section-strap">
-          THS is mission-locked by contract: a perpetual free tier for
-          individuals and small civil society organisations, funded by the
-          institutions that pay.
-          Funding of any kind buys no finding, no edit and no access to work
-          that belongs in the open. What it buys is capacity: field verification,
-          digitised datasets, and tools that stay free.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Support THS"
+        title="Fund the evidence, not the influence"
+        question="How is this paid for, and what does money buy?"
+      >
+        THS is mission-locked by contract: a perpetual free tier for individuals
+        and small civil society organisations, funded by the institutions that
+        pay. Funding of any kind buys no finding, no edit and no access to work
+        that belongs in the open. What it buys is capacity: field verification,
+        digitised datasets, and tools that stay free.
+      </PageHead>
 
       <div className="grid grid-2">
         <article className="card">

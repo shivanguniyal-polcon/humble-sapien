@@ -1,6 +1,7 @@
 import { lazy, Suspense, useState } from 'react';
 import { sectors, sectorSources, atlasNote, PIT_ROWS } from '../data/sectors';
 import { schemes, featureRows, sources as healthSources } from '../data/comparison';
+import PageHead from '../components/PageHead';
 
 // The world map carries a quarter of a megabyte of geometry, and most
 // visitors never open this tab. It loads on demand instead.
@@ -71,15 +72,15 @@ export default function Compare({ onNavigate, openSub }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Global policy lab</span>
-        <h2>The policy atlas: 15 sectors, two hemispheres</h2>
-        <p className="section-strap">
-          Ninety flagship policies, from data protection to defence. Pick a
-          sector, read what each region built, run every card through the
-          public interest test, then see where the two approaches split.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Global policy lab"
+        title="The policy atlas: 15 sectors, two hemispheres"
+        question="How do other countries solve this?"
+      >
+        Ninety flagship policies, from data protection to defence. Pick a
+        sector, read what each region built, run every card through the public
+        interest test, then see where the two approaches split.
+      </PageHead>
 
       <Suspense fallback={<div className="atlas-map-placeholder" aria-hidden="true" />}>
         <AtlasMap sector={sector} sectors={sectors} />

@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import pitData from '../../pit-desk.json';
+import PageHead from '../components/PageHead';
 
 // The PIT Desk: policies and public-interest news scraped from the open web
 // (PIB, PRS, national press) and read through the public-interest test —
@@ -48,16 +49,16 @@ export default function PitDesk() {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">PIT Desk</span>
-        <h2>Policy, read through the public interest test</h2>
-        <p className="section-strap">
-          Government releases, bills and public-interest news scraped from the
-          open web, each answered the same three questions: who benefits, who
-          pays, who is missing. Automated, sourced to the original release, and
-          refreshed by running the pipeline — so the receipts stay attached.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="PIT Desk"
+        title="Policy, read through the public interest test"
+        question="Who benefits, who pays, who is missing?"
+      >
+        Government releases, bills and public-interest news scraped from the open
+        web, each answered the same three questions: who benefits, who pays, who
+        is missing. Automated, sourced to the original release, and refreshed by
+        running the pipeline — so the receipts stay attached.
+      </PageHead>
 
       {items.length === 0 ? (
         <div className="card">

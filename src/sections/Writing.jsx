@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ESSAYS } from '../data/essays';
+import PageHead from '../components/PageHead';
 
 export default function Writing({ onNavigate, openSub }) {
   // Deep links from the nav dropdown: #/writing/<essay-id>. Seeded from the
@@ -18,15 +19,15 @@ export default function Writing({ onNavigate, openSub }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Writing</span>
-        <h2>Notes from the workshop</h2>
-        <p className="section-strap">
-          Short essays by Shivang Uniyal, founder of THS, on why policy
-          consumption must evolve, what the record actually says, and how the
-          work is done. Plain words, no jargon, no fine print.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Writing"
+        title="Notes from the workshop"
+        question="What is the argument, in plain words?"
+      >
+        Short essays by Shivang Uniyal, founder of THS, on why policy
+        consumption must evolve, what the record actually says, and how the work
+        is done. Plain words, no jargon, no fine print.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Choose an essay">
         {ESSAYS.map((e) => (

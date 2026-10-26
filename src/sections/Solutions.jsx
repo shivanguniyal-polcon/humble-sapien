@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { solutions, categories } from '../data/solutions';
+import PageHead from '../components/PageHead';
 
 export default function Solutions() {
   const [filter, setFilter] = useState('All');
@@ -9,13 +10,15 @@ export default function Solutions() {
 
   return (
     <section>
-      <div className="section-head">
-        <h2>Local Solutions</h2>
-        <p className="section-strap">
-          Grassroots fixes, documented like evidence: what it is, where it
-          lives, how it works, and what backs the claim.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Local solutions"
+        title="Ankur"
+        question="Who already solved this somewhere?"
+      >
+        Grassroots fixes, documented like evidence: what it is, where it lives,
+        how it works, and what backs the claim. Search by the problem, not the
+        project name, and read what the fix needs before you copy it.
+      </PageHead>
 
       <div className="filter-row">
         {categories.map((c) => (

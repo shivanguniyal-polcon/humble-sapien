@@ -5,6 +5,7 @@ import {
   UNJOINED_UNITS,
   computeGenderIndex,
 } from '../lib/genderIndex.js';
+import PageHead from '../components/PageHead';
 
 const WEIGHT_STEPS = [0, 0.5, 1, 1.5, 2, 3];
 
@@ -29,22 +30,20 @@ export default function GenderIndex() {
 
   return (
     <div>
-      <div className="card">
-        <h3>Gender inclusion index</h3>
-        <p>
-          Five indicators, thirty-six states and union territories, two public
-          sources. Women with ten or more years of schooling, institutional
-          births and anaemia among women aged 15 to 49 from NFHS-5 (2019-21);
-          sex ratio and female literacy from Census 2011.
-        </p>
-        <p style={{ marginBottom: 0 }}>
-          Each indicator is scaled to a position in the distribution, then
-          combined at the weights below. Change the weights and the ranking
-          changes with them, because the weight you give anaemia or sex ratio
-          is a judgement, not a fact. The method note at the bottom says what
-          every step does.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Gender inclusion index"
+        title="Bhaagidaari"
+        question="Where do women actually stand, state by state?"
+      >
+        Five indicators, thirty-six states and union territories, two public
+        sources: women with ten or more years of schooling, institutional births
+        and anaemia among women aged 15 to 49 from NFHS-5 (2019-21); sex ratio
+        and female literacy from Census 2011. Each indicator is scaled to a
+        position in the distribution, then combined at the weights below. Move
+        the weights and watch the ranking move with them, because the weight you
+        give anaemia or sex ratio is a judgement, not a fact. The method note at
+        the bottom says what every step does.
+      </PageHead>
 
       <div className="card">
         <h4>Weights</h4>
@@ -96,8 +95,9 @@ export default function GenderIndex() {
         <h4>
           Ranking <span className="meta">({ranked.length} of {ranked.length + unranked.length} units scored)</span>
         </h4>
-        <table className="data-table">
-          <thead>
+        <div className="table-scroll">
+          <table className="data-table">
+            <thead>
             <tr>
               <th scope="col">Rank</th>
               <th scope="col">State / UT</th>
@@ -150,8 +150,9 @@ export default function GenderIndex() {
                 ))}
               </tr>
             ))}
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <div className="card">

@@ -1,5 +1,6 @@
 import { lazy, Suspense } from 'react';
 import { TOOLS } from '../data/tools';
+import PageHead from '../components/PageHead';
 
 // One chunk per instrument. The tools index loads on its own; the engine
 // behind a tool arrives only when that tool is opened, so the landing page
@@ -9,6 +10,7 @@ const GenderIndex = lazy(() => import('./GenderIndex'));
 const Simplifier = lazy(() => import('./Simplifier'));
 const Monitor = lazy(() => import('./Monitor'));
 const Touchpoints = lazy(() => import('./Touchpoints'));
+const VillagePassbook = lazy(() => import('./VillagePassbook'));
 const Scorecards = lazy(() => import('./Scorecards'));
 const FieldNotes = lazy(() => import('./FieldNotes'));
 const EconometricsLab = lazy(() => import('./EconometricsLab'));
@@ -43,6 +45,9 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
     case 'simplifier':
       view = <Simplifier />;
       break;
+    case 'passbook':
+      view = <VillagePassbook query={query} onQueryChange={onQueryChange} />;
+      break;
     case 'monitor':
       view = <Monitor />;
       break;
@@ -58,14 +63,14 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
     case 'arcade':
       view = (
         <div>
-          <div className="card">
-            <h3>Catch the Entitlement</h3>
-            <p style={{ marginBottom: 0 }}>
-              The playground corner of the tools floor. Catch falling
-              entitlements, dodge jargon, and remember why any of this matters.
-              Arrow keys or pointer, 60 seconds on the clock.
-            </p>
-          </div>
+          <PageHead
+            eyebrow="Policy arcade"
+            title="Policy arcade"
+            question="Can policy literacy be a game?"
+          >
+            Sixty seconds, falling entitlements. Arrow keys or pointer; it is a
+            break, not an argument. Catch the entitlements, dodge the jargon.
+          </PageHead>
           <PolicyGame />
         </div>
       );
@@ -112,22 +117,25 @@ export default function Work({ onNavigate, openTool, onToolChange, query, onQuer
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">The instruments</span>
-        <h2>Public tools for reading the state</h2>
-        <p className="section-strap">
-          {TOOLS.length} instruments, free to use, running entirely in your browser. Each
-          one answers a question a citizen, a reporter or a civil servant
-          actually asks. Open one and it takes the page.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Tools"
+        title="The instruments"
+        question="Which one answers the question you are carrying?"
+      >
+        {TOOLS.length} instruments, free to use, running entirely in your browser.
+        Each one answers a question a citizen, a reporter or a civil servant
+        actually asks. The name is the tool; the line under it is the question;
+        the paragraph tells you what it does and how to start.
+      </PageHead>
 
       <div className="tool-cards">
         {TOOLS.map((t) => (
           <article key={t.id} className="tool-card">
-            <h3>{t.label}</h3>
+            <span className="tool-card-label">{t.label}</span>
+            <h3>{t.name}</h3>
             <p className="tool-question">{t.question}</p>
             <p className="fine-print">{t.blurb}</p>
+            {t.how && <p className="fine-print tool-how">{t.how}</p>}
             <button
               type="button"
               className="btn btn-primary"

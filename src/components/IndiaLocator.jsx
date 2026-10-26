@@ -291,8 +291,11 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       return [
         {
           title: 'Villages',
-          items: found.map((name) => ({
-            key: `v${name}`,
+          // A block can hold two villages with the same name. The name is not
+          // the identity; the position in the list is what keeps the rows
+          // distinct for React.
+          items: found.map((name, index) => ({
+            key: `v${name}-${index}`,
             name,
             meta: 'village',
             pick: () => push({ level: 'village', name, id }),

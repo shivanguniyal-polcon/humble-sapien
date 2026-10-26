@@ -6,6 +6,7 @@ import {
   syntheticControl, propensityMatch, fmtNum, fmtP,
 } from '../lib/econometrics';
 import { LineChart, CoefficientPlot } from '../components/charts';
+import PageHead from '../components/PageHead';
 import NumInput from '../components/NumInput';
 import { ingest, parseNumber } from '../battery/ingest.js';
 import { useSharedDatasets, shareDataset, togglePin } from '../lib/datasetStore';
@@ -635,7 +636,7 @@ export default function EconometricsLab({ onNavigate }) {
       validation: custom.validation,
       source: 'lab',
     });
-    setShareNote('Shared with the battery: open Tools → The policy battery and pick it under "Shared datasets".');
+    setShareNote('Shared with Manthan: open Tools → Manthan and pick it under "Shared datasets".');
   };
 
   const loadShared = (d) => {
@@ -969,16 +970,17 @@ export default function EconometricsLab({ onNavigate }) {
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Evaluation engine</span>
-        <h2>Run the identification yourself</h2>
-        <p className="section-strap">
-          Every estimate on this page is computed in your browser from the
-          complete census and the national family health surveys: real
-          population coverage, no server, no black box. Pick a method, set the
-          design, and read what the numbers will and will not support.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Evaluation engine"
+        title="Mulyankan"
+        question="Does the policy actually change the outcome?"
+      >
+        Every estimate on this page is computed in your browser from the
+        complete census and the national family health surveys: real population
+        coverage, no server, no black box. Pick a method, set the design and the
+        sample, then read the estimate beside its standard errors and the
+        assumptions it cannot escape.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Estimation methods">
         {Object.entries(METHODS).map(([id, m]) => (

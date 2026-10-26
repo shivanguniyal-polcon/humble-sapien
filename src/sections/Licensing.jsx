@@ -1,4 +1,5 @@
 import { GENERAL_RULES, MODULE_FORMATS } from '../battery';
+import PageHead from '../components/PageHead';
 
 // Institutional licensing for the Policy Battery. The principle is simple and
 // mission-locked: the instruments are free for the public, institutions pay,
@@ -91,16 +92,16 @@ const REPRODUCIBILITY = [
 export default function Licensing({ onNavigate }) {
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Institutional licensing</span>
-        <h2>Free for the public. Paid for institutions.</h2>
-        <p className="section-strap">
-          The Policy Battery is licensed in four tiers. Citizens and civil
-          society use it free, forever, without an account. Institutions that
-          sell analysis or run administrations pay for it, and that revenue is
-          what keeps the first tier unconditional.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Institutional licensing"
+        title="Free for the public. Paid for institutions."
+        question="What can I use for free, and what does an institution pay for?"
+      >
+        The Policy Battery is licensed in four tiers. Citizens and civil society
+        use it free, forever, without an account. Institutions that sell analysis
+        or run administrations pay for it, and that revenue is what keeps the
+        first tier unconditional.
+      </PageHead>
 
       <div className="grid grid-2">
         {TIERS.map((t) => (
@@ -188,8 +189,9 @@ export default function Licensing({ onNavigate }) {
           <article key={m.id} className="card">
             <h3>{m.module}</h3>
             <p><strong>Accepted input:</strong> {m.answer}</p>
-            <table className="result-table">
-              <thead>
+            <div className="table-scroll">
+              <table className="result-table">
+                <thead>
                 <tr>
                   <th scope="col">Column or field</th>
                   <th scope="col">Required</th>
@@ -206,8 +208,9 @@ export default function Licensing({ onNavigate }) {
                     <td>{c.note}</td>
                   </tr>
                 ))}
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
             {m.notes.map((n) => <p key={n} className="fine-print">{n}</p>)}
           </article>
         ))}

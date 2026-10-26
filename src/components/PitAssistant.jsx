@@ -271,7 +271,7 @@ const DEFAULT_CHECK = {
   why: 'If the tool in front of you cannot answer all three, the analysis is not finished.',
 };
 
-export default function PitAssistant({ route }) {
+export default function PitAssistant({ route, flow = false }) {
   const [open, setOpen] = useState(true);
   const [idx, setIdx] = useState(0);
 
@@ -283,20 +283,21 @@ export default function PitAssistant({ route }) {
     return (
       <button
         type="button"
-        className="pit-fab pit-fab-collapsed"
+        className={`pit-fab pit-fab-collapsed${flow ? ' pit-flow' : ''}`}
         aria-label="Open the public interest check"
         onClick={() => {
           setOpen(true);
           setIdx(0);
         }}
       >
-        PIT
+        <span className="pit-fab-mark" aria-hidden="true">PIT</span>
+        <span className="pit-fab-text">Open the public interest check</span>
       </button>
     );
   }
 
   return (
-    <aside className="pit-card" role="complementary" aria-label="Public interest check">
+    <aside className={`pit-card${flow ? ' pit-flow' : ''}`} role="complementary" aria-label="Public interest check">
       <div className="pit-head">
         <span className="pit-kicker">Public interest check</span>
         <button

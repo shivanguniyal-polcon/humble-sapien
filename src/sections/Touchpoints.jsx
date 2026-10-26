@@ -5,6 +5,7 @@ import { SCHEMES, NAME_TRAPS } from '../data/schemes';
 import TouchpointLadder from '../components/TouchpointLadder';
 import Clock from '../components/Clock';
 import Sheet from '../components/Sheet';
+import PageHead from '../components/PageHead';
 
 // The map data is a quarter of a megabyte of state outlines. It is only
 // needed on this page, so it is loaded when the page is opened rather than
@@ -129,15 +130,17 @@ export default function Touchpoints({ query, onQueryChange }) {
 
   return (
     <section>
-      <div className="section-head">
-        <h2>Touchpoint Maps</h2>
-        <p className="section-strap">
-          Delivery fails at touchpoints, not at launch. Start where you are: pick
-          your State, walk down to your block or village, and the ladder beside
-          the map shows the office that owes you the answer at your own level,
-          and the route above it if they do not deliver.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Touchpoint maps"
+        title="Sampark"
+        question="Which office owes you the answer?"
+      >
+        Delivery fails at touchpoints, not at launch. Start where you are: pick
+        your State, walk down to your block or village, and the ladder beside the
+        map shows the office that owes you the answer at your own level, and the
+        route above it if they do not deliver. Or start from the scheme and
+        follow delivery step by step.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Choose scheme">
         {SCHEMES.map((s) => (

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { publications, PUB_TYPES } from '../data/publications';
+import PageHead from '../components/PageHead';
 import { citeAPA, citeBibTeX, citeRIS, citeLine, pubPermalink } from '../lib/cite';
 
 const PIT_ROWS = [
@@ -197,15 +198,15 @@ export default function Research({ onNavigate, openPub, onOpenPub, openType, onT
 
   return (
     <section>
-      <div className="section-head">
-        <span className="overline">Research library</span>
-        <h2>Every finding, with its receipts attached</h2>
-        <p className="section-strap">
-          Reports, working papers, datasets, tools and essays. Each one carries
-          its author, date, methods, citations, downloads and a distributional
-          column, so you can check the work instead of trusting the brand.
-        </p>
-      </div>
+      <PageHead
+        eyebrow="Research library"
+        title="Every finding, with its receipts attached"
+        question="What can I check for myself?"
+      >
+        Reports, working papers, datasets, tools and essays. Each one carries its
+        author, date, methods, citations, downloads and a distributional column,
+        so you can check the work instead of trusting the brand.
+      </PageHead>
 
       <div className="filter-row" role="group" aria-label="Filter by type">
         {PUB_TYPES.map((t) => (

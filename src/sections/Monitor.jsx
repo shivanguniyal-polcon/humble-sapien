@@ -12,6 +12,7 @@
 // not a compliance system and does not claim the instrument is in force.
 
 import { useEffect, useMemo, useState } from 'react';
+import PageHead from '../components/PageHead';
 import INDEX from '../data/monitor/index.json';
 import COLLECTION from '../data/monitor/collection.json';
 import {
@@ -1229,18 +1230,21 @@ export default function Monitor() {
 
   return (
     <div>
+      <PageHead
+        eyebrow="Regulatory monitor · Reserve Bank of India"
+        title="Prahari"
+        question="What changed, and does it bind us?"
+      >
+        Fifty RBI instruments pinned here, read as obligations rather than
+        circulated as PDFs. A live library beside them checks the RBI twice a
+        day for new notifications and master directions and reads each one with
+        the same rules. Each duty is one sentence, its source is beside it, and
+        the profile you state decides whether it binds you, waits on a fact, or
+        sits with someone else. Where the library holds an earlier circular of
+        the same series, the page shows what changed.
+      </PageHead>
+
       <div className="card monitor-intro">
-        <p className="eyebrow">Reserve Bank of India · obligation monitor</p>
-        <h3>What changed, who it binds, and what it asks you to do</h3>
-        <p>
-          Fifty RBI instruments pinned here, read as obligations rather than circulated
-          as PDFs. A live library beside them checks the RBI twice a day for new
-          notifications and master directions and reads each one with the same rules.
-          Each duty is one sentence, its source is beside it, and the profile you state
-          decides whether it binds you, waits on a fact, or sits with someone else.
-          Where the library holds an earlier circular of the same series, the page shows
-          what changed.
-        </p>
         <p className="meta" style={{ marginBottom: 0 }}>
           Library: {INDEX.instruments.length} instruments pinned by text hash ·{' '}
           {INDEX.instruments.reduce((sum, entry) => sum + entry.duties, 0).toLocaleString('en-IN')} duty

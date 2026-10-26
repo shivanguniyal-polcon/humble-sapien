@@ -148,9 +148,9 @@ export const decisionTree = {
     return `
       <p class="report-headline">Expected value at the root: <strong>₹${Math.round(r.rootEV).toLocaleString('en-IN')}</strong></p>
       <h3>Node values</h3>
-      <table class="result-table"><thead><tr><th>Node</th><th>Type</th><th>Expected value (₹)</th><th>Optimal branch</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Node</th><th>Type</th><th class="data-num">Expected value (₹)</th><th>Optimal branch</th></tr></thead><tbody>${rows}</tbody></table>
       <h3>Leaves and who lands there</h3>
-      <table class="result-table"><thead><tr><th>Leaf</th><th>Payoff (₹)</th><th>On optimal path</th><th>Distributional column</th></tr></thead><tbody>${leaves}</tbody></table>
+      <table class="result-table"><thead><tr><th>Leaf</th><th class="data-num">Payoff (₹)</th><th>On optimal path</th><th>Distributional column</th></tr></thead><tbody>${leaves}</tbody></table>
       ${r.leavesWithoutDistribution.length > 0 ? `<p class="report-warning">Distributional column missing for: ${r.leavesWithoutDistribution.map(escapeHtml).join(', ')}. The public interest check is incomplete for these outcomes.</p>` : ''}`;
   },
 };

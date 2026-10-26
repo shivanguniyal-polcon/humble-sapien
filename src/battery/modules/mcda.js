@@ -237,7 +237,7 @@ export const mcda = {
       .join('');
 
     const groupCells = (a) => r.groupNames.map((g) => `<td class="data-num">${fmt(a.byGroup[g])}</td>`).join('');
-    const groupHead = r.groupNames.map((g) => `<th>${escapeHtml(g)}</th>`).join('');
+    const groupHead = r.groupNames.map((g) => `<th class="data-num">${escapeHtml(g)}</th>`).join('');
     const attributionRows = [...r.alternatives]
       .sort((a, b) => a.rank - b.rank)
       .map((a) => `<tr><th scope="row">${escapeHtml(a.label)}</th>${groupCells(a)}</tr>`)
@@ -262,13 +262,13 @@ export const mcda = {
     return `
       <p class="report-headline">Highest-ranked: <strong>${escapeHtml(top.label)}</strong> at ${fmt(top.total)}, leading by ${fmt(r.leadMargin)} over the runner-up on the ${r.method === 'minmax' ? 'min-max normalised' : 'weighted-sum'} score. ${flipSentence}</p>
       <h3>Ranking and who each choice lands on</h3>
-      <table class="result-table"><thead><tr><th>Alternative</th><th>Rank</th><th>Score</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Alternative</th><th class="data-num">Rank</th><th class="data-num">Score</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
       ${r.gaps.alternatives.length > 0 ? `<p class="report-warning">Distributional column missing for: ${r.gaps.alternatives.map(escapeHtml).join(', ')}. The public interest check is incomplete for these alternatives.</p>` : ''}
       <h3>Score attribution by group</h3>
       <p class="fine-print">Where each score comes from: weighted contributions summed over the group each criterion measures. A ranking driven by one group's criteria is a statement about that group, not about the whole public.</p>
       <table class="result-table"><thead><tr><th>Alternative</th>${groupHead}</tr></thead><tbody>${attributionRows}</tbody></table>
       <h3>Criteria, weights and standpoint</h3>
-      <table class="result-table"><thead><tr><th>Criterion</th><th>Weight</th><th>Direction</th><th>Group</th><th>Whose standpoint</th></tr></thead><tbody>${weightRows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Criterion</th><th class="data-num">Weight</th><th>Direction</th><th>Group</th><th>Whose standpoint</th></tr></thead><tbody>${weightRows}</tbody></table>
       ${r.gaps.criteria.length > 0 ? `<p class="report-warning">Standpoint not stated for: ${r.gaps.criteria.map(escapeHtml).join(', ')}.</p>` : ''}
       <h3>Rank sensitivity</h3>
       <table class="result-table"><thead><tr><th>Shock</th><th>Rank 1 becomes</th><th>Lead changes</th></tr></thead><tbody>${scenRows}</tbody></table>

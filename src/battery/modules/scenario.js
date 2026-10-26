@@ -435,13 +435,13 @@ export const scenario = {
     return `
       <p class="report-headline">${headline} In ${escapeHtml(first.label)} rationing starts at ${year(first.metrics.rationingOnset)}.</p>
       <h3>Sustainability criteria by scenario</h3>
-      <table class="result-table"><thead><tr><th>Scenario</th><th>Payment-ratio floor</th><th>Months below ${(r.prFloorTarget * 100).toFixed(0)}%</th><th>Rationing onset</th><th>Coverage ${r.horizon.endYear}</th><th>Verdict</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Scenario</th><th class="data-num">Payment-ratio floor</th><th class="data-num">Months below ${(r.prFloorTarget * 100).toFixed(0)}%</th><th class="data-num">Rationing onset</th><th class="data-num">Coverage ${r.horizon.endYear}</th><th>Verdict</th></tr></thead><tbody>${rows}</tbody></table>
       <h3>The rationing burden and who carries it</h3>
       <p class="fine-print">Unpaid claims are the billed care that the fund could not settle. In the model the shortfall is spread across enrolled households as denied or delayed treatment; the column names who actually bears it in the world. A scenario without that column does not know who pays for its savings.</p>
-      <table class="result-table"><thead><tr><th>Scenario</th><th>Unpaid claims (cumulative)</th><th>Share of billed</th><th>Budget growth to hold the floor</th><th>Distributional column</th></tr></thead><tbody>${burdenRows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Scenario</th><th class="data-num">Unpaid claims (cumulative)</th><th class="data-num">Share of billed</th><th class="data-num">Budget growth to hold the floor</th><th>Distributional column</th></tr></thead><tbody>${burdenRows}</tbody></table>
       ${r.gaps.length > 0 ? `<p class="report-warning">Distributional column missing for: ${r.gaps.map(escapeHtml).join(', ')}. The public interest check is incomplete for these scenarios.</p>` : ''}
       <h3>Annual path of the first scenario</h3>
-      <table class="result-table"><thead><tr><th>Year</th><th>Payment ratio</th><th>Claims billed (₹ Cr)</th><th>Claims paid (₹ Cr)</th><th>Budget (₹ Cr)</th><th>Enrolled (M)</th></tr></thead><tbody>${r.scenarios[0].series
+      <table class="result-table"><thead><tr><th class="data-num">Year</th><th class="data-num">Payment ratio</th><th class="data-num">Claims billed (₹ Cr)</th><th class="data-num">Claims paid (₹ Cr)</th><th class="data-num">Budget (₹ Cr)</th><th class="data-num">Enrolled (M)</th></tr></thead><tbody>${r.scenarios[0].series
         .map(
           (y) => `<tr><th scope="row">${y.year}</th><td class="data-num">${pct(y.paymentRatio)}</td><td class="data-num">${num(y.claimsBilled)}</td><td class="data-num">${num(y.claimsPaid)}</td><td class="data-num">${num(y.budget)}</td><td class="data-num">${num(y.enrolled, 1)}</td></tr>`,
         )

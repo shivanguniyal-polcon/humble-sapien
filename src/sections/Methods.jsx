@@ -182,8 +182,8 @@ export default function Methods() {
               <thead>
                 <tr>
                   <th scope="col">Indicator</th>
-                  <th scope="col">Anchors</th>
-                  <th scope="col">Fit</th>
+                  <th scope="col" className="data-num">Anchors</th>
+                  <th scope="col" className="data-num">Fit</th>
                 </tr>
               </thead>
               <tbody>

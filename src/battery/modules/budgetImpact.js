@@ -114,9 +114,9 @@ export const budgetImpact = {
     return `
       <p class="report-headline">Gross, offset and net are printed as three columns so the self-financing claim can be checked against the offset row alone.</p>
       <h3>Year by year</h3>
-      <table class="result-table"><thead><tr><th>Year</th><th>Eligible</th><th>Uptake</th><th>Treated</th><th>Gross cost</th><th>Offsets</th><th>Net impact</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th class="data-num">Year</th><th class="data-num">Eligible</th><th class="data-num">Uptake</th><th class="data-num">Treated</th><th class="data-num">Gross cost</th><th class="data-num">Offsets</th><th class="data-num">Net impact</th></tr></thead><tbody>${rows}</tbody></table>
       <h3>Totals</h3>
-      <table class="result-table"><thead><tr><th>Measure</th><th>Value</th></tr></thead><tbody>
+      <table class="result-table"><thead><tr><th>Measure</th><th class="data-num">Value</th></tr></thead><tbody>
         <tr><th scope="row">Gross over the horizon</th><td class="data-num">₹${num(r.totalGross)}</td></tr>
         <tr><th scope="row">Offsets over the horizon</th><td class="data-num">₹${num(r.totalOffsets)}</td></tr>
         <tr><th scope="row">Net budget impact</th><td class="data-num">₹${num(r.totalNet)}</td></tr>

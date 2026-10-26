@@ -194,9 +194,9 @@ export const cba = {
     return `
       <p class="report-headline">Net present value: <strong>₹${fmt(r.npv)}</strong> at a ${(r.discountRate * 100).toFixed(1)}% discount rate. Benefit-cost ratio <strong>${r.bcr == null ? 'n/a' : r.bcr.toFixed(2)}</strong>.</p>
       <h3>Line items, discounted to the base year</h3>
-      <table class="result-table"><thead><tr><th>Line</th><th>Kind</th><th>Nominal (₹)</th><th>Present value (₹)</th></tr></thead><tbody>${lineRows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Line</th><th>Kind</th><th class="data-num">Nominal (₹)</th><th class="data-num">Present value (₹)</th></tr></thead><tbody>${lineRows}</tbody></table>
       <h3>Sensitivity</h3>
-      <table class="result-table"><thead><tr><th>Scenario</th><th>NPV (₹)</th><th>BCR</th></tr></thead><tbody>${scenRows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Scenario</th><th class="data-num">NPV (₹)</th><th class="data-num">BCR</th></tr></thead><tbody>${scenRows}</tbody></table>
       <p class="fine-print">Internal rate of return: ${r.irr == null ? 'no sign change in the flows, IRR undefined' : `${(r.irr * 100).toFixed(1)}%`}. Discounted payback: ${r.discountedPaybackYear == null ? `beyond the ${r.horizonYears}-year horizon` : `year ${r.discountedPaybackYear}`}. Break-even discount rate equals the IRR.</p>
       <h3>Unpriced ledger</h3>
       <p class="fine-print">Effects that resist monetisation are listed here in their own units. They are part of the decision, not a footnote to it.</p>

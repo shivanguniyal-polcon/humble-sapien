@@ -204,7 +204,7 @@ export default function Licensing({ onNavigate }) {
                   <tr key={c.name}>
                     <th scope="row">{c.name}</th>
                     <td>{c.required ? 'yes' : 'optional'}</td>
-                    <td className="data-num">{c.example}</td>
+                    <td>{c.example}</td>
                     <td>{c.note}</td>
                   </tr>
                 ))}

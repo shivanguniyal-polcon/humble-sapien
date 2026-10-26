@@ -65,24 +65,30 @@ const formatRatio = (value) =>
     ? '—'
     : `${Number(value).toFixed(DISPLAY_PRECISION)}x`;
 
+const fixed = (value, digits) =>
+  Number(value).toLocaleString('en-IN', {
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+
 const formatCr = (value, digits = DISPLAY_PRECISION) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   const n = Number(value);
-  return `${n < 0 ? '−' : ''}₹${Math.abs(n).toFixed(digits)} crore`;
+  return `${n < 0 ? '−' : ''}₹${fixed(Math.abs(n), digits)} crore`;
 };
 
 const formatNum = (value, digits = DISPLAY_PRECISION) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
-  return Number(value).toFixed(digits);
+  return fixed(value, digits);
 };
 
 const formatPct = (value, digits = DISPLAY_PRECISION) =>
-  value == null || !Number.isFinite(Number(value)) ? '—' : `${Number(value).toFixed(digits)}%`;
+  value == null || !Number.isFinite(Number(value)) ? '—' : `${fixed(value, digits)}%`;
 
 const formatSignedPct = (value) => {
   if (value == null || !Number.isFinite(Number(value))) return '—';
   const n = Number(value);
-  return `${n >= 0 ? '+' : '−'}${Math.abs(n).toFixed(DISPLAY_PRECISION)}%`;
+  return `${n >= 0 ? '+' : '−'}${fixed(Math.abs(n), DISPLAY_PRECISION)}%`;
 };
 
 const formatDisplayValue = (value) => {
@@ -328,8 +334,8 @@ function ComparisonTable({ run, selectedSupport }) {
           <thead>
             <tr>
               <th scope="col">Test</th>
-              <th scope="col">Support off</th>
-              <th scope="col">Support on</th>
+              <th scope="col" className="data-num">Support off</th>
+              <th scope="col" className="data-num">Support on</th>
             </tr>
           </thead>
           <tbody>
@@ -416,16 +422,16 @@ function PeriodTable({ result }) {
           </caption>
           <thead>
             <tr>
-              <th scope="col">Period</th>
-              <th scope="col">Year</th>
-              <th scope="col">Revenue</th>
-              <th scope="col">O&amp;M</th>
-              <th scope="col">CFADS</th>
-              <th scope="col">Debt service</th>
-              <th scope="col">DSCR</th>
-              <th scope="col">DSRA draw</th>
-              <th scope="col">DSRA close</th>
-              <th scope="col">Coverage</th>
+              <th scope="col" className="data-num">Period</th>
+              <th scope="col" className="data-num">Year</th>
+              <th scope="col" className="data-num">Revenue</th>
+              <th scope="col" className="data-num">O&amp;M</th>
+              <th scope="col" className="data-num">CFADS</th>
+              <th scope="col" className="data-num">Debt service</th>
+              <th scope="col" className="data-num">DSCR</th>
+              <th scope="col" className="data-num">DSRA draw</th>
+              <th scope="col" className="data-num">DSRA close</th>
+              <th scope="col" className="data-num">Coverage</th>
             </tr>
           </thead>
           <tbody>
@@ -468,10 +474,10 @@ function SwitchingTable({ switching }) {
           <thead>
             <tr>
               <th scope="col">Assumption</th>
-              <th scope="col">Base</th>
-              <th scope="col">Target</th>
-              <th scope="col">Change</th>
-              <th scope="col">Crossing</th>
+              <th scope="col" className="data-num">Base</th>
+              <th scope="col" className="data-num">Target</th>
+              <th scope="col" className="data-num">Change</th>
+              <th scope="col" className="data-num">Crossing</th>
               <th scope="col">Binding period</th>
             </tr>
           </thead>
@@ -547,7 +553,7 @@ function ProvenanceTable({ run, caseId }) {
           <thead>
             <tr>
               <th scope="col">Assumption</th>
-              <th scope="col">Value</th>
+              <th scope="col" className="data-num">Value</th>
               <th scope="col">Evidence</th>
               <th scope="col">Source</th>
             </tr>

@@ -54,6 +54,18 @@ const dateLabel = (iso) => {
 
 const shareOf = (part, whole) => (whole > 0 ? Math.round((part / whole) * 100) : 0);
 
+// A chart axis needs a short rupee label, not a full passbook figure. Indian
+// units keep the tick readable: ₹1.2 L is a number a reader can place.
+const compactRupees = (value) => {
+  const n = Math.max(0, Number(value) || 0);
+  const unit = (scaled, suffix) =>
+    `₹${scaled.toFixed(1).replace(/\.0$/, '')} ${suffix}`;
+  if (n >= 1e7) return unit(n / 1e7, 'Cr');
+  if (n >= 1e5) return unit(n / 1e5, 'L');
+  if (n >= 1e3) return unit(n / 1e3, 'k');
+  return `₹${n.toLocaleString('en-IN', { maximumFractionDigits: 1 })}`;
+};
+
 const titleCase = (text) => String(text || '')
   .toLowerCase()
   .replace(/\b[a-z]/g, (letter) => letter.toUpperCase());
@@ -543,10 +555,10 @@ function PassbookRecord({ doc }) {
             <thead>
               <tr>
                 <th scope="col">Scheme</th>
-                <th scope="col">Opening</th>
-                <th scope="col">Received</th>
-                <th scope="col">Paid out</th>
-                <th scope="col">Closing</th>
+                <th scope="col" className="data-num">Opening</th>
+                <th scope="col" className="data-num">Received</th>
+                <th scope="col" className="data-num">Paid out</th>
+                <th scope="col" className="data-num">Closing</th>
               </tr>
             </thead>
             <tbody>
@@ -599,37 +611,46 @@ function PassbookRecord({ doc }) {
         <p className="fine-print">
           The largest receipt month was {topReceipt.label} ({rupees(topReceipt.receipts)});
           the largest payment month was {topPayment.label} ({rupees(topPayment.payments)}).
+          Bars are scaled to the largest month; every exact figure is in the
+          month-by-month table below.
         </p>
-        <div
-          className="passbook-chart"
-          role="img"
-          aria-label={`Monthly receipts and payments for ${gp.name}. ${months
-            .map((month) => `${month.label}: received ${rupees(month.receipts)}, paid ${rupees(month.payments)}`)
-            .join('. ')}`}
-        >
-          {months.map((month) => (
-            <div className="passbook-chart-month" key={month.label}>
-              <div className="passbook-bars">
-                <span
-                  className="passbook-bar passbook-bar-in"
-                  style={{
-                    height: `${(month.receipts / maxMonth) * 100}%`,
-                    minHeight: month.receipts > 0 ? '1px' : 0,
-                  }}
-                  title={`${month.label}: received ${rupees(month.receipts)}`}
-                />
-                <span
-                  className="passbook-bar passbook-bar-out"
-                  style={{
-                    height: `${(month.payments / maxMonth) * 100}%`,
-                    minHeight: month.payments > 0 ? '1px' : 0,
-                  }}
-                  title={`${month.label}: paid ${rupees(month.payments)}`}
-                />
+        <div className="passbook-chart-frame">
+          <div className="passbook-chart-scale" aria-hidden="true">
+            <span>{compactRupees(maxMonth)}</span>
+            <span>{compactRupees(maxMonth / 2)}</span>
+            <span>₹0</span>
+          </div>
+          <div
+            className="passbook-chart"
+            role="img"
+            aria-label={`Monthly receipts and payments for ${gp.name}. ${months
+              .map((month) => `${month.label}: received ${rupees(month.receipts)}, paid ${rupees(month.payments)}`)
+              .join('. ')}`}
+          >
+            {months.map((month) => (
+              <div className="passbook-chart-month" key={month.label}>
+                <div className="passbook-bars">
+                  <span
+                    className="passbook-bar passbook-bar-in"
+                    style={{
+                      height: `${(month.receipts / maxMonth) * 100}%`,
+                      minHeight: month.receipts > 0 ? '2px' : 0,
+                    }}
+                    title={`${month.label}: received ${rupees(month.receipts)}`}
+                  />
+                  <span
+                    className="passbook-bar passbook-bar-out"
+                    style={{
+                      height: `${(month.payments / maxMonth) * 100}%`,
+                      minHeight: month.payments > 0 ? '2px' : 0,
+                    }}
+                    title={`${month.label}: paid ${rupees(month.payments)}`}
+                  />
+                </div>
+                <span className="passbook-chart-label">{month.label}</span>
               </div>
-              <span className="passbook-chart-label">{month.label}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
         <div className="passbook-legend" aria-hidden="true">
           <span><i className="passbook-swatch passbook-swatch-in" /> Received</span>
@@ -642,8 +663,8 @@ function PassbookRecord({ doc }) {
               <thead>
                 <tr>
                   <th scope="col">Month</th>
-                  <th scope="col">Received</th>
-                  <th scope="col">Paid out</th>
+                  <th scope="col" className="data-num">Received</th>
+                  <th scope="col" className="data-num">Paid out</th>
                 </tr>
               </thead>
               <tbody>
@@ -687,7 +708,7 @@ function PassbookRecord({ doc }) {
                 <tr>
                   <th scope="col">{planApi ? 'Activity' : 'Work'}</th>
                   {hasScheme && <th scope="col">Scheme</th>}
-                  <th scope="col">Recorded cost</th>
+                  <th scope="col" className="data-num">Recorded cost</th>
                   <th scope="col">Completed</th>
                 </tr>
               </thead>

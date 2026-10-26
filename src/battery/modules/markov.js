@@ -124,11 +124,11 @@ export const markov = {
     return `
       <p class="report-headline">The cohort trace is printed in full: every cycle, every state share, discounted at ${(r.discountRate * 100).toFixed(1)}% per year with the half-cycle correction ${r.halfCycleCorrection ? 'on' : 'off'}.</p>
       <h3>Cohort trace</h3>
-      <table class="result-table"><thead><tr><th>Cycle</th><th>Year</th><th>State shares</th><th>Cost this cycle</th><th>Utility this cycle</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th class="data-num">Cycle</th><th class="data-num">Year</th><th class="data-num">State shares</th><th class="data-num">Cost this cycle</th><th class="data-num">Utility this cycle</th></tr></thead><tbody>${rows}</tbody></table>
       <h3>Where the cohort ends</h3>
-      <table class="result-table"><thead><tr><th>State</th><th>Share at cycle ${r.cycles}</th></tr></thead><tbody>${r.finalOccupancy.map((o) => `<tr><th scope="row">${escapeHtml(o.label)}</th><td class="data-num">${(o.share * 100).toFixed(2)}%</td></tr>`).join('')}</tbody></table>
+      <table class="result-table"><thead><tr><th>State</th><th class="data-num">Share at cycle ${r.cycles}</th></tr></thead><tbody>${r.finalOccupancy.map((o) => `<tr><th scope="row">${escapeHtml(o.label)}</th><td class="data-num">${(o.share * 100).toFixed(2)}%</td></tr>`).join('')}</tbody></table>
       <h3>Totals</h3>
-      <table class="result-table"><thead><tr><th>Measure</th><th>Value</th></tr></thead><tbody>
+      <table class="result-table"><thead><tr><th>Measure</th><th class="data-num">Value</th></tr></thead><tbody>
         <tr><th scope="row">Discounted cost</th><td class="data-num">₹${num(r.pvCost)}</td></tr>
         <tr><th scope="row">Discounted QALYs</th><td class="data-num">${r.qaly.toFixed(3)}</td></tr>
         <tr><th scope="row">Cost per QALY</th><td class="data-num">${r.costPerQaly == null ? 'n/a' : `₹${num(r.costPerQaly)}`}</td></tr>

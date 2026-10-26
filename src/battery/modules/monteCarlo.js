@@ -187,7 +187,7 @@ export const monteCarlo = {
     return `
       <p class="report-headline">Every figure below comes from the seeded sequence beginning at seed ${r.seed}. Re-run with the same input and the percentiles move not at all.</p>
       <h3>Net value distribution</h3>
-      <table class="result-table"><thead><tr><th>Statistic</th><th>Net value (₹)</th></tr></thead><tbody>
+      <table class="result-table"><thead><tr><th>Statistic</th><th class="data-num">Net value (₹)</th></tr></thead><tbody>
         <tr><th scope="row">Mean</th><td class="data-num">₹${num(r.mean)}</td></tr>
         <tr><th scope="row">5th percentile (downside)</th><td class="data-num">₹${num(r.p5)}</td></tr>
         <tr><th scope="row">25th percentile</th><td class="data-num">₹${num(r.p25)}</td></tr>
@@ -198,7 +198,7 @@ export const monteCarlo = {
         <tr><th scope="row">Chance of a negative net</th><td class="data-num">${(r.pNegative * 100).toFixed(1)}%</td></tr>
       </tbody></table>
       <h3>Uncertain inputs as sampled</h3>
-      <table class="result-table"><thead><tr><th>Variable</th><th>Kind</th><th>Mean</th><th>5th percentile</th><th>95th percentile</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Variable</th><th>Kind</th><th class="data-num">Mean</th><th class="data-num">5th percentile</th><th class="data-num">95th percentile</th></tr></thead><tbody>${rows}</tbody></table>
       <p class="fine-print">The 5th percentile is the planning number: a scheme that survives the average but not the tail is a scheme that fails in a bad year. Name who absorbs that year.</p>
       ${r.pit && r.pit.group ? `<p class="fine-print">Distributional column: ${escapeHtml(r.pit.group)}: ${escapeHtml(r.pit.effect || '')}. ${escapeHtml(r.pit.note || '')}</p>` : '<p class="report-warning">No distributional column. When the tail bites, who gets bitten?</p>'}`;
   },

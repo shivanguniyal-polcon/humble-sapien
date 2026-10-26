@@ -125,7 +125,7 @@ export async function buildReport({ module, input, params, results, pit, source,
   table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-block: 0.75rem; }
   th, td { text-align: left; padding: 0.45rem 0.6rem 0.45rem 0; border-bottom: 1px solid #eceae6; vertical-align: top; }
   thead th { font-family: 'Courier New', monospace; font-size: 0.68rem; letter-spacing: 0.02em; color: #4b4640; border-bottom: 1.5px solid #c7c2bb; }
-  .data-num { font-variant-numeric: tabular-nums; }
+  .data-num { font-variant-numeric: tabular-nums; text-align: right; }
   .pit-block { background: #fff; border: 1px solid #eceae6; border-top: 3px solid #7a1f2b; padding: 1rem 1.25rem; }
   .stamp { font-family: 'Courier New', monospace; font-size: 0.72rem; word-break: break-all; color: #4b4640; }
   ul.report-warnings { font-size: 0.85rem; color: #4b4640; }
@@ -152,7 +152,7 @@ export async function buildReport({ module, input, params, results, pit, source,
   ${Array.isArray(coverage) && coverage.length > 0 ? `<h3>Who is missing from the data (computed)</h3><ul class="fine-print">${coverage.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ul>` : '<p class="fine-print">No computed coverage receipt was available for this run. The public interest check below answers by hand.</p>'}
 
   <h2>Parameters</h2>
-  <table><thead><tr><th>Parameter</th><th>Value</th><th>Provenance</th><th>Verification</th></tr></thead><tbody>${paramRows || '<tr><td colspan="4">No parameters bound.</td></tr>'}</tbody></table>
+  <table><thead><tr><th>Parameter</th><th class="data-num">Value</th><th>Provenance</th><th>Verification</th></tr></thead><tbody>${paramRows || '<tr><td colspan="4">No parameters bound.</td></tr>'}</tbody></table>
 
   <h2>Results</h2>
   ${resultsBody}

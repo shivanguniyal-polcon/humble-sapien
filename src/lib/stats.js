@@ -54,6 +54,6 @@ export const formatNumber = (value, digits = 2) => {
   if (value === null || value === undefined || Number.isNaN(value)) return 'n/a';
   return value.toLocaleString('en-IN', {
     maximumFractionDigits: digits,
-    minimumFractionDigits: 0,
+    minimumFractionDigits: digits,
   });
 };

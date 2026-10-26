@@ -145,7 +145,7 @@ export const cea = {
     return `
       <p class="report-headline">The incremental path prices the next unit of ${escapeHtml(r.effectUnit)} explicitly: options marked dominated are removed before any ratio is quoted, so the headline ratio is never an average in disguise.</p>
       <h3>Options, ratios and the incremental path</h3>
-      <table class="result-table"><thead><tr><th>Option</th><th>Cost (₹)</th><th>Effect</th><th>Average ratio</th><th>Incremental ratio</th><th>Net benefit at threshold</th><th>Status</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Option</th><th class="data-num">Cost (₹)</th><th class="data-num">Effect</th><th class="data-num">Average ratio</th><th class="data-num">Incremental ratio</th><th class="data-num">Net benefit at threshold</th><th>Status</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
       ${r.gaps.length > 0 ? `<p class="report-warning">Distributional column missing for: ${r.gaps.map(escapeHtml).join(', ')}.</p>` : ''}
       <p class="fine-print">Threshold used: ₹${num(r.threshold)} per ${escapeHtml(r.effectUnit)}. Net health benefit of the chosen option: ${num(r.alternatives.find((a) => a.id === r.best).nhb, 2)} ${escapeHtml(r.effectUnit)}. If the threshold is contested, so is the ranking: re-run at the other threshold and publish both.</p>`;
   },

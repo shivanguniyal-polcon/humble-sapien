@@ -148,10 +148,10 @@ export const equity = {
     return `
       <p class="report-headline">Per-capita columns divide by population share, so a small group's real gain is never hidden inside a large group's total. The weighted column states the equity judgement in numbers, not adjectives.</p>
       <h3>Who gets what, in rupees and per person</h3>
-      <table class="result-table"><thead><tr><th>Group</th><th>Population share</th><th>Equity weight</th><th>Benefits (PV)</th><th>Costs (PV)</th><th>Net (PV)</th><th>Net per person</th><th>Share of benefits</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Group</th><th class="data-num">Population share</th><th class="data-num">Equity weight</th><th class="data-num">Benefits (PV)</th><th class="data-num">Costs (PV)</th><th class="data-num">Net (PV)</th><th class="data-num">Net per person</th><th class="data-num">Share of benefits</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
       ${r.gaps.length > 0 ? `<p class="report-warning">Distributional column missing for: ${r.gaps.map(escapeHtml).join(', ')}.</p>` : ''}
       <h3>Two totals, printed side by side</h3>
-      <table class="result-table"><thead><tr><th>Reading</th><th>Net present value (₹)</th></tr></thead><tbody>
+      <table class="result-table"><thead><tr><th>Reading</th><th class="data-num">Net present value (₹)</th></tr></thead><tbody>
         <tr><th scope="row">Plain (every rupee counts equally)</th><td class="data-num">₹${num(r.totalNpv)}</td></tr>
         <tr><th scope="row">Equity-weighted (weights as stated above)</th><td class="data-num">₹${num(r.weightedNpv)}</td></tr>
       </tbody></table>

@@ -22,6 +22,15 @@ import {
 import BriefForm from '../components/BriefForm';
 import { briefToInput, briefToParams } from '../battery/businessCase';
 
+// Reference parameters carry more precision than a display column needs. Four
+// decimals keeps the calibrated value recognisable without spilling a long
+// float into the table; integers stay integers.
+const formatReference = (value) => {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return value;
+  return n.toLocaleString('en-IN', { maximumFractionDigits: 4 });
+};
+
 const STAGES = [
   { id: 1, label: 'Ingest', note: 'Unorganised data becomes an organised dataset with a validation report.' },
   { id: 2, label: 'Bind', note: 'Parameters with provenance. Every value says where it came from.' },
@@ -136,9 +145,9 @@ const ValidationCard = ({ validation, notes }) => (
             <tr>
               <th scope="col">Column</th>
               <th scope="col">Inferred type</th>
-              <th scope="col">Missing</th>
-              <th scope="col">Distinct</th>
-              <th scope="col">Range</th>
+              <th scope="col" className="data-num">Missing</th>
+              <th scope="col" className="data-num">Distinct</th>
+              <th scope="col" className="data-num">Range</th>
             </tr>
           </thead>
           <tbody>
@@ -149,7 +158,9 @@ const ValidationCard = ({ validation, notes }) => (
                 <td className="data-num">{c.missing}</td>
                 <td className="data-num">{c.distinct}</td>
                 <td className="data-num">
-                  {c.min != null ? `${c.min} to ${c.max}` : (c.samples || []).join(', ')}
+                  {c.min != null
+                    ? `${formatReference(c.min)} to ${formatReference(c.max)}`
+                    : (c.samples || []).join(', ')}
                 </td>
               </tr>
             ))}
@@ -820,18 +831,18 @@ export default function Battery({ onNavigate }) {
                     <thead>
                       <tr>
                         <th scope="col">Driver</th>
-                        <th scope="col">Calibrated value</th>
+                        <th scope="col" className="data-num">Calibrated value</th>
                         <th scope="col">Unit</th>
-                        <th scope="col">Plausible range</th>
+                        <th scope="col" className="data-num">Plausible range</th>
                       </tr>
                     </thead>
                     <tbody>
                       {Object.entries(DRIVERS).map(([k, d]) => (
                         <tr key={k}>
                           <th scope="row">{d.label}</th>
-                          <td className="data-num">{PMJAY_REFERENCE.params[k]}</td>
+                          <td className="data-num">{formatReference(PMJAY_REFERENCE.params[k])}</td>
                           <td>{d.unit}</td>
-                          <td className="data-num">{d.min} to {d.max}</td>
+                          <td className="data-num">{formatReference(d.min)} to {formatReference(d.max)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -883,7 +894,7 @@ export default function Battery({ onNavigate }) {
                 <thead>
                   <tr>
                     <th scope="col">Parameter</th>
-                    <th scope="col">Value</th>
+                    <th scope="col" className="data-num">Value</th>
                     <th scope="col">Verification</th>
                   </tr>
                 </thead>

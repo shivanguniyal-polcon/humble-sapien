@@ -152,10 +152,10 @@ export const gameTheory = {
     return `
       <p class="report-headline">Equilibrium, Pareto efficiency and the distributional column are printed on the same row, because an outcome can be stable, efficient and brutal at once.</p>
       <h3>Outcomes</h3>
-      <table class="result-table"><thead><tr><th>Outcome</th><th>${escapeHtml(r.players[0].label)}</th><th>${escapeHtml(r.players[1].label)}</th><th>Equilibrium</th><th>Pareto-efficient</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
+      <table class="result-table"><thead><tr><th>Outcome</th><th class="data-num">${escapeHtml(r.players[0].label)}</th><th class="data-num">${escapeHtml(r.players[1].label)}</th><th>Equilibrium</th><th>Pareto-efficient</th><th>Distributional column</th></tr></thead><tbody>${rows}</tbody></table>
       ${r.gaps.length > 0 ? `<p class="report-warning">Distributional column missing for outcomes: ${r.gaps.map(escapeHtml).join(', ')}.</p>` : ''}
       <h3>Each player's floor</h3>
-      <table class="result-table"><thead><tr><th>Player</th><th>Maximin strategy</th><th>Guaranteed payoff</th></tr></thead><tbody>${r.maximin.map((m) => `<tr><th scope="row">${escapeHtml(m.player)}</th><td>${escapeHtml(m.strategy)}</td><td class="data-num">${m.guaranteedPayoff}</td></tr>`).join('')}</tbody></table>
+      <table class="result-table"><thead><tr><th>Player</th><th>Maximin strategy</th><th class="data-num">Guaranteed payoff</th></tr></thead><tbody>${r.maximin.map((m) => `<tr><th scope="row">${escapeHtml(m.player)}</th><td>${escapeHtml(m.strategy)}</td><td class="data-num">${m.guaranteedPayoff}</td></tr>`).join('')}</tbody></table>
       <p class="fine-print">Solved in pure strategies only. A game without a pure equilibrium may still have a mixed one; this module does not compute it and does not pretend to.</p>`;
   },
 };

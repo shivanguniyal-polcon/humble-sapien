@@ -1030,6 +1030,25 @@ table + .fine-print {
   font-variant-numeric: tabular-nums;
 }
 
+/* Every data table sets its figures in tabular numerals, and every figure
+   cell sits on the same right edge so decimal places line up down a column.
+   Scoped to the table classes, because .data-num is also used in stat cards
+   and labels that should keep their flow alignment. */
+.data-table,
+.result-table,
+.compare-table,
+.monitor-collection-table {
+  font-variant-numeric: tabular-nums;
+}
+
+.data-table .data-num,
+.result-table .data-num,
+.compare-table .data-num,
+.monitor-collection-table .data-num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
 /* ---------- hero ---------- */
 .hero {
   padding-block: var(--space-7) var(--space-6);
@@ -6619,13 +6638,36 @@ input[type='range'] {
   color: var(--color-accent-text);
 }
 
+.passbook-chart-frame {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--space-3);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.passbook-chart-scale {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: end;
+  height: 9rem;
+  margin-top: var(--space-2);
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
 .passbook-chart {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
   gap: 4px;
   align-items: end;
   height: 11rem;
-  margin: var(--space-4) 0 var(--space-2);
+  margin: 0;
   padding-top: var(--space-2);
 }
 
@@ -6643,16 +6685,16 @@ input[type='range'] {
   display: flex;
   align-items: end;
   justify-content: center;
-  gap: 2px;
+  gap: 3px;
   width: 100%;
   height: 9rem;
   border-bottom: 1px solid var(--color-border-strong);
 }
 
 .passbook-bar {
-  width: min(0.7rem, 42%);
+  width: min(1rem, 38%);
   min-height: 1px;
-  border-radius: 2px 2px 0 0;
+  border-radius: 3px 3px 0 0;
 }
 
 .passbook-bar-in {
@@ -6665,8 +6707,9 @@ input[type='range'] {
 
 .passbook-chart-label {
   font-family: var(--font-data);
-  font-size: 0.66rem;
-  color: var(--color-text-muted);
+  font-size: 0.72rem;
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
 }
 
 .passbook-legend {
@@ -6863,6 +6906,15 @@ input[type='range'] {
     text-align: start;
   }
 
+  .passbook-chart-frame {
+    gap: var(--space-2);
+  }
+
+  .passbook-chart-scale {
+    height: 7rem;
+    font-size: 0.64rem;
+  }
+
   .passbook-chart {
     height: 9rem;
   }
@@ -6872,7 +6924,16 @@ input[type='range'] {
   }
 
   .passbook-chart-label {
-    font-size: 0.625rem;
+    font-size: 0.65rem;
+  }
+}
+
+/* Below 352px twelve three-letter month names no longer fit under their
+   columns. Alternate labels are hidden rather than overlapped; the chart's
+   aria-label and the month table still carry every month. */
+@media (max-width: 22rem) {
+  .passbook-chart-month:nth-child(even) .passbook-chart-label {
+    visibility: hidden;
   }
 }
 

@@ -99,11 +99,11 @@ export default function GenderIndex() {
           <table className="data-table">
             <thead>
             <tr>
-              <th scope="col">Rank</th>
+              <th scope="col" className="data-num">Rank</th>
               <th scope="col">State / UT</th>
-              <th scope="col">Index</th>
+              <th scope="col" className="data-num">Index</th>
               {GENDER_INDICATORS.map((ind) => (
-                <th scope="col" key={ind.key}>
+                <th scope="col" className="data-num" key={ind.key}>
                   {ind.label}
                   <span className="meta table-sub">
                     {weights[ind.key] === 0 ? 'excluded' : `w ${weights[ind.key]}`}

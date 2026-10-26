@@ -535,11 +535,11 @@ export default function Data({ onNavigate, openSub }) {
                   <table className="data-table" style={{ marginTop: '1.5rem' }}>
                     <thead>
                       <tr>
-                        <th>Specification</th>
-                        <th>Variable</th>
-                        <th>β</th>
-                        <th>SE</th>
-                        <th>N</th>
+                        <th scope="col">Specification</th>
+                        <th scope="col">Variable</th>
+                        <th scope="col" className="data-num">β</th>
+                        <th scope="col" className="data-num">SE</th>
+                        <th scope="col" className="data-num">N</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -547,9 +547,9 @@ export default function Data({ onNavigate, openSub }) {
                         <tr key={`${r.key}-${r.variable}-${i}`}>
                           <td>{r.spec}</td>
                           <td>{r.variable}</td>
-                          <td>{formatNumber(r.beta)}</td>
-                          <td>{formatNumber(r.se)}</td>
-                          <td>{r.N}</td>
+                          <td className="data-num">{formatNumber(r.beta)}</td>
+                          <td className="data-num">{formatNumber(r.se)}</td>
+                          <td className="data-num">{r.N}</td>
                         </tr>
                       ))}
                     </tbody>

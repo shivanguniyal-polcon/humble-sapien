@@ -87,7 +87,7 @@ export const queueing = {
     return `
       <p class="report-headline">Steady-state M/M/c with ${r.servers} server(s): these are the averages a person in the queue actually experiences over a long run.</p>
       <h3>Steady state</h3>
-      <table class="result-table"><thead><tr><th>Measure</th><th>Value</th></tr></thead><tbody>
+      <table class="result-table"><thead><tr><th>Measure</th><th class="data-num">Value</th></tr></thead><tbody>
         <tr><th scope="row">Utilisation per server</th><td class="data-num">${(r.rho * 100).toFixed(1)}%</td></tr>
         <tr><th scope="row">Chance an arrival must wait</th><td class="data-num">${(r.pWait * 100).toFixed(1)}%</td></tr>
         <tr><th scope="row">Average queue length</th><td class="data-num">${num(r.lq)}</td></tr>

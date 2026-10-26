@@ -430,11 +430,11 @@ function CoefTable({ fit, names }) {
       <thead>
         <tr>
           <th scope="col">Term</th>
-          <th scope="col">Estimate</th>
-          <th scope="col">SE</th>
-          <th scope="col">t / z</th>
-          <th scope="col">p</th>
-          <th scope="col" aria-label="Significance" />
+          <th scope="col" className="data-num">Estimate</th>
+          <th scope="col" className="data-num">SE</th>
+          <th scope="col" className="data-num">t / z</th>
+          <th scope="col" className="data-num">p</th>
+          <th scope="col" className="data-num" aria-label="Significance" />
         </tr>
       </thead>
       <tbody>
@@ -1460,9 +1460,9 @@ export default function EconometricsLab({ onNavigate }) {
                   <thead>
                     <tr>
                       <th scope="col">Group</th>
-                      <th scope="col">Before</th>
-                      <th scope="col">After</th>
-                      <th scope="col">Change</th>
+                      <th scope="col" className="data-num">Before</th>
+                      <th scope="col" className="data-num">After</th>
+                      <th scope="col" className="data-num">Change</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1522,8 +1522,8 @@ export default function EconometricsLab({ onNavigate }) {
                   <thead>
                     <tr>
                       <th scope="col">Donor</th>
-                      <th scope="col">Weight</th>
-                      <th scope="col">{result.preLabel || '2015-16 value'}</th>
+                      <th scope="col" className="data-num">Weight</th>
+                      <th scope="col" className="data-num">{result.preLabel || '2015-16 value'}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1559,7 +1559,7 @@ export default function EconometricsLab({ onNavigate }) {
                     <tr>
                       <th scope="col">Treated state</th>
                       <th scope="col">Matched to</th>
-                      <th scope="col">Difference</th>
+                      <th scope="col" className="data-num">Difference</th>
                     </tr>
                   </thead>
                   <tbody>

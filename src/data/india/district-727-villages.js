@@ -13,4 +13,11 @@ export const VILLAGES = {"3601":["Khualen","Chhawrtui","Mualkawi","Rabung","Kelk
 export const VILLAGE_KINDS = {"3601":{"Melbuk":"Khawnuam","Khawzawl":"NT","Melhnih":"Chalrang","Khawhai":"NT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3601":["271310","271320","","271311","","271331","","271330","271306","271305","271309","271329","271335","271334","271312","271315","271319","271314","271322","271316","271318","271321","271403","271313","","","","","","","","271332","","935483","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3601":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

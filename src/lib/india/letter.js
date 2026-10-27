@@ -68,11 +68,22 @@ function claimParagraph(l) {
   return text;
 }
 
+// The place as an address: village, panchayat, then the offices above it.
+// The walk stores State first; a letter has to read the other way round.
+export function describePlace(place) {
+  if (!place || !Array.isArray(place.path) || !place.path.length) return '';
+  const gp = place.gp && place.gp.name ? place.gp.name : '';
+  const chain = gp
+    ? [place.path[0], `Gram Panchayat ${gp}`, ...place.path.slice(1)]
+    : place.path;
+  return chain.join(', ');
+}
+
 // The letter itself.
 export function buildLetter({ scheme, situation, place, rung, clock, dates }) {
   const given = dates || {};
   const lines = [];
-  const placeLabel = place && place.path.length ? place.path.join(', ') : '';
+  const placeLabel = describePlace(place);
   const dl = deadlineLines(clock, given);
   const anchors = clock && clock.anchors ? clock.anchors : [];
 

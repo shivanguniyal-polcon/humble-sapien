@@ -192,23 +192,37 @@ export function parsePlace(place) {
 export const HIERARCHY_CODE_SYSTEM = 'ths-geoboundaries-index';
 
 export const HIERARCHY_NOTE =
-  'The code column is a directory key for this build. The lgd_code column is the official Local Government Directory code, joined by name against the directory snapshot shipped with this build. A blank lgd_code means the name was ambiguous or absent, and no code was guessed.';
+  'The code column is a directory key for this build. The lgd_code column is the official Local Government Directory code, joined by name against the directory snapshot shipped with this build. The gp_code and gp_name columns name the Gram Panchayat where the directory records one. A blank lgd_code means the name was ambiguous or absent; a blank gp_code means the directory records no panchayat for that village. Neither is guessed.';
 
-// A village's LGD code is aligned by index with the block's village list.
-// A shared link carries only the name, so a name that repeats inside the
-// block has no single code and stays blank.
-export function villageLgdCode(codes, villages, blockId, name, index = -1) {
+// A village's codes are aligned by index with the block's village list. A
+// shared link carries only the name, so a name that repeats inside the block
+// has no single row and every code stays blank. A GP needs a resolved village
+// code first: without one there is no row to point at.
+export function villageDetails(codes, gpCodes, gps, villages, blockId, name, index = -1) {
   const key = String(blockId);
   const names = villagesOf(villages, blockId);
   const list = codes?.[key];
-  if (!names.length || !Array.isArray(list)) return '';
-  if (index >= 0 && names[index] === name) return list[index] || '';
-  const matchesForName = [];
-  for (let i = 0; i < names.length; i += 1) {
-    if (names[i] === name) matchesForName.push(i);
+  const empty = { lgd_code: '', gp_code: '', gp_name: '' };
+  if (!names.length || !Array.isArray(list)) return empty;
+  let at = -1;
+  if (index >= 0 && names[index] === name) at = index;
+  else {
+    const matchesForName = [];
+    for (let i = 0; i < names.length; i += 1) {
+      if (names[i] === name) matchesForName.push(i);
+    }
+    if (matchesForName.length === 1) at = matchesForName[0];
   }
-  if (matchesForName.length !== 1) return '';
-  return list[matchesForName[0]] || '';
+  if (at < 0) return empty;
+  const lgd = list[at] || '';
+  if (!lgd) return empty;
+  const gp = (gpCodes?.[key] && gpCodes[key][at]) || '';
+  return { lgd_code: lgd, gp_code: gp, gp_name: gp ? gps?.[gp] || '' : '' };
+}
+
+// The code alone, for callers that do not need the panchayat.
+export function villageLgdCode(codes, villages, blockId, name, index = -1) {
+  return villageDetails(codes, null, null, villages, blockId, name, index).lgd_code;
 }
 
 const CODE_PREFIX = {
@@ -245,6 +259,8 @@ export function hierarchyRows(path = []) {
       parent_name: parent ? parent.name : '',
       code_system: HIERARCHY_CODE_SYSTEM,
       lgd_code: entry.lgd_code || '',
+      gp_code: entry.gp_code || '',
+      gp_name: entry.gp_name || '',
     };
   });
 }
@@ -257,6 +273,8 @@ const CSV_HEADERS = [
   'parent_name',
   'code_system',
   'lgd_code',
+  'gp_code',
+  'gp_name',
 ];
 
 const csvCell = (value) => {

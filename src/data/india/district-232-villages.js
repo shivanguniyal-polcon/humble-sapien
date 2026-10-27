@@ -13,4 +13,11 @@ export const VILLAGES = {"909":["Yembung Camp","26th Mile","29th Mile Camp","Pok
 export const VILLAGE_KINDS = {"909":{"Boleng":"NT"},"927":{"Komsing":"Karo"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"909":["263795","263794","263802","263807","","263809","263810","263797","263799","","263806","263812","","263805","263808","","","","263796","263798","263800","263801","263811"],"912":["263789","263788","263792","263791","263793","",""],"927":["263819","263803","263813","","","263817","","263804"],"928":["263779","263778","263783","263777","263780","263782"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"909":["102423","102427","102422","102423","","298729","298729","102424","102425","","244129","102422","","102427","102423","","","","102429","102428","298728","102426","102430"],"912":["","244146","298283","","","",""],"927":["244137","244131","244136","","","244135","","244130"],"928":["102366","102363","102367","102362","102365","102370"]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"102362":"Dosing","102363":"Lilleng","102365":"Pareng","102366":"Rengo","102367":"Sine","102370":"Yingku","102422":"Babuk","102423":"Kebang Sole-I","102424":"Koreng","102425":"Lokpeng","102426":"Pangin-I","102427":"Rottung","102428":"Tarak","102429":"Yeksi","102430":"Yemsing","244129":"Kallek","244130":"Sissen","244131":"Pangi","244135":"Begging","244136":"Jorsing","244137":"Riew (Reydang)","244146":"Riga Mobuk-I","298283":"Sitang-Ii","298728":"Pangin Moli-Ii","298729":"Kebang-Ii"};

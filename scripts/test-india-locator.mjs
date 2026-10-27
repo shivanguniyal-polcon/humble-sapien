@@ -27,10 +27,13 @@ import {
   buildTree,
   villagesOf,
   villageLgdCode,
+  villageDetails,
   searchVillages,
   directoryCode,
   hierarchyRows,
   hierarchyCsv,
+  placeFromPath,
+  parsePlace,
   HIERARCHY_CODE_SYSTEM,
   LADDER_RUNG_FOR,
   LADDER_RUNG_NOTE,
@@ -38,7 +41,7 @@ import {
 import { SCHEMES, RUNG_STATUS, DEADLINE_STATUS, LEVELS, NAME_TRAPS } from '../src/data/schemes.js';
 import { escalation } from '../src/data/escalation.js';
 import { dueDate, deadlineStatus, baseFor, localDay, parseDay } from '../src/lib/india/clock.js';
-import { deadlineLines, buildLetter } from '../src/lib/india/letter.js';
+import { deadlineLines, buildLetter, describePlace } from '../src/lib/india/letter.js';
 
 let failures = 0;
 function ok(name, cond, detail = '') {
@@ -98,8 +101,15 @@ let villagesSeen = 0;
 let villagesCoded = 0;
 let villageCodesMisaligned = 0;
 let villageSharedCodeConflicts = 0;
+let gpCodesMisaligned = 0;
+let gpCodesMissingName = 0;
+let gpCodesBad = 0;
+let villagesWithGp = 0;
+let villagesWithLgd = 0;
+let gpNameMismatches = 0;
 let badLgd = 0;
 const villageCodeName = new Map();
+const gpNameByCode = new Map();
 
 for (const s of STATES) {
   const slug = slugify(s.name);
@@ -165,13 +175,34 @@ for (const s of STATES) {
         villageCodesMisaligned += 1;
         continue;
       }
+      const gpCodes = vchunk.GP_CODES ? vchunk.GP_CODES[k] : null;
+      const gps = vchunk.GPS || {};
+      const gpAligned = Array.isArray(gpCodes) && gpCodes.length === names.length;
+      if (!gpAligned) gpCodesMisaligned += 1;
       const namesForCode = new Map();
       for (let i = 0; i < codes.length; i += 1) {
         const code = codes[i];
         villagesSeen += 1;
         if (!code) continue;
         villagesCoded += 1;
+        villagesWithLgd += 1;
         if (!/^\d+$/.test(String(code))) badLgd += 1;
+        if (gpAligned) {
+          const gp = gpCodes[i];
+          if (gp) {
+            villagesWithGp += 1;
+            if (!/^\d+$/.test(String(gp))) gpCodesBad += 1;
+            if (!gps[gp]) gpCodesMissingName += 1;
+            // A code is the panchayat's identity. If two names claim one
+            // code, the page would show whichever district was loaded last.
+            const gpName = gps[gp];
+            if (gpName) {
+              const knownName = gpNameByCode.get(gp);
+              if (knownName === undefined) gpNameByCode.set(gp, gpName);
+              else if (knownName !== gpName) gpNameMismatches += 1;
+            }
+          }
+        }
         const norm = lgdNameKey(names[i]);
         if (!namesForCode.has(code)) namesForCode.set(code, new Set());
         namesForCode.get(code).add(norm);
@@ -225,6 +256,18 @@ ok('every village code array is aligned with its name list', villageCodesMisalig
 ok('most villages carry an official LGD code',
   villagesCoded / villagesSeen >= 0.8, `${villagesCoded}/${villagesSeen}`);
 ok('every LGD code that is present is numeric', badLgd === 0, `${badLgd} bad`);
+ok('every GP code array is aligned with its village list', gpCodesMisaligned === 0,
+  `${gpCodesMisaligned} misaligned`);
+ok('every GP code that is present is numeric', gpCodesBad === 0, `${gpCodesBad} bad`);
+ok('every GP code names a panchayat', gpCodesMissingName === 0,
+  `${gpCodesMissingName} unnamed`);
+ok('one GP code names one panchayat', gpNameMismatches === 0,
+  `${gpNameMismatches} conflicts`);
+ok('the GP codes are distinct identities', gpNameByCode.size >= 200000,
+  `${gpNameByCode.size.toLocaleString('en-IN')} panchayats`);
+ok('most coded villages carry a Gram Panchayat',
+  villagesWithGp / villagesWithLgd >= 0.9,
+  `${villagesWithGp}/${villagesWithLgd}`);
 ok('no two different village names share an LGD code',
   villageSharedCodeConflicts === 0, `${villageSharedCodeConflicts} shared`);
 ok('no LGD village code points at two different names anywhere in the country',
@@ -549,6 +592,25 @@ ok('the letter states the deadline as the citizen states it',
 ok('the letter cites the provision the way a person would',
   /\(section 4\.5\(G\) of the AB-NHPM Operational Guidelines\)/.test(letter), letter);
 ok('the letter names the place', /I live in Rampur, Uttar Pradesh/.test(letter));
+ok('describePlace puts the panchayat after the village',
+  describePlace({ path: ['Menai', 'Ashoknagar', 'Madhya Pradesh'], gp: { code: '131876', name: 'Menai' } }) ===
+  'Menai, Gram Panchayat Menai, Ashoknagar, Madhya Pradesh');
+ok('describePlace falls back when no panchayat is recorded',
+  describePlace({ path: ['Menai', 'Ashoknagar'], gp: null }) === 'Menai, Ashoknagar');
+const withGp = buildLetter({
+  scheme: { name: 'MGNREGA', full: 'Mahatma Gandhi National Rural Employment Guarantee Act' },
+  situation: {
+    label: 'My wages were not paid',
+    complaint: 'I did the work and my wages were not paid.',
+    ask: 'I ask that my wages be paid, and that you reply to me in writing.',
+  },
+  place: { path: ['Menai', 'Ashoknagar', 'Madhya Pradesh'], gp: { code: '131876', name: 'Menai' } },
+  rung: { office: 'Gram Panchayat', where: 'The Gram Panchayat office' },
+  clock: undefined,
+  dates: {},
+});
+ok('the letter names the Gram Panchayat',
+  /I live in Menai, Gram Panchayat Menai, Ashoknagar, Madhya Pradesh\./.test(withGp), withGp);
 ok('the letter opens with the citizen complaint',
   /I did the work and my wages were not paid\./.test(letter), letter);
 ok('the letter closes on the citizen ask',
@@ -645,7 +707,7 @@ const samplePath = [
   { level: 'district', name: 'Rampur', id: 901, lgd_code: '153' },
   { level: 'tehsil', name: 'Rampur', id: 9011, lgd_code: '801' },
   { level: 'block', name: 'Rampur', id: 90111, lgd_code: '1234' },
-  { level: 'village', name: 'Rampur', id: 90111, lgd_code: '567890' },
+  { level: 'village', name: 'Menai', id: 90111, lgd_code: '567890', gp_code: '131876', gp_name: 'Menai' },
 ];
 
 const codes = samplePath.map(directoryCode);
@@ -665,6 +727,9 @@ ok('the export carries the official LGD code from the path',
   rows.map((r) => r.lgd_code).join(' '));
 ok('an entry with no LGD code exports a blank cell, not a guess',
   hierarchyRows([{ level: 'state', name: 'Test', id: 1 }])[0].lgd_code === '');
+ok('only the village row names the Gram Panchayat',
+  rows.slice(0, -1).every((r) => r.gp_code === '' && r.gp_name === '') &&
+  rows[rows.length - 1].gp_code === '131876' && rows[rows.length - 1].gp_name === 'Menai');
 
 // A village code is positional. A name that repeats inside the block has no
 // single code, and a wrong-length array would shift codes silently.
@@ -681,13 +746,73 @@ ok('a block with no code array yields a blank',
 ok('a short code array yields a blank rather than a shifted code',
   villageLgdCode({ 7: ['11'] }, sampleVillages, 7, 'Bilaspur') === '');
 
+const gpVillages = { 9: ['Menai', 'Bharka', 'Muhal Dehar'] };
+const gpLgd = { 9: ['500429', '500437', '500587'] };
+const gpCodes = { 9: ['131876', '131827', ''] };
+const gpNames = { 131876: 'Menai', 131827: 'Barmahu' };
+const menaiDetails = villageDetails(gpLgd, gpCodes, gpNames, gpVillages, 9, 'Menai');
+ok('a village returns its LGD code and Gram Panchayat together',
+  JSON.stringify(menaiDetails) === JSON.stringify({ lgd_code: '500429', gp_code: '131876', gp_name: 'Menai' }),
+  JSON.stringify(menaiDetails));
+ok('a village with no GP gets no GP code or name',
+  JSON.stringify(villageDetails(gpLgd, gpCodes, gpNames, gpVillages, 9, 'Muhal Dehar')) ===
+  JSON.stringify({ lgd_code: '500587', gp_code: '', gp_name: '' }));
+ok('a shared link with a repeated name resolves no GP',
+  villageDetails({ 9: ['Menai', 'Menai'] }, { 9: ['1', '2'] }, { 1: 'One', 2: 'Two' }, { 9: ['Menai', 'Menai'] }, 9, 'Menai').gp_code === '');
+
+// Ashoknagar is district id 0 in this build, and a link must not read that
+// as "no district": without the district there is no village chunk, and no
+// GP to resolve.
+const zeroDistrictPath = [
+  { level: 'state', name: 'Madhya Pradesh', id: 27 },
+  { level: 'district', name: 'Ashoknagar', id: 0 },
+  { level: 'tehsil', name: 'Shadhora', id: 3909 },
+  { level: 'block', name: 'Ashoknagar', id: 3363 },
+  { level: 'village', name: 'Menai', id: 3363 },
+];
+const zeroDistrictLink = placeFromPath(zeroDistrictPath);
+const zeroDistrictWant = parsePlace(zeroDistrictLink);
+ok('a shared link keeps a district whose id is 0',
+  zeroDistrictWant.districtId === 0 && zeroDistrictWant.blockId === 3363 &&
+  zeroDistrictWant.village === 'Menai', zeroDistrictLink);
+
+// A known Ashoknagar village, end to end through the generated chunk.
+const ashoknagar = await import(join(INDIA_DIR, 'district-0-villages.js'));
+const menaiRecord = villageDetails(
+  ashoknagar.VILLAGE_CODES,
+  ashoknagar.GP_CODES,
+  ashoknagar.GPS,
+  ashoknagar.VILLAGES,
+  3363,
+  'Menai',
+);
+ok('Menai resolves to LGD 500429 and GP 131876 in the generated chunk',
+  menaiRecord.lgd_code === '500429' && menaiRecord.gp_code === '131876' &&
+  menaiRecord.gp_name === 'Menai', JSON.stringify(menaiRecord));
+const noGpRecord = villageDetails(
+  ashoknagar.VILLAGE_CODES,
+  ashoknagar.GP_CODES,
+  ashoknagar.GPS,
+  ashoknagar.VILLAGES,
+  3363,
+  'Muhal Milak',
+);
+ok('a village the directory gives no panchayat stays blank end to end',
+  noGpRecord.lgd_code === '500586' && noGpRecord.gp_code === '' &&
+  noGpRecord.gp_name === '', JSON.stringify(noGpRecord));
+
 const csv = hierarchyCsv(samplePath);
 const csvLines = csv.trim().split('\n');
 ok('the CSV has a header and one line per level', csvLines.length === samplePath.length + 1, `${csvLines.length} lines`);
-ok('the CSV header names the LGD column', csvLines[0] === 'level,name,code,parent_code,parent_name,code_system,lgd_code', csvLines[0]);
+ok('the CSV header names the LGD and GP columns',
+  csvLines[0] === 'level,name,code,parent_code,parent_name,code_system,lgd_code,gp_code,gp_name',
+  csvLines[0]);
 ok('the CSV carries the village code', csvLines[csvLines.length - 1].includes(codes[4]), csvLines[csvLines.length - 1]);
 ok('the CSV carries the village LGD code',
   csvLines[csvLines.length - 1].includes('567890'), csvLines[csvLines.length - 1]);
+ok('the CSV carries the village Gram Panchayat',
+  csvLines[csvLines.length - 1].includes('131876') &&
+  csvLines[csvLines.length - 1].includes('Menai'), csvLines[csvLines.length - 1]);
 
 const quoted = hierarchyCsv([{ level: 'village', name: 'Rampur, "East"', id: 7 }]);
 ok('the CSV quotes a name with a comma and a quote',

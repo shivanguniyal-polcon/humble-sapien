@@ -13,4 +13,11 @@ export const VILLAGES = {"1712":["Jaffrabad","Babar Pur","Gokal Pur","Mir Pur Tu
 export const VILLAGE_KINDS = {"1712":{"Jaffrabad":"CT","Babar Pur":"CT","Gokal Pur":"CT","Mir Pur Turk":"CT","Ziauddin Pur":"CT","Khan Pur Dhani":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"1712":["","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"1712":["","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

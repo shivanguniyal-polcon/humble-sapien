@@ -17,4 +17,11 @@ export const VILLAGE_KINDS = {"3223":{"Sugnu":"NP","Kakching Khunou":"NP"},"3232
 // means the official name was ambiguous or absent; no code was guessed.
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3223":["270011","269998","928387","","928499","","","","","270007","","270019","269997","269999","270015","270008","270010","","270023","270006","270016",""],"3232":["","","269995","","","913681","270002","","","","","270003","913682","269991","","","269988","270000"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3223":["254695","254629","","","","","","","","","","254646","254629","254611","254700","254695","254695","","254667","254611","254554",""],"3232":["","","254666","","","254579","","","","","","","254694","254579","","","254570","254645"]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"254554":"Chairel","254570":"Irengband","254579":"Keirak","254611":"Langmeidong","254629":"Mayeng Lamjao","254645":"Pallel","254646":"Pangaltabi","254666":"Sekmaijin","254667":"Serou","254694":"Wabagai","254695":"Waikhong","254700":"Wangoo"};

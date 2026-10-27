@@ -38,5 +38,11 @@ export const LGD_COVERAGE = {
     "exact": 535247,
     "fuzzy": 30740,
     "collisions": 3583
+  },
+  "gps": {
+    "villages": 522517,
+    "total": 562404,
+    "referenced": 215945,
+    "conflicts": 12338
   }
 };

@@ -13,4 +13,11 @@ export const VILLAGES = {"3600":["N.E.Diltlang","Khuangphah","Vaikhawtlang","Mur
 export const VILLAGE_KINDS = {"3600":{"Champhai":"NT"},"3614":{"Samthang":"old","Hruaikawn":"old","Dungtlang":"old"},"3616":{"Biate":"NT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3600":["271345","271343","271339","271340","271344","271347","271342","271348","271346","271341",""],"3614":["271350","271351","271349","271352","271369","271371","271365","","271374","271355","271364","271372","271366","271373","271375","271356","271357","271362","271363","","271358","271361","271353","271360","271360","271353","271366"],"3616":["","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3600":["","","","","","","","","","",""],"3614":["","","","","","","","","","","","","","","","","","","","","","","","","","",""],"3616":["","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

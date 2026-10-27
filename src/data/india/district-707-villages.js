@@ -13,4 +13,11 @@ export const VILLAGES = {"1707":["Maidan Garhi","Ghitorni","Sultan Pur","Asola",
 export const VILLAGE_KINDS = {"1707":{"Maidan Garhi":"CT","Ghitorni":"CT","Sultan Pur":"CT","Asola":"CT","Aya Nagar":"CT","Fateh Pur Beri":"CT","Saidul Azaib":"CT","Jona Pur":"CT","Bhati":"CT","Chattar Pur":"CT","Raj Pur Khurd":"CT","Chandan Hola":"CT","Neb Sarai":"CT","Dera Mandi":"CT","Deoli":"CT","Tigri":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"1707":["","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"1707":["","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

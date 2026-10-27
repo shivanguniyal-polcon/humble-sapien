@@ -13,4 +13,11 @@ export const VILLAGES = {"149":["Raihion","Kakana","Batti Malv Island"],"151":["
 export const VILLAGE_KINDS = {};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"149":["645032","",""],"151":["645191","645192","645193","645194","645195","645199","645163","645140","645200","645187","645149","","","","",""],"152":["645122","645137","645045","645033","645056","","645037",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"149":["","",""],"151":["234531","234531","234531","234531","234531","234530","","","234529","","","","","","",""],"152":["","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"234529":"Campbell Bay","234530":"Govindnagar","234531":"Laxminagar"};

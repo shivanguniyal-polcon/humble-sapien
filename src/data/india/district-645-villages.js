@@ -13,4 +13,11 @@ export const VILLAGES = {"5179":["Aravankad (TS)"],"5208":["O' Valley","Cherango
 export const VILLAGE_KINDS = {"5179":{"Aravankad (TS)":"CT"},"5208":{"O' Valley":"TP","Sholur":"TP","Nelliyalam":"M","Gudalur":"M","Naduvattam":"TP","Devarshola":"TP"},"5264":{"Kilkunda":"TP","Bikketti":"TP","Udhagamandalam":"M"},"5265":{"Hubbathala":"CT","Adikaratti":"TP","Kethi":"TP","Huligal":"TP","Coonoor":"M","Wellington":"CB"},"5393":{"Jagathala":"TP","Kotagiri":"TP"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"5179":[""],"5208":["","","932021","","","","635086","635085","635087","635084","","","932015",""],"5264":["635090","635093","","","635092","","","","","","","","","","","",""],"5265":["635112","635116","","","","","","635111","",""],"5393":["","","","635099","635105","635104","","635098","","635103","","635102","635110","644367","635097","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"5179":[""],"5208":["","","","","","","228970","228968","","306161","","","",""],"5264":["","","","","","","","","","","","","","","","",""],"5265":["228962","","","","","","","","",""],"5393":["","","","228976","228974","228971","","228981","","228971","","228971","","","228981","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"228962":"Burliar","228968":"Mudumalai","228970":"Sreemadurai","228971":"Aracode","228974":"Kadinamala","228976":"Kodanad","228981":"Thengumarahada","306161":"Choladi"};

@@ -13,4 +13,11 @@ export const VILLAGES = {"1708":["Libas Pur","Raja Pur Kalan","Pehlad Pur Bangar
 export const VILLAGE_KINDS = {"1708":{"Libas Pur":"CT","Pehlad Pur Bangar":"CT","Bhalswa Jahangir Pur":"CT","Siras Pur":"CT","Khera Khurd":"CT","Sahibabad Daulat Pur":"CT","Bankner":"CT","Bhor Garh":"CT","Qadi Pur":"CT","Bankauli":"CT","Mukhmel Pur":"CT","Darya Pur Kalan":"CT","Khera Kalan":"CT","Bakhtawar Pur":"CT","Barwala":"CT","Tikri Khurd":"CT","Pooth Khurd":"CT","Bawana":"CT","Ali Pur":"CT"},"1711":{"Kamal Pur Majra Burari":"CT","Burari":"CT","Jharoda Majra Burari":"CT","Mukand Pur":"CT","Ibrahim Pur":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"1708":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"1711":["","","","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"1708":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"1711":["","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

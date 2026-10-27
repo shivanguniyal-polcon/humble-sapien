@@ -173,13 +173,15 @@ Items 1 to 6 are about two weeks of work, and they take the tool from naming the
 
 Then pick three pilot States, one from the north, one from the south, and one where the directory is hardest, and do items 7 and 8 for them. A State edition that is right in three States is worth more than a tool that is nominally right in thirty-six.
 
-## 8. The next slice: name the Gram Panchayat
+## 8. Naming the Gram Panchayat
 
-The codes made a village identifiable. They did not name the office the ladder already calls the first rung. `LADDER_RUNG_NOTE.village` tells a citizen that their Gram Panchayat is the first stop; the page cannot say which panchayat that is. That is the next build.
+**Built and verified 27 October 2026, as the second Pillar B slice.** A selected village now names its Gram Panchayat and GP code, the hierarchy CSV carries `gp_code` and `gp_name` on the village row, and the letter reads village, panchayat, block and district. The join resolves 522,517 of 562,404 coded village entries (92.9%) to exactly one panchayat; 12,338 conflicting village edges are dropped, and the rest have no panchayat recorded. The data tree is now 29 MB across the district chunks, and only the selected district loads. A shared link for Ashoknagar exposed a district id of `0` being read as "no district"; that is fixed and tested.
 
-**The data is current and in the same release.** `gp_mapping.26Oct2026.csv.7z` (10 MB compressed, 72 MB extracted) is the same 26 October 2026 snapshot as the codes. It carries 694,614 village-to-local-body rows, 637,102 of them with a panchayat, across 242,687 Gram Panchayats in 31 States. Of the 557,812 distinct village codes in this build, 529,092 (94.9%) already resolve to a GP. Village code `500429` (Menai, Ashoknagar) resolves to GP Menai `131876`; `500587` (Muhal Dehar) has local body `0`, and the page must say so rather than invent one.
+The codes made a village identifiable. They did not name the office the ladder already calls the first rung. `LADDER_RUNG_NOTE.village` told a citizen that their Gram Panchayat was the first stop, but the page could not say which panchayat that was. This slice names it, and says plainly when the directory records none.
 
-### 8.1 What ships
+**The data is current and in the same release.** `gp_mapping.26Oct2026.csv.7z` (10 MB compressed, 72 MB extracted) is the same 26 October 2026 snapshot as the codes. It carries 694,614 village-to-local-body rows, 620,155 distinct villages with a panchayat, across 255,655 Gram Panchayats in 31 States. Of the 562,404 coded village entries in this build, 522,517 (92.9%) resolve to exactly one GP. A further 12,338 village codes name more than one panchayat in the report, and those edges are dropped rather than picking one. Village code `500429` (Menai, Ashoknagar) resolves to GP Menai `131876`; `500587` (Muhal Dehar) has local body `0`, and the page says so rather than inventing one.
+
+### 8.1 What it does
 
 - A village selection shows `Gram Panchayat: Menai (GP 131876)` under the village row, or `No Gram Panchayat recorded`.
 - The hierarchy CSV gains `gp_code` and `gp_name` on the village row; every other row keeps them blank.
@@ -194,7 +196,7 @@ The village chunks already hold `VILLAGES` and `VILLAGE_CODES`, aligned by index
 
 The join should live in the existing LGD build, or in a sibling script that is the only writer of the village chunks. Two scripts writing the same files is how the duplicate-export bug happened.
 
-Rough size: 6 to 8 MB across all chunks, and only the selected district's chunk loads.
+Rough size: 9 MB across all chunks (the data tree goes from 20 MB to 29 MB), and only the selected district's chunk loads.
 
 ### 8.3 Order and effort
 
@@ -207,7 +209,7 @@ Two to three days, no new dependency and no new source.
 
 ### 8.4 Acceptance
 
-- A village with a GP shows its name and official code; a village with local body 0 shows "not recorded" and a blank CSV cell.
+- A village with a GP shows its name and official code; a village with local body 0, or one whose code names more than one panchayat, shows "not recorded" and a blank CSV cell.
 - `gp_code` values are numeric, unique per GP, and one GP may hold many villages.
 - Two panchayats in different districts may share a name; the code separates them and the UI never uses the name as the identity.
 - The letter still reads correctly when there is no GP.

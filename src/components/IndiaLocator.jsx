@@ -8,7 +8,7 @@ import {
   viewBoxFor,
   searchVillages,
   villagesOf,
-  villageLgdCode,
+  villageDetails,
   matches,
   placeFromPath,
   parsePlace,
@@ -77,6 +77,9 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     villageState && villageState.districtId === districtId ? villageState.mod : null;
   const villageCodes =
     villageState && villageState.districtId === districtId ? villageState.codes : null;
+  const villageGpCodes =
+    villageState && villageState.districtId === districtId ? villageState.gpCodes : null;
+  const gps = villageState && villageState.districtId === districtId ? villageState.gps : null;
   const busy = Boolean(stateId) && !chunk;
 
   // One chunk per State, fetched when a State is first chosen.
@@ -109,6 +112,8 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             districtId,
             mod: mod ? mod.VILLAGES : null,
             codes: mod ? mod.VILLAGE_CODES : null,
+            gpCodes: mod ? mod.GP_CODES : null,
+            gps: mod ? mod.GPS : null,
           });
         }
       })
@@ -159,29 +164,37 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       const mod = await loadState(slugify(state.name));
       if (cancelled) return;
       const next = [{ level: 'state', name: state.name, id: state.id, lgd_code: state.lgd_code }];
-      const district = want.districtId && mod.DISTRICTS.find((d) => d.id === want.districtId);
+      // An id of 0 is a real district in this build, so a null check is the
+      // only one that may stand in for "this level is missing".
+      const district =
+        want.districtId !== null && mod.DISTRICTS.find((d) => d.id === want.districtId);
       if (district) {
         next.push({ level: 'district', name: district.name, id: district.id, lgd_code: district.lgd_code });
       }
-      const tehsil = want.tehsilId && mod.SUBDISTRICTS.find((t) => t.id === want.tehsilId);
+      const tehsil =
+        want.tehsilId !== null && mod.SUBDISTRICTS.find((t) => t.id === want.tehsilId);
       if (tehsil) {
         next.push({ level: 'tehsil', name: tehsil.name, id: tehsil.id, lgd_code: tehsil.lgd_code });
       }
-      const block = want.blockId && mod.BLOCKS.find((b) => b.id === want.blockId);
+      const block =
+        want.blockId !== null && mod.BLOCKS.find((b) => b.id === want.blockId);
       if (block) {
         next.push({ level: 'block', name: block.name, id: block.id, lgd_code: block.lgd_code });
       }
-      if (block && want.village && want.districtId) {
+      if (block && want.village && want.districtId !== null) {
         const vmod = await loadVillages(want.districtId);
         if (cancelled) return;
         const list = vmod && vmod.VILLAGES ? vmod.VILLAGES[String(block.id)] : null;
         if (list && list.includes(want.village)) {
-          next.push({
-            level: 'village',
-            name: want.village,
-            id: block.id,
-            lgd_code: villageLgdCode(vmod.VILLAGE_CODES, vmod.VILLAGES, block.id, want.village),
-          });
+          const details = villageDetails(
+            vmod.VILLAGE_CODES,
+            vmod.GP_CODES,
+            vmod.GPS,
+            vmod.VILLAGES,
+            block.id,
+            want.village,
+          );
+          next.push({ level: 'village', name: want.village, id: block.id, ...details });
         }
       }
       setPath(next);
@@ -196,20 +209,33 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     if (!onChange) return;
     const rung = LADDER_RUNG_FOR[level];
     const label = path.length ? path[path.length - 1].name : null;
+    let note = LADDER_RUNG_NOTE[level];
+    if (level === 'village' && villageEntry) {
+      note = villageEntry.gp_name
+        ? `${note} This village is in ${villageEntry.gp_name} Gram Panchayat (GP ${villageEntry.gp_code}).`
+        : `${note} No Gram Panchayat is recorded for this village in the directory.`;
+    }
     onChange({
       level,
       rung,
       label,
-      note: LADDER_RUNG_NOTE[level],
-      path: path.map((p) => p.name),
+      note,
+      // The letter reads as an address, so the chain runs from the village
+      // outwards. The walk itself still runs State first.
+      path: [...path].reverse().map((p) => p.name),
+      gp: villageEntry
+        ? { code: villageEntry.gp_code || '', name: villageEntry.gp_name || '' }
+        : null,
       codes: path.map((p) => ({
         level: p.level,
         name: p.name,
         code: directoryCode(p),
         lgd_code: p.lgd_code || '',
+        gp_code: p.gp_code || '',
+        gp_name: p.gp_name || '',
       })),
     });
-  }, [level, path, onChange]);
+  }, [level, path, villageEntry, onChange]);
 
   // The polygons on screen, and the box that frames them.
   const shapes = useMemo(() => {
@@ -325,18 +351,19 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             key: `v${name}-${index}`,
             name,
             meta: 'village',
-            pick: () => push({
-              level: 'village',
-              name,
-              id,
-              lgd_code: villageLgdCode(villageCodes, villages, id, name),
-            }),
+            pick: () =>
+              push({
+                level: 'village',
+                name,
+                id,
+                ...villageDetails(villageCodes, villageGpCodes, gps, villages, id, name),
+              }),
           })),
         },
       ];
     }
     return [];
-  }, [level, chunk, tree, query, villages, villageCodes, limit, districtEntry, tehsilEntry, blockEntry]);
+  }, [level, chunk, tree, query, villages, villageCodes, villageGpCodes, gps, limit, districtEntry, tehsilEntry, blockEntry]);
 
   const totalVillages =
     level === 'block' && blockEntry ? villagesOf(villages, blockEntry.id).length : 0;
@@ -415,6 +442,18 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               </li>
             ))}
           </ol>
+          {villageEntry && (
+            <p className="meta locator-gp">
+              {villageEntry.gp_name ? (
+                <>
+                  Gram Panchayat: <strong>{villageEntry.gp_name}</strong>
+                  {villageEntry.gp_code ? ` (GP ${villageEntry.gp_code})` : ''}
+                </>
+              ) : (
+                'No Gram Panchayat recorded in the directory for this village.'
+              )}
+            </p>
+          )}
           <p className="meta locator-codes-note">{HIERARCHY_NOTE}</p>
           <p className="meta locator-codes-note">
             Source: {LGD_SOURCE}, snapshot {LGD_SNAPSHOT_LABEL}.
@@ -514,6 +553,11 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               </p>
               <p className="meta locator-picked-code">
                 Directory key <code>{directoryCode(villageEntry)}</code>
+              </p>
+              <p className="meta locator-picked-gp">
+                {villageEntry.gp_name
+                  ? `Gram Panchayat ${villageEntry.gp_name}${villageEntry.gp_code ? ` · GP ${villageEntry.gp_code}` : ''}`
+                  : 'No Gram Panchayat recorded for this village.'}
               </p>
             </div>
           )}

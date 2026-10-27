@@ -13,4 +13,11 @@ export const VILLAGES = {"3625":["Phokhungri Vill.","New Phor","Phor","Yesi","Hu
 export const VILLAGE_KINDS = {"3625":{"Yesisotha Centre":"UR"},"3627":{"Sumi":"Swemi","Gidemi":"Gozuto","Wibo (Mithun Research Centre)":"UR"},"3656":{"Pfutsero":"TC","Lowuza":"UR","Kade":"UR"},"3663":{"Chozubasa":"UR"},"3668":{"Losami Junction":"UR","Phek":"TC","Lanyezho (Lanye)":"UR"},"3673":{"R.D Block Kikruma":"UR"},"3676":{"Akhegwo Junction":"UR"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3625":["","","","","","","","","","","","","","","","","","",""],"3626":["","","","","",""],"3627":["","","","","","","","","","","","","","","","",""],"3656":["","","","","","","","","","","","",""],"3663":["","","","","","","","","","","","","","","","",""],"3668":["","","","","","","","","","","","","","","","","","","","","","","","","",""],"3673":["","","","","",""],"3676":["","","","","","","","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3625":["","","","","","","","","","","","","","","","","","",""],"3626":["","","","","",""],"3627":["","","","","","","","","","","","","","","","",""],"3656":["","","","","","","","","","","","",""],"3663":["","","","","","","","","","","","","","","","",""],"3668":["","","","","","","","","","","","","","","","","","","","","","","","","",""],"3673":["","","","","",""],"3676":["","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

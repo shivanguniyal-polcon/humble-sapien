@@ -11,6 +11,8 @@
 // The output is:
 //   * lgd_code on each district, sub-district and block in state-*.js
 //   * VILLAGE_CODES in district-*-villages.js, aligned by index with VILLAGES
+//   * GP_CODES in the same shape, aligned with VILLAGE_CODES, and a GPS map
+//     from Gram Panchayat code to its published name
 //   * lgd_code on each state in indiaAdmin.js
 //   * lgd-meta.js with the snapshot date and coverage counts
 //
@@ -26,8 +28,8 @@
 //
 //   curl -L -o scripts/.cache/lgd/districts.26Oct2026.csv.7z \
 //     https://github.com/ramSeraph/opendata/releases/download/lgd-latest/districts.26Oct2026.csv.7z
-//   ...and the same for subdistricts, blocks, villages and villages_by_blocks.
-//   Extract with `bsdtar -xf` (or 7-Zip).
+//   ...and the same for subdistricts, blocks, villages, villages_by_blocks and
+//   gp_mapping. Extract with `bsdtar -xf` (or 7-Zip).
 //
 // Usage:
 //   node --max-old-space-size=4096 scripts/build-lgd-codes.mjs
@@ -54,6 +56,7 @@ const FILES = {
   blocks: `blocks.${dateStamp()}.csv`,
   villages: `villages.${dateStamp()}.csv`,
   villagesByBlocks: `villages_by_blocks.${dateStamp()}.csv`,
+  gpMapping: `gp_mapping.${dateStamp()}.csv`,
 };
 
 function dateStamp() {
@@ -219,6 +222,28 @@ forEachCsvRow(FILES.villages, (row) => {
   else if (known !== norm) codeOfficialNorm.set(villageCode, null);
 });
 
+// The `gp_mapping` report is the village-to-panchayat edge. A village code
+// maps to one local body; if the report ever gives two, the edge is dropped
+// rather than choosing one. Local body code 0 means no panchayat is recorded,
+// which is normal in States and Union Territories outside the PRI frame.
+const gpByVillage = new Map();
+const gpNameByCode = new Map();
+let gpConflicts = 0;
+forEachCsvRow(FILES.gpMapping, (row) => {
+  const villageCode = String(row['Village Code'] || '').trim();
+  const gpCode = String(row['Local Body Code'] || '').trim();
+  const gpName = String(row['Local Body Name (In English)'] || '').trim();
+  if (!villageCode || !gpCode || gpCode === '0' || !gpName) return;
+  const known = gpByVillage.get(villageCode);
+  if (known && known.code !== gpCode) {
+    gpByVillage.set(villageCode, null);
+    gpConflicts += 1;
+    return;
+  }
+  if (known === undefined) gpByVillage.set(villageCode, { code: gpCode, name: gpName });
+  if (!gpNameByCode.has(gpCode)) gpNameByCode.set(gpCode, gpName);
+});
+
 // ---------------------------------------------------------------------------
 // our generated chunks
 
@@ -357,6 +382,7 @@ const stats = {
   subdistricts: { coded: 0, total: 0, exact: 0, fuzzy: 0 },
   blocks: { coded: 0, total: 0, exact: 0, fuzzy: 0 },
   villages: { coded: 0, blank: 0, noBlock: 0, total: 0, exact: 0, fuzzy: 0, collisions: 0 },
+  gps: { villages: 0, total: 0, referenced: 0, conflicts: gpConflicts },
 };
 
 const stateCodeByName = new Map();
@@ -496,6 +522,30 @@ for (const [code, list] of claims) {
   }
 }
 
+// The panchayat arrays are built after the collision pass, so a blanked
+// village code cannot leave a GP pointing at the wrong row.
+const referencedGps = new Set();
+for (const chunk of villageChunks) {
+  if (!chunk.codesByBlock) continue;
+  const gpCodesByBlock = {};
+  const gps = {};
+  for (const [blockKey, codes] of Object.entries(chunk.codesByBlock)) {
+    gpCodesByBlock[blockKey] = codes.map((code) => {
+      if (!code) return '';
+      stats.gps.total += 1;
+      const gp = gpByVillage.get(code);
+      if (!gp) return '';
+      stats.gps.villages += 1;
+      referencedGps.add(gp.code);
+      gps[gp.code] = gp.name;
+      return gp.code;
+    });
+  }
+  chunk.gpCodesByBlock = gpCodesByBlock;
+  chunk.gps = gps;
+}
+stats.gps.referenced = referencedGps.size;
+
 // ---------------------------------------------------------------------------
 // write
 
@@ -517,6 +567,16 @@ console.log(
 console.log(
   `match basis: districts exact ${stats.districts.exact}, alias ${stats.districts.alias}, ` +
     `fuzzy ${stats.districts.fuzzy}; villages exact ${stats.villages.exact}, fuzzy ${stats.villages.fuzzy}`,
+);
+console.log(
+  coverageLine('villages with a Gram Panchayat', {
+    coded: stats.gps.villages,
+    total: stats.gps.total,
+  }),
+);
+console.log(
+  `Gram Panchayats referenced: ${stats.gps.referenced}` +
+    (stats.gps.conflicts ? `, ${stats.gps.conflicts} conflicting village edges dropped` : ''),
 );
 
 if (dryRun) {
@@ -551,25 +611,47 @@ for (const state of stateChunks) {
   }
 }
 
+const VILLAGE_EXPORTS = {
+  VILLAGE_CODES: 'codesByBlock',
+  GP_CODES: 'gpCodesByBlock',
+  GPS: 'gps',
+};
+
+function exportLine(text, name) {
+  return text
+    .split('\n')
+    .filter((line) => line.startsWith(`export const ${name} = `));
+}
+
+function parseExportLine(line, name) {
+  try {
+    return JSON.parse(line.slice(`export const ${name} = `.length, -1));
+  } catch {
+    return null;
+  }
+}
+
 for (const chunk of villageChunks) {
   if (!chunk.codesByBlock) continue;
-  const codeLines = chunk.text
-    .split('\n')
-    .filter((line) => line.startsWith('export const VILLAGE_CODES = '));
-  let existing = null;
-  if (codeLines.length === 1) {
-    try {
-      existing = JSON.parse(codeLines[0].slice('export const VILLAGE_CODES = '.length, -1));
-    } catch {
-      existing = null;
+  let unchanged = true;
+  for (const [name, key] of Object.entries(VILLAGE_EXPORTS)) {
+    const lines = exportLine(chunk.text, name);
+    const existing = lines.length === 1 ? parseExportLine(lines[0], name) : null;
+    if (!existing || JSON.stringify(existing) !== JSON.stringify(chunk[key])) {
+      unchanged = false;
     }
   }
-  if (existing && JSON.stringify(existing) === JSON.stringify(chunk.codesByBlock)) continue;
-  // Strip any earlier code line first: appending a second export of the same
+  if (unchanged) continue;
+  // Strip every earlier copy first: appending a second export of the same
   // name makes the file fail to load at all.
   const body = chunk.text
     .split('\n')
-    .filter((line) => !line.startsWith('export const VILLAGE_CODES = '))
+    .filter(
+      (line) =>
+        !Object.keys(VILLAGE_EXPORTS).some((name) =>
+          line.startsWith(`export const ${name} = `),
+        ),
+    )
     .join('\n');
   let text = body;
   if (!text.endsWith('\n')) text += '\n';
@@ -577,6 +659,13 @@ for (const chunk of villageChunks) {
     '// LGD village codes, aligned by index with VILLAGES. An empty string\n' +
     '// means the official name was ambiguous or absent; no code was guessed.\n';
   text += `export const VILLAGE_CODES = ${JSON.stringify(chunk.codesByBlock)};\n`;
+  text +=
+    '// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty\n' +
+    '// string means the directory records no panchayat for that village.\n';
+  text += `export const GP_CODES = ${JSON.stringify(chunk.gpCodesByBlock)};\n`;
+  text +=
+    '// Gram Panchayat names by code, for the panchayats this district uses.\n';
+  text += `export const GPS = ${JSON.stringify(chunk.gps)};\n`;
   writeFileSync(join(OUT, chunk.file), text);
   written += 1;
 }

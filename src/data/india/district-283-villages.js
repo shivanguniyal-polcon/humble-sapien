@@ -13,4 +13,11 @@ export const VILLAGES = {"3219":["Thiyam-Konjil","Lilong","Khekman","Nungei","Ha
 export const VILLAGE_KINDS = {"3219":{"Lilong":"Pt"},"3220":{"Heirok":"NP","Heirok Part I I":"Pt","Heirok Part I":"Pt","Sikhong Sekmai":"NP"},"3238":{"Wangjing":"NP","Yairipok":"NP","Thoubal":"MCI"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3219":["","928384","269925","269927","","269938","269926","269928","","",""],"3220":["269954","269950","269972","928820","","269984","","269951","269982","269945","269947","269966","928356","269962","928342","","269963","269953","269978","269971","269955","269967","269958","269961","269964","","269959","269981","269979","269965",""],"3238":["928356","","928278","269924","","269923","","269922","269952","269977","","269944","269940","269920","269941","","269948","269921","269946","269975","269985","269943","269970","269942","269974","269976","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3219":["","","254586","254620","","254699","254631","254620","","",""],"3220":["254609","254664","254621","","","","","254672","254564","254672","254674","254621","","254618","","","254618","","254577","254618","254609","254621","254659","254618","254618","","254664","254563","254577","254618",""],"3238":["","","","","","","","254619","254662","254697","","254582","254558","254619","254558","","254662","254619","","254697","254697","254621","254621","254621","254621","254697","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"254558":"Charangpat","254563":"Heirok Pt I","254564":"Heirok Pt II","254577":"Kangyambem","254582":"Khangabok Pt I","254586":"Khekman","254609":"Langathel","254618":"Leirongthel Ningel","254619":"Leishangthem","254620":"Turel Ahanbi Atoukhong","254621":"Lourembam","254631":"Moijing","254659":"Samaram","254662":"Sangaiyumpham Pt II","254664":"Sapam","254672":"Tekcham","254674":"Tentha","254697":"Wangbal","254699":"Wangkhem"};

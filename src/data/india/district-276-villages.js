@@ -13,4 +13,11 @@ export const VILLAGES = {"3591":["N.Khawdungsei","Lungsum","Pehlawn","Kani","N.T
 export const VILLAGE_KINDS = {"3591":{"Darlawn":"NT"},"3592":{"Saitual":"NT"},"3595":{"Aizawl":"NT","Sairang":"NT"},"3597":{"Thingdawl":"Melriat"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3591":["271192","271200","271210","","271187","271208","271215","271189","","271198","271201","271205","","271190","271193","271203","271213","271188","","271199","271206","271202","271185","271194","","","","","","","271209","271207",""],"3592":["271284","","","","271282","","","","","271276","","","","","","","271283","271272","","","","","",""],"3595":["271264","271259","","","","","","","271261","271265","271256","","271263","","271258","","","","","","","935366"],"3597":["271249","271235","271238","271243","271246","271253","271234","271251","271233","","","271242","271244","","271247","","271250","271232","271248","271236","271229","271237","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3591":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""],"3592":["","","","","","","","","","","","","","","","","","","","","","","",""],"3595":["","","","","","","","","","","","","","","","","","","","","",""],"3597":["","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

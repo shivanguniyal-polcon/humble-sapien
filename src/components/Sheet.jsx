@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { LEVELS } from '../data/schemes';
-import { deadlineLines, buildLetter } from '../lib/india/letter';
+import { deadlineLines, buildLetter, describePlace } from '../lib/india/letter';
 
 // The sheet.
 //
@@ -74,9 +74,7 @@ export default function Sheet({ scheme, situation, place, clock, dates }) {
         {scheme.name}: {situation.label}
       </h3>
       <p className="sheet-where">
-        {place && place.path.length
-          ? place.path.join(', ')
-          : 'Pick a place on the map and this sheet fills itself in.'}
+        {describePlace(place) || 'Pick a place on the map and this sheet fills itself in.'}
       </p>
 
       {yours && (

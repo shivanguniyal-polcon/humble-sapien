@@ -13,4 +13,11 @@ export const VILLAGES = {"5714":["Chak Thakurani","Kolkata"]};
 export const VILLAGE_KINDS = {"5714":{"Kolkata":"M Corp."}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"5714":["",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"5714":["",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

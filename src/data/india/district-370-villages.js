@@ -13,4 +13,11 @@ export const VILLAGES = {"2638":["Kaniambetta","Anchukunnu","Padichira","Panamar
 export const VILLAGE_KINDS = {"2741":{"Thrikkaipatta":"Part","Kottappadi":"Part","Kalpetta":"M"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"2638":["627327","627305","627312","627304","627311","627309","627303","627310","627314"],"2740":["","627317","627316","627318","627319","627321","627322","627323","627313","627320"],"2741":["627332","627340","627331","627335","627326","627328","627333","627325","627338","","627339","627324","627336","627330","627334","627337","913291"],"2743":["627299","627300","627302","627294","627295","627297","627298","627293","627296","627301","627306","627307","627308"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"2638":["221912","221924","","221924","","","221924","221934","221934"],"2740":["","","221930","221933","221933","221932","221929","221929","221933","221932"],"2741":["221919","221914","221919","221921","221913","221916","221918","221917","","","221915","221917","221921","221920","221918","",""],"2743":["221927","221925","221922","221926","","221925","221925","221926","","221922","221928","221928","221927"]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"221912":"Kaniambetta","221913":"Kottathara","221914":"Meppadi","221915":"Muppainadu","221916":"Muttil","221917":"Padinharethara","221918":"Pozhuthana","221919":"Thariyode","221920":"Vengappally","221921":"Vythiri","221922":"Edavaka","221924":"Panamaram","221925":"Thavinhal","221926":"Thirunelly","221927":"Thondernad","221928":"Vellamunda","221929":"Ambalavayal","221930":"Meenangadi","221932":"Nenmeni","221933":"Noolpuzha","221934":"Poothadi"};

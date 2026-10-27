@@ -13,4 +13,11 @@ export const VILLAGES = {"1710":["Pul Pehlad","Taj Pul","Molar Band","Shakar Pur
 export const VILLAGE_KINDS = {"1710":{"Pul Pehlad":"CT","Taj Pul":"CT","Molar Band":"CT","Shakar Pur Baramad":"CT","Mithe Pur":"CT","Saidabad":"CT","Jait Pur":"CT","Kotla Mahigiran":"CT","Aali":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"1710":["","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"1710":["","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

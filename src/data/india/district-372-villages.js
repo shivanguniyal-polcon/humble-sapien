@@ -13,4 +13,11 @@ export const VILLAGES = {"6800":["Lachen","Chungthang","Shipgyer","Lachung","Hem
 export const VILLAGE_KINDS = {};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"6800":["260925","260927","260928","260926",""],"6801":["260953","260955","260935","","260937","260938","260956","260954","260936","260958","260939","260934","260957","260959"],"6802":["260942","","","","260950","260949","","260946","260952","","260951","","260943","","260941",""],"6803":["260968","260964","260971","260967","260972","260965","260970","260966","260969","","","260973"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"6800":["254750","254859","254827","254751",""],"6801":["257850","254808","254858","","254826","254826","254808","254808","254858","254853","254826","254858","257850","254853"],"6802":["254760","","","","254741","254741","","254765","254713","","254713","","254855","","",""],"6803":["254776","254813","254793","254776","254742","254813","254793","254813","254776","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"254713":"Barfok Lingdong","254741":"Hee Gyathang","254742":"Kabi Rongpa","254750":"Lachen Dzumsa","254751":"Lachung Dzumsa","254760":"Lingthem Lingdem","254765":"Lum Gor Sangtok","254776":"Men Rongong","254793":"Phensang","254808":"Ringhim Nampatam","254813":"Rongong Tumlong","254826":"Singhik","254827":"Shipgyer","254853":"Mangshila Tibuk","254855":"Tingvong","254858":"Toong Naga","254859":"Chungthang","257850":"Tingchim Chadey"};

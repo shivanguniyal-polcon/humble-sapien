@@ -13,4 +13,11 @@ export const VILLAGES = {"1705":["Mitraon","Ghalib Pur","Roshan Pura alias Dicha
 export const VILLAGE_KINDS = {"1705":{"Mitraon":"CT","Roshan Pura alias Dichaon Khurd":"CT","Kapas Hera":"CT","Jaffar Pur Kalan":"CT","Chhawala":"CT","Nangli Sakrawati":"CT","Dindar Pur":"CT","Jharoda Kalan":"CT","Ujwa":"CT","Khera":"CT","Kair":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"1705":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"1705":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

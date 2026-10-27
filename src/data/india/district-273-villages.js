@@ -13,4 +13,11 @@ export const VILLAGES = {"3602":["Thingsen","Tuipui Ferry","Maubawk L","Maubawk 
 export const VILLAGE_KINDS = {"3602":{"Saiha":"NT"},"3609":{"Lungdar":"Lodaw","Lehri":"New Latawh","Lope":"Zyhne"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3602":["","271826","","","","","","","","","271825","","","","","271837","","","","",""],"3609":["","","","","","271794","271799","271802","904598","","271796","","","","271801","945660","271786","","","271812","","271818","","","","","","","271817","","","271821","","","271790","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3602":["","","","","","","","","","","","","","","","","","","","",""],"3609":["","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

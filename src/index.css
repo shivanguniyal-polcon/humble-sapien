@@ -4897,6 +4897,107 @@ input[type='range'] {
   cursor: default;
 }
 
+.locator-codes {
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.locator-codes-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.locator-codes-head .locator-group-title {
+  margin: 0;
+}
+
+.locator-codes-download {
+  min-height: 2.25rem;
+  padding: 0.35rem 0.7rem;
+  font-size: 0.85rem;
+}
+
+.locator-gp {
+  margin: var(--space-2) 0 0;
+}
+
+.locator-gp strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.locator-picked-gp {
+  margin-top: var(--space-1) !important;
+}
+
+.locator-code-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1px;
+  background: var(--color-border);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.locator-code-row {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  padding: 0.4rem var(--space-3);
+  background: var(--color-surface);
+  font-size: 0.9rem;
+}
+
+.locator-code-level {
+  color: var(--color-text-muted);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.locator-code-name {
+  color: var(--color-text);
+  word-break: break-word;
+}
+
+.locator-code,
+.locator-picked-code code {
+  font-family: var(--font-data);
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+}
+
+.locator-codes-note {
+  margin: var(--space-2) 0 0;
+}
+
+.locator-picked-code {
+  margin-top: var(--space-2) !important;
+}
+
+@media (max-width: 34rem) {
+  .locator-code-row {
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+  }
+
+  .locator-code-row .locator-code {
+    grid-column: 2;
+    white-space: normal;
+  }
+}
+
 .locator-figure {
   margin: 0 0 var(--space-4);
   background: var(--color-surface-sunken);

@@ -17,4 +17,11 @@ export const VILLAGE_KINDS = {};
 // means the official name was ambiguous or absent; no code was guessed.
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3593":["271217","271218","271228","271219","271220","271222","271223","271226","271221","271224","271227","271225"],"3594":["271290","271294","271292","","271304","271300","271302","271293","271295","271299","271289","271291","271297","271301","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3593":["","","","","","","","","","","",""],"3594":["","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

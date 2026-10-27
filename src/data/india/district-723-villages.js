@@ -17,4 +17,11 @@ export const VILLAGE_KINDS = {"915":{"Taba":"Everest","Dali Camp":"including Dal
 // means the official name was ambiguous or absent; no code was guessed.
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"915":["","263655","","","","","","","263663","","","","",""],"919":["263635","","","263637","","","263641","","263622","263626","263628","263631","263638","263643","263617","263619","263630","","263639","263642","263615","263618","263614","263621","263625","263627","263629","263632","263640","263616"],"929":["","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"915":["","298239","","","","","","","103633","","","","",""],"919":["103763","","","275526","","","103762","","103766","275521","275522","103768","","103769","103765","103774","275525","","103773","103769","103772","275524","275520","244102","103764","103770","275522","103767","103762","103765"],"929":["","","","","","","","","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"103633":"Regi Kamdak Everest","103762":"Badak/Yiga","103763":"Bege-Yase-Yordo","103764":"Chekor Lombi","103765":"Dedu Doke/Moba Doke","103766":"Degom-Lama","103767":"Dorbo Bogya Yegri Rite","103768":"Gako-Dapo","103769":"Lete-Kardo","103770":"Lutak-Lido","103772":"Ragi Doke","103773":"Tai","103774":"Takom-Jirigi","244102":"Deke","275520":"Tedu-Sodo","275521":"Pira","275522":"Tiri-Ngensi","275524":"Kagi-Yapak","275525":"Siki-Ribi","275526":"Riche-Lite","298239":"Kadi"};

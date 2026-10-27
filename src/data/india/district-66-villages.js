@@ -13,4 +13,11 @@ export const VILLAGES = {"6952":["Chogal Pora","Gaudwana","Chak Rambir Pora","As
 export const VILLAGE_KINDS = {"6952":{"Chachmolla":"Sunamull"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"6952":["4072","","4101","","","4069","","4096","4073","4077","4080","","4093","4102","4095","","4090","4078","4076","4100","4097","","","","4071","","4070","4094"],"6999":["4010","4006","4008","3999","3997","4012","4000","3995","","","4011","4007","","","","4009","","3998","4013"],"7039":["4105","","4103",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"6952":["241619","","241626","","","241623","","241620","241602","","241625","","241619","","","","241634","241618","241620","241624","241618","","","","241622","","241623","241621"],"6999":["","241692","241692","241679","241678","241683","","241677","","","241683","241678","","","","241684","","241678","241685"],"7039":["241587","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"241587":"Yarkah-C","241602":"Mirwani","241618":"Avil","241619":"Chogalpora","241620":"Koril","241621":"Hallan","241622":"Gandwani","241623":"Yaroo","241624":"H.M.Guree","241625":"Waripora","241626":"C.R.Pora","241634":"Kounserbal","241677":"Ashthal","241678":"Gassirana","241679":"Pahloo","241683":"Banimullah","241684":"Chambgund","241685":"Arrigutnoo","241692":"Khaloora"};

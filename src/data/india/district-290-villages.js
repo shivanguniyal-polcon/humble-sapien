@@ -13,4 +13,11 @@ export const VILLAGES = {"3635":["Yongphang","Yongphang SComp","Pongo","Yimchong
 export const VILLAGE_KINDS = {"3635":{"Yongphang SComp":"UR","Sakshi Hq":"UR"},"3644":{"Ametchong":"UR","Yotan SComp":"UR","Aboiche":"UR","Amosen":"UR","Chingong":"UR","Yongnyah Hq":"UR","Yungja":"UR","Shamshangching":"UR","Konsong S Comp":"UR"},"3666":{"Longleng":"TC","Lingtak":"UR","Bhumnyu":"Mongnyu","Hamlikhong":"UR","Mungkhu":"UR","Oushok":"UR","Namching SComp":"UR"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3635":["268081","268082","268078","","268086","268083","","268087",""],"3644":["","","","268049","268050","268051","268059","","","268048","268045","","268043","268054","","","","","268044","268041","268057","268042","","268052","268058","268063"],"3666":["","268065","","268076","","268068","268069","268070","268071","268075","268077","","268066","268072","","268073"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3635":["","","","","","","","",""],"3644":["","","","","","","","","","","","","","","","","","","","","","","","","",""],"3666":["","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

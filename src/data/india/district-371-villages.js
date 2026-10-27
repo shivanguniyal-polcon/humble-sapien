@@ -13,4 +13,11 @@ export const VILLAGES = {"2793":["Minicoy","Viringili"],"2794":["Kadmat"],"2795"
 export const VILLAGE_KINDS = {"2793":{"Minicoy":"CT"},"2794":{"Kadmat":"CT"},"2795":{"Kavaratti":"CT"},"2797":{"Amini":"CT"},"2798":{"Kalpeni":"CT"},"2799":{"Parali":"I"},"2800":{"Andrott":"CT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"2793":["627056","627055"],"2794":["627034"],"2795":["627038","627037","627036"],"2796":["627033"],"2797":["627030"],"2798":["627054","627047"],"2799":["627044","627043","","627039"],"2800":["627046"],"2801":["627032"],"2802":["627031"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"2793":["254545","254545"],"2794":["254541"],"2795":["254543","254543","254543"],"2796":["254544"],"2797":["290186"],"2798":["254542","254542"],"2799":["290185","290185","","290185"],"2800":["254538"],"2801":["254540"],"2802":["254539"]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"254538":"Village(Dweep)Panchayat Andrott","254539":"Bitra","254540":"Chetlat","254541":"Kadmat","254542":"Kalpeni","254543":"Kavaratti","254544":"Kiltan","254545":"Minicoy","290185":"Village(Dweep)Panchayat Agatti","290186":"Village(Dweep)Panchayat Amini"};

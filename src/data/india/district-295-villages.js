@@ -17,4 +17,11 @@ export const VILLAGE_KINDS = {"3662":{"Nutsu":"UR","Kiphire":"TC"},"3680":{"Cheh
 // means the official name was ambiguous or absent; no code was guessed.
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3634":["268145","268146","","268153","","268147","","268155","","","268154"],"3654":["","268125","268126","","268129","","268159","268163","","","","","268165","","268166","268130","268157","","268124","268158","268161","268162",""],"3662":["","","","268103","268104","268107","","268110","268123","","268119","268115","","268120","268121","268122","268113","268106","268111","","268114",""],"3680":["268132","","","","","","268091","268097","268101","268093","268100","268134","","268090","","268096","268098","268102","268089","268092","268143","268133","268136","268138","","268137","268140"],"3690":["268171","268183","268178","268170","268172","268175","268181","268168","268182","","268173","","268176","268169","268179"]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3634":["","","","","","","","","","",""],"3654":["","","","","","","","","","","","","","","","","","","","","","",""],"3662":["","","","","","","","","","","","","","","","","","","","","",""],"3680":["","","","","","","","","","","","","","","","","","","","","","","","","","",""],"3690":["","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

@@ -13,4 +13,11 @@ export const VILLAGES = {"3590":["N.Chhimluang","Bukvannei","Pangbalkawn","Saiha
 export const VILLAGE_KINDS = {"3590":{"Bairabi":"NT","Vairengte":"NT","Kolasib":"NT"},"3608":{"N. Kawnpui":"NT"}};
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"3590":["271158","271166","271169","271167","","","","","271157","","271163","271164","945589","271165","271156","271159","271161","","271171","","","935390","","935376"],"3608":["271140","271151","","","","","","","","","","","","","","","","271154","","",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"3590":["","","","","","","","","","","","","","","","","","","","","","","",""],"3608":["","","","","","","","","","","","","","","","","","","","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {};

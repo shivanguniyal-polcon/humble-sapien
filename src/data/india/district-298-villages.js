@@ -17,4 +17,11 @@ export const VILLAGE_KINDS = {"6737":{"Dakshin Promodenagar":"Part","Dwarikapur"
 // means the official name was ambiguous or absent; no code was guessed.
 // LGD village codes, aligned by index with VILLAGES. An empty string
 // means the official name was ambiguous or absent; no code was guessed.
+// LGD village codes, aligned by index with VILLAGES. An empty string
+// means the official name was ambiguous or absent; no code was guessed.
 export const VILLAGE_CODES = {"6737":["271948","271950","","271942","271952","271947","271949","271951","271945","271941"],"6752":["","271920","271932","271919","271918","","271937","271931","271927","271933","271922","271928","","271921","271929","271930","271934","271935","271938","271923","271924"],"6753":["271908","271907","271915","271909","271916","271911","271911","271912","271900","271917","271892","271905","271906","271913","922868"],"6756":["271904","271887","271890","271891","271888","271894","271898","271889","271893","271903","271897","271899","271900","271916","","271912","271892"],"6757":["271956","271955","271958","271963","271961","271959","271954","271960","271965","","","271966"],"6758":["271967","","271953","","271964","271970","271971","","271974","","271917","271944","271944","271965",""]};
+// Gram Panchayat codes, aligned by index with VILLAGE_CODES. An empty
+// string means the directory records no panchayat for that village.
+export const GP_CODES = {"6737":["","","","","","","","","",""],"6752":["","","","","","","","","","","","","","","","","","104354","","",""],"6753":["104348","","","104343","104345","","","","","104357","104356","","","",""],"6756":["","","","","","","","","","","","","","104345","","","104356"],"6757":["","","","104429","104441","104440","","","","","",""],"6758":["","","","","","","","","","","104357","104322","104322","",""]};
+// Gram Panchayat names by code, for the panchayats this district uses.
+export const GPS = {"104322":"West Ghilatali","104343":"Gournagar","104345":"Laxmi Narayanpur","104348":"Paharmura","104354":"East Ganki","104356":"Samatal Padmabil","104357":"Santinagar","104429":"Brahmacherra","104440":"West Howaibari","104441":"West Teliamura"};

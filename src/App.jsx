@@ -15,6 +15,7 @@ import { requestRouteFocus } from './lib/routeFocus';
 const Research = lazy(() => import('./sections/Research'));
 const Work = lazy(() => import('./sections/Work'));
 const Data = lazy(() => import('./sections/Data'));
+const Archive = lazy(() => import('./sections/Archive'));
 const Compare = lazy(() => import('./sections/Compare'));
 const Writing = lazy(() => import('./sections/Writing'));
 const Newsletter = lazy(() => import('./sections/Newsletter'));
@@ -66,6 +67,7 @@ const TABS = [
       { id: 'opendata', label: 'Open data directory' },
     ],
   },
+  { id: 'archive', label: 'Archive' },
   {
     id: 'compare',
     label: 'Atlas',
@@ -88,6 +90,7 @@ const HASH_TO_TAB = {
   tools: 'work',
   research: 'research',
   data: 'data',
+  archive: 'archive',
   atlas: 'compare',
   writing: 'writing',
   newsletter: 'newsletter',
@@ -313,6 +316,14 @@ export default function App() {
             />
           )}
           {route.tab === 'data' && <Data onNavigate={go} openSub={route.sub} />}
+          {route.tab === 'archive' && (
+            <Archive
+              openId={route.sub}
+              onOpen={(id) => go('archive', String(id))}
+              onBack={() => go('archive')}
+              onNavigate={go}
+            />
+          )}
           {route.tab === 'compare' && <Compare onNavigate={go} openSub={route.sub} />}
           {route.tab === 'writing' && <Writing onNavigate={go} openSub={route.sub} />}
           {route.tab === 'newsletter' && (

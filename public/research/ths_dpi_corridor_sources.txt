@@ -1,0 +1,17 @@
+DPI corridor: published sources
+===============================
+
+The DPI corridor: what UPI, Pix and NIP actually chose — THS Research, October 2026
+
+The citations below are the published receipts for this work.
+
+1. NPCI, UPI product statistics (September 2026) and UPI product documentation, npci.org.in.
+2. Reserve Bank of India, Payment System Report, December 2025 (published 18 May 2026); Digitalisation and Payment Revolution in India (29 July 2024).
+3. Banco Central do Brasil, Pix overview and Pix Management Report 2023–2025 (2026); SPI Annual Report 2024.
+4. Central Bank of Nigeria, Payment Modes and e-Payment Statistics (as of 30 June 2024); NIBSS NIP documentation.
+5. AfricaNenda, State of Instant and Inclusive Payment Systems 2025 — Nigeria case study (12 November 2025); EFInA Nigeria financial inclusion surveys (2020, 2023).
+6. Department of Financial Services, FAQ: Merchant Discount Rate (MDR) on Select UPI (P2M) Transactions (15 September 2026) — listed but not machine-readable at fetch time.
+7. The Hindu (13 October 2026), “UPI MDR on select merchant transactions shall be implemented post-Diwali”; The New Indian Express (13 October 2026), “NPCI defers 0.4% MDR on UPI transactions above ₹2,000 until after Diwali” — press reports of the deferral and reported terms; the underlying NPCI circular text was not publicly readable.
+
+This file is the source list itself. No row-level dataset is offered with
+it; where one exists, the library entry links it separately.

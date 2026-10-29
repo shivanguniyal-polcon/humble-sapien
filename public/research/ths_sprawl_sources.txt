@@ -1,0 +1,14 @@
+The rules exist. The reading does not: sources
+==============================================
+
+The rules exist. The reading does not. — Shivang Uniyal, October 2026
+
+The citations below are the published receipts for this work.
+
+1. PIB (29 May 2025). Schemes due for re-appraisal by 31 March 2026.
+2. MoSPI, presentation to the 28th COCSSO (August 2024). Open data resources and Chief Data Officers.
+3. Legislative Department, Annual Report 2023-24. Acts authenticated in regional languages.
+4. Lok Sabha RTI statistics, 2022-23: 16,38,784 applications filed; 52,662 rejected.
+
+This file is the source list itself. No row-level dataset is offered with
+it; where one exists, the library entry links it separately.

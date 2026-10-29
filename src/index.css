@@ -179,39 +179,231 @@ strong { font-weight: 650; }
   padding-inline: var(--space-5);
 }
 
+/* The floating mark is the only thing at the top of the window, so the page
+   starts below it and nowhere else: no bar, no strip of chrome. */
 main {
   flex: 1;
-  padding-block: var(--space-7) var(--space-8);
+  padding-block: var(--float-clear) var(--space-8);
 }
 
-/* ---------- header & nav ---------- */
-.site-header {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  background: var(--color-surface);
-  border-bottom: 1px solid var(--color-border);
+/* ---------- the floating mark and the V ----------
+   There is no header bar, and no chrome that takes a strip of the window.
+   The lockup floats at the top left on its own paper plate; every
+   destination lives behind one V at the top right — the fifth pillar of
+   democracy, after the legislature, the executive, the judiciary and the
+   press. Both are fixed, so the page starts at the very top of the window and
+   the mark rides over whatever it passes. The float's own box, padding
+   included, is the clearance main and the timeline pin read: changing the
+   plate's size changes both at once. */
+
+.app {
+  --float-clear: 5rem;
 }
 
-.site-header .shell {
+.site-float {
+  position: fixed;
+  inset: var(--space-4) var(--space-5) auto;
+  z-index: 30;
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
-  padding-block: var(--space-3);
+  padding-bottom: var(--space-2);
+  pointer-events: none;
 }
 
-.brand {
+/* The plate keeps the mark legible over a dark band, a chart or a hero: it
+   is paper, not a tint. At rest it is a stamp: the mark alone, cropped to its
+   own box, no name. The name is let out on hover or keyboard focus, so the
+   identity is there for anyone who asks for it and takes no room from the
+   page when nobody does. */
+.brand-float {
+  pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  background: none;
-  border: none;
+  gap: 0;
+  padding: 0.375rem;
+  appearance: none;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-surface-raised);
+  box-shadow: 0 3px 14px -10px rgb(27 24 21 / 0.6);
+  font: inherit;
   cursor: pointer;
-  padding: 0;
+  overflow: hidden;
+}
+
+.brand-float .brand-lockup {
+  height: 2.5rem;
+}
+
+/* The wordmark, folded away. max-width is the one width that animates from a
+   content size, so it carries the expansion; opacity trails it by a beat. */
+.brand-float-word {
+  display: block;
+  max-width: 0;
+  margin-left: 0;
+  overflow: hidden;
+  white-space: nowrap;
   font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--color-text-secondary);
+  opacity: 0;
+  transition:
+    max-width 260ms var(--ease-out),
+    margin-left 260ms var(--ease-out),
+    opacity 160ms var(--ease-out);
+}
+
+.brand-float:hover .brand-float-word,
+.brand-float:focus-visible .brand-float-word {
+  max-width: 11rem;
+  margin-left: 0.5rem;
+  opacity: 1;
+  transition-delay: 0ms, 0ms, 80ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-float-word {
+    transition: none;
+  }
+}
+
+.brand-float:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+/* The V sits at the window's corner, sized to the touch target rather than to
+   the letter. Closed it is paper; open it is the accent, so the one control
+   that changed state is the one that looks changed. */
+.pillar-menu {
+  position: relative;
+  pointer-events: auto;
+}
+
+.pillar-menu-toggle {
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  list-style: none;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  box-shadow: 0 3px 14px -10px rgb(27 24 21 / 0.6);
+  color: var(--color-accent-text);
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition-property: background-color, border-color, color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+.pillar-menu-toggle::-webkit-details-marker {
+  display: none;
+}
+
+@media (hover: hover) {
+  .pillar-menu-toggle:hover {
+    background: var(--color-accent-solid);
+    border-color: var(--color-accent-solid);
+    color: var(--color-text-on-accent);
+  }
+}
+
+.pillar-menu[open] .pillar-menu-toggle {
+  background: var(--color-accent-solid);
+  border-color: var(--color-accent-solid);
+  color: var(--color-text-on-accent);
+}
+
+.pillar-menu-toggle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.pillar-menu-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 40;
+  width: min(20rem, calc(100vw - 2 * var(--space-5)));
+  max-height: calc(100dvh - var(--float-clear) - var(--space-5));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--space-2) var(--space-2) var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-text);
+  border-top: 3px solid var(--color-accent-solid);
+  box-shadow: 0 18px 44px -28px rgb(27 24 21 / 0.7);
+  text-align: start;
+}
+
+.pillar-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pillar-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  width: 100%;
+  min-height: 2.5rem;
+  padding: 0.45rem var(--space-2);
+  background: none;
+  border: 0;
+  font: inherit;
+  font-size: 0.9375rem;
+  line-height: 1.3;
   color: var(--color-text);
+  text-align: start;
+  cursor: pointer;
+  transition-property: background-color, color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+@media (hover: hover) {
+  .pillar-item:hover {
+    background: var(--color-surface-sunken);
+    color: var(--color-accent-text);
+  }
+}
+
+.pillar-item:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.pillar-item-active {
+  color: var(--color-accent-text);
+  font-weight: 650;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillar-menu-toggle,
+  .pillar-item {
+    transition: none;
+  }
+}
+
+@media (max-width: 30rem) {
+  .brand-float .brand-lockup {
+    height: 2.125rem;
+  }
+
+  /* No hover on a phone: the stamp is a door, not a label. */
+  .brand-float-word {
+    display: none;
+  }
 }
 
 /* The THS lockup: the brain/face silhouette in the accent, reading as part
@@ -254,165 +446,6 @@ main {
   height: clamp(6rem, 16vw, 11rem);
   margin-block: var(--space-6);
   margin-inline: auto;
-}
-
-.site-nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-1);
-}
-
-.nav-link {
-  background: none;
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  cursor: pointer;
-  padding: 0.35rem 0.72rem;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  transition-property: background-color, color, border-color;
-  transition-duration: var(--duration-state);
-  transition-timing-function: var(--ease-out);
-}
-
-@media (hover: hover) {
-  .nav-link:hover {
-    background: var(--color-surface-sunken);
-    color: var(--color-text);
-  }
-}
-
-.nav-link:active:not(:disabled) {
-  scale: 0.96;
-  transition-property: scale;
-  transition-duration: var(--duration-press);
-}
-
-.nav-active {
-  color: var(--color-accent-text);
-  font-weight: 650;
-}
-
-@media (hover: hover) {
-  .nav-active:hover {
-    background: var(--color-surface-sunken);
-    color: var(--color-accent-text);
-  }
-}
-
-/* ---------- phone header ----------
-   Ten tabs cannot wrap into three rows above the page. Below the desktop
-   breakpoint they become one disclosure at the right of the brand row, and
-   the menu opens as a paper panel over the page rather than moving it. */
-
-.mobile-menu {
-  display: none;
-  position: relative;
-}
-
-.mobile-menu-toggle {
-  list-style: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 0.45rem 0.8rem;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  color: var(--color-text);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.mobile-menu-toggle::-webkit-details-marker {
-  display: none;
-}
-
-.mobile-menu-toggle span {
-  display: inline-block;
-  font-size: 0.7rem;
-  color: var(--color-text-muted);
-  transition: transform 140ms var(--ease-out);
-}
-
-.mobile-menu[open] .mobile-menu-toggle span {
-  transform: rotate(180deg);
-}
-
-.mobile-menu-panel {
-  position: absolute;
-  top: calc(100% + var(--space-2));
-  right: 0;
-  z-index: 40;
-  width: min(20rem, calc(100vw - 2 * var(--space-5)));
-  max-height: calc(100dvh - 6rem);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: var(--space-2) var(--space-4) var(--space-3);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border-strong);
-  border-top: 3px solid var(--color-accent-solid);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 32px rgb(27 24 21 / 0.18);
-}
-
-.mobile-menu-panel button {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  min-height: 2.75rem;
-  padding: 0.55rem 0.2rem;
-  border: 0;
-  border-bottom: 1px solid var(--color-border);
-  background: none;
-  color: var(--color-text-secondary);
-  font: inherit;
-  font-size: 0.95rem;
-  text-align: start;
-  cursor: pointer;
-}
-
-.mobile-menu-panel button:last-child {
-  border-bottom: 0;
-}
-
-.mobile-menu-panel .mobile-menu-active {
-  color: var(--color-accent-text);
-  font-weight: 650;
-}
-
-/* The ten tabs need more than a tablet's width to sit on one line with the
-   brand. Until they fit, the disclosure replaces them rather than allowing a
-   wrapped second header row. */
-@media (max-width: 68rem) {
-  .site-nav {
-    display: none;
-  }
-
-  .mobile-menu {
-    display: block;
-    margin-left: auto;
-  }
-}
-
-@media (max-width: 48rem) {
-  .site-header .shell {
-    flex-wrap: nowrap;
-    padding-block: var(--space-2);
-  }
-
-  .brand-lockup {
-    height: 2.75rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .mobile-menu-toggle span {
-    transition: none;
-  }
 }
 
 /* ---------- buttons (verb-first labels in copy) ---------- */
@@ -2465,6 +2498,125 @@ select:focus-visible {
   color: var(--color-text-secondary);
 }
 
+/* ---------- research downloads and the readability study ---------- */
+
+.download-items {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.download-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+}
+
+.download-note,
+.download-gap {
+  margin: 0;
+  max-width: 52ch;
+}
+
+.download-gap {
+  border-inline-start: 3px solid var(--color-border-strong);
+  padding-inline-start: var(--space-3);
+}
+
+.study-page {
+  max-width: 80ch;
+}
+
+.study-figures {
+  display: grid;
+  gap: var(--space-6);
+  margin-top: var(--space-4);
+}
+
+.study-figure {
+  margin: 0;
+}
+
+.study-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.study-figure figcaption {
+  margin-top: var(--space-2);
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+}
+
+.study-figure figcaption strong {
+  color: var(--color-text);
+}
+
+.study-table-wrap {
+  overflow-x: auto;
+  margin-top: var(--space-3);
+}
+
+.study-table {
+  min-width: 38rem;
+}
+
+.study-note {
+  border-inline-start: 3px solid var(--color-accent-soft-border);
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.study-note p {
+  margin-top: 0;
+  color: var(--color-text-secondary);
+}
+
+.study-downloads {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.study-downloads li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.study-download-meta {
+  font-family: var(--font-data);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.study-manifest {
+  table-layout: fixed;
+}
+
+.study-manifest code {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}
+
+.study-manifest th:last-child,
+.study-manifest td:last-child {
+  width: 58%;
+}
+
 .work-record {
   list-style: none;
   margin: 0;
@@ -2490,174 +2642,6 @@ select:focus-visible {
   padding-inline-start: var(--space-5);
 }
 
-/* ---------- sprawl story: the finding, now the page lead ---------- */
-.sprawl {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  padding-block: var(--space-8);
-}
-
-/* The active background: drifting rows of real government drafting language
-   (the finding's own motif) with a slow breathing glow, so the lead feels
-   alive without competing with the numbers. The words are the point: the
-   incomprehensibility is rendered, not described. */
-.sprawl::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background-image: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='480'%20height='260'%3E%3Cg%20font-family='Georgia,%20serif'%20font-size='13'%20fill='%237A1F2B'%20fill-opacity='0.13'%3E%3Ctext%20x='14'%20y='18'%3ENOTWITHSTANDING%20ANYTHING%20CONTAINED%20IN%20SECTION%2014,%3C/text%3E%3Ctext%20x='34'%20y='34'%3Ethe%20appropriate%20Government%20may,%20by%20notification%20in%20the%3C/text%3E%3Ctext%20x='34'%20y='50'%3EOfficial%20Gazette,%20make%20rules%20for%20carrying%20out%20the%3C/text%3E%3Ctext%20x='34'%20y='66'%3Epurposes%20of%20this%20Chapter:%20PROVIDED%20THAT%20nothing%3C/text%3E%3Ctext%20x='14'%20y='88'%3ES.O.%201234(E).%20--%20In%20exercise%20of%20the%20powers%20conferred%20by%3C/text%3E%3Ctext%20x='34'%20y='104'%3Eclause%20(c)%20of%20sub-section%20(1)%20of%20section%2045%20of%20the%20said%3C/text%3E%3Ctext%20x='34'%20y='120'%3EAct,%20the%20Central%20Government%20hereby%20makes%20the%20following%3C/text%3E%3Ctext%20x='34'%20y='136'%3Erules,%20namely:%201.%20Short%20title%20and%20commencement.%3C/text%3E%3Ctext%20x='14'%20y='158'%3ESAVE%20AS%20OTHERWISE%20PROVIDED%20IN%20SUB-CLAUSE%20(II)%20OF%3C/text%3E%3Ctext%20x='34'%20y='174'%3ECLAUSE%20(B)%20OF%20THE%20SCHEDULE,%20NO%20SUIT%20SHALL%20LIE,%20and%20the%3C/text%3E%3Ctext%20x='34'%20y='190'%3Ecompetent%20authority%20shall,%20in%20consultation%20with%20the%3C/text%3E%3Ctext%20x='34'%20y='206'%3EState%20Government,%20by%20order,%20determine%20the%20tariff.%3C/text%3E%3Ctext%20x='14'%20y='228'%3EMEMORANDUM%20OF%20UNDERSTANDING%20ENTERED%20INTO%20BY%20THE%3C/text%3E%3Ctext%20x='34'%20y='244'%3EGOVERNMENT%20OF%20--%20SEE%20PARAGRAPH%204%20AND%20ANNEXURE%20III.%3C/text%3E%3C/g%3E%3C/svg%3E");
-  background-size: 480px 260px;
-  animation: drift-up 90s linear infinite;
-  pointer-events: none;
-}
-
-.sprawl::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    radial-gradient(120% 90% at 85% 10%, rgba(122, 31, 43, 0.08), transparent 55%),
-    radial-gradient(90% 80% at 10% 90%, rgba(122, 31, 43, 0.05), transparent 60%);
-  animation: breathe 12s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-@keyframes drift-up {
-  from {
-    background-position: 0 260px;
-  }
-  to {
-    background-position: 0 0;
-  }
-}
-
-@keyframes breathe {
-  from {
-    opacity: 0.5;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sprawl::before,
-  .sprawl::after {
-    animation: none;
-  }
-}
-
-.sprawl-title {
-  font-size: clamp(2.6rem, 6.5vw, 4.6rem);
-  line-height: 0.98;
-  letter-spacing: -0.035em;
-  max-width: 18ch;
-  /* descenders live inside the write-in wipe box */
-  padding-bottom: 0.18em;
-}
-
-/* the lead headline writes in on load */
-@media (prefers-reduced-motion: no-preference) {
-  .sprawl-title {
-    animation: write-in 1100ms var(--ease-out) 120ms both;
-  }
-}
-
-.sprawl-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-4);
-  margin-top: var(--space-6);
-}
-
-.sprawl-stat {
-  padding: var(--space-6) var(--space-5);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-}
-
-.sprawl-num {
-  font-family: var(--font-display);
-  font-size: clamp(3rem, 7vw, 5.2rem);
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  color: var(--color-text);
-}
-
-.sprawl-danger .sprawl-num {
-  color: var(--color-accent-solid);
-}
-
-.sprawl-label {
-  margin-top: var(--space-3);
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 600;
-}
-
-.sprawl-note {
-  margin-top: var(--space-2);
-  font-size: 0.88rem;
-  color: var(--color-text-secondary);
-  max-width: 46ch;
-}
-
-.sprawl-band {
-  margin-top: var(--space-5);
-  padding: var(--space-6);
-  background: var(--paper-900);
-  color: var(--paper-50);
-  border-radius: var(--radius-lg);
-}
-
-.sprawl-band h3 {
-  color: var(--paper-50);
-  font-size: 1.55rem;
-  letter-spacing: -0.02em;
-}
-
-.sprawl-band p {
-  color: var(--paper-200);
-  max-width: 62ch;
-}
-
-.sprawl-band strong {
-  color: var(--clay-300);
-}
-
-.sprawl-step {
-  opacity: 0;
-  transform: translateY(18px);
-  transition: opacity 600ms var(--ease-out), transform 600ms var(--ease-out);
-}
-
-.sprawl-step-in {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .sprawl-step {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
-
-.sprawl-sources {
-  margin-top: var(--space-5);
-}
-
-@media (max-width: 52rem) {
-  .sprawl-stats {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* ---------- deep-time instrument: fixed six-column rail (never wraps oddly),
    detail panel below with facts and a working tool link */
@@ -3295,37 +3279,6 @@ input[type='range'] {
   border-top: 3px solid var(--color-accent);
 }
 
-/* capability band on the home flow */
-
-.capability-band {
-  margin-block: var(--space-8);
-}
-
-.capability-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-  gap: var(--space-4);
-  margin-block: var(--space-5);
-}
-
-.capability-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-5);
-}
-
-.capability-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.18rem;
-  margin-bottom: var(--space-3);
-}
-
-.capability-card p {
-  font-size: 0.92rem;
-  color: var(--color-text-secondary);
-}
-
 /* tools floor: instrument cards */
 
 .tool-cards {
@@ -3856,287 +3809,1275 @@ input[type='range'] {
 }
 
 /* ============================================================
-   Landing redo: nav dropdowns (maroon inversion), the flood
-   band, and the closing section map.
+   Landing redo: nav dropdowns (maroon inversion), the front
+   page and timeline spread, and the closing section map.
    ============================================================ */
 
-/* ---------- nav dropdowns ----------
-   Tabs with contained pages reveal a maroon panel on hover
-   (and on focus-within for keyboard). The panel inverts the
-   site's paper-and-ink trend: solid accent, white text.
-   Clicking the heading itself still opens the tab's page. */
+/* ---------- the timeline spread ---------- */
 
-.nav-item {
-  position: relative;
-  display: flex;
-  align-items: center;
+.timeline {
+  /* Edge to edge. The canvas is the page's opening image, so the section is
+     not set in the reading column; every line of text inside it opts back
+     into .shell. */
+  padding-block: var(--space-4) 0;
+  border-top: 2px solid var(--color-text);
 }
 
-.nav-menu {
-  position: absolute;
-  /* Starts at the link's bottom edge (no dead gap: the menu's own top
-     padding provides the visual breathing room, so hovering across the
-     seam never leaves .nav-item and the menu never flickers shut). */
-  top: 100%;
-  left: 0;
-  z-index: 30;
-  min-width: 15rem;
-  max-width: min(22rem, calc(100vw - 2rem));
-  max-height: min(70vh, 32rem);
-  overflow-y: auto;
-  padding: calc(var(--space-2) + 5px) var(--space-2) var(--space-2);
-  background: var(--color-accent-solid);
-  border-radius: var(--radius-md);
-  box-shadow: 0 12px 32px rgb(27 24 21 / 0.22);
-  /* display, not visibility: a visibility-hidden panel still occupies
-     layout and drags a horizontal scrollbar past the viewport. */
-  display: none;
-}
-
-.nav-item:hover .nav-menu,
-.nav-item:focus-within .nav-menu {
-  display: block;
-}
-
-/* Right-edge escape hatch, toggled by measurement on open (App.alignMenu):
-   an open panel never hangs off the window. */
-.nav-menu-flip {
-  left: auto;
-  right: 0;
-}
-
-.nav-menu-item {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.45rem;
-  width: 100%;
-  text-align: start;
-  background: none;
-  border: none;
-  border-radius: var(--radius-sm);
-  padding: 0.42rem 0.7rem;
-  font: inherit;
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: #ffffff;
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition-property: background-color;
-  transition-duration: var(--duration-state);
-  transition-timing-function: var(--ease-out);
-}
-
-@media (hover: hover) {
-  .nav-menu-item:hover {
-    background: rgb(255 255 255 / 0.14);
-  }
-}
-
-.nav-menu-item:focus-visible {
-  outline: 2px solid #ffffff;
-  outline-offset: -2px;
-}
-
-/* A tool item carries two lines: the name and its English category. Those
-   wrap instead of ellipsizing, because the category is what makes the name
-   legible in a menu. */
-.nav-menu-item:has(.nav-menu-hint) {
-  white-space: normal;
-  text-overflow: clip;
-  row-gap: 0.1rem;
-}
-
-.nav-menu-label {
-  font-weight: 650;
-}
-
-.nav-menu-hint {
-  font-size: 0.76rem;
-  font-weight: 400;
-  color: rgb(255 255 255 / 0.72);
-}
-
-/* Long menus (Atlas sectors, Research titles) scroll; keep the
-   last item reachable. */
-.nav-menu-item:last-child {
-  margin-bottom: 0;
-}
-
-/* ---------- flood band: the deluge ---------- */
-
-.flood {
-  position: relative;
-  padding-block: var(--space-6) var(--space-8);
-}
-
-.flood-ticker {
-  overflow: hidden;
-  border-block: 1px solid var(--color-border);
-  background: var(--clay-50);
-  margin-bottom: var(--space-6);
-  padding-block: var(--space-2);
-  -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-  mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-}
-
-.flood-ticker-track {
-  display: flex;
-  gap: var(--space-6);
-  white-space: nowrap;
-  width: max-content;
-  animation: drift 70s linear infinite;
-  font-family: var(--font-data);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  color: var(--clay-600);
-}
-
-.flood-ticker-track span:nth-child(2) {
-  color: var(--clay-400);
-}
-
-.flood-head {
-  margin-bottom: var(--space-5);
-}
-
-.flood-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
-  gap: var(--space-3);
-}
-
-.flood-cell {
-  padding: var(--space-4);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-}
-
-.flood-num {
+/* The page's opening line. It carries the h1, so it sets its own size rather
+   than taking the global display clamp, which would run to three lines and
+   push the column off the first screen entirely. */
+.timeline-title {
+  margin: var(--space-2) 0 var(--space-3);
   font-family: var(--font-display);
-  font-size: 1.65rem;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
   font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
-.flood-cell-danger .flood-num {
+.timeline-total {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: 1.125rem;
   color: var(--color-accent-solid);
 }
 
-.flood-what {
-  margin-top: var(--space-2);
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  line-height: 1.4;
-}
+/* ---------- the vertical column, scrubbed by scroll ----------
+   A tall stage with a pinned frame. Progress is a readout of how far the
+   stage has been scrolled, so the reveal runs backwards as cleanly as it runs
+   forwards. The frame clears the floating mark by the mark's own box,
+   measured at runtime into --timeline-stick: there is no header bar above
+   the page, only a plate, and the chart starts at the plate's bottom edge. */
 
-/* Set in the site font, like the finding's notes and sources
-   (.sprawl-note / .meta): IBM Plex Mono is reserved for data tables,
-   kickers and the decorative ticker, not for reading text. */
-.flood-src {
-  margin-top: var(--space-2);
-  font-size: 0.8rem;
-  line-height: 1.5;
-  color: var(--color-text-muted);
-}
-
-.flood-cell-danger {
-  border-color: var(--color-accent-soft-border);
-  background: var(--color-accent-soft);
-}
-
-.flood-cell-danger .flood-what {
-  color: var(--color-accent-text);
-  font-weight: 650;
-}
-
-.flood-cell-danger .flood-src {
-  color: var(--color-accent-text);
-}
-
-.flood-foot {
+.timeline-stage {
+  position: relative;
   margin-top: var(--space-5);
-  max-width: 72ch;
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .flood-ticker-track {
-    animation: none;
-  }
+/* No box. The window is the screen: the frame keeps only its height and the
+   pin, and the canvas runs to the edges of the window with nothing drawn
+   around it. The one stray hairline in this section is the section's own top
+   rule, above. */
+.timeline-frame {
+  position: sticky;
+  top: var(--timeline-stick, 0px);
+  z-index: 2;
+  height: calc(100vh - var(--timeline-stick, 0px));
+  height: calc(100dvh - var(--timeline-stick, 0px));
+  overflow: hidden;
 }
 
-/* ---------- closing map: where to start ---------- */
-
-.start-map {
-  margin-block: var(--space-8) var(--space-6);
-}
-
-.start-grid {
+/* The controls ride the foot of the window rather than a row above the
+   canvas. The camera holds the frontier at 72% of the height, so the bottom
+   of the window is canvas the reveal has not reached: the bar sits over blank
+   paper below the line, not over squares the reader is trying to read. */
+.timeline-overlay {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 5;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(16.5rem, 1fr));
-  gap: var(--space-4);
-  margin-block: var(--space-5);
-}
-
-.start-card {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  text-align: start;
+  /* one bounded column: a tray that scrolls inside the bar must not widen the
+     bar past the window */
+  grid-template-columns: minmax(0, 1fr);
+  gap: 6px;
+  padding: var(--space-2) var(--space-5) var(--space-3);
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-5);
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
-  transition-property: border-color, box-shadow;
-  transition-duration: var(--duration-state);
-  transition-timing-function: var(--ease-out);
+  border-top: 1px solid var(--color-border);
+  transition: opacity 320ms var(--ease-out);
 }
 
-@media (hover: hover) {
-  .start-card:hover {
-    border-color: var(--color-border-strong);
-    box-shadow: var(--shadow-raised);
+/* The column is drawn to its last band: the controls have done their work and
+   the story has the window. */
+.timeline-frame[data-complete='true'] .timeline-overlay {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.timeline-overlay .timeline-frame-bar {
+  padding-bottom: 0;
+}
+
+.timeline-overlay .timeline-controls {
+  padding-bottom: 0;
+}
+
+@media (min-width: 48.01rem) {
+  .timeline-overlay .timeline-tray {
+    min-height: 26px;
+    padding: 2px 5px;
+  }
+
+  .timeline-overlay .timeline-tray-label {
+    font-size: 0.5625rem;
+  }
+
+  .timeline-overlay .timeline-pill {
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
   }
 }
 
-.start-card:active {
-  scale: 0.98;
-  transition-duration: var(--duration-press);
+.timeline-frame-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding-bottom: var(--space-2);
 }
 
-.start-card:focus-visible {
+.timeline-switch {
+  display: flex;
+  border: 1px solid var(--color-text);
+}
+
+.timeline-switch-btn {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  padding: 0.375rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.timeline-switch-btn + .timeline-switch-btn {
+  border-left: 1px solid var(--color-text);
+}
+
+.timeline-switch-btn[aria-pressed='true'] {
+  color: var(--color-surface);
+  background: var(--color-text);
+}
+
+.timeline-switch-btn:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
 
-.start-card h3 {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  color: var(--color-accent-text);
-  margin: 0;
+.timeline-switch-count {
+  font-size: 0.6875rem;
+  opacity: 0.7;
 }
 
-.start-card p {
+.timeline-readout {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
   margin: 0;
-  font-size: 0.92rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-transform: uppercase;
   color: var(--color-text-secondary);
 }
 
-.start-count {
-  font-family: var(--font-data);
-  font-size: 0.7rem;
+.timeline-readout strong {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+/* ---- the span: two handles on a rail, and what the period carried --------
+   The column is a census, so the bracket is a counting tool: drag either
+   handle and the readout counts the instruments that period holds. It is the
+   same span the band in the column shows, so the number and the picture
+   cannot disagree. */
+
+.timeline-span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.timeline-span-label {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.timeline-rail {
+  position: relative;
+  width: clamp(120px, 16vw, 190px);
+  height: 24px;
+  flex: none;
+  touch-action: none;
+}
+
+/* the year line the handles travel */
+.timeline-rail::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--color-border-strong);
+}
+
+.timeline-rail-fill {
+  position: absolute;
+  top: calc(50% - 2px);
+  height: 4px;
+  background: var(--color-text);
+  opacity: 0.16;
+  transition: opacity 160ms var(--ease-out), background-color 160ms var(--ease-out);
+}
+
+.timeline-rail[data-active='true'] .timeline-rail-fill {
+  background: var(--clay-600);
+  opacity: 1;
+}
+
+.timeline-rail-handle {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 24px;
+  margin-left: -6px;
+  transform: translateY(-50%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-text);
+  cursor: ew-resize;
+  touch-action: none;
+}
+
+/* the grip line, so the handle reads as something to take hold of */
+.timeline-rail-handle::after {
+  content: '';
+  position: absolute;
+  inset: 5px auto 5px 50%;
+  width: 1px;
+  margin-left: -0.5px;
+  background: var(--color-text-muted);
+}
+
+.timeline-rail-handle:hover {
+  background: var(--color-surface-raised);
+  border-color: var(--clay-600);
+}
+
+.timeline-rail-handle:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.timeline-span-readout {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.timeline-span-readout .meta {
+  font-size: 0.625rem;
+}
+
+.timeline-span-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  font-size: 0.875rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  background: none;
+  border: 1px solid var(--color-border-strong);
+  cursor: pointer;
+}
+
+.timeline-span-clear:hover {
+  color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.timeline-span-clear:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* ---- the trays: kinds picked up and put down ---------------------------
+   Two dashed wells inside the pinned frame, so they are on screen exactly
+   while the reader is scrubbing the column they describe. A dashed edge is
+   the recess; it goes solid and takes the clay when a pill is over it, which
+   is the only drop feedback needed. */
+
+.timeline-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: var(--space-2);
+  padding-bottom: var(--space-2);
+}
+
+.timeline-tray {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 4px 6px;
+  border: 1px dashed var(--color-border-strong);
+  background: transparent;
+  transition: border-color 140ms var(--ease-out), background-color 140ms var(--ease-out);
+}
+
+.timeline-tray[data-over='true'] {
+  border-style: solid;
+  border-color: var(--clay-600);
+  background: var(--color-surface-raised);
+}
+
+.timeline-tray-label {
+  padding-inline: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.timeline-tray-hint {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+}
+
+.timeline-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition: opacity 140ms var(--ease-out), color 140ms var(--ease-out);
+}
+
+.timeline-pill:active {
+  cursor: grabbing;
+}
+
+.timeline-pill[aria-pressed='false'] {
+  color: var(--color-text-muted);
+  background: var(--color-surface-sunken);
+}
+
+.timeline-pill[aria-pressed='false'] .toggle-swatch {
+  opacity: 0.3;
+}
+
+.timeline-pill:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* the pill left behind in the tray while its copy travels */
+.timeline-pill.is-dragging {
+  opacity: 0.3;
+}
+
+/* the gap the pill in hand would land in: a clay bar painted in the 5px
+   space between pills. It hangs off a pill rather than being one, because a
+   real flex item would widen the tray on every slot change and drag the
+   neighbouring well out from under the pointer. */
+.timeline-pill[data-insert] {
+  position: relative;
+}
+
+.timeline-pill[data-insert]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--clay-600);
+  border-radius: 1px;
+}
+
+.timeline-pill[data-insert='before']::after {
+  left: -4px;
+}
+
+.timeline-pill[data-insert='after']::after {
+  right: -4px;
+}
+
+.timeline-pill-ghost {
+  position: fixed;
+  z-index: 70;
+  margin-left: -12px;
+  margin-top: -13px;
+  pointer-events: none;
+  background: var(--color-surface-raised);
+  box-shadow: 0 8px 22px rgb(27 24 21 / 0.18);
+  transform: rotate(-1.5deg);
+}
+
+/* the bracketed period, drawn on the column itself */
+.timeline-span-band {
+  position: absolute;
+  border-block: 1px solid rgb(27 24 21 / 0.22);
+  background: var(--color-text);
+  opacity: 0.055;
+  pointer-events: none;
+}
+
+@media (max-width: 48rem) {
+  .timeline-span {
+    order: 3;
+    width: 100%;
+  }
+
+  .timeline-rail {
+    flex: 1;
+    width: auto;
+  }
+
+  .timeline-span-readout {
+    white-space: normal;
+  }
+}
+
+.timeline-window {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.timeline-track {
+  position: relative;
+  will-change: transform;
+}
+
+.timeline-canvas {
+  display: block;
+}
+
+/* the leading edge of the reveal: drawn to here, not yet below it */
+.timeline-frontier {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed var(--color-accent-solid);
+  pointer-events: none;
+}
+
+.timeline-loading {
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+/* The hover chip follows the reference's tooltip: filled with the colour of
+   the square it names, white text, one squared corner pointing back at that
+   square, and a dashed frame in the colour the fill started as. The fill's
+   luminance is corrected in the component, so white always reads on it. */
+.timeline-tooltip {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 250px;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-on-accent);
+  background: var(--tip-fill, var(--color-accent-solid));
+  border: 1px dashed var(--tip-true, var(--color-accent-solid));
+  border-radius: 8px;
+  pointer-events: none;
+}
+
+/* the corner nearest the square stays square: that is the pointer */
+.timeline-tooltip[data-corner='tl'] { border-top-left-radius: 0; }
+.timeline-tooltip[data-corner='tr'] { border-top-right-radius: 0; }
+.timeline-tooltip[data-corner='bl'] { border-bottom-left-radius: 0; }
+.timeline-tooltip[data-corner='br'] { border-bottom-right-radius: 0; }
+
+.timeline-tooltip-kind {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
+.timeline-tooltip strong {
+  font-size: 0.9375rem;
+  line-height: 1.25;
+}
+
+.timeline-tooltip .meta {
+  padding-top: 3px;
+  font-size: 0.75rem;
+  color: inherit;
+  border-top: 1px solid rgb(255 255 255 / 0.32);
+}
+
+/* reduced motion: no pin, no scrub — the column simply sits in the page */
+/* Reduced motion: nothing pins. The frame becomes the chart's own box —
+   relative, so the absolute overlay still anchors to it — and the controls
+   drop out of the overlay into the page after the drawing. */
+.timeline[data-motion='static'] .timeline-frame {
+  position: relative;
+  height: auto;
+}
+
+.timeline[data-motion='static'] .timeline-window {
+  height: auto;
+  overflow: visible;
+}
+
+.timeline[data-motion='static'] .timeline-overlay {
+  position: static;
+}
+
+.timeline-toggles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.toggle-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.3125rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  cursor: pointer;
+}
+
+.toggle-chip.toggle-off {
+  color: var(--color-text-muted);
+  background: var(--color-surface-sunken);
+}
+
+.toggle-off .toggle-swatch {
+  opacity: 0.3;
+}
+
+.toggle-swatch {
+  width: 10px;
+  height: 10px;
+}
+
+.timeline-hint {
+  margin-top: var(--space-2);
+}
+
+.timeline-strip {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+}
+
+.timeline-strip-cap {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+
+.timeline-strip svg {
+  display: block;
+  width: 100%;
+  height: 56px;
+}
+
+.timeline-method {
+  margin-top: var(--space-5);
+  padding: var(--space-4);
+  background: var(--color-surface-sunken);
+  border-left: 3px solid var(--clay-600);
+}
+
+.timeline-method h3 {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+}
+
+.timeline-method p {
+  max-width: 72ch;
+  text-wrap: pretty;
+}
+
+/* ---------- milestone markers: a dated finding, pinned to its year ----------
+   Small squares on the top edge of each panel, one per year that carries a
+   finding. Hover or focus opens the note; a click pins it, so the source
+   link inside can be used without holding the pointer still. */
+
+.timeline-markers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ---------- the problem, met on the way down ----------
+   One note per year, hung on its band: the frontier draws past it, the note
+   fades up and rides the scroll away above. Placed below the band, in the
+   canvas the line has not reached yet; the last note, where the camera clamps
+   at the foot and there is no room below, hangs above its band instead. */
+
+.timeline-beats {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* The blob: a soft accent wash over the band a note speaks about, as deep as
+   that year's output. It is not a box — no border, no fill edge, an irregular
+   radius blurred at the rim — so the squares stay legible through it and the
+   shape reads as a mark on the paper rather than a panel over it. */
+.timeline-beat-halo {
+  position: absolute;
+  /* Ends where the note begins, so the mark and its note read as one thing:
+     the blob over the squares, the caption beside it. */
+  right: calc(var(--beat-card-inline) + var(--beat-card-w) + var(--space-4));
+  background: radial-gradient(
+    120% 92% at 24% 46%,
+    rgb(122 31 43 / 0.2),
+    rgb(122 31 43 / 0.12) 58%,
+    rgb(122 31 43 / 0.03) 78%,
+    rgb(122 31 43 / 0) 88%
+  );
+  border-radius: 46% 54% 61% 39% / 38% 43% 57% 62%;
+  mix-blend-mode: multiply;
+  filter: blur(3px);
+  opacity: 0;
+  transition: opacity 520ms var(--ease-out);
+  pointer-events: none;
+}
+
+.timeline-beat-halo[data-on='true'] {
+  opacity: 1;
+}
+
+.timeline {
+  --beat-card-inline: clamp(3rem, 6vw, 6rem);
+  --beat-card-w: min(28rem, 38%);
+}
+
+.timeline-beat {
+  position: absolute;
+  right: var(--beat-card-inline);
+  width: var(--beat-card-w);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-top: 2px solid var(--color-accent-solid);
+  box-shadow: 0 12px 28px -24px rgb(27 24 21 / 0.75);
+  opacity: 0;
+  translate: 0 14px;
+  transition:
+    opacity 420ms var(--ease-out),
+    translate 420ms var(--ease-out);
+}
+
+.timeline-beat[data-side='above'] {
+  translate: 0 calc(-100% + 14px);
+}
+
+.timeline-beat[data-on='true'] {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.timeline-beat[data-side='above'][data-on='true'] {
+  translate: 0 -100%;
+}
+
+.timeline-beat-year {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-accent-solid);
+}
+
+.timeline-beat-kicker {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.timeline-beat-line {
+  margin: var(--space-1) 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+@media (max-width: 48rem) {
+  .timeline-beat {
+    right: var(--space-4);
+    left: var(--space-4);
+    width: auto;
+  }
+
+  /* On a phone the note sits under the band, so the mark can run the width
+     of the column without colliding with it. */
+  .timeline-beat-halo {
+    right: var(--space-4);
+  }
+
+  /* One row per well on a phone: the overlay is the bottom fifth of the
+     screen, so the pills scroll sideways instead of stacking into three
+     rows, and the two wells stay distinguishable by their labels. */
+  .timeline-overlay {
+    gap: 4px;
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .timeline-overlay .timeline-tray {
+    flex: 1 1 100%;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    min-height: 26px;
+    padding: 3px 5px;
+  }
+
+  .timeline-overlay .timeline-tray-label {
+    flex: none;
+    font-size: 0.5625rem;
+  }
+
+  .timeline-overlay .timeline-pill {
+    flex: none;
+    padding: 0.125rem 0.375rem;
+    font-size: 0.625rem;
+  }
+}
+
+.timeline[data-motion='static'] .timeline-beat,
+.timeline[data-motion='static'] .timeline-beat[data-side='above'] {
+  transition: none;
+  opacity: 1;
+}
+
+.timeline[data-motion='static'] .timeline-beat-halo {
+  transition: none;
+  opacity: 0.55;
+}
+
+.timeline-method-details {
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.timeline-method-details summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.timeline-method-details summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+}
+
+.timeline-method-details .timeline-hint {
+  margin-top: var(--space-3);
+}
+
+.timeline-method-details .timeline-method {
+  margin-top: var(--space-3);
+}
+
+.timeline-marker {
+  position: absolute;
+  left: 12px;
+  z-index: 4;
+  display: grid;
+  place-items: center;
+  width: 15px;
+  height: 15px;
+  padding: 0;
+  transform: translateY(-50%);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-text);
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.timeline-marker::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--clay-700);
+}
+
+.timeline-marker:hover,
+.timeline-marker.is-open {
+  background: var(--clay-700);
+}
+
+.timeline-marker:hover::before,
+.timeline-marker.is-open::before {
+  background: var(--paper-50);
+}
+
+.timeline-marker:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* the undated marker: the count that does not exist */
+.timeline-marker-gap {
+  border-style: dashed;
+}
+
+.timeline-marker-gap::before {
+  width: 9px;
+  height: 0;
+  background: none;
+  border-top: 2px solid var(--clay-700);
+}
+
+.timeline-marker-gap:hover::before,
+.timeline-marker-gap.is-open::before {
+  border-top-color: var(--paper-50);
+}
+
+.timeline-callout-gap {
+  border-style: dashed;
+}
+
+/* The note lives in the frame, not on the chart: pinned to the corner, it is
+   always readable and the camera can never carry it off-screen. */
+.timeline-callout {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 6;
+  width: min(300px, calc(100% - 2 * var(--space-3)));
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-3);
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-text);
+  box-shadow: var(--shadow-raised);
+}
+
+.timeline-callout-year {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-accent-solid);
+}
+
+.timeline-callout-entry + .timeline-callout-entry {
+  margin-top: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.timeline-callout-label {
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-wrap: pretty;
+}
+
+.timeline-callout-scope {
+  margin: var(--space-1) 0 0;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+}
+
+.timeline-callout-source {
+  display: block;
+  margin: var(--space-1) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  text-decoration-color: var(--color-border-strong);
+}
+
+.timeline-callout-close {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.timeline-callout-close:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+/* ---------- the index page: the menu as a newspaper contents list ----------
+   One numbered entry per destination, each saying what its door opens. The
+   row is a button, so the whole line is the target. */
+
+.index-page {
+  padding-block: var(--space-6) var(--space-8);
+}
+
+/* The way back to the landing page, named rather than drawn as a bare arrow:
+   the reader who came from the timeline's close is sent to the timeline. */
+.index-back {
+  display: inline-block;
+  margin-bottom: var(--space-4);
+}
+
+.index-head {
+  padding-bottom: var(--space-4);
+  border-bottom: 2px solid var(--color-text);
+}
+
+.index-head h1 {
+  margin: var(--space-2) 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 6vw, 3.6rem);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+
+.index-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.index-list li {
+  border-top: 1px solid var(--color-border);
+}
+
+.index-list li:first-child {
+  border-top: none;
+}
+
+.index-row {
+  display: grid;
+  grid-template-columns: 3rem minmax(10rem, 0.8fr) 1.6fr 1.5rem;
+  gap: var(--space-4);
+  align-items: baseline;
+  width: 100%;
+  padding-block: var(--space-4);
+  text-align: start;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.index-num {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.index-label {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.index-count {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.index-what {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.index-arrow {
+  font-size: 1rem;
+  color: var(--color-accent-solid);
+  transition: transform var(--duration-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .index-row:hover .index-label {
+    color: var(--color-accent-solid);
+  }
+
+  .index-row:hover .index-arrow {
+    transform: translateX(4px);
+  }
+}
+
+.index-row:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+.index-foot {
+  margin-top: var(--space-4);
+  max-width: 60ch;
+}
+
+@media (max-width: 48rem) {
+  .index-row {
+    grid-template-columns: 2.25rem 1fr 1.25rem;
+    gap: var(--space-2) var(--space-3);
+  }
+
+  .index-what {
+    grid-column: 2 / -1;
+  }
+
+  .index-arrow {
+    grid-row: 1;
+    grid-column: 3;
+  }
+}
+
+/* ---------- the close: the problem, the answer, the one ask ----------
+   Still inside the timeline's flow. The chart has just drawn the catalogue,
+   so the problem is a reading of it, not a new topic; the answer names the
+   engine; the page ends on a single filled control, in the dark, because that
+   is the one thing left to ask. */
+
+.home-close {
+  padding-top: var(--space-6);
+  border-top: 2px solid var(--color-text);
+}
+
+.close-beat {
+  padding-block: var(--space-7);
+}
+
+.close-beat + .close-beat {
+  border-top: 1px solid var(--color-border);
+}
+
+.close-title {
+  margin: var(--space-2) 0 var(--space-3);
+  max-width: 26ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+.close-lede {
+  margin: 0;
+  max-width: 64ch;
+  font-size: 1.125rem;
+  text-wrap: pretty;
+}
+
+/* The numbers are the argument, so they are set as a rule of type rather than
+   three boxes: one line across, each with its scope under it. */
+.close-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+  margin: var(--space-6) 0;
+  border-top: 1px solid var(--color-text);
+}
+
+.close-stat {
+  padding-top: var(--space-3);
+}
+
+.close-stat dt {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3.6vw, 2.6rem);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+}
+
+.close-stat dd {
+  margin: var(--space-2) 0 0;
+  max-width: 34ch;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.close-stat-danger dt {
+  color: var(--color-accent-solid);
+}
+
+.close-body {
+  max-width: 64ch;
+  margin-block: var(--space-5) 0;
+  text-wrap: pretty;
+}
+
+.close-source {
+  max-width: 78ch;
+}
+
+/* One secondary door out of the answer: the index, named in the copy before
+   the reader has to guess that it exists. */
+.close-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin: var(--space-6) 0 0;
+}
+
+.close-next .meta {
+  margin: 0;
+  max-width: 34ch;
+}
+
+.close-beat-answer {
+  padding-bottom: var(--space-8);
+}
+
+/* The four designs, as a numbered register rather than four cards. */
+.close-methods {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.close-methods li {
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--color-text);
+}
+
+.close-method-num {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
   letter-spacing: 0.04em;
   color: var(--color-text-muted);
+}
+
+.close-methods h3 {
+  margin: var(--space-1) 0 var(--space-1);
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+}
+
+.close-methods p {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.close-ask {
+  /* Runs to the footer: the page ends on the band, not on a strip of paper
+     under it. main's own bottom padding is cancelled here and nowhere else. */
+  margin-top: var(--space-6);
+  margin-bottom: calc(-1 * var(--space-8));
+  padding-block: var(--space-8);
+  background: var(--paper-900);
+  color: var(--paper-50);
+}
+
+.close-ask-title {
+  margin: 0 0 var(--space-3);
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.4vw, 3.4rem);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+}
+
+.close-ask-lede {
+  margin: 0 0 var(--space-5);
+  max-width: 46ch;
+  color: var(--paper-200);
+}
+
+.close-ask-btn {
+  padding: var(--space-3) var(--space-6);
+  font-size: 1rem;
+  color: var(--paper-50);
+  background: var(--clay-500);
+  border-color: var(--clay-500);
+}
+
+.close-ask-btn:hover {
+  background: var(--clay-600);
+  border-color: var(--clay-600);
+}
+
+.close-ask-btn:focus-visible {
+  outline: 2px solid var(--paper-50);
+  outline-offset: 3px;
+}
+
+@media (max-width: 52rem) {
+  .close-stats,
+  .close-methods {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- newsletter ----------
@@ -5629,7 +6570,7 @@ input[type='range'] {
     background: #fff;
   }
 
-  .site-header,
+  .site-float,
   .site-footer,
   .locator-ladder,
   .sheet-bar,
@@ -7039,7 +7980,7 @@ input[type='range'] {
 }
 
 @media print {
-  .site-header,
+  .site-float,
   .site-footer,
   .pit-card,
   .pit-fab,
@@ -7071,7 +8012,7 @@ input[type='range'] {
 }
 
 /* --------------------------------------------------------------------------
-   Public archive
+   Smriti — the public archive
    A government-wide reading surface: an index, a full-text search, and one
    record per instrument, statute, policy, release or programme page, each
    with its issuer and provenance.
@@ -7268,8 +8209,94 @@ input[type='range'] {
   max-height: 70vh;
 }
 
+.archive-ledger-list {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archive-ledger-row {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.archive-ledger-row:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.archive-ledger-head {
+  margin: 0;
+  font-weight: 600;
+}
+
+.archive-ledger-row p {
+  margin-bottom: 0.2rem;
+}
+
+.archive-ledger-quote {
+  color: var(--color-text-secondary);
+  border-inline-start: 2px solid var(--color-border-strong);
+  padding-inline-start: var(--space-2);
+}
+
+.archive-section-compare {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.archive-section-pair {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr 1fr;
+  margin-top: var(--space-2);
+}
+
+.archive-section-text {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  max-height: 24rem;
+  overflow-y: auto;
+  border-inline-start: 2px solid var(--color-border);
+  padding-inline-start: var(--space-3);
+}
+
+.archive-ledger-label {
+  margin-bottom: var(--space-1);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.72rem;
+}
+
+.archive-ledger-raw {
+  margin-top: var(--space-1);
+}
+
+.archive-ledger-raw summary {
+  cursor: pointer;
+  width: fit-content;
+}
+
+.archive-ledger-raw code {
+  display: block;
+  margin-top: var(--space-1);
+  font-size: 0.8rem;
+  line-height: 1.5;
+  word-break: break-word;
+  color: var(--color-text-secondary);
+}
+
 @media (max-width: 760px) {
   .archive-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .archive-section-pair {
     grid-template-columns: 1fr;
   }
 

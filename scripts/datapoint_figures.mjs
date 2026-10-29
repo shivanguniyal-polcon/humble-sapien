@@ -110,7 +110,7 @@ const figure1 = () => {
   const rowH = Math.min(30, (H - top - 150) / Math.max(1, rows.length));
   const x = (value) => left + ((value - 0) / 100) * (right - left);
 
-  const parts = [svgOpen(W, H), header(W, 'India’s AI rules are written in graduate-level English',
+  const parts = [svgOpen(W, H), header(W, 'AI rules are written in graduate-level English in every region',
     'Flesch Reading Ease for each instrument; lower is harder. Source: the instrument itself, sampled across the whole document.')];
 
   // Reading bands across the top.
@@ -200,8 +200,8 @@ const figure2 = () => {
   const medX = median(xs);
   const medY = median(ys);
 
-  const parts = [svgOpen(W, H), header(W, 'India sits in its own corner: harder to read, closer to Northern wording',
-    'Flesch Reading Ease against the gap in cosine similarity to the Global North and Global South corpora. Each point is one instrument.')];
+  const parts = [svgOpen(W, H), header(W, 'Readability barely separates the regions; the vocabulary gap is mixed',
+    'Flesch Reading Ease against the gap in cosine similarity to the Global North and Global South corpora. Above the dashed line is closer to the North.')];
 
   // Quadrant shading.
   parts.push(rect(x(xMin), y(medY), x(medX) - x(xMin), bottom - y(medY), { fill: '#fbf7f2' }));
@@ -283,7 +283,9 @@ const figure3 = () => {
   const xMax = Math.ceil(Math.max(...all) * 20) / 20 + 0.01;
   const x = (value) => left + ((value - xMin) / (xMax - xMin)) * (right - left);
 
-  const parts = [svgOpen(W, H), header(W, 'Every Indian instrument sits closer to the Northern corpus',
+  const northCount = rows.filter((row) => row.gap > 0).length;
+  const southCount = rows.length - northCount;
+  const parts = [svgOpen(W, H), header(W, `India’s AI instruments split ${northCount}–${southCount} between the two vocabularies`,
     'Cosine similarity of each Indian instrument to the Global North and Global South centroids. Bars are 95% bootstrap intervals.')];
 
   for (let value = Math.ceil(xMin * 20) / 20; value <= xMax; value += 0.05) {
@@ -305,7 +307,7 @@ const figure3 = () => {
     parts.push(circle(x(row.toNorth), y, 8, { fill: COLOURS.north }));
     parts.push(text(x(row.toNorth) + 14, y + 4, row.toNorth.toFixed(3), { size: 11.5, fill: COLOURS.north, weight: 700 }));
     parts.push(text(x(row.toSouth) - 14, y + 4, row.toSouth.toFixed(3), { size: 11.5, fill: COLOURS.south, weight: 700, anchor: 'end' }));
-    parts.push(text(right + 26, y + 4, `+${row.gap.toFixed(2)}`, { size: 12, fill: COLOURS.india, weight: 700 }));
+    parts.push(text(right + 26, y + 4, `${row.gap >= 0 ? '+' : '−'}${Math.abs(row.gap).toFixed(2)}`, { size: 12, fill: COLOURS.india, weight: 700 }));
   });
 
   const legendY = H - 92;
@@ -319,7 +321,7 @@ const figure3 = () => {
 
   parts.push(footer(W, H,
     'Source: Data Point analysis. 600 bootstrap draws, resampling provisions within each instrument.',
-    'Centroid = the average TF-IDF direction of the region’s instruments. A larger gap means wording closer to the North.'));
+    'Centroid = the average TF-IDF direction of the region’s instruments. A positive gap means wording closer to the North; a negative gap closer to the South.'));
   parts.push('</svg>');
   return parts.join('\n');
 };
@@ -350,8 +352,11 @@ const figure4 = () => {
   const tallest = Math.max(...counts);
   const y = (count) => bottom - (count / (tallest * 1.12)) * (bottom - top);
 
-  const parts = [svgOpen(W, H), header(W, 'Shuffle the region labels, and the gap disappears',
-    'The observed gap in similarity between Indian instruments and the two regional corpora, against 2,000 shuffled labelings.')];
+  const survives = RESULTS.headline.permutationP < 0.05;
+  const parts = [svgOpen(W, H), header(W, survives
+    ? 'The regional gap survives shuffled labels'
+    : 'The regional gap does not survive shuffled labels',
+  'The observed gap in similarity between Indian instruments and the two regional corpora, against 2,000 shuffled labelings.')];
 
   counts.forEach((count, index) => {
     const x0 = x(lo + ((hi - lo) * index) / bins);
@@ -380,7 +385,9 @@ const figure4 = () => {
 
   parts.push(footer(W, H,
     'Source: Data Point analysis. 2,000 permutations of the region labels, seed fixed.',
-    'Under the null the region labels carry no information about vocabulary. The observed gap sits outside the shuffled distribution.'));
+    survives
+      ? 'Under the null the region labels carry no information about vocabulary. The observed gap sits outside the shuffled distribution.'
+      : 'Under the null the region labels carry no information about vocabulary. The observed gap sits inside the shuffled distribution, so the labels do not carry the signal.'));
   parts.push('</svg>');
   return parts.join('\n');
 };

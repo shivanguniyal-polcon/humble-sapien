@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-27T12:28:13.079Z",
+  "generatedAt": "2026-10-27T13:24:17.164Z",
   "archiveVersion": 1,
   "monitorGeneratedAt": "2026-10-25T08:50:58.975Z",
   "monitorCorpusHash": "sha256:b4b115e5bd7147364b81f6da95dd5df79344ff9af52e3c9f3b50446ef4c62aa5",
   "counts": {
-    "records": 82,
+    "records": 84,
     "sources": 16,
-    "fullText": 67,
+    "fullText": 69,
     "excerpt": 1,
     "summary": 1,
     "programmePage": 13,
@@ -109,7 +109,7 @@
       "name": "Parliament of India",
       "short": "Parliament",
       "kind": "Legislature",
-      "count": 9
+      "count": 11
     },
     {
       "id": "pib",
@@ -130,7 +130,7 @@
     {
       "id": "statute",
       "label": "Act of Parliament",
-      "count": 10
+      "count": 12
     },
     {
       "id": "scheme",
@@ -195,7 +195,9 @@
       "follows": [],
       "file": "instruments/13742.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "pib-nsap-2026",
@@ -221,9 +223,16 @@
       "status": "Government release. The archive holds a summary, not the full text.",
       "note": "This is a summary held by the archive, not the published release. Read the release at the source.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2026-10-14",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/pib-nsap-2026.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13715",
@@ -251,7 +260,9 @@
       "follows": [],
       "file": "instruments/13715.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13713",
@@ -279,7 +290,9 @@
       "follows": [],
       "file": "instruments/13713.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13695",
@@ -307,7 +320,9 @@
       "follows": [],
       "file": "instruments/13695.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13694",
@@ -335,7 +350,9 @@
       "follows": [],
       "file": "instruments/13694.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13692",
@@ -363,7 +380,9 @@
       "follows": [],
       "file": "instruments/13692.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13679",
@@ -391,7 +410,9 @@
       "follows": [],
       "file": "instruments/13679.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13678",
@@ -419,7 +440,9 @@
       "follows": [],
       "file": "instruments/13678.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13677",
@@ -447,7 +470,9 @@
       "follows": [],
       "file": "instruments/13677.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13676",
@@ -475,7 +500,9 @@
       "follows": [],
       "file": "instruments/13676.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13671",
@@ -503,7 +530,9 @@
       "follows": [],
       "file": "instruments/13671.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13665",
@@ -531,7 +560,9 @@
       "follows": [],
       "file": "instruments/13665.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13673",
@@ -559,7 +590,9 @@
       "follows": [],
       "file": "instruments/13673.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13667",
@@ -587,7 +620,9 @@
       "follows": [],
       "file": "instruments/13667.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13672",
@@ -615,7 +650,9 @@
       "follows": [],
       "file": "instruments/13672.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13668",
@@ -643,7 +680,9 @@
       "follows": [],
       "file": "instruments/13668.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13670",
@@ -671,7 +710,9 @@
       "follows": [],
       "file": "instruments/13670.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13666",
@@ -699,7 +740,9 @@
       "follows": [],
       "file": "instruments/13666.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13669",
@@ -727,7 +770,9 @@
       "follows": [],
       "file": "instruments/13669.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13664",
@@ -755,7 +800,9 @@
       "follows": [],
       "file": "instruments/13664.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13639",
@@ -783,7 +830,9 @@
       "follows": [],
       "file": "instruments/13639.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13605",
@@ -811,7 +860,9 @@
       "follows": [],
       "file": "instruments/13605.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13585",
@@ -839,7 +890,9 @@
       "follows": [],
       "file": "instruments/13585.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13593",
@@ -867,7 +920,9 @@
       "follows": [],
       "file": "instruments/13593.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13589",
@@ -895,7 +950,9 @@
       "follows": [],
       "file": "instruments/13589.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13588",
@@ -923,7 +980,9 @@
       "follows": [],
       "file": "instruments/13588.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13587",
@@ -951,7 +1010,9 @@
       "follows": [],
       "file": "instruments/13587.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13592",
@@ -979,7 +1040,9 @@
       "follows": [],
       "file": "instruments/13592.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13591",
@@ -1007,7 +1070,9 @@
       "follows": [],
       "file": "instruments/13591.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13590",
@@ -1035,7 +1100,9 @@
       "follows": [],
       "file": "instruments/13590.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13586",
@@ -1063,7 +1130,9 @@
       "follows": [],
       "file": "instruments/13586.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13621",
@@ -1091,7 +1160,9 @@
       "follows": [],
       "file": "instruments/13621.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13601",
@@ -1119,7 +1190,9 @@
       "follows": [],
       "file": "instruments/13601.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13630",
@@ -1147,7 +1220,9 @@
       "follows": [],
       "file": "instruments/13630.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13612",
@@ -1175,7 +1250,9 @@
       "follows": [],
       "file": "instruments/13612.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13567",
@@ -1203,7 +1280,9 @@
       "follows": [],
       "file": "instruments/13567.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13575",
@@ -1231,7 +1310,9 @@
       "follows": [],
       "file": "instruments/13575.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13564",
@@ -1259,7 +1340,9 @@
       "follows": [],
       "file": "instruments/13564.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13561",
@@ -1287,7 +1370,9 @@
       "follows": [],
       "file": "instruments/13561.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13554",
@@ -1315,7 +1400,9 @@
       "follows": [],
       "file": "instruments/13554.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13552",
@@ -1343,7 +1430,9 @@
       "follows": [],
       "file": "instruments/13552.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13540",
@@ -1371,7 +1460,9 @@
       "follows": [],
       "file": "instruments/13540.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13542",
@@ -1399,7 +1490,9 @@
       "follows": [],
       "file": "instruments/13542.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13541",
@@ -1427,7 +1520,9 @@
       "follows": [],
       "file": "instruments/13541.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13539",
@@ -1455,7 +1550,9 @@
       "follows": [],
       "file": "instruments/13539.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13521",
@@ -1483,7 +1580,9 @@
       "follows": [],
       "file": "instruments/13521.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13507",
@@ -1511,7 +1610,9 @@
       "follows": [],
       "file": "instruments/13507.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13494",
@@ -1539,7 +1640,9 @@
       "follows": [],
       "file": "instruments/13494.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13493",
@@ -1567,7 +1670,9 @@
       "follows": [],
       "file": "instruments/13493.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "13501",
@@ -1595,7 +1700,9 @@
       "follows": [],
       "file": "instruments/13501.json",
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-vbg-ramg-commencement-2026",
@@ -1623,9 +1730,16 @@
       "follows": [
         "in-vbg-ramg-act-2025"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2026-05-11",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-vbg-ramg-commencement-2026.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-vbg-ramg-act-2025",
@@ -1653,11 +1767,18 @@
       "follows": [
         "in-mgnrega-act-2005"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2025-12-20",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-vbg-ramg-act-2025.json",
       "followedBy": [
         "in-vbg-ramg-commencement-2026"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-ai-guidelines-2025",
@@ -1685,9 +1806,16 @@
       "follows": [
         "in-niti-rai-2021"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2025-11-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-ai-guidelines-2025.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-indiaai-2024",
@@ -1713,9 +1841,16 @@
       "status": "Government release.",
       "note": "The archive holds the release text as pinned for the AI-policy readability study. Read the release at the source for the published page.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2024-01-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-indiaai-2024.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-dpdp-act-2023",
@@ -1741,9 +1876,16 @@
       "status": "In force. The DPDP Rules, 2025 were notified in November 2025.",
       "note": "Full text of the Act as published by MeitY. The archive pins the extracted text; the PDF remains the published copy.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2023-08-11",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-dpdp-act-2023.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-pmayg-2022",
@@ -1769,9 +1911,16 @@
       "status": "Scheme framework. Not a statute.",
       "note": "The central PMAY-G framework, hosted by the Government of Odisha's Rural Housing portal. The issuing ministry is the Ministry of Rural Development.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2022-01-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-pmayg-2022.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-niti-rai-2021",
@@ -1799,11 +1948,18 @@
       "follows": [
         "in-nsai-2018"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2021-02-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-niti-rai-2021.json",
       "followedBy": [
         "in-ai-guidelines-2025"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-code-on-wages-2019",
@@ -1834,9 +1990,67 @@
         "in-payment-of-bonus-act-1965",
         "in-equal-remuneration-act-1976"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2019-08-08",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-code-on-wages-2019.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
+    },
+    {
+      "id": "in-rti-amendment-act-2019",
+      "source": "parliament",
+      "issuer": "Parliament of India",
+      "issuerShort": "Parliament",
+      "kind": "statute",
+      "kindLabel": "Act of Parliament",
+      "title": "The Right to Information (Amendment) Act, 2019",
+      "shortTitle": "RTI (Amendment) Act, 2019",
+      "refNo": "Act No. 24 of 2019",
+      "date": "1 August 2019",
+      "dateISO": "2019-08-01",
+      "datePrecision": "day",
+      "sourceUrl": "https://cic.gov.in/sites/default/files/Act%202019%20updated.pdf",
+      "summary": "Replaces the fixed five-year term of Information Commissioners with a term prescribed by the Central Government, and moves their salaries into rules. The archive holds the principal Act this amends.",
+      "coverage": "full-text",
+      "coverageLabel": "Full text",
+      "hash": "sha256:9f54799e7eab834a10e1b67018dc23bf695ad593bffeffed2b7832f53142ee35",
+      "words": 817,
+      "duties": null,
+      "family": null,
+      "status": "In force from 24 October 2019. Amends the Right to Information Act, 2005.",
+      "note": "Full text as published in the Gazette of India on 1 August 2019, from the Central Information Commission copy. Section 2 amends section 13 of the 2005 Act, section 3 amends section 16 and section 4 amends section 27.",
+      "follows": [],
+      "amends": "in-rti-act-2005",
+      "versionOf": null,
+      "asOf": "2019-08-01",
+      "amendmentRows": 0,
+      "patches": [
+        {
+          "section": "2",
+          "target": 13,
+          "heading": null
+        },
+        {
+          "section": "3",
+          "target": 16,
+          "heading": null
+        },
+        {
+          "section": "4",
+          "target": 27,
+          "heading": null
+        }
+      ],
+      "file": null,
+      "doc": "docs/in-rti-amendment-act-2019.json",
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-nsai-2018",
@@ -1862,11 +2076,18 @@
       "status": "Discussion paper. Not a binding instrument.",
       "note": "Full text of the discussion paper published by NITI Aayog in June 2018. It sets direction; it creates no statutory duty.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2018-06-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-nsai-2018.json",
       "followedBy": [
         "in-niti-rai-2021"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-nhp-2017",
@@ -1894,9 +2115,16 @@
       "follows": [
         "in-nhp-2002"
       ],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2017-03-15",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-nhp-2017.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-mgnrega-act-2005",
@@ -1922,11 +2150,18 @@
       "status": "Repealed by the Viksit Bharat – Guarantee for Rozgar and Ajeevika Mission (Gramin) Act, 2025, in force from 1 July 2026.",
       "note": "The Act as published in the Gazette of India on 7 September 2005, held by the MGNREGA programme office. The text was extracted from the Gazette scan, so the running heads and a few words carry OCR artefacts; the hash covers exactly this text. It is pinned here because the 2005 Act is repealed and its own pages no longer serve it.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2005-09-07",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-mgnrega-act-2005.json",
       "followedBy": [
         "in-vbg-ramg-act-2025"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-rti-act-2005",
@@ -1952,9 +2187,87 @@
       "status": "In force, as amended; consolidated text as on 18 November 2025.",
       "note": "Consolidated text published by the Central Information Commission, including amendments to 2025. The archive pins the extracted text.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2025-11-18",
+      "amendmentRows": 15,
+      "patches": [],
       "file": null,
       "doc": "docs/in-rti-act-2005.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [
+        "in-rti-amendment-act-2019"
+      ],
+      "versions": [
+        {
+          "id": "in-rti-act-2005-2011",
+          "date": "15 June 2005",
+          "asOf": "2011-02-01",
+          "label": "RTI Act, 2005 — 2011 edition",
+          "hash": "sha256:45c0733137eb66540fd0e1af5a0db913cc93f58b86cfa9b33415986a8c510f65",
+          "words": 11248
+        },
+        {
+          "id": "in-rti-act-2005",
+          "date": "15 June 2005",
+          "asOf": "2025-11-18",
+          "label": "RTI Act, 2005",
+          "hash": "sha256:ac4da7b732413bcfb5bbbfb4b1c6a6e1a0b8be4d6c0b56a79de615c639ea9336",
+          "words": 11065
+        }
+      ]
+    },
+    {
+      "id": "in-rti-act-2005-2011",
+      "source": "parliament",
+      "issuer": "Central Information Commission",
+      "issuerShort": "Parliament",
+      "kind": "statute",
+      "kindLabel": "Act of Parliament",
+      "title": "The Right to Information Act, 2005 (as modified up to 1 February 2011)",
+      "shortTitle": "RTI Act, 2005 — 2011 edition",
+      "refNo": "Act No. 22 of 2005",
+      "date": "15 June 2005",
+      "dateISO": "2005-06-15",
+      "datePrecision": "day",
+      "sourceUrl": "https://cic.gov.in/sites/default/files/RTI-Act_English.pdf",
+      "summary": "The Act as it stood before the 2019 amendment: Information Commissioners still held office for a fixed term of five years, and their salaries sat in the statute.",
+      "coverage": "full-text",
+      "coverageLabel": "Full text",
+      "hash": "sha256:45c0733137eb66540fd0e1af5a0db913cc93f58b86cfa9b33415986a8c510f65",
+      "words": 11248,
+      "duties": null,
+      "family": null,
+      "status": "Superseded by the text consolidated to 18 November 2025, which carries the 2019 and 2023 amendments.",
+      "note": "Diglot edition published by the Central Information Commission, English text. The copy is a scan, so the extracted text carries OCR damage (\"tbr\" for \"for\", \"—(/)\" for \"(1)\"). It is held as it reads rather than silently corrected, and it is the text to compare against when asking what a later amendment changed. The Hindi title page is included as printed.",
+      "follows": [],
+      "amends": null,
+      "versionOf": "in-rti-act-2005",
+      "asOf": "2011-02-01",
+      "amendmentRows": 0,
+      "patches": [],
+      "file": null,
+      "doc": "docs/in-rti-act-2005-2011.json",
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": [
+        {
+          "id": "in-rti-act-2005-2011",
+          "date": "15 June 2005",
+          "asOf": "2011-02-01",
+          "label": "RTI Act, 2005 — 2011 edition",
+          "hash": "sha256:45c0733137eb66540fd0e1af5a0db913cc93f58b86cfa9b33415986a8c510f65",
+          "words": 11248
+        },
+        {
+          "id": "in-rti-act-2005",
+          "date": "15 June 2005",
+          "asOf": "2025-11-18",
+          "label": "RTI Act, 2005",
+          "hash": "sha256:ac4da7b732413bcfb5bbbfb4b1c6a6e1a0b8be4d6c0b56a79de615c639ea9336",
+          "words": 11065
+        }
+      ]
     },
     {
       "id": "in-nhp-2002",
@@ -1980,11 +2293,18 @@
       "status": "Policy. Superseded by the National Health Policy 2017.",
       "note": "Full text of the policy as published. This copy is the one held by the National Health Systems Resource Centre, a body under the Ministry of Health and Family Welfare.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2002-01-01",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-nhp-2002.json",
       "followedBy": [
         "in-nhp-2017"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-it-act-2000",
@@ -2010,9 +2330,16 @@
       "status": "In force, as amended.",
       "note": "Full text of the Act as published by MeitY, including the schedules. Later amendments are not consolidated here.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "2000-06-09",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-it-act-2000.json",
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-equal-remuneration-act-1976",
@@ -2038,11 +2365,18 @@
       "status": "Repealed by the Code on Wages, 2019.",
       "note": "A reproduction, not an official publication: no central or state government copy of this repealed Act is currently served, and the transcription records that the original publication document was unavailable. It is pinned here so a repealed guarantee does not become unreadable.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "1976-02-11",
+      "amendmentRows": 0,
+      "patches": [],
       "file": null,
       "doc": "docs/in-equal-remuneration-act-1976.json",
       "followedBy": [
         "in-code-on-wages-2019"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-payment-of-bonus-act-1965",
@@ -2068,11 +2402,18 @@
       "status": "Repealed by the Code on Wages, 2019.",
       "note": "Full text as published by the Ministry of Labour and Employment.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "1965-09-25",
+      "amendmentRows": 46,
+      "patches": [],
       "file": null,
       "doc": "docs/in-payment-of-bonus-act-1965.json",
       "followedBy": [
         "in-code-on-wages-2019"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-minimum-wages-act-1948",
@@ -2098,11 +2439,18 @@
       "status": "Repealed by the Code on Wages, 2019.",
       "note": "Full text as published by the Ministry of Labour and Employment on its Reportsamadhan portal.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "1948-03-15",
+      "amendmentRows": 30,
+      "patches": [],
       "file": null,
       "doc": "docs/in-minimum-wages-act-1948.json",
       "followedBy": [
         "in-code-on-wages-2019"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "in-payment-of-wages-act-1936",
@@ -2128,11 +2476,18 @@
       "status": "Repealed by the Code on Wages, 2019.",
       "note": "Full text of the central Act as printed by the Maharashtra Labour Department. The Ministry of Labour pages for the repealed wage laws no longer resolve to the Act text, so the archive holds this official state printing of the central statute.",
       "follows": [],
+      "amends": null,
+      "versionOf": null,
+      "asOf": "1936-04-23",
+      "amendmentRows": 114,
+      "patches": [],
       "file": null,
       "doc": "docs/in-payment-of-wages-act-1936.json",
       "followedBy": [
         "in-code-on-wages-2019"
-      ]
+      ],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-nsp",
@@ -2160,7 +2515,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-ssy",
@@ -2188,7 +2545,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-poshan",
@@ -2216,7 +2575,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-pmkisan",
@@ -2244,7 +2605,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-svanidhi",
@@ -2272,7 +2635,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-jjm",
@@ -2300,7 +2665,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-eshram",
@@ -2328,7 +2695,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-vishwakarma",
@@ -2356,7 +2725,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-pmuy",
@@ -2384,7 +2755,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-saubhagya",
@@ -2412,7 +2785,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-mgnrega",
@@ -2440,7 +2815,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-pmayg",
@@ -2468,7 +2845,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     },
     {
       "id": "scheme-pmjay",
@@ -2496,7 +2875,9 @@
       "follows": [],
       "file": null,
       "doc": null,
-      "followedBy": []
+      "followedBy": [],
+      "amendedBy": [],
+      "versions": []
     }
   ]
 }

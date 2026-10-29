@@ -76,6 +76,79 @@ never disagree. A `follows` id that is not in the register fails the build.
 Then run the build. It validates the source, the kind, the coverage, the doc
 path and the hash before it writes `index.json`.
 
+## The amendment ledger
+
+A consolidated Indian statute prints its own history in footnotes:
+
+> 1. Subs. by Act 24 of 2019, s. 2, for "for a term of five years from the
+>    date on which he enters upon his office" (w.e.f. 24-10-2019).
+
+Each footnote is one patch, and `src/lib/legal/ledger.js` reads them: the
+amending instrument, that instrument's section, the operation, the words it
+replaced, and the date it took effect. The record page prints the result as an
+amendment history, newest first, with the raw footnote behind a disclosure so
+the row can be checked against the text.
+
+The parser follows two rules. Every footnote-starting line becomes a row, so a
+field it cannot read is a partial row rather than a missing one; and it never
+interprets the amendment, so it does not claim to show the statute as it stood
+before a patch.
+
+A statute that amends another names it in the doc:
+
+```json
+"amends": "in-rti-act-2005"
+```
+
+The build refuses an `amends` that points at nothing or at a record that is not
+a statute, and derives `amendedBy` on the principal so both directions agree.
+When the amending Act is held, the build also stores the section map it prints
+("in section 13"), and the ledger row on the principal can then say which
+section changed. With the RTI Act the four 2019 patches resolve to sections 13,
+16 and 27.
+
+The three wage statutes resolve no targets, and that is deliberate. Their
+prints gather footnotes in blocks at the foot of each page, and extraction
+strips the reference marks, so a note's position says nothing about the section
+it amends. Note 7 of the Payment of Wages print sits under section 5 and amends
+section 6 (a Kerala amendment): reading the target off the page would attach a
+2017 proviso to the wrong section. Resolving these rows needs a witness outside
+the page — the amending Act, whose own text names the section, or an earlier
+text of the principal Act, where the words a note quotes can be found in their
+section. Neither is held for the wage statutes yet.
+
+## Versions and checkout
+
+An earlier text of the same statute names the record it is a version of, and
+the date of its own text:
+
+```json
+"versionOf": "in-rti-act-2005",
+"asOf": "2011-02-01"
+```
+
+`asOf` is the date of the *text*, not of the Act. The RTI Act is dated 15 June
+2005, and the archive holds two texts of it: consolidated to 1 February 2011 and
+to 18 November 2025. A record's `date` stays the instrument's date, so a
+twenty-year-old Act does not read as if it were enacted twice. The build orders
+the group by `asOf`, refuses a version dated on or after the text it is a
+version of, and gives every member the list, so either page can open the other.
+
+With an earlier text and a ledger that names sections, a record can check out a
+section as it stood before the patch. `src/lib/legal/versions.js` finds a
+section by taking the occurrence that has text under it — a bare Act prints its
+headings twice, once in the contents and once in the body — and the record page
+shows the before and after side by side with a vocabulary overlap. The overlap
+is not a verdict: the 2011 copy is a scan, so part of the distance is OCR, and
+the page says so rather than claiming the law changed where it did not.
+
+Checkout is deliberately scoped to the sections the ledger names. It does not
+reconstruct the older text by reversing amendments: two of the 2019 patches
+replace whole sub-sections whose earlier wording the consolidation never prints,
+so a reconstruction would be a guess. Holding an earlier official text is the
+honest alternative, and where the archive has not collected one, the page has
+nothing to check out.
+
 ## The historical spine
 
 The register holds each document on its own terms, but the useful depth is the

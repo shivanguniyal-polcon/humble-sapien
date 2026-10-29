@@ -16,6 +16,8 @@ import {
   searchArchive,
   sortArchive,
 } from '../src/lib/archive.js';
+import { ledgerHistory, parseAmendmentLedger, parseAmendingAct } from '../src/lib/legal/ledger.js';
+import { checkoutSections, sectionOf } from '../src/lib/legal/versions.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
@@ -184,6 +186,125 @@ function ok(name, cond, detail = '') {
       const doc = record?.doc ? readJson(`src/data/archive/${record.doc}`) : null;
       return doc?.text && sha256(doc.text) === record.hash;
     }));
+}
+
+// 2e. The amendment ledger: every footnote a consolidated statute prints is
+//     one patch, the amending Act says which section it reached, and a row
+//     that cannot be read says so instead of disappearing.
+{
+  const ledgerOf = (id) => {
+    const record = ARCHIVE.records.find((entry) => entry.id === id);
+    const doc = record?.doc ? readJson(`src/data/archive/${record.doc}`) : null;
+    return parseAmendmentLedger(doc?.text || '');
+  };
+
+  const rti = ledgerOf('in-rti-act-2005');
+  ok('the RTI Act carries its printed amendment history', rti.rows.length === 15, String(rti.rows.length));
+  ok('every printed footnote becomes a row', rti.footnotes === rti.rows.length && rti.partial === 0);
+  ok('the ledger reads the amending Act and its section',
+    rti.rows.some((row) => row.instrument === 'Act 24 of 2019' && row.amendingSection === '2'));
+  ok('the ledger quotes the words a patch replaced',
+    rti.rows.some((row) => /for a term of five years/.test(row.oldText || '')));
+  ok('the ledger resolves a printed commencement date',
+    rti.rows.filter((row) => row.effective === '2019-10-24').length === 5);
+
+  const amending = ARCHIVE.records.find((entry) => entry.id === 'in-rti-amendment-act-2019');
+  const amendingDoc = readJson(`src/data/archive/${amending.doc}`);
+  ok('the amending Act is pinned as its own record',
+    amending.refNo === 'Act No. 24 of 2019' && sha256(amendingDoc.text) === amending.hash);
+  const patches = parseAmendingAct(amendingDoc.text);
+  ok('the amending Act names the sections it reaches',
+    patches.length === 3 && patches.map((patch) => patch.target).join(',') === '13,16,27',
+    patches.map((patch) => `${patch.section}->${patch.target}`).join(','));
+  ok('the index carries the section map for the page',
+    (amending.patches || []).map((patch) => patch.target).join(',') === '13,16,27');
+
+  const history = ledgerHistory(rti, patches);
+  const targeted = history.filter((row) => row.target);
+  ok('a ledger row names the section of this Act it changed',
+    targeted.length === 5 && targeted.every((row) => [13, 16, 27].includes(row.target)),
+    targeted.map((row) => row.target).join(','));
+  ok('a patch from another Act is not given a target it does not have',
+    history.filter((row) => row.instrument === 'Act 22 of 2023').every((row) => row.target === null));
+
+  const principal = ARCHIVE.records.find((entry) => entry.id === 'in-rti-act-2005');
+  ok('the principal Act lists the Act that amended it',
+    (principal.amendedBy || []).includes('in-rti-amendment-act-2019'));
+
+  // The other three print their footnotes in blocks at the foot of a page with
+  // the reference marks stripped, so a footnote's position says nothing about
+  // the section it amends. The ledger holds the history and claims no target;
+  // the regression below is the case that proved it.
+  for (const id of ['in-payment-of-wages-act-1936', 'in-payment-of-bonus-act-1965', 'in-minimum-wages-act-1948']) {
+    const ledger = ledgerOf(id);
+    ok(`${id} keeps every printed footnote as a row`,
+      ledger.footnotes === ledger.rows.length && ledger.rows.length === ARCHIVE.records.find((entry) => entry.id === id).amendmentRows,
+      `${ledger.footnotes}/${ledger.rows.length}`);
+    ok(`${id} claims no section it cannot prove`,
+      ledgerHistory(ledger, []).every((row) => row.target === null));
+  }
+
+  // Note 7 of the Payment of Wages print sits under section 5 and belongs to a
+  // Kerala amendment of section 6. Reading the target off the page would put a
+  // 2017 proviso on the wrong section, so the row keeps its printed reference
+  // and no target.
+  {
+    const wages = ledgerOf('in-payment-of-wages-act-1936');
+    const row = wages.rows.find((entry) => /Act 1 of 2017/.test(entry.raw));
+    ok('a footnote that names another section is not pinned to the one above it',
+      Boolean(row) && /section 6/.test(row.oldReference || '') && row.printedSection === undefined,
+      row?.oldReference || 'row not found');
+  }
+
+  // Shapes the parser has to survive: an adaptation order, a gazette
+  // notification, and "ibid." pointing at the instrument above it.
+  const sample = parseAmendmentLedger(
+    ['1. Subs. by Act 24 of 2019, s. 2, for "five years" (w.e.f. 24-10-2019).',
+      '2. Ins. by s. 4, ibid. (w.e.f. 24-10-2019).',
+      '3. Subs. by the A.O. 1950, for "the Crown".',
+      '4. Subs. by notification No. G.S.R. 319(E), dated 4-5-2021.'].join('\n'),
+  );
+  ok('ibid. takes the instrument from the row above',
+    sample.rows[1].instrument === 'Act 24 of 2019' && sample.rows[1].resolved === 'ibid');
+  ok('an adaptation order is not read as an Act', sample.rows[2].instrumentKind === 'order');
+  ok('a gazette notification keeps its number', /G\.S\.R\. 319\(E\)/.test(sample.rows[3].instrument || ''));
+}
+
+// 2f. Versions: two pinned texts of one Act, and a checkout that reads the
+//     sections an amendment named in the state they were in before it.
+{
+  const principal = ARCHIVE.records.find((entry) => entry.id === 'in-rti-act-2005');
+  const earlier = ARCHIVE.records.find((entry) => entry.id === 'in-rti-act-2005-2011');
+  ok('the earlier text is a version of the RTI Act', earlier?.versionOf === 'in-rti-act-2005');
+  ok('both records carry the same version group',
+    principal?.versions?.length === 2 && earlier?.versions?.length === 2);
+  ok('the group is ordered by the date of the text',
+    principal.versions[0].id === 'in-rti-act-2005-2011' && principal.versions[1].asOf === '2025-11-18');
+  ok('the earlier text predates the 2019 amendment',
+    earlier.asOf < '2019-10-24' && !/such term as may be prescribed/.test(readJson(`src/data/archive/${earlier.doc}`).text));
+
+  const now = readJson(`src/data/archive/${principal.doc}`).text;
+  const old = readJson(`src/data/archive/${earlier.doc}`).text;
+  const before = sectionOf(old, 13);
+  const after = sectionOf(now, 13);
+  ok('section 13 is readable in both texts', Boolean(before?.text) && Boolean(after?.text));
+  // Both copies break lines mid-phrase, so the checks read the section as one
+  // run of words rather than trusting where the PDF put its line ends.
+  const run = (text) => String(text).replace(/\s+/g, ' ');
+  ok('the section as it stood says five years', /for a term of five years/.test(run(before.text)));
+  ok('the section as it stands leaves the term to rules',
+    /such term as may be prescribed by the Central Government/.test(run(after.text)) &&
+      !/for a term of five years/.test(run(after.text)));
+
+  const rows = checkoutSections(old, now, [13, 16, 27]);
+  ok('the checkout covers each section the ledger names',
+    rows.length === 3 && rows.every((row) => row.before && row.after), String(rows.length));
+  ok('the checkout reports how far apart the two texts are',
+    rows.every((row) => row.similarity > 0 && row.similarity < 1));
+  ok('a section the ledger does not name is not invented',
+    !rows.some((row) => row.number === 8));
+  ok('the 2011 copy is held as it reads, OCR included',
+    /\(\/\)/.test(before.text) && /Govemment|tbr/.test(old));
 }
 
 // 3. Search crosses issuers and kinds.

@@ -17,6 +17,7 @@ export default function Logo({
   className = '',
   label = 'The Humble Sapien',
   mode = 'interactive', // 'interactive' (glow on hover) | 'scroll' (glow scrubs with scroll)
+  markOnly = false, // the mark alone, cropped to its own box (the floating stamp)
 }) {
   const svgRef = useRef(null);
   const markRef = useRef(null);
@@ -76,9 +77,11 @@ export default function Logo({
     <svg
       ref={svgRef}
       className={`brand-lockup ${className}`.trim()}
-      viewBox="0 0 280 64"
-      role="img"
-      aria-label={label}
+      viewBox={markOnly ? '6 9 48 47' : '0 0 280 64'}
+      role={markOnly ? undefined : 'img'}
+      aria-label={markOnly ? undefined : label}
+      aria-hidden={markOnly ? 'true' : undefined}
+      focusable="false"
     >
       <g transform="translate(6 9) scale(0.46)">
         <path
@@ -89,9 +92,11 @@ export default function Logo({
           fillRule="evenodd"
         />
       </g>
-      <text className="brand-word" x="62" y="40">
-        The Humble Sapien
-      </text>
+      {!markOnly && (
+        <text className="brand-word" x="62" y="40">
+          The Humble Sapien
+        </text>
+      )}
     </svg>
   );
 }

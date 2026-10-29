@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useState } from 'react';
 import PageHead from '../components/PageHead';
+import DeepTime from '../components/DeepTime';
 import ARCHIVE from '../data/archive/index.json';
+import { ledgerHistory, parseAmendmentLedger, sortLedger } from '../lib/legal/ledger.js';
+import { checkoutSections } from '../lib/legal/versions.js';
 import {
   archiveCitation,
   archiveDocMatches,
@@ -12,12 +15,12 @@ import {
   sortArchive,
 } from '../lib/archive.js';
 
-// The public archive is a separate read-only surface, and it is deliberately
-// wider than the Prahari workbench. The workbench reads one regulator's
-// instruments for a decision; the archive holds what the government published
-// across Parliament, ministries, regulators and programme owners. A record
-// here is an issuer, a title, a date and reference where they exist, the part
-// of the text the archive holds, and a link back to the source.
+// Smriti — the public archive — is a separate read-only surface, and it is
+// deliberately wider than the Prahari workbench. The workbench reads one
+// regulator's instruments for a decision; Smriti holds what the government
+// published across Parliament, ministries, regulators and programme owners. A
+// record here is an issuer, a title, a date and reference where they exist,
+// the part of the text Smriti holds, and a link back to the source.
 //
 // Browsing is metadata only. The first search loads the archived text, and
 // programme pages stay as their summaries and links.
@@ -74,20 +77,20 @@ const longDate = (iso) => {
 
 const coverageNote = (meta) => {
   if (meta.coverage === 'programme-page') {
-    return 'This record indexes the official programme page, not the legal text. Any full text held by the archive is listed as a separate record.';
+    return 'This record indexes the official programme page, not the legal text. Any full text held by Smriti is listed as a separate record.';
   }
   if (meta.coverage === 'summary') {
-    return 'This is a summary held by the archive, not the published text. Read the release at the source.';
+    return 'This is a summary held by Smriti, not the published text. Read the release at the source.';
   }
   if (meta.coverage === 'excerpt') {
-    return 'This is the text pinned for the archive, not a full consolidation. Read the published document at the source.';
+    return 'This is the text pinned for Smriti, not a full consolidation. Read the published document at the source.';
   }
   return 'This is the text as published, pinned for this library. It is not a legal consolidation and does not claim the instrument is still in force.';
 };
 
 const textHeading = (meta) => {
-  if (meta.coverage === 'summary') return 'Summary in the archive';
-  if (meta.coverage === 'excerpt') return 'Selected text in the archive';
+  if (meta.coverage === 'summary') return 'Summary in Smriti';
+  if (meta.coverage === 'excerpt') return 'Selected text in Smriti';
   return 'Pinned text';
 };
 
@@ -113,6 +116,8 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
   const [doc, setDoc] = useState(null);
   const [docError, setDocError] = useState(null);
   const [copied, setCopied] = useState(null);
+  const [earlier, setEarlier] = useState(null);
+  const [earlierBusy, setEarlierBusy] = useState(false);
 
   const ref = openId ? String(openId) : null;
   const meta = ref ? ARCHIVE.records.find((entry) => entry.id === ref) || null : null;
@@ -123,6 +128,65 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
   const open = (id) => onOpen?.(id);
   const back = () => onBack?.();
   const openWorkbench = () => onNavigate?.('work', 'monitor');
+
+  // The amendment ledger is read from the text the page already holds, so the
+  // index stays metadata. A patch is tied to the section it changed only when
+  // the archive also holds the amending Act.
+  const history = useMemo(() => {
+    if (!meta || !currentDoc?.text || !meta.amendmentRows) return null;
+    const ledger = parseAmendmentLedger(currentDoc.text);
+    const patches = [];
+    for (const entry of ARCHIVE.records) {
+      if (entry.amends === meta.id) patches.push(...(entry.patches || []));
+    }
+    return { ledger, rows: sortLedger(ledgerHistory(ledger, patches)) };
+  }, [meta, currentDoc]);
+
+  // Checkout: the earlier pinned text of this statute, loaded only when the
+  // reader asks for it. Browsing the record never pays for the second text.
+  const olderVersion = useMemo(() => {
+    if (!meta?.versions?.length || !currentDoc?.text) return null;
+    const older = meta.versions.filter((version) => version.asOf < meta.asOf).pop();
+    return older ? ARCHIVE.records.find((entry) => entry.id === older.id) || null : null;
+  }, [meta, currentDoc]);
+
+  const targets = useMemo(
+    () => [...new Set((history?.rows || []).map((row) => row.target).filter(Boolean))],
+    [history],
+  );
+
+  // A loaded earlier text belongs to the record it was loaded for, so opening
+  // another record never pairs one statute's text with another's sections.
+  const earlierForThis = earlier?.forRef === ref ? earlier : null;
+
+  const comparison = useMemo(() => {
+    if (!earlierForThis?.text || !currentDoc?.text || !targets.length) return null;
+    return checkoutSections(earlierForThis.text, currentDoc.text, targets);
+  }, [earlierForThis, currentDoc, targets]);
+
+  const loadEarlier = async () => {
+    if (!olderVersion || earlierBusy) return;
+    setEarlierBusy(true);
+    try {
+      const loaded = await loadDoc(olderVersion);
+      setEarlier({ forRef: ref, id: olderVersion.id, text: loaded.text || '' });
+    } finally {
+      setEarlierBusy(false);
+    }
+  };
+
+  // A ledger row names an Act by number and year; the register names it by
+  // reference. Match the two so the row can open the amending Act itself.
+  const actRecord = (label) => {
+    const named = String(label || '').match(/Act\s+(?:No\.\s*)?(\d+)\s+of\s+(\d{4})/i);
+    if (!named) return null;
+    return (
+      ARCHIVE.records.find((entry) => {
+        const ref = String(entry.refNo || '').match(/Act\s+(?:No\.\s*)?(\d+)\s+of\s+(\d{4})/i);
+        return ref && Number(ref[1]) === Number(named[1]) && Number(ref[2]) === Number(named[2]);
+      }) || null
+    );
+  };
 
   // A lineage edge is another archive record, so it opens in place rather than
   // sending the reader to the issuer's site.
@@ -228,14 +292,14 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
     return (
       <div className="archive">
         <button type="button" className="linklike" onClick={back}>
-          ← The archive
+          ← Smriti
         </button>
-        <PageHead eyebrow="Public archive · Government of India" title="Not in the archive">
-          The archive holds {ARCHIVE.counts.records} records from {ARCHIVE.counts.sources} issuers.
+        <PageHead eyebrow="Public archive · Government of India" title="Not in Smriti">
+          Smriti holds {ARCHIVE.counts.records} records from {ARCHIVE.counts.sources} issuers.
           The id in this link is not one of them.
         </PageHead>
         <button type="button" className="btn btn-secondary" onClick={back}>
-          Back to the archive
+          Back to Smriti
         </button>
       </div>
     );
@@ -246,13 +310,13 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
       return (
         <div className="archive">
           <button type="button" className="linklike" onClick={back}>
-            ← The archive
+            ← Smriti
           </button>
           <PageHead eyebrow={`Public archive · ${meta.issuerShort}`} title={meta.title} />
           <div className="card monitor-empty">
             <p>{currentError}</p>
             <button type="button" className="btn btn-secondary" onClick={back}>
-              Back to the archive
+              Back to Smriti
             </button>
           </div>
         </div>
@@ -263,7 +327,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
       return (
         <div className="archive">
           <button type="button" className="linklike" onClick={back}>
-            ← The archive
+            ← Smriti
           </button>
           <div className="card monitor-empty" role="status">
             <p>Reading the record…</p>
@@ -280,7 +344,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
     return (
       <div className="archive">
         <button type="button" className="linklike" onClick={back}>
-          ← The archive
+          ← Smriti
         </button>
         <PageHead eyebrow={`Public archive · ${meta.issuerShort}`} title={meta.title} />
 
@@ -356,24 +420,160 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
           {meta.hash ? (
             <p className={verified ? 'meta' : 'monitor-error'}>
               {verified
-                ? 'The text hash matches the archive index.'
-                : 'The text hash does not match the archive index. Treat this copy as unverified.'}
+                ? 'The text hash matches the index entry.'
+                : 'The text hash does not match the index entry. Treat this copy as unverified.'}
             </p>
           ) : null}
           {hasText ? (
             <p className="meta">
-              The text above is the archive's own copy. The hash checks that copy, not the live
+              The text above is Smriti's own copy. The hash checks that copy, not the live
               document, so the record stays citable if the source withdraws, moves or redacts it.
             </p>
           ) : null}
           <p className="meta">{meta.note || coverageNote(meta)}</p>
         </div>
 
+        {meta.versions?.length > 1 ? (
+          <div className="card archive-lineage">
+            <h3>Versions</h3>
+            <p className="meta">
+              Pinned texts of this Act, ordered by the date the text was consolidated. Opening one reads
+              the law as it stood then; each carries its own hash.
+            </p>
+            <ul className="archive-lineage-list">
+              {meta.versions.map((version) => (
+                <li key={version.id}>
+                  {version.id === meta.id ? (
+                    <span>{version.label} (this record)</span>
+                  ) : (
+                    <button type="button" className="linklike" onClick={() => open(version.id)}>
+                      {version.label}
+                    </button>
+                  )}
+                  <span className="meta">
+                    {' '}
+                    · text as on {longDate(version.asOf)} · {Number(version.words).toLocaleString('en-IN')} words
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
+        {meta.amends ? (
+          <div className="card archive-lineage">
+            <h3>Amends</h3>
+            <p className="meta">
+              This Act changes a statute already in the register, {meta.patches?.length ? 'and names the sections it reaches' : 'by an amendment Smriti does not break down'}.
+            </p>
+            {lineageList([meta.amends])}
+            {meta.patches?.length ? (
+              <p className="meta archive-ledger-quote">
+                Changes section {meta.patches.map((patch) => patch.target).join(', section ')} of the principal Act.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+
+        {history && history.rows.length ? (
+          <div className="card archive-ledger">
+            <h3>Amendment history</h3>
+            <p className="meta">
+              Read from the footnotes this consolidated text prints, not reconstructed. {history.rows.length} patches
+              {history.ledger.partial ? `, ${history.ledger.partial} only partly read` : ''}
+              {history.rows.filter((row) => row.effective).length
+                ? `, ${history.rows.filter((row) => row.effective).length} with a commencement date`
+                : ''}
+              . Where Smriti also holds the amending Act, the patch opens it and names the section it changed.
+            </p>
+            <ul className="archive-ledger-list">
+              {history.rows.map((row, index) => {
+                const record = actRecord(row.instrument);
+                return (
+                  <li key={`${row.number}-${index}`} className="archive-ledger-row">
+                    <p className="archive-ledger-head">
+                      {record ? (
+                        <button type="button" className="linklike" onClick={() => open(record.id)}>
+                          {record.shortTitle || record.title}
+                        </button>
+                      ) : (
+                        <span>{row.instrument || 'Instrument not named in the footnote'}</span>
+                      )}
+                      {row.amendingSection ? <span className="meta"> · s. {row.amendingSection}</span> : null}
+                      {row.target ? <span className="meta"> → section {row.target} of this Act</span> : null}
+                    </p>
+                    <p className="meta">
+                      {row.operation}
+                      {row.effective
+                        ? ` · in force ${longDate(row.effective)}`
+                        : ' · no commencement date printed'}
+                    </p>
+                    {row.oldText ? <p className="meta archive-ledger-quote">Replaced “{row.oldText}”</p> : null}
+                    {!row.oldText && row.oldReference ? (
+                      <p className="meta archive-ledger-quote">Replaced {row.oldReference}</p>
+                    ) : null}
+                    <details className="archive-ledger-raw">
+                      <summary className="meta">Printed footnote</summary>
+                      <code>{row.raw}</code>
+                    </details>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        ) : null}
+
+        {olderVersion && targets.length ? (
+          <div className="card archive-checkout">
+            <h3>As it stood before the patch</h3>
+            <p className="meta">
+              The ledger names section {targets.join(', section ')} of this Act. Smriti also holds an
+              earlier text, whose date the record below gives. Loading it shows the words before the
+              amending Act reached them.
+            </p>
+            {!comparison ? (
+              <button type="button" className="btn btn-secondary" onClick={loadEarlier} disabled={earlierBusy}>
+                {earlierBusy
+                  ? 'Loading the earlier text…'
+                  : `Read section ${targets.join(', ')} in the ${longDate(olderVersion.asOf).split(' ').pop()} text`}
+              </button>
+            ) : (
+              <>
+                {comparison.map((section) => (
+                  <div key={section.number} className="archive-section-compare">
+                    <p className="archive-ledger-head">
+                      Section {section.number} · {section.title}
+                    </p>
+                    <p className="meta">
+                      Vocabulary overlap {section.similarity.toFixed(2)} — a low figure can mean the law changed
+                      or the older copy was scanned badly, and this one is a scan.
+                    </p>
+                    <div className="archive-section-pair">
+                      <div>
+                        <p className="meta archive-ledger-label">Before · {longDate(olderVersion.asOf)}</p>
+                        <p className="archive-section-text">{section.before || 'Not in the earlier text.'}</p>
+                      </div>
+                      <div>
+                        <p className="meta archive-ledger-label">After · {longDate(meta.asOf)}</p>
+                        <p className="archive-section-text">{section.after || 'Not in this text.'}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <p className="meta">
+                  Both texts are Smriti's own copies, hashed. The earlier one is kept as it reads, OCR
+                  damage included, rather than corrected to match.
+                </p>
+              </>
+            )}
+          </div>
+        ) : null}
+
         {meta.follows?.length || meta.followedBy?.length ? (
           <div className="card archive-lineage">
             <h3>Lineage</h3>
             <p className="meta">
-              Where this text sits in the archive's chain. The record's status says whether a successor
+              Where this text sits in Smriti's chain. The record's status says whether a successor
               replaced it.
             </p>
             {meta.follows?.length ? (
@@ -423,7 +623,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
             <>
               <h3>{textHeading(meta)}</h3>
               <p className="meta">
-                The text the hash covers, with its published line breaks. The archive does not add
+                The text the hash covers, with its published line breaks. Smriti does not add
                 an interpretation.
               </p>
               <pre className="monitor-source archive-source">{currentDoc.text}</pre>
@@ -433,7 +633,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
               <h3>What this record holds</h3>
               <p>
                 {meta.summary ||
-                  'The archive indexes this record but does not hold its text. Read the official source for the published document.'}
+                  'Smriti indexes this record but does not hold its text. Read the official source for the published document.'}
               </p>
               {sourceUrl ? (
                 <p className="meta">
@@ -459,11 +659,11 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
     <div className="archive">
       <PageHead
         eyebrow="Public archive · Government of India"
-        title="The public archive"
+        title="Smriti — The Archive"
         question="What did the government actually publish?"
       >
-        Records from Parliament, ministries, the Reserve Bank and programme owners. Where the
-        archive holds the text, it is pinned by SHA-256; where it holds a summary or a programme
+        Records from Parliament, ministries, the Reserve Bank and programme owners. Where Smriti
+        holds the text, it is pinned by SHA-256; where it holds a summary or a programme
         page, the record says so and links to the official source. The RBI workbench remains a
         separate reading surface.
       </PageHead>
@@ -481,6 +681,25 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
           as their summaries and links.
         </p>
       </div>
+
+      {/* The long view, kept above the records: what a reader could reach in
+          each era, and the tool built for what that era broke. It sits here
+          rather than at the foot of the list because eighty-four records would
+          bury it; the archive argues first, then lets the reader search. */}
+      <section className="strata" aria-labelledby="deep-time-title">
+        <div className="shell">
+          <div className="section-head">
+            <span className="overline">Deep time</span>
+            <h2 id="deep-time-title">Who could read the rules, era by era</h2>
+            <p className="section-strap">
+              Every era moved the gate. Walk the timeline: each one names who
+              held it, and the tool THS built to break it open. Start anywhere,
+              or use the arrow keys.
+            </p>
+          </div>
+          <DeepTime onNavigate={onNavigate} />
+        </div>
+      </section>
 
       <div className="archive-sources">
         <p className="meta archive-source-label">Browse by issuer</p>
@@ -509,7 +728,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
 
       <div className="card archive-controls">
         <label>
-          Search the archive
+          Search Smriti
           <input
             type="search"
             value={search}

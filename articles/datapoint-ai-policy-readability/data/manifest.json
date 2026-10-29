@@ -1,0 +1,54 @@
+{
+  "algorithm": "sha256",
+  "note": "Hashes cover the exact bytes offered for download on this page.",
+  "files": [
+    {
+      "path": "data/corpus.json",
+      "role": "corpus",
+      "bytes": 894520,
+      "sha256": "9edd2270eeb22d94107eec4b3abf79ee289c7deb33161ba9e97952ed9429a633"
+    },
+    {
+      "path": "data/results.json",
+      "role": "results",
+      "bytes": 94326,
+      "sha256": "f0f02230a8597c7d139e9235b27ee61926ad8dc6fe75e4ed97a89669a71ce45d"
+    },
+    {
+      "path": "data/receipts.md",
+      "role": "receipts",
+      "bytes": 6399,
+      "sha256": "52d3fc7734780d007ba128951f7d517d701cddb07921ff12b9fa0377755e333f"
+    },
+    {
+      "path": "figures/fig1-readability.svg",
+      "role": "figure",
+      "bytes": 14120,
+      "sha256": "c41d77c6a8c9665a363808be3beb9436d54be258a9b3dfc1d4c0a8022ca2a847"
+    },
+    {
+      "path": "figures/fig2-quadrant.svg",
+      "role": "figure",
+      "bytes": 10271,
+      "sha256": "1c3f28a1da9253c2209e146c7745c54008ef5bc3ead1b7a5fdccf6a2f5d7c80e"
+    },
+    {
+      "path": "figures/fig3-dumbbell.svg",
+      "role": "figure",
+      "bytes": 11859,
+      "sha256": "2c6323c8f937289009f17412cb9c194548ff7521a6f684af226ffff43fbcba02"
+    },
+    {
+      "path": "figures/fig4-permutation.svg",
+      "role": "figure",
+      "bytes": 8562,
+      "sha256": "30ecac973fafb1a3a3074ce18560df682a02656c4b9110940aa6b93ccf4f018f"
+    },
+    {
+      "path": "figures/fig5-vocabulary.svg",
+      "role": "figure",
+      "bytes": 19359,
+      "sha256": "a884937b73590c9b03008d76efefc75d53fe771267037c6fef7a30a01ede325b"
+    }
+  ]
+}

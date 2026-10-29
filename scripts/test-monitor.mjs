@@ -27,11 +27,19 @@ import {
   profileLabel,
 } from '../src/lib/monitor/pack.js';
 import { filterObligations, summarise } from '../src/lib/legal/applicability.js';
+import {
+  archiveCitation,
+  archiveFileName,
+  archiveRecord,
+  archiveRecordJson,
+  searchArchive,
+} from '../src/lib/archive.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
 
 const INDEX = readJson('src/data/monitor/index.json');
+const ARCHIVE = readJson('src/data/archive/index.json');
 const sha256 = (text) => `sha256:${createHash('sha256').update(text, 'utf8').digest('hex')}`;
 
 let failures = 0;
@@ -232,6 +240,47 @@ function ok(name, cond, detail = '') {
     packFileName({ refNo: 'no reference', title: 'A Circular on Exposures', date: '2026-10-24' }, 'md'));
   const xml = Buffer.from(docx.bytes).toString('latin1');
   ok('the DOCX carries the manifest line', xml.includes(manifest.outputHash));
+}
+
+// 7. The public archive: the same pinned text, a read-only search, a citation
+//    and a downloaded record that carries its own hash and address. The full
+//    cross-government checks live in scripts/test-archive.mjs; this block
+//    only proves the RBI slice and the workbench cannot drift apart.
+{
+  const meta = ARCHIVE.records.find((entry) => entry.id === '13742');
+  const chunk = readJson(`src/data/monitor/${meta.file}`);
+  const record = archiveRecord(meta, chunk);
+  ok('the archive record carries the pinned text', record.text === chunk.text);
+
+  const hit = searchArchive([record], 'UAPA')[0];
+  ok('the archive finds a word in the instrument body', Boolean(hit), 'UAPA');
+  ok('the archive snippet quotes the match', /UAPA/i.test(hit?.snippet || ''), hit?.snippet);
+  ok('the archive search is an AND over terms',
+    searchArchive([record], 'UAPA sanctions').length === 1 &&
+      searchArchive([record], 'UAPA nonexistentterm').length === 0);
+  ok('the archive searches the reference number',
+    searchArchive([record], meta.refNo).length === 1, meta.refNo);
+
+  const citation = archiveCitation({ ...meta, sourceUrl: chunk.sourceUrl });
+  ok('the citation names the central bank, reference and hash',
+    /Reserve Bank of India/.test(citation) && citation.includes(meta.refNo) &&
+      citation.includes(meta.hash), citation);
+  ok('the citation carries the source URL', citation.includes(chunk.sourceUrl));
+
+  const json = JSON.parse(archiveRecordJson(meta, chunk, '2026-10-27T00:00:00.000Z'));
+  ok('the downloaded record carries the text and the hash',
+    json.record.hash === meta.hash && json.record.text === chunk.text &&
+      json.retrieved === '2026-10-27T00:00:00.000Z');
+  ok('the downloaded record links back to the archive',
+    json.archiveUrl === `#/archive/${meta.id}`, json.archiveUrl);
+  ok('the download filename is readable',
+    /^archive-rbi-rbi-2026-27-296\.json$/.test(archiveFileName(meta)), archiveFileName(meta));
+  ok('every pinned instrument has a public record',
+    INDEX.instruments.every((entry) => {
+      const doc = readJson(`src/data/monitor/${entry.file}`);
+      const publicRecord = ARCHIVE.records.find((record) => record.id === String(entry.id));
+      return Boolean(doc.text) && doc.hash === entry.hash && publicRecord?.hash === entry.hash;
+    }));
 }
 
 console.log(failures === 0 ? '\nAll monitor checks passed.' : `\n${failures} monitor check(s) FAILED.`);

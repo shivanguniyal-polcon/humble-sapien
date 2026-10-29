@@ -16,6 +16,7 @@ const Research = lazy(() => import('./sections/Research'));
 const Work = lazy(() => import('./sections/Work'));
 const Data = lazy(() => import('./sections/Data'));
 const Archive = lazy(() => import('./sections/Archive'));
+const SolutionIndex = lazy(() => import('./sections/SolutionIndex'));
 const Compare = lazy(() => import('./sections/Compare'));
 const Writing = lazy(() => import('./sections/Writing'));
 const Newsletter = lazy(() => import('./sections/Newsletter'));
@@ -67,7 +68,7 @@ const TABS = [
       { id: 'opendata', label: 'Open data directory' },
     ],
   },
-  { id: 'archive', label: 'Archive' },
+  { id: 'archive', label: 'Smriti — The Archive' },
   {
     id: 'compare',
     label: 'Atlas',
@@ -84,9 +85,17 @@ const TABS = [
   { id: 'support', label: 'Support' },
 ];
 
+// The V panel lists every destination, including the families — Tools,
+// Research, Data, Atlas — as one alphabetical list. A standing menu reads
+// better alphabetically than in the order the site happened to grow, and it
+// is derived from TABS, so a new tab appears without touching this code.
+// Sub-routes stay out: they belong to the page that owns them.
+const MENU_TABS = [...TABS].sort((a, b) => a.label.localeCompare(b.label));
+
 // Hash routes give every surface a stable URL: #/tools/lab, #/research/pmjay-model.
 const HASH_TO_TAB = {
   home: 'home',
+  index: 'index',
   tools: 'work',
   research: 'research',
   data: 'data',
@@ -173,122 +182,94 @@ export default function App() {
     if (menuRef.current) menuRef.current.open = false;
   };
 
-  // Keep an open dropdown inside the viewport: measure the panel as if open,
-  // and flip it to right-anchored when it would hang past the edge. Measured
-  // on every open rather than guessed from tab order, because the nav wraps
-  // and nth-child position says nothing about horizontal room.
-  const alignMenu = (e) => {
-    const menu = e.currentTarget.querySelector('.nav-menu');
-    if (!menu) return;
-    menu.style.display = 'block';
-    menu.style.visibility = 'hidden';
-    const overflow =
-      menu.getBoundingClientRect().right >
-      document.documentElement.clientWidth - 8;
-    menu.style.display = '';
-    menu.style.visibility = '';
-    menu.classList.toggle('nav-menu-flip', overflow);
-  };
+  // The V panel has no scrim and pushes nothing, so a click on the page behind
+  // it must dismiss it whenever the click lands outside .site-float.
+  useEffect(() => {
+    const onPointerDown = (e) => {
+      if (menuRef.current?.open && !menuRef.current.contains(e.target)) {
+        menuRef.current.open = false;
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, []);
 
   return (
     <div className="app">
-      <header className="site-header">
-        <div className="shell">
-          <button className="brand" onClick={() => { closeMenu(); go('home'); }}>
-            <Logo />
-          </button>
-          {/* The desktop tabs wrap into three rows on a phone. Below the
-              tablet breakpoint they are replaced by one disclosure, so the
-              header stays a single brand row and no tab is parked on a
-              second line. */}
-          <details
-            className="mobile-menu"
-            ref={menuRef}
-            onKeyDown={(event) => {
-              if (event.key === 'Escape' && menuRef.current?.open) {
-                event.preventDefault();
-                closeMenu();
-                // Escape is a keyboard exit: return focus to the toggle so the
-                // next Tab continues from the header, not from the document top.
-                menuRef.current?.querySelector('summary')?.focus();
-              }
-            }}
+      {/* No header bar. The mark floats at the top left and the whole site
+          sits behind one V at the top right — the fifth pillar, after the
+          legislature, the executive, the judiciary and the press. */}
+      <div className="site-float">
+        <button
+          type="button"
+          className="brand-float"
+          aria-label="THS: The Humble Sapien — home"
+          onClick={() => {
+            closeMenu();
+            go('home');
+          }}
+        >
+          <Logo markOnly />
+          <span className="brand-float-word" aria-hidden="true">
+            The Humble Sapien
+          </span>
+        </button>
+
+        <details
+          className="pillar-menu"
+          ref={menuRef}
+          onKeyDown={(event) => {
+            if (event.key === 'Escape' && menuRef.current?.open) {
+              event.preventDefault();
+              closeMenu();
+              // Escape is a keyboard exit: return focus to the toggle so the
+              // next Tab continues from the control, not the document top.
+              menuRef.current?.querySelector('summary')?.focus();
+            }
+          }}
+        >
+          <summary
+            className="pillar-menu-toggle"
+            aria-label="Menu — the fifth pillar of democracy"
           >
-            <summary className="mobile-menu-toggle">
-              Menu
-              <span aria-hidden="true">▾</span>
-            </summary>
-            <nav className="mobile-menu-panel" aria-label="Primary">
-              {TABS.map((t) => (
-                <button
-                  type="button"
-                  key={t.id}
-                  className={route.tab === t.id ? 'mobile-menu-active' : ''}
-                  aria-current={route.tab === t.id ? 'page' : undefined}
-                  onClick={() => {
-                    go(t.id);
-                    closeMenu();
-                  }}
-                >
-                  {t.label}
-                </button>
+            <span aria-hidden="true">V</span>
+          </summary>
+
+          {/* One list, one level. The menu is a set of doors, not a
+              directory: the forty-odd tool, publication and sector pages
+              belong to the pages that own them, and a popover that scrolls
+              for two thousand pixels is not a menu. */}
+          <nav className="pillar-menu-panel" aria-label="Primary">
+            <ul className="pillar-list">
+              {MENU_TABS.map((tab) => (
+                <li key={tab.id}>
+                  <button
+                    type="button"
+                    className={`pillar-item${route.tab === tab.id ? ' pillar-item-active' : ''}`}
+                    aria-current={route.tab === tab.id ? 'page' : undefined}
+                    onClick={() => {
+                      go(tab.id);
+                      closeMenu();
+                    }}
+                  >
+                    {tab.label}
+                  </button>
+                </li>
               ))}
-            </nav>
-          </details>
-          <nav className="site-nav" aria-label="Primary">
-            {TABS.map((t) => (
-              <div
-                className="nav-item"
-                key={t.id}
-                onPointerEnter={alignMenu}
-                onFocus={alignMenu}
-                onClick={alignMenu}
-              >
-                <button
-                  className={`nav-link ${route.tab === t.id ? 'nav-active' : ''}`}
-                  aria-current={route.tab === t.id ? 'page' : undefined}
-                  onClick={(e) => {
-                    go(t.id);
-                    // Release focus so :focus-within does not pin the menu
-                    // open after the pointer has left the tab.
-                    e.currentTarget.blur();
-                  }}
-                >
-                  {t.label}
-                </button>
-                {t.children && (
-                  <div className="nav-menu">
-                    {t.children.map((c) => (
-                      <button
-                        key={c.id}
-                        className="nav-menu-item"
-                        onClick={(e) => {
-                          go(
-                            t.id,
-                            c.sub !== undefined ? c.sub : c.id,
-                            c.query,
-                          );
-                          // Same release after choosing an item: navigation
-                          // happened, the panel must not linger over the page.
-                          e.currentTarget.blur();
-                        }}
-                      >
-                        <span className="nav-menu-label">{c.label}</span>
-                        {c.hint && <span className="nav-menu-hint">{c.hint}</span>}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+            </ul>
           </nav>
-        </div>
-      </header>
+        </details>
+      </div>
 
       <main>
+        {/* Home is deliberately outside .shell: the timeline is the page and
+            runs edge to edge, setting its own measure for the text it
+            carries. Every other route keeps the reading column. */}
+        {route.tab === 'home' && <Home onNavigate={go} />}
+        {route.tab !== 'home' && (
         <div className="shell">
           <Suspense fallback={<RouteFallback />}>
-          {route.tab === 'home' && <Home onNavigate={go} />}
+          {route.tab === 'index' && <SolutionIndex onNavigate={go} />}
           {route.tab === 'research' && (
             <Research
               onNavigate={go}
@@ -335,6 +316,7 @@ export default function App() {
           {route.tab === 'licensing' && <Licensing onNavigate={go} />}
           </Suspense>
         </div>
+        )}
       </main>
 
       <PitAssistant

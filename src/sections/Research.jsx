@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { publications, PUB_TYPES } from '../data/publications';
 import PageHead from '../components/PageHead';
 import { citeAPA, citeBibTeX, citeRIS, citeLine, pubPermalink } from '../lib/cite';
+
+const ReadabilityStudy = lazy(() => import('./ReadabilityStudy'));
 
 const PIT_ROWS = [
   ['benefits', 'Who benefits?'],
@@ -134,18 +136,22 @@ const PubPage = ({ pub, onBack, onNavigate }) => (
     {pub.downloads.length > 0 && (
       <section className="pub-section">
         <h3>Data and downloads</h3>
-        <div className="btn-row">
-          {pub.downloads.map(([name, kind]) => (
-            <a
-              key={name}
-              className="btn btn-secondary"
-              href={`data:${kind === 'json' ? 'application/json' : 'text/plain'},${encodeURIComponent(
-                `THS research library: ${pub.title}\n${pub.date}\n\nThis download is a pointer file. The full ${kind.toUpperCase()} data ships with the THS Data Commons.\n`,
-              )}`}
-              download={name}
-            >
-              {name}
-            </a>
+        <div className="download-items">
+          {pub.downloads.map((download) => (
+            <div key={download.name} className="download-item">
+              {download.gap ? (
+                <p className="fine-print download-gap">
+                  <strong>{download.name}:</strong> {download.gap}
+                </p>
+              ) : (
+                <>
+                  <a className="btn btn-secondary" href={download.href} download={download.name}>
+                    {download.name}
+                  </a>
+                  {download.note && <p className="fine-print download-note">{download.note}</p>}
+                </>
+              )}
+            </div>
           ))}
         </div>
       </section>
@@ -186,6 +192,21 @@ export default function Research({ onNavigate, openPub, onOpenPub, openType, onT
   };
 
   const open = publications.find((p) => p.id === openId);
+  if (open?.study === 'readability') {
+    return (
+      <section>
+        <Suspense
+          fallback={
+            <p role="status" style={{ padding: '2rem 0', textAlign: 'center' }}>
+              Loading the study…
+            </p>
+          }
+        >
+          <ReadabilityStudy pub={open} onBack={() => setOpenId(null)} />
+        </Suspense>
+      </section>
+    );
+  }
   if (open) {
     return (
       <section>

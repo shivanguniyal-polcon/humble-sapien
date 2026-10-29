@@ -261,14 +261,17 @@ const main = () => {
   // The null: the region labels carry no information about vocabulary.
   const observedGap = gapStatistic();
   const labels = instruments.map((i) => i.region);
+  // One generator for the whole run: rebuilding it inside the callback would
+  // shuffle into the same order on every draw, which turns the null into a
+  // point mass and makes the p-value meaningless.
+  const permRand = rng(7);
   const perm = permutationTest(
     (shuffled) => {
       let assignment = labels;
       if (shuffled) {
-        const rand = rng(7);
         const pool = labels.slice();
         for (let i = pool.length - 1; i > 0; i -= 1) {
-          const j = Math.floor(rand() * (i + 1));
+          const j = Math.floor(permRand() * (i + 1));
           [pool[i], pool[j]] = [pool[j], pool[i]];
         }
         assignment = pool;

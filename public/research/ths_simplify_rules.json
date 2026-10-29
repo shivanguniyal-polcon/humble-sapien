@@ -1,0 +1,2939 @@
+{
+  "dictionaryVersion": "ths-statutory-1.0.0",
+  "jurisdictions": [
+    {
+      "id": "in-bare-act",
+      "label": "India — Bare Act",
+      "short": "India",
+      "instrument": "Act of Parliament (Bare Act), Rules made thereunder",
+      "sourceLabel": "Official Gazette of India",
+      "readability": {
+        "grade": 8,
+        "ease": 60,
+        "label": "Plain English target: grade 8 or below"
+      },
+      "phrases": [
+        {
+          "from": "such rules may provide for the manner in which",
+          "to": "these rules set out how",
+          "risk": "green",
+          "note": "Plain wording for the rule-making power."
+        },
+        {
+          "from": "make rules for carrying out the purposes of this Act",
+          "to": "set the detailed rules for this law",
+          "risk": "green",
+          "note": "Plain wording for the rule-making power."
+        },
+        {
+          "from": "benefits shall be availed of by the beneficiaries",
+          "to": "people can use the benefits",
+          "risk": "amber",
+          "note": "The source states a duty to avail; the rewrite reads as a permission."
+        },
+        {
+          "from": "every beneficiary shall be entitled to receive",
+          "to": "everyone covered can get",
+          "risk": "amber",
+          "note": "The entitlement survives, but the right is softened into a permission."
+        },
+        {
+          "from": "the Central Government may",
+          "to": "the Centre can",
+          "risk": "green",
+          "note": "Plain wording for the Union executive."
+        },
+        {
+          "from": "by notification in the Official Gazette",
+          "to": "by an official notice",
+          "risk": "amber",
+          "note": "The Gazette is a named instrument with a publication rule. Name it in review."
+        },
+        {
+          "from": "no such rules shall be made without",
+          "to": "these rules can only be made after",
+          "risk": "green",
+          "note": "Plain wording; the consultation condition stays visible."
+        },
+        {
+          "from": "make rules for",
+          "to": "set the detailed rules for",
+          "risk": "green",
+          "note": "Plain wording for the rule-making power."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    },
+    {
+      "id": "uk-si",
+      "label": "United Kingdom — Statutory Instrument",
+      "short": "UK",
+      "instrument": "Statutory Instrument under the Statutory Instruments Act 1947",
+      "sourceLabel": "The London Gazette",
+      "readability": {
+        "grade": 9,
+        "ease": 55,
+        "label": "Plain English target: grade 9 or below"
+      },
+      "phrases": [
+        {
+          "from": "the Secretary of State may",
+          "to": "the Secretary of State can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "the Secretary of State shall",
+          "to": "the Secretary of State must",
+          "risk": "green",
+          "note": "Plain wording for the duty."
+        },
+        {
+          "from": "Her Majesty",
+          "to": "the Crown",
+          "risk": "amber",
+          "note": "The Crown and the monarch are not the same legal person. Check which is meant."
+        },
+        {
+          "from": "in pursuance of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "by virtue of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "as may be prescribed",
+          "to": "as the later rules set out",
+          "risk": "amber",
+          "note": "Prescription defers the content to another instrument. The rewrite points at it without naming it."
+        },
+        {
+          "from": "subject to the provisions of",
+          "to": "subject to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "unless the context otherwise requires",
+          "to": "unless the context makes it clear otherwise",
+          "risk": "amber",
+          "note": "The carve-out for a different reading is narrowed in plain words."
+        },
+        {
+          "from": "any person who",
+          "to": "anyone who",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "no person shall",
+          "to": "nobody may",
+          "risk": "amber",
+          "note": "\"Shall not\" is a prohibition; \"may not\" can read as a refusal of permission."
+        },
+        {
+          "from": "shall be subject to",
+          "to": "must follow",
+          "risk": "green",
+          "note": "Plain wording for the obligation."
+        },
+        {
+          "from": "such arrangements as the Secretary of State considers appropriate",
+          "to": "whatever arrangements the Secretary of State thinks are right",
+          "risk": "amber",
+          "note": "The discretion to choose is stated as a judgement already made."
+        },
+        {
+          "from": "revoked",
+          "to": "cancelled",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "commencement",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "laid before Parliament",
+          "to": "put before Parliament",
+          "risk": "green",
+          "note": "Plain wording for the procedure."
+        },
+        {
+          "from": "draft of this instrument shall be laid",
+          "to": "draft of this must be put",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "by order of the Secretary of State",
+          "to": "signed by the Secretary of State",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "revocation",
+          "to": "cancellation",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    },
+    {
+      "id": "us-cfr",
+      "label": "United States — Code of Federal Regulations",
+      "short": "US",
+      "instrument": "Title of the Code of Federal Regulations",
+      "sourceLabel": "Federal Register / eCFR",
+      "readability": {
+        "grade": 10,
+        "ease": 50,
+        "label": "Plain-language target: grade 10 or below"
+      },
+      "phrases": [
+        {
+          "from": "the Agency shall",
+          "to": "the agency must",
+          "risk": "green",
+          "note": "Plain wording for the duty."
+        },
+        {
+          "from": "the Agency may",
+          "to": "the agency can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "Compliance with this part is mandatory",
+          "to": "You must comply with this part",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "for the purposes of this part",
+          "to": "in this part",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "any person who",
+          "to": "anyone who",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "the term",
+          "to": "the word",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "violation",
+          "to": "breach",
+          "risk": "amber",
+          "note": "A violation of a regulation is a legal conclusion with a consequence attached."
+        },
+        {
+          "from": "such other means as the Agency deems appropriate",
+          "to": "any other means the agency thinks are appropriate",
+          "risk": "amber",
+          "note": "The discretion to choose is stated as a judgement already made."
+        },
+        {
+          "from": "subject to the provisions of",
+          "to": "subject to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "unless the context otherwise requires",
+          "to": "unless the context makes it clear otherwise",
+          "risk": "amber",
+          "note": "The carve-out for a different reading is narrowed in plain words."
+        },
+        {
+          "from": "any other means",
+          "to": "any other way",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall be subject to",
+          "to": "must follow",
+          "risk": "green",
+          "note": "Plain wording for the obligation."
+        },
+        {
+          "from": "prescribed",
+          "to": "set out in the rules",
+          "risk": "amber",
+          "note": "Prescription defers the content to another instrument. The rewrite points at it without naming it."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    },
+    {
+      "id": "eu-regulation",
+      "label": "European Union — Regulation",
+      "short": "EU",
+      "instrument": "Regulation or Directive of the European Parliament and of the Council",
+      "sourceLabel": "Official Journal of the European Union",
+      "readability": {
+        "grade": 9,
+        "ease": 55,
+        "label": "Plain-language target: grade 9 or below"
+      },
+      "phrases": [
+        {
+          "from": "the European Parliament, the Council and the Commission",
+          "to": "the EU institutions",
+          "risk": "green",
+          "note": "Plain wording for the three co-legislators."
+        },
+        {
+          "from": "Member States",
+          "to": "member countries",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "Member State",
+          "to": "member country",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "the Union",
+          "to": "the EU",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "laid down",
+          "to": "set out",
+          "risk": "green",
+          "note": "Plain wording for the legislative act."
+        },
+        {
+          "from": "adopt",
+          "to": "pass",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in so far as",
+          "to": "as far as",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "save as otherwise provided",
+          "to": "unless something else says otherwise",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "apply from",
+          "to": "apply starting from",
+          "risk": "green",
+          "note": "Plain wording for the commencement date."
+        },
+        {
+          "from": "it is necessary",
+          "to": "it is needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without affecting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "by virtue of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "the Commission shall",
+          "to": "the Commission must",
+          "risk": "green",
+          "note": "Plain wording for the duty."
+        },
+        {
+          "from": "the Commission may",
+          "to": "the Commission can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    },
+    {
+      "id": "sg-statute",
+      "label": "Singapore — Statute",
+      "short": "Singapore",
+      "instrument": "Act of the Parliament of Singapore, subsidiary legislation",
+      "sourceLabel": "Singapore Government Gazette",
+      "readability": {
+        "grade": 8,
+        "ease": 60,
+        "label": "Plain-language target: grade 8 or below"
+      },
+      "phrases": [
+        {
+          "from": "the Government may",
+          "to": "the government can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "the Government shall",
+          "to": "the government must",
+          "risk": "green",
+          "note": "Plain wording for the duty."
+        },
+        {
+          "from": "the Minister may",
+          "to": "the Minister can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "the Minister shall",
+          "to": "the Minister must",
+          "risk": "green",
+          "note": "Plain wording for the duty."
+        },
+        {
+          "from": "the Agency may",
+          "to": "the agency can",
+          "risk": "green",
+          "note": "Plain wording for the power."
+        },
+        {
+          "from": "such manner as the Authority considers fit",
+          "to": "any way the Authority thinks is right",
+          "risk": "amber",
+          "note": "The discretion to choose is stated as a judgement already made."
+        },
+        {
+          "from": "prescribed",
+          "to": "set out in regulations",
+          "risk": "amber",
+          "note": "Prescription defers the content to another instrument. The rewrite points at it without naming it."
+        },
+        {
+          "from": "unless the context otherwise requires",
+          "to": "unless the context makes it clear otherwise",
+          "risk": "amber",
+          "note": "The carve-out for a different reading is narrowed in plain words."
+        },
+        {
+          "from": "the regulations",
+          "to": "the rules",
+          "risk": "green",
+          "note": "Plain wording for subordinate legislation."
+        },
+        {
+          "from": "any person who",
+          "to": "anyone who",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "take all necessary steps",
+          "to": "do what is needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall be subject to",
+          "to": "must follow",
+          "risk": "green",
+          "note": "Plain wording for the obligation."
+        },
+        {
+          "from": "the Gazette",
+          "to": "the Government Gazette",
+          "risk": "green",
+          "note": "Plain wording for the named instrument."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    },
+    {
+      "id": "au-act",
+      "label": "Australia — Commonwealth Act",
+      "short": "Australia",
+      "instrument": "Act of the Parliament of Australia, legislative rules",
+      "sourceLabel": "Commonwealth of Australia Gazette",
+      "readability": {
+        "grade": 9,
+        "ease": 55,
+        "label": "Plain-language target: grade 9 or below"
+      },
+      "phrases": [
+        {
+          "from": "the Secretary",
+          "to": "the secretary",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "the Minister",
+          "to": "the minister",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "the regulations",
+          "to": "the rules",
+          "risk": "green",
+          "note": "Plain wording for subordinate legislation."
+        },
+        {
+          "from": "prescribed",
+          "to": "set out in the rules",
+          "risk": "amber",
+          "note": "Prescription defers the content to another instrument. The rewrite points at it without naming it."
+        },
+        {
+          "from": "must comply with",
+          "to": "must follow",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "take all necessary steps",
+          "to": "do what is needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "unless the context otherwise requires",
+          "to": "unless the context makes it clear otherwise",
+          "risk": "amber",
+          "note": "The carve-out for a different reading is narrowed in plain words."
+        },
+        {
+          "from": "any person who",
+          "to": "anyone who",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "the commencement day",
+          "to": "the start date",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "must not",
+          "to": "cannot",
+          "risk": "amber",
+          "note": "A prohibition and a denial of permission are different legal operations."
+        },
+        {
+          "from": "must comply",
+          "to": "must follow",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "gives effect to",
+          "to": "puts into effect",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "gives effect",
+          "to": "puts into effect",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "notwithstanding anything contained in any other law for the time being in force",
+          "to": "even though other laws say otherwise",
+          "risk": "green",
+          "note": "Reads the overriding-effect formula in plain words. The formula still governs if two texts conflict."
+        },
+        {
+          "from": "notwithstanding anything contained in",
+          "to": "even though other laws say otherwise,",
+          "risk": "green",
+          "note": "Plain wording for the overriding-effect formula."
+        },
+        {
+          "from": "notwithstanding anything to the contrary",
+          "to": "even if anything else says the opposite,",
+          "risk": "green",
+          "note": "Plain wording; the carve-out is preserved."
+        },
+        {
+          "from": "notwithstanding",
+          "to": "even so,",
+          "risk": "green",
+          "note": "Plain wording for the override marker."
+        },
+        {
+          "from": "in accordance with the provisions of this Act and the rules made thereunder",
+          "to": "under this law and its rules",
+          "risk": "green",
+          "note": "Names the instrument and its rules rather than the drafting formula."
+        },
+        {
+          "from": "in accordance with the provisions of",
+          "to": "under",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "in accordance with",
+          "to": "as per",
+          "risk": "green",
+          "note": "Standard plain-language equivalent."
+        },
+        {
+          "from": "the provisions of",
+          "to": "the rules in",
+          "risk": "amber",
+          "note": "A provision is not always a rule. Check which subordinate instrument is meant."
+        },
+        {
+          "from": "for the time being in force",
+          "to": "in force right now",
+          "risk": "green",
+          "note": "Tells the reader the position is current at the time of reading."
+        },
+        {
+          "from": "for the purposes of this",
+          "to": "for this",
+          "risk": "green",
+          "note": "Drops the interpretive formula without changing the scope."
+        },
+        {
+          "from": "including but not limited to",
+          "to": "including",
+          "risk": "amber",
+          "note": "The non-exhaustive signal is weaker in plain words. Keep the open list open."
+        },
+        {
+          "from": "shall be deemed to be",
+          "to": "counts as",
+          "risk": "red",
+          "note": "A deeming provision makes something legally something else. \"Counts as\" reads as an opinion, not an operation of law."
+        },
+        {
+          "from": "shall be liable to",
+          "to": "must",
+          "risk": "red",
+          "note": "Liability and duty are not the same thing. The sanction disappears from the rewrite."
+        },
+        {
+          "from": "shall be entitled to receive",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall be entitled to",
+          "to": "can get",
+          "risk": "amber",
+          "note": "An entitlement is a legal right; \"can get\" reads as permission. Keep the right visible in review."
+        },
+        {
+          "from": "shall not be construed as",
+          "to": "does not mean",
+          "risk": "green",
+          "note": "Plain wording for the interpretation rule."
+        },
+        {
+          "from": "without prejudice to",
+          "to": "without limiting",
+          "risk": "amber",
+          "note": "\"Without prejudice to\" preserves a separate legal route, not only a limit. Confirm the separate route."
+        },
+        {
+          "from": "in the event that",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "in the event of",
+          "to": "if",
+          "risk": "green",
+          "note": "Plain conditional."
+        },
+        {
+          "from": "with effect from",
+          "to": "starting",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "prior to",
+          "to": "before",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "subsequent to",
+          "to": "after",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in relation to",
+          "to": "about",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "pursuant to",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording for the authority formula."
+        },
+        {
+          "from": "at the discretion of",
+          "to": "decided by",
+          "risk": "amber",
+          "note": "Discretion is a range of lawful choices, not a decision already taken. The rewrite hardens it."
+        },
+        {
+          "from": "provided that",
+          "to": "but",
+          "risk": "amber",
+          "note": "A proviso is a condition inside the section. Flattening it into \"but\" can lose the conditional logic."
+        },
+        {
+          "from": "inter alia",
+          "to": "among other things",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as the case may be",
+          "to": "",
+          "risk": "amber",
+          "note": "This phrase marks a discretion to treat cases differently. The rewrite makes the cases look identical."
+        },
+        {
+          "from": "and/or",
+          "to": "or",
+          "risk": "amber",
+          "note": "\"And/or\" is a drafting habit, not a choice. Confirm whether either, both or all apply."
+        },
+        {
+          "from": "shall be construed as a reference to",
+          "to": "means",
+          "risk": "green",
+          "note": "Plain wording for the reference formula: the cross-reference is read as the thing it points at."
+        },
+        {
+          "from": "for matters connected therewith or incidental thereto",
+          "to": "for related matters",
+          "risk": "green",
+          "note": "The \"connected therewith or incidental thereto\" tail is one word in plain English."
+        },
+        {
+          "from": "the commencement of",
+          "to": "the start of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "coming into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "come into force",
+          "to": "start",
+          "risk": "green",
+          "note": "Plain wording for the commencement formula."
+        },
+        {
+          "from": "hereinafter referred to as",
+          "to": "called",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "from time to time",
+          "to": "when needed",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is reiterated that",
+          "to": "we repeat that",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a term which may extend to",
+          "to": "up to",
+          "risk": "green",
+          "note": "Plain wording for the sentencing formula."
+        },
+        {
+          "from": "in terms of",
+          "to": "under",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "please refer to",
+          "to": "see",
+          "risk": "green",
+          "note": "Plain cross-reference wording."
+        },
+        {
+          "from": "appearing in the lists of",
+          "to": "on the lists of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "appearing in the list of",
+          "to": "on the list of",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "periodically circulated by",
+          "to": "regularly sent by",
+          "risk": "amber",
+          "note": "Circulation is the distribution of a list to the addressed banks; \"sent\" narrows the channel. Confirm it reads right for the instrument."
+        },
+        {
+          "from": "as per which",
+          "to": "under which",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "as applicable",
+          "to": "",
+          "risk": "amber",
+          "note": "The hedge marks that the requirement bites only where it fits. The plain rewrite drops the hedge."
+        },
+        {
+          "from": "aforesaid",
+          "to": "earlier",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereof",
+          "to": "of it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "thereto",
+          "to": "to it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "therein",
+          "to": "in it",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "hereby",
+          "to": "",
+          "risk": "amber",
+          "note": "\"Hereby\" can carry the instrument's own binding act. Check the surrounding words."
+        },
+        {
+          "from": "herein",
+          "to": "here",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "vide",
+          "to": "through",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "prior consultation",
+          "to": "talking first",
+          "risk": "green",
+          "note": "Plain wording for a consultation requirement."
+        },
+        {
+          "from": "the manner in which",
+          "to": "how",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "in order to",
+          "to": "to",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "at this point in time",
+          "to": "now",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "a large number of",
+          "to": "many",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "shall",
+          "to": "must",
+          "risk": "green",
+          "note": "In every common drafting tradition here, \"shall\" states a duty."
+        },
+        {
+          "from": "do not",
+          "to": "don't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "does not",
+          "to": "doesn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "cannot",
+          "to": "can't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "is not",
+          "to": "isn't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "are not",
+          "to": "aren't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "will not",
+          "to": "won't",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "it is",
+          "to": "it's",
+          "risk": "green",
+          "note": "Plain wording."
+        },
+        {
+          "from": "that is",
+          "to": "that's",
+          "risk": "green",
+          "note": "Plain wording."
+        }
+      ]
+    }
+  ]
+}

@@ -10,6 +10,7 @@
 // range and the permutation test actually ran) and the figures (each one
 // is a complete, standalone SVG).
 
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -178,6 +179,45 @@ figures.forEach((name) => {
   check(`${name} declares a size`, /width="\d+"/.test(svg) && /height="\d+"/.test(svg));
   check(`${name} carries a source line`, svg.includes('Source:'));
 });
+
+// ------------------------------------------------------------ manifest
+//
+// The download buttons and the hash table must point at the same bytes. A
+// stale manifest is worse than none: a reader who checks a file against it
+// would conclude the file was tampered with.
+console.log('manifest');
+const manifestPath = path.join(ARTICLE, 'data', 'manifest.json');
+check('manifest.json exists', fs.existsSync(manifestPath));
+if (fs.existsSync(manifestPath)) {
+  const manifest = readJson(manifestPath);
+  check('the manifest uses SHA-256', manifest.algorithm === 'sha256');
+  check('the manifest covers every study download', manifest.files.length === 8, `${manifest.files.length}`);
+
+  const expected = new Set([
+    'data/corpus.json',
+    'data/results.json',
+    'data/receipts.md',
+    ...figures.map((name) => `figures/${name}`),
+  ]);
+  check(
+    'the manifest lists each download exactly once',
+    manifest.files.length === expected.size &&
+      manifest.files.every((file) => expected.has(file.path)) &&
+      new Set(manifest.files.map((file) => file.path)).size === expected.size,
+  );
+
+  for (const file of manifest.files) {
+    const absolute = path.join(ARTICLE, file.path);
+    check(`${file.path} is on disk`, fs.existsSync(absolute));
+    if (!fs.existsSync(absolute)) continue;
+    const bytes = fs.readFileSync(absolute);
+    check(`${file.path} byte count matches the manifest`, bytes.length === file.bytes, `${bytes.length} vs ${file.bytes}`);
+    check(
+      `${file.path} hash matches the manifest`,
+      createHash('sha256').update(bytes).digest('hex') === file.sha256,
+    );
+  }
+}
 
 // ----------------------------------------------------------- receipts
 console.log('receipts');

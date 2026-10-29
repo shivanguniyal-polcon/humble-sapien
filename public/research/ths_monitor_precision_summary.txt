@@ -1,0 +1,23 @@
+Regulator Obligation Monitor: published precision summary
+==========================================================
+
+Regulator Obligation Monitor: does the extractor clear the bar? — THS Research, October 2026
+
+Findings as published:
+1. Duty precision clears 90% on every blind holdout: 92.1%, 94.4% and 95.7% strict across three 50-row holdouts judged without the classifier labels. Strict means a hedged duty or a cut span scores as a miss; lenient it is 97-100%.
+2. Duty recall is 100% on all four holdouts and 31/31 on three hand-coded circulars: the machine does not miss binding sentences that belong on the list.
+3. Type accuracy — telling an action the firm must take apart from a composition rule or an eligibility grant — is 98-100%.
+4. The applicability filter, which decides whose obligation each row is for a named entity profile, passed its hard gate with zero binding obligations silently dropped across 110 judged drops on two buyer profiles.
+5. The one weak claim is the bearer tag at 41-59%: tagging which entity a duty falls on. That is the layer applicability filtering is built to take over, not a failure of finding or typing.
+
+Method:
+50 of the newest RBI circulars touching the NBFC family (June-October 2026), collected from the circular index with source URLs. The extractor runs the existing legal pipeline (offset-preserving sentence segmentation and clause classification) over a typed obligation schema. Precision is measured on a deterministic 200-row development sample plus three separate 50-row holdouts drawn from rows never judged and judged by hand against a stated rubric, without seeing the classifier labels. Recall is measured on three length-stratified circulars hand-coded in full. Every error class found on a holdout was documented and left unfixed rather than patched against the holdout, so each new number comes from a genuinely unseen set. Scoring is reproducible from the fixed gold in one command. This exhibit reports the measured accuracy of the extraction layer; it is not a shipped product, and the review-gated product shape remains an open founder decision.
+
+Sources:
+1. THS Regulator Obligation Monitor precision test (22 October 2026), private/verification/2026-10-22-rbi-precision-test/report.md, sections 8-12.
+2. Reserve Bank of India, circular index (NBFC-family circulars, ids 13742-13493, June-October 2026).
+3. THS applicability-filter design and two-round blind evaluation (private/applicability-filter-design.md).
+
+This is the summary the library publishes. The row-level holdout labels are
+not offered as a download; the verification report cited above is the
+authoritative record.

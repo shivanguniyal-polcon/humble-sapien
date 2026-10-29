@@ -11,6 +11,7 @@ import { readFileSync, readdirSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
 import { SCHEMES } from '../src/data/schemes.js';
+import { parseAmendmentLedger, parseAmendingAct } from '../src/lib/legal/ledger.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const readJson = (path) => JSON.parse(readFileSync(join(root, path), 'utf8'));
@@ -169,6 +170,22 @@ for (const name of docFiles) {
     status: doc.status || '',
     note: doc.note || '',
     follows: doc.follows || [],
+    // A statute that amends another names it here. The count is the number of
+    // patches the consolidated text prints for itself: a footnote per patch.
+    amends: doc.amends || null,
+    // An earlier text of the same statute names the record it is a version
+    // of. The build groups the two so a reader can open either one.
+    versionOf: doc.versionOf || null,
+    // The date of the text, which is not the date of the instrument: a 2005
+    // Act consolidated to 2025 carries both.
+    asOf: doc.asOf || doc.dateISO || null,
+    amendmentRows: parseAmendmentLedger(doc.text || '').rows.length,
+    // The section map of an amending Act is three or four rows, so it can sit
+    // in the index and let a ledger row name the section it changed without
+    // loading every amending text.
+    patches: doc.amends
+      ? parseAmendingAct(doc.text || '').map(({ section, target, heading }) => ({ section, target, heading }))
+      : [],
     file: null,
     doc: `docs/${name}`,
   });
@@ -256,6 +273,60 @@ for (const record of records) {
   record.followedBy = records
     .filter((other) => other.follows.includes(record.id))
     .map((other) => other.id);
+}
+
+// An amending Act points at the Act it changes. The edge is checked in both
+// directions: a missing principal or a self-amendment fails the build, and the
+// principal derives the list of instruments that amended it.
+for (const record of records) {
+  if (!record.amends) continue;
+  if (record.amends === record.id) throw new Error(`${record.id}: amends itself`);
+  const target = byId.get(record.amends);
+  if (!target) throw new Error(`${record.id}: amends an unknown record ${record.amends}`);
+  if (target.kind !== 'statute') throw new Error(`${record.id}: amends ${record.amends}, which is not a statute`);
+}
+for (const record of records) {
+  record.amendedBy = records.filter((other) => other.amends === record.id).map((other) => other.id);
+}
+
+// Versions of one statute: the canonical record plus every earlier text that
+// names it. A version must point at a statute, must not be the record itself,
+// and must predate the text it is a version of — otherwise the group is a
+// cycle or a fiction and the build refuses it.
+for (const record of records) {
+  if (!record.versionOf) continue;
+  if (record.versionOf === record.id) throw new Error(`${record.id}: is a version of itself`);
+  const target = byId.get(record.versionOf);
+  if (!target) throw new Error(`${record.id}: version of an unknown record ${record.versionOf}`);
+  if (target.kind !== 'statute') throw new Error(`${record.id}: version of ${record.versionOf}, which is not a statute`);
+  if (!record.asOf || !target.asOf) throw new Error(`${record.id}: a version needs a text date, and so does its principal`);
+  if (record.asOf >= target.asOf) {
+    throw new Error(`${record.id}: its text is dated on or after the text it is a version of`);
+  }
+}
+// Every member of a version group carries the whole group, so the older text
+// can name the newer one and the newer can name the older.
+const versionGroups = new Map();
+for (const record of records) {
+  const key = record.versionOf || record.id;
+  if (!versionGroups.has(key)) versionGroups.set(key, []);
+  versionGroups.get(key).push(record);
+}
+for (const record of records) {
+  const members = versionGroups
+    .get(record.versionOf || record.id)
+    .slice()
+    .sort((a, b) => String(a.asOf).localeCompare(String(b.asOf)));
+  record.versions = members.length > 1
+    ? members.map((entry) => ({
+        id: entry.id,
+        date: entry.date,
+        asOf: entry.asOf,
+        label: entry.shortTitle || entry.title,
+        hash: entry.hash,
+        words: entry.words,
+      }))
+    : [];
 }
 
 const sourceCounts = Object.entries(SOURCES)

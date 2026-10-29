@@ -1,0 +1,121 @@
+The State's Output, 1947–2026: sources
+=====================================
+
+One row per instrument in ths_state_output_instruments.csv; per-year
+aggregates in ths_state_output_series.csv. The timeline plots every
+instrument as one dot.
+
+Catalogue note
+--------------
+The instrument counts come from the India Code catalogue (indiacode.gov.in), crawled in October 2026 and deduplicated by Act number, rule or notification id, or normalised title. They measure the paper India has digitised, not the state’s true output. For many years the catalogue holds fewer Central Acts than that year’s highest Act number proves were enacted; state coverage varies by year; 2026 is partial and marked provisional. And the annual count of Gazette notifications — central or state — exists nowhere at all: that gap is part of the finding, not a missing row.
+
+Series and sources
+------------------
+Acts, amending acts, ordinances, rules and notifications: India Code
+(indiacode.gov.in), the Government of India corpus, crawled October
+2026. Every instrument is kept under its catalogue title and
+deduplicated by Act number, rule or notification id, or normalised
+title.
+
+Constitution amendment Acts (106, 1951–2023): the Legislative
+Department list of amendments, cross-checked row by row against the
+published list of all 106 amendments (October 2026). Counted by date of
+enforcement.
+
+RTI applications with the central government: compiled from Central
+Information Commission annual-report analyses (CHRI), press reports of
+CIC data, and two parliamentary figures already published by THS. Each
+row carries its own source and scope; years nobody has verified are
+absent, not zero.
+
+Open data resources on data.gov.in: MeitY annual reports 2017-18
+through 2024-25, plus the MoSPI presentation to the 28th COCSSO
+(August 2024). These are dated snapshots on different counting bases,
+not a curve.
+
+Milestones
+----------
+  2013 — 137 centrally sponsored schemes and 5 scheme-based ACA (2013-14 Budget Estimates) restructured into 66 schemes, including 17 flagship programmes
+      scope: Cabinet decision of 20 June 2013. The familiar “147 merged into 66” line is not what the official explainer says.
+      source: Indian Economic Service (Arthapedia); PIB release relid=113231 — https://ies.gov.in/arthapedia/concept/central-sector-and-centrally-sponsored-schemes
+  2017 — 28 umbrella programmes covering 950 central sector and centrally sponsored sub-schemes
+      scope: A count of sub-schemes under umbrella programmes: one programme on paper, many interventions underneath.
+      source: Centre for Policy Research analysis of the 2016-17 Budget — https://cprindia.org/towards-cooperative-social-policy-financing-in-india/
+  2025 — 314 central schemes (54 centrally sponsored, 260 central sector) with approval terminal dates up to 31 March 2026, likely to be submitted for re-appraisal
+      scope: One review cohort — not a total of all schemes in operation.
+      source: PIB (29 May 2025), Department of Expenditure — https://www.pib.gov.in/PressReleasePage.aspx?PRID=2132416
+  2013 — 15,000+ state laws estimated in force across India
+      scope: A reported estimate — still the only national estimate anyone holds.
+      source: PRS Legislative Research (2013), as published with THS “Government output at both levels”
+  2022 — 1,486 Central Acts repealed in eight years
+      scope: Law Minister, Rajya Sabha reply (2022). The statute book churns quietly.
+      source: Rajya Sabha reply (2022), as published with THS “Government output at both levels”
+  2025 — 890 Central Acts in force
+      scope: A reported count from the Law Ministry (May 2025), not an audited total.
+      source: Law Ministry (May 2025), as published with THS “The rules exist. The reading does not.”
+
+RTI rows
+--------
+  2015-16 — received: 976000
+      scope: About 9.76 lakh received (rounded in the source); 6.62% of processed applications were rejected.
+      source: CHRI analysis of the CIC Annual Report 2015-16 — https://www.humanrightsinitiative.org/blog/revelations-from-central-information-commissions-2016-annual-report.html
+  2016-17 — received: 917009
+      scope: Applications received by central public authorities; 6.59% rejected (the count is not given in the source).
+      source: NewsClick, reporting the CIC Annual Report 2016-17 — https://www.newsclick.in/over-11-lakh-rti-applications-pending-says-cic-report
+  2017-18 — received: 1233000, rejected 63206
+      scope: About 12.33 lakh received (rounded in the source); the rejection count is exact.
+      source: The Indian Express, reporting CIC data — https://indianexpress.com/article/india/highest-rti-applications-filed-2017-18-lowest-rejections-since-2005-cic-data/
+  2018-19 — received: 1370000
+      scope: About 13.70 lakh received (rounded in the source).
+      source: CHRI analysis of the CIC Annual Report 2018-19 — http://www.humanrightsinitiative.org/blog/findings-from-a-preliminary-study-of-the-central-information-commissions-latest-annual-report.html
+  2019-20 — received: 1374000
+      scope: About 13.74 lakh including UT administrations (12.39 lakh excluding). The inclusion rule changes the figure; both are the source’s.
+      source: CHRI analysis of the CIC Annual Report 2019-20 — http://www.humanrightsinitiative.org/blog/findings-from-a-preliminary-study-of-the-central-information-commissions-latest-annual-report.html
+  2020-21 — received: 1333000
+      scope: About 13.33 lakh received (rounded in the source).
+      source: CHRI analysis of the CIC Annual Report 2020-21 — https://www.humanrightsinitiative.org/blog/rtis-to-goi-rose-by-655-during-the-2nd-year-of-the-pandemic-but-how-reliable-is-the-data-published-in-the-cics-202122-annual-report.html
+  2021-22 — received: 1421000, rejected 55124
+      scope: About 14.21 lakh including UTs (12.86 lakh excluding). The CIC report states 53,733 rejections in one table and 55,124 in another; CHRI takes 55,124 as correct.
+      source: CHRI analysis of the CIC Annual Report 2021-22 — https://www.humanrightsinitiative.org/blog/rtis-to-goi-rose-by-655-during-the-2nd-year-of-the-pandemic-but-how-reliable-is-the-data-published-in-the-cics-202122-annual-report.html
+  2022-23 — received: 1638784, rejected 52662
+      scope: RTI applications filed with the central government; the rejection count is exact. The largest year on record.
+      source: Lok Sabha RTI statistics, 2022-23 (published with THS, “The rules exist. The reading does not.”)
+  2024-25 — replied: 1380509, rejected 58501
+      scope: This figure counts replies by central public authorities, not receipts — a different measure from the rows above. The report elsewhere totals 57,985 exemption-wise rejections.
+      source: Parliamentary answer, 2024-25 (published with THS, “Government output at both levels”)
+
+Open data snapshots
+-------------------
+  2018-02-28 — 1,60,343 resources
+      scope: Dataset resources on data.gov.in; 4,240 catalogs, 110 ministries and departments.
+      source: MeitY Annual Report 2017-18 — https://www.meity.gov.in/static/uploads/2024/02/35-1.pdf
+  2019-03-31 — 2,66,640 resources
+      scope: Dataset resources; 4,633 catalogs, 144 ministries and departments.
+      source: MeitY Annual Report 2018-19 — https://www.meity.gov.in/static/uploads/2024/02/34-1.pdf
+  2020-03-31 — 3,60,095 resources
+      scope: Dataset resources; 8,000 catalogs (snapshot as reported in the 2019-20 report).
+      source: MeitY Annual Report 2019-20 — https://www.meity.gov.in/static/uploads/2024/02/33-1.pdf
+  2020-10-31 — 4,68,527 resources
+      scope: Dataset resources; 9,730 catalogs.
+      source: MeitY Annual Report 2020-21 — https://www.meity.gov.in/static/uploads/2024/02/32-1.pdf
+  2021-10-31 — 5,12,803 resources
+      scope: Dataset resources; 11,142 catalogs.
+      source: MeitY Annual Report 2021-22 — https://www.meity.gov.in/static/uploads/2024/02/31-1.pdf
+  2023-03-31 — 5,85,921 resources
+      scope: Dataset resources; 12,917 catalogs (as reported in the 2022-23 report).
+      source: MeitY Annual Report 2022-23 — https://www.meity.gov.in/static/uploads/2024/02/AR_2022-23_English_24-04-23-1.pdf
+  2024-08-01 — 5,02,000 resources
+      scope: 502,000+ data resources (counting basis not stated in the presentation).
+      source: MoSPI presentation to the 28th COCSSO (August 2024)
+  2024-10-09 — 5,03,726 resources
+      scope: Dataset resources; 12,734 catalogs. Lower than the 2022-23 reported count — the counting basis changed between reports.
+      source: MeitY Annual Report 2024-25 — https://www.meity.gov.in/static/uploads/2024/12/10fcadec462c330211502fed3d24ea83.pdf
+
+Known gaps
+----------
+No national total of Gazette notifications published per year exists,
+central or state. The timeline shows that gap instead of a number.
+The 2023-24 RTI figure has not been extracted from the CIC report and
+is absent, not zero. Central Act counts per year are catalogue
+holdings and undercount the Act numbers of their years. 2026 is a
+partial year and every 2026 row is marked provisional.

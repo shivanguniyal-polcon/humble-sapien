@@ -37,7 +37,14 @@ export const publications = [
       pays: 'THS research time on the two non-India corridors; the India side is grounded in the organisation’s own field record, including a UPI-as-DPI parliamentary question drafted for the 17th Lok Sabha.',
       missing: 'State and municipal rails, and every private-operator commercial volume figure (paywalled). No operator publishes rail use by gender, rurality or banked status, so the inclusion read rests on country-wide surveys that cannot isolate the rail.',
     },
-    downloads: [['ths_dpi_corridor_sources.txt', 'text']],
+    downloads: [
+      {
+        name: 'ths_dpi_corridor_sources.txt',
+        kind: 'text',
+        href: '/research/ths_dpi_corridor_sources.txt',
+        note: 'The published source list. This is not a row-level dataset.',
+      },
+    ],
     related: { label: 'Compare policies on the Atlas', tab: 'compare' },
   },
   {
@@ -68,7 +75,14 @@ export const publications = [
       pays: 'THS build time for four rounds of classifier work and the holdout judging; a licensee pays for a reviewed deliverable, since human review is retained by design rather than removed.',
       missing: 'State regulators and municipal bylaws are outside this corpus, which is Central-bank circulars only. Duties on forum bodies and third parties are tagged poorly, and the addressee field in the source corpus is scraped HTML — clean extraction is a prerequisite before the filter touches buyer-facing output.',
     },
-    downloads: [['ths_monitor_precision_summary.txt', 'text']],
+    downloads: [
+      {
+        name: 'ths_monitor_precision_summary.txt',
+        kind: 'text',
+        href: '/research/ths_monitor_precision_summary.txt',
+        note: 'The published accuracy summary; the holdout labels remain private.',
+      },
+    ],
     related: { label: 'Simplify a regulation you bring', tab: 'work' },
   },
   {
@@ -99,7 +113,32 @@ export const publications = [
       pays: 'Everyone bound by rules they cannot read, in time, travel, bribes and forfeited entitlements. The figures here are counts, not costs: the bill itself is unmeasured.',
       missing: 'Nobody holds the total. State laws, rules and notifications are counted nowhere, and people who never file an RTI application or reach a portal appear in none of these statistics.',
     },
-    downloads: [['ths_sprawl_sources.txt', 'text']],
+    downloads: [
+      {
+        name: 'ths_sprawl_sources.txt',
+        kind: 'text',
+        href: '/research/ths_sprawl_sources.txt',
+        note: 'The source list behind the four figures in the brief.',
+      },
+      {
+        name: 'ths_state_output_series.csv',
+        kind: 'csv',
+        href: '/research/ths_state_output_series.csv',
+        note: 'Per-year counts of every Act, ordinance, rule and notification in the India Code catalogue, 1947–2026, plus the RTI and open-data series. Every row carries its scope and source.',
+      },
+      {
+        name: 'ths_state_output_instruments.csv',
+        kind: 'csv',
+        href: '/research/ths_state_output_instruments.csv',
+        note: 'One row per instrument — the dots behind the timeline — with its catalogue title.',
+      },
+      {
+        name: 'ths_state_output_sources.txt',
+        kind: 'text',
+        href: '/research/ths_state_output_sources.txt',
+        note: 'Sources, scopes and known gaps — including the Gazette total nobody publishes.',
+      },
+    ],
     related: { label: 'Take apart a dataset', tab: 'data' },
   },
   {
@@ -128,7 +167,20 @@ export const publications = [
       pays: 'Central and state budgets — general taxpayers — through per-admission claims and the empanelment network; hospitals carry the cost of slow settlement.',
       missing: 'People who never got a card, and cardholders who never use one. The model sees enrolment and admissions; it cannot see the population never enumerated into the scheme.',
     },
-    downloads: [['ths_pmjay_series.csv', 'csv'], ['ths_pmjay_states.csv', 'csv']],
+    downloads: [
+      {
+        name: 'ths_pmjay_series.csv',
+        kind: 'csv',
+        href: '/research/ths_pmjay_series.csv',
+        note: 'National milestone series, one row per date.',
+      },
+      {
+        name: 'ths_pmjay_states.csv',
+        kind: 'csv',
+        href: '/research/ths_pmjay_states.csv',
+        note: 'State and UT admissions by financial year.',
+      },
+    ],
     related: { label: 'Run the relationship yourself', tab: 'data' },
   },
   {
@@ -157,7 +209,14 @@ export const publications = [
       pays: 'State finances for the boards, funds and centres promised, and staff hours for whoever must answer these checks.',
       missing: 'The strictest status here is "no public evidence found", which is a statement about receipts, not about reality. Anyone served by something that was never documented is missing from this paper by construction.',
     },
-    downloads: [['ths_promise_evidence.txt', 'text']],
+    downloads: [
+      {
+        name: 'ths_promise_evidence.txt',
+        kind: 'text',
+        href: '/research/ths_promise_evidence.txt',
+        note: 'Each promise, its status and every dated source with a URL.',
+      },
+    ],
     related: { label: 'Open the scorecards', tab: 'work' },
   },
   {
@@ -185,7 +244,14 @@ export const publications = [
       pays: 'Nobody is charged; the unpaid cost sits with the ministries and archives whose texts were read and restructured.',
       missing: 'Policies whose primary texts are not machine-readable stay understated, which skews toward older, English-language, Northern law. Regional grouping is an analytic choice and hides within-region inequality.',
     },
-    downloads: [['ths_policy_atlas.json', 'json']],
+    downloads: [
+      {
+        name: 'ths_policy_atlas.json',
+        kind: 'json',
+        href: '/research/ths_policy_atlas.json',
+        note: 'All 15 sectors and 90 policies, with PIT readings and sources.',
+      },
+    ],
     related: { label: 'Open the atlas', tab: 'compare' },
   },
   {
@@ -211,7 +277,14 @@ export const publications = [
       pays: 'The agencies that publish and maintain the portals, and reusers who carry the risk wherever reuse terms are unverified.',
       missing: 'People who cannot use a portal at all: without connectivity, without English, without a device. A licence is a permission slip for those who already have access.',
     },
-    downloads: [['ths_open_data_directory.json', 'json']],
+    downloads: [
+      {
+        name: 'ths_open_data_directory.json',
+        kind: 'json',
+        href: '/research/ths_open_data_directory.json',
+        note: 'All 29 datasets with licence labels and source URLs.',
+      },
+    ],
     related: { label: 'Browse the directory', tab: 'data' },
   },
   {
@@ -235,7 +308,14 @@ export const publications = [
       pays: 'The receiving offices in staff hours, and the complainant in unpaid time, travel and paperwork at every step a case drags through.',
       missing: 'People whose cases never reach a portal: no phone, no documents, no time to escalate. Complaint statistics count the persistent, not the excluded.',
     },
-    downloads: [['ths_escalation_directory.json', 'json']],
+    downloads: [
+      {
+        name: 'ths_escalation_directory.json',
+        kind: 'json',
+        href: '/research/ths_escalation_directory.json',
+        note: 'Every office, contact and verification flag in the directory.',
+      },
+    ],
     related: { label: 'Open the touchpoint maps', tab: 'work' },
   },
   {
@@ -259,7 +339,14 @@ export const publications = [
       pays: 'Nobody in money. The cost is accuracy risk: simplification can smooth a nuance, which is why both texts always print together.',
       missing: 'Speakers of languages other than Hindi and English. The Hindi layer is rule-based and needs translator review; the remaining official languages have no layer at all.',
     },
-    downloads: [['ths_simplify_rules.json', 'json']],
+    downloads: [
+      {
+        name: 'ths_simplify_rules.json',
+        kind: 'json',
+        href: '/research/ths_simplify_rules.json',
+        note: 'The full substitution dictionary, with risk flags and notes.',
+      },
+    ],
     related: { label: 'Simplify a policy text', tab: 'work' },
   },
   {
@@ -283,8 +370,47 @@ export const publications = [
       pays: 'The answering ministries in reply work, and the MP\u2019s office in drafting time: 60 questions drafted across three sessions.',
       missing: 'People who never reach an MP\u2019s office. Their concerns appear only when a Member chooses them; the question map is a map of representation, and representation is uneven.',
     },
-    downloads: [['ths_ls_questions.csv', 'csv']],
+    downloads: [
+      {
+        name: 'ths_ls_questions.csv',
+        kind: 'csv',
+        gap: 'The 214-question source corpus is not held in this repository. Only the summary findings and citations are published; no row-level file is offered.',
+      },
+    ],
     related: { label: 'Read the essay', tab: 'writing' },
+  },
+  {
+    id: 'ai-policy-readability',
+    type: 'Report',
+    domain: 'Technology',
+    title: 'AI rules are written in graduate-level English — and India’s carry more obligation',
+    date: 'October 2026',
+    author: 'THS Research',
+    abstract:
+      'A five-figure reading of 18 AI instruments across India, the Global North and the Global South. Every regional corpus writes at graduate level. India’s instruments carry more binding language per 1,000 words than either comparison group, while their vocabulary does not sort cleanly into a Northern or Southern camp. The data point is the obligation density, not a regional lineage.',
+    findings: [
+      'Every regional corpus writes AI rules at graduate level: mean Flesch Reading Ease is 13.2 for India, 13.0 for the Global North and 10.4 for the Global South, with mean grades clustered around 19–20.',
+      'India’s six instruments carry more binding language per 1,000 words (14.7 deontic words) than the Northern (8.6) or Southern (9.0) instruments. The rules are harder to act on, not merely harder to read.',
+      'The vocabulary splits rather than converging: four of the six Indian instruments sit closer to the Southern centroid and two closer to the Northern one. The mean North-minus-South gap is -0.017, with a 95% bootstrap interval of -0.028 to 0.006.',
+      'The regional gap does not survive 2,000 shuffled labelings (permutation p = 0.72). Nearest-neighbour lineage is equally balanced: 74 provisions are closest to the North, 72 to the South (p = 0.93).',
+      'The earlier hypothesis that India’s AI rules sit closer to Northern wording is not supported by the current corpus. What survives is the readability problem and the heavier obligation density.',
+    ],
+    methods:
+      'Eighteen instruments were sampled across India (6), the Global North (7) and the Global South (5): 791 provisions and 119,714 words. Flesch Reading Ease and Flesch-Kincaid grade were computed from sentence and syllable counts. Vocabulary similarity is TF-IDF cosine similarity to each region’s centroid, with 600 bootstrap draws resampling provisions within an instrument. The permutation test shuffles the region labels 2,000 times with a fixed seed. Results were regenerated from the full 791-provision corpus on 26 October 2026; the older 645-provision extract is not used. The corpus is a reading of selected instruments, not a census of every AI rule in force.',
+    citations: [
+      'THS Data Point corpus and receipts, 18 instruments and 791 provisions, retrieved 20 October 2026.',
+      'Rudolf Flesch, “A new readability yardstick”, Journal of Applied Psychology (1948).',
+      'Gerard Salton and Christopher Buckley, “Term-weighting approaches in automatic text retrieval”, Information Processing & Management (1988).',
+      'THS Data Point analysis, results.json and manifest.json (26 October 2026).',
+    ],
+    pit: {
+      benefits: 'Citizens and civil-society readers who need to know what an AI rule actually requires, and regulators comparing the reading burden they impose.',
+      pays: 'THS research time and the public bodies whose instruments were read. No reader is charged, and no source text is withheld behind the page.',
+      missing: 'State-level AI rules, instruments published only in languages other than English, and every rule that is implemented through practice rather than text. Eighteen instruments are a sample, not the whole rulebook.',
+    },
+    downloads: [],
+    study: 'readability',
+    related: { label: 'Open the policy simplifier', tab: 'work' },
   },
   {
     id: 'evolution-thesis',

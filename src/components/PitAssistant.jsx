@@ -272,7 +272,9 @@ const DEFAULT_CHECK = {
 };
 
 export default function PitAssistant({ route, flow = false }) {
-  const [open, setOpen] = useState(true);
+  // Closed on arrival: a standing companion that covers a table on first
+  // paint is an obstruction, not a companion. It opens on one click.
+  const [open, setOpen] = useState(false);
   const [idx, setIdx] = useState(0);
 
   const key = route && route.tab === 'work' && route.sub ? route.sub : (route ? route.tab : 'home');

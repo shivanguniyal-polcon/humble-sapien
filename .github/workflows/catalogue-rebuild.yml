@@ -1,0 +1,30 @@
+name: Refresh the catalogue snapshot
+
+# The count is a dated build snapshot, not a live feed. Rebuilding weekly means
+# the date under it is never older than seven days, without anyone running a
+# build by hand. The build runs on Vercel; this workflow only asks it to start,
+# through a Deploy Hook. If the hook secret is absent the schedule is a no-op
+# with a warning, so a missing setup cannot masquerade as a successful refresh.
+
+on:
+  schedule:
+    - cron: '17 3 * * 1' # Mondays, 03:17 UTC / 08:47 IST
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger a Vercel rebuild
+        env:
+          DEPLOY_HOOK: ${{ secrets.VERCEL_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo "::warning::VERCEL_DEPLOY_HOOK is not set; the weekly rebuild did not run."
+            echo "Create a deploy hook in Vercel and add its URL as a repository secret."
+            exit 0
+          fi
+          curl --fail --silent --show-error --request POST "$DEPLOY_HOOK" > /dev/null
+          echo "Vercel rebuild triggered; the build stamps a fresh catalogue snapshot."

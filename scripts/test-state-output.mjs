@@ -318,6 +318,34 @@ console.log('shipped files');
   check('the source list admits the missing Gazette total', /no (national|official)/i.test(text) && /gazette/i.test(text));
 }
 
+// ------------------------------------------------------- catalogue snapshot
+console.log('catalogue snapshot');
+{
+  const snapshot = JSON.parse(
+    readText(path.join(ROOT, 'src', 'data', 'catalogueSnapshot.json')),
+  );
+  const central = INSTRUMENTS.filter(([, , juris]) => juris === 0).length + AMENDMENTS.length;
+  const state = INSTRUMENTS.filter(([, , juris]) => juris === 1).length;
+  check(
+    'the snapshot carries a parseable build time',
+    Number.isFinite(Date.parse(snapshot.generatedAt)),
+    String(snapshot.generatedAt),
+  );
+  check(
+    'the snapshot counts are the catalogue, not a hand-typed total',
+    snapshot.counts.central === central &&
+      snapshot.counts.state === state &&
+      snapshot.counts.all === central + state,
+    JSON.stringify(snapshot.counts),
+  );
+  check(
+    'the snapshot records agree with the source rows',
+    snapshot.records.instruments === INSTRUMENTS.length &&
+      snapshot.records.amendments === AMENDMENTS.length,
+  );
+  check('the snapshot names its source', /India Code/.test(snapshot.source));
+}
+
 // -------------------------------------------------------------- hover chip
 console.log('hover chip fill');
 {

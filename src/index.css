@@ -38,18 +38,35 @@
   --clay-800: #4f101a;
   --clay-900: #3a0b13;
 
-  /* data: series identity for charts (maroon + neutrals only) */
-  --data-indigo-500: #8f4451;
-  --data-indigo-600: #7a1f2b;
-  --data-pine-500: #45413e;
-  --data-pine-600: #2b2724;
-  --data-ochre-500: #a39c95;
+  /* data: four hues, one per series. Maroon is the house mark and still
+     opens every chart; the other three are chart ink and status tint only —
+     never chrome. Values are fixed in OKLCH and measured, not guessed, in
+     scripts/check-contrast.mjs. */
+  --data-teal-600: #176d72;
+  --data-indigo-500: #335189;
+  --data-indigo-600: #203f7c;
+  --data-pine-500: #1b5a3e;
+  --data-pine-600: #00472c;
+  --data-ochre-500: #9c721c;
 
-  /* ---------- semantic tokens (components use only these) ---------- */
-  --color-bg: var(--paper-50);
+  /* status: four states, tinted so the badge reads before its words do.
+     These are the only survivors of the old multi-hue palette. */
+  --status-delivered-ink: #1b5a3e;
+  --status-delivered-tint: #e0f5e6;
+  --status-partial-ink: #845b00;
+  --status-partial-tint: #fdf1d8;
+  --status-announced-ink: #335189;
+  --status-announced-tint: #e4efff;
+  --status-none-ink: #93342c;
+  --status-none-tint: #ffeae6;
+
+  /* ---------- semantic tokens (components use only these) ----------
+     The page is warm paper; the surfaces on it are white. That one step of
+     depth is what lets a card lift without a shadow doing the work. */
+  --color-bg: var(--paper-100);
   --color-surface: var(--paper-50);
-  --color-surface-raised: white;
-  --color-surface-sunken: var(--paper-100);
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: var(--paper-200);
 
   --color-text: var(--paper-900);
   --color-text-secondary: var(--paper-700);
@@ -64,18 +81,25 @@
   --color-accent-text: var(--clay-700);
   --color-accent-soft: var(--clay-50);
   --color-accent-soft-border: var(--clay-200);
+  /* short alias still asked for by a handful of rules */
+  --color-accent: var(--color-accent-solid);
 
   --color-series-1: var(--clay-600);
-  --color-series-2: var(--data-pine-600);
-  --color-series-3: var(--clay-300);
+  --color-series-2: var(--data-teal-600);
+  --color-series-3: var(--data-indigo-600);
   --color-series-4: var(--data-ochre-500);
 
   --color-focus: var(--clay-700);
 
-  /* ---------- type (three roles: display, body, data) ---------- */
-  --font-display: 'Public Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  /* ---------- type (three roles: display, body, data) ----------
+     The display face is a serif: the site is a reading surface before it is
+     a dashboard, and the README promised a serif/sans pairing. Body and data
+     stay grotesque and mono, because those are the surfaces you operate. */
+  --font-display: 'Newsreader', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
   --font-body: 'Public Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-data: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  /* legacy alias: a few rules ask for the mono by this name */
+  --font-mono: var(--font-data);
 
   /* ---------- spacing scale (8px step) ---------- */
   --space-1: 0.25rem;
@@ -134,8 +158,8 @@ h1, h2, h3, h4 {
   margin: 0 0 var(--space-3);
 }
 
-h1 { font-size: clamp(2.8rem, 7vw, 5.2rem); line-height: 1.02; letter-spacing: -0.035em; }
-h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; letter-spacing: -0.03em; }
+h1 { font-size: clamp(2.8rem, 7vw, 5.2rem); line-height: 1.02; letter-spacing: -0.02em; }
+h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; letter-spacing: -0.02em; }
 h3 { font-size: 1.3rem; }
 h4 { font-size: 1.05rem; letter-spacing: -0.01em; }
 
@@ -177,6 +201,34 @@ strong { font-weight: 650; }
   max-width: 68rem;
   margin-inline: auto;
   padding-inline: var(--space-5);
+}
+
+/* The ambient survey field is painted above the paper and below everything
+   the reader came for. Its canvas is fixed and first in the app; the content
+   layers are lifted one step so no tick can sit over a word. */
+.ambient-field {
+  --ambient-opacity: 1;
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 900ms var(--ease-out);
+}
+
+.ambient-field[data-active='true'] {
+  opacity: var(--ambient-opacity);
+}
+
+.app[data-field='true'] main,
+.app[data-field='true'] .site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Long-form reading gets the same field at a lower voice. */
+.ambient-field-quiet {
+  --ambient-opacity: 0.62;
 }
 
 /* The floating mark is the only thing at the top of the window, so the page
@@ -237,19 +289,20 @@ main {
   height: 2.5rem;
 }
 
-/* The wordmark, folded away. max-width is the one width that animates from a
-   content size, so it carries the expansion; opacity trails it by a beat. */
+/* The wordmark and the tagline, folded away. max-width is the one width that
+   animates from a content size, so it carries the expansion; opacity trails
+   it by a beat. Both lines sit inside the mark's own height, so opening the
+   plate never changes what main or the timeline pin clear. */
 .brand-float-word {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
   max-width: 0;
   margin-left: 0;
   overflow: hidden;
   white-space: nowrap;
-  font-family: var(--font-display);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: var(--color-text-secondary);
+  line-height: 1.15;
   opacity: 0;
   transition:
     max-width 260ms var(--ease-out),
@@ -257,9 +310,25 @@ main {
     opacity 160ms var(--ease-out);
 }
 
+.brand-float-name {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  color: var(--color-text-secondary);
+}
+
+.brand-float-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-accent-solid);
+}
+
 .brand-float:hover .brand-float-word,
 .brand-float:focus-visible .brand-float-word {
-  max-width: 11rem;
+  max-width: 14rem;
   margin-left: 0.5rem;
   opacity: 1;
   transition-delay: 0ms, 0ms, 80ms;
@@ -650,29 +719,26 @@ main {
   color: var(--color-text-muted);
 }
 
-/* status shades: maroon + neutrals only; states read by tint strength */
+/* status shades: four states, four tints. A reader scanning a scorecard
+   should not have to read every badge to find the one that failed. */
 .score-delivered {
-  background: var(--color-surface-sunken);
-  color: var(--color-text-secondary);
-  border-color: var(--color-border);
+  background: var(--status-delivered-tint);
+  color: var(--status-delivered-ink);
 }
 
 .score-partial {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-text);
-  border-color: var(--color-accent-soft-border);
+  background: var(--status-partial-tint);
+  color: var(--status-partial-ink);
 }
 
 .score-announced {
-  background: var(--color-surface);
-  color: var(--color-text-muted);
-  border-color: var(--color-border);
+  background: var(--status-announced-tint);
+  color: var(--status-announced-ink);
 }
 
 .score-none {
-  background: var(--color-accent-solid);
-  color: var(--color-text-on-accent);
-  border-color: var(--color-accent-solid);
+  background: var(--status-none-tint);
+  color: var(--status-none-ink);
 }
 
 /* ---------- policy atlas cards ---------- */
@@ -700,13 +766,13 @@ main {
 }
 
 .policy-north {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-text);
+  background: var(--status-announced-tint);
+  color: var(--status-announced-ink);
 }
 
 .policy-south {
-  background: var(--color-surface-sunken);
-  color: var(--color-text-secondary);
+  background: var(--status-delivered-tint);
+  color: var(--status-delivered-ink);
 }
 
 .policy-year {
@@ -794,18 +860,18 @@ main {
 }
 
 .license-open {
-  background: var(--color-accent-soft);
-  color: var(--color-accent-text);
+  background: var(--status-delivered-tint);
+  color: var(--status-delivered-ink);
 }
 
 .license-portal-default {
-  background: var(--color-surface-sunken);
-  color: var(--color-text-secondary);
+  background: var(--status-announced-tint);
+  color: var(--status-announced-ink);
 }
 
 .license-free-access {
-  background: var(--color-surface);
-  color: var(--color-accent-text);
+  background: var(--status-partial-tint);
+  color: var(--status-partial-ink);
 }
 
 /* ---------- essays ---------- */
@@ -987,7 +1053,7 @@ table + .fine-print {
 .page-head-title {
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 1.08;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-2);
 }
 
@@ -2227,6 +2293,21 @@ select:focus-visible {
    compare matrix, escalation directory, hindi panel
    ============================================================ */
 
+/* ---------- ambient field ---------- */
+/* No pointer, no noise: the field is a desktop reading aid, and the phone's
+   column leaves too little paper for it to sit behind the words. */
+@media (max-width: 47.99rem), (hover: none) {
+  .ambient-field {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ambient-field {
+    transition: none;
+  }
+}
+
 /* ---------- evolution hero ---------- */
 .evo-hero {
   position: relative;
@@ -2260,7 +2341,7 @@ select:focus-visible {
   font-size: clamp(2.6rem, 6vw, 4.2rem);
   font-weight: 650;
   line-height: 1.05;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
   margin-bottom: var(--space-4);
   cursor: default;
 }
@@ -2349,7 +2430,7 @@ select:focus-visible {
   font-size: clamp(1.55rem, 3.4vw, 2.5rem);
   font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .evo-finding-line .data-num {
@@ -2453,7 +2534,7 @@ select:focus-visible {
 .pub-title {
   font-size: clamp(2rem, 4.5vw, 3.2rem);
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   margin: var(--space-3) 0 var(--space-2);
 }
 
@@ -3832,15 +3913,123 @@ input[type='range'] {
   font-size: clamp(2rem, 4.4vw, 3.4rem);
   font-weight: 700;
   line-height: 1.05;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
+/* The section opens on the claim, with the catalogue's count beside it. The
+   counter ticks when the data lands and its dot breathes, so the number feels
+   alive without claiming a feed that does not exist: it is a build-time
+   snapshot, and the note says so to anyone who asks. */
+.timeline-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5) var(--space-6);
+  align-items: start;
+  /* The section's head carries two columns; the reading measure applies to the
+     copy, not to the counter that sits at the right edge of the shell. */
+  max-width: none;
+}
+
+.timeline-head-copy {
+  min-width: 0;
+}
+
 .timeline-total {
-  margin: var(--space-2) 0 0;
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  min-width: 15rem;
+  margin: 0;
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--color-border-strong);
+  text-align: right;
   font-family: var(--font-mono);
-  font-size: 1.125rem;
-  color: var(--color-accent-solid);
+  white-space: nowrap;
+}
+
+.timeline-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.timeline-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status-delivered-ink);
+  animation: timeline-count-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes timeline-count-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgb(27 90 62 / 0.35);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 5px rgb(27 90 62 / 0);
+  }
+}
+
+.timeline-total-breakdown {
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+}
+
+.timeline-total-all {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 2px;
+  font-size: clamp(1.75rem, 2.6vw, 2.3rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+}
+
+.timeline-total-suffix {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+/* The date under the count: the snapshot's build time, not a browser clock. */
+.timeline-total-stamp {
+  margin-top: 2px;
+  font-size: 0.625rem;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: var(--color-text-muted);
+  white-space: normal;
+}
+
+@media (max-width: 64rem) {
+  .timeline-head {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .timeline-total {
+    justify-items: start;
+    min-width: 0;
+    padding: var(--space-3) 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--color-border);
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .timeline-live-dot {
+    animation: none;
+  }
 }
 
 /* ---------- the vertical column, scrubbed by scroll ----------
@@ -4449,116 +4638,364 @@ input[type='range'] {
   pointer-events: none;
 }
 
-/* ---------- the problem, met on the way down ----------
-   One note per year, hung on its band: the frontier draws past it, the note
-   fades up and rides the scroll away above. Placed below the band, in the
-   canvas the line has not reached yet; the last note, where the camera clamps
-   at the foot and there is no room below, hangs above its band instead. */
+/* ---------- the argument, at the scale of the window ----------
+   The column is the evidence; this layer is the essay over it. One station
+   holds the screen at a time — no card, no border, no clipped caption — and a
+   soft paper wash gives the type its ground while the squares stay visible
+   above, below and to the right of it. The frontier keeps drawing behind the
+   text, so a sentence and the band it describes are never apart. */
 
-.timeline-beats {
+.timeline-halos {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-/* The blob: a soft accent wash over the band a note speaks about, as deep as
-   that year's output. It is not a box — no border, no fill edge, an irregular
-   radius blurred at the rim — so the squares stay legible through it and the
-   shape reads as a mark on the paper rather than a panel over it. */
+/* The wash: accent over the band a station speaks about, as deep as that
+   year's output, held to the right of the column so it never sits under the
+   text. Low alpha and no blend mode: the squares read straight through it,
+   and the mark is a tint on the paper, not a panel over the evidence. */
 .timeline-beat-halo {
   position: absolute;
-  /* Ends where the note begins, so the mark and its note read as one thing:
-     the blob over the squares, the caption beside it. */
-  right: calc(var(--beat-card-inline) + var(--beat-card-w) + var(--space-4));
   background: radial-gradient(
-    120% 92% at 24% 46%,
-    rgb(122 31 43 / 0.2),
-    rgb(122 31 43 / 0.12) 58%,
-    rgb(122 31 43 / 0.03) 78%,
+    86% 62% at 62% 50%,
+    rgb(122 31 43 / 0.14),
+    rgb(122 31 43 / 0.06) 58%,
     rgb(122 31 43 / 0) 88%
   );
   border-radius: 46% 54% 61% 39% / 38% 43% 57% 62%;
-  mix-blend-mode: multiply;
-  filter: blur(3px);
+  filter: blur(1px);
   opacity: 0;
-  transition: opacity 520ms var(--ease-out);
+  transition: opacity 620ms var(--ease-out);
   pointer-events: none;
 }
 
 .timeline-beat-halo[data-on='true'] {
-  opacity: 1;
+  opacity: 0.85;
 }
 
-.timeline {
-  --beat-card-inline: clamp(3rem, 6vw, 6rem);
-  --beat-card-w: min(28rem, 38%);
-}
-
-.timeline-beat {
+.timeline-argument {
   position: absolute;
-  right: var(--beat-card-inline);
-  width: var(--beat-card-w);
-  padding: var(--space-3) var(--space-4);
-  background: var(--color-surface-raised);
-  border: 1px solid var(--color-border);
-  border-top: 2px solid var(--color-accent-solid);
-  box-shadow: 0 12px 28px -24px rgb(27 24 21 / 0.75);
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.timeline-station {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  /* The words hold the right of the window; the column keeps its left and
+     middle. The text stays left-aligned inside that column. */
+  justify-items: end;
+  gap: var(--space-3);
+  padding: clamp(3rem, 9vh, 6rem) clamp(2rem, 6vw, 9rem)
+    calc(var(--space-8) + 4rem) var(--space-5);
   opacity: 0;
-  translate: 0 14px;
+  visibility: hidden;
   transition:
-    opacity 420ms var(--ease-out),
-    translate 420ms var(--ease-out);
+    opacity 460ms var(--ease-out),
+    visibility 460ms;
 }
 
-.timeline-beat[data-side='above'] {
-  translate: 0 calc(-100% + 14px);
+/* A ground for the type, not a panel. It sits at the right, under the words,
+   and is opaque wherever there is type: the grayscale murmur of forty thousand
+   squares behind 15px copy is not a reading surface. Only its left edge fades
+   into the chart, so the evidence remains visible beside the column. Feathered
+   top and bottom so the paper keeps the height of the window. */
+.timeline-station::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 auto;
+  width: min(60rem, 58%);
+  background: linear-gradient(
+    264deg,
+    var(--color-bg) 0 78%,
+    color-mix(in srgb, var(--color-bg) 46%, transparent) 88%,
+    color-mix(in srgb, var(--color-bg) 0%, transparent) 100%
+  );
+  mask-image: linear-gradient(180deg, transparent, #000 14%, #000 88%, transparent);
+  pointer-events: none;
 }
 
-.timeline-beat[data-on='true'] {
+/* The layer itself never takes the pointer: the pins sit at the chart's left
+   edge, and the chart stays readable under the text. Only the words take a
+   pointer, so they can still be selected. */
+.timeline-station[data-on='true'] {
   opacity: 1;
-  translate: 0 0;
+  visibility: visible;
 }
 
-.timeline-beat[data-side='above'][data-on='true'] {
-  translate: 0 -100%;
+.timeline-station[data-on='true'] > * {
+  pointer-events: auto;
 }
 
-.timeline-beat-year {
+.timeline-station > * {
+  position: relative;
+  width: 100%;
+  max-width: min(52ch, 38vw);
+}
+
+/* The station's own rule, short and clay, in the same hand as the chart's. */
+.timeline-station-mark {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 2px solid var(--color-accent-solid);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* One step darker than the muted ink: the ground is translucent now, so the
+     small caps have to hold over the squares that show through it. */
+  color: var(--color-text-secondary);
+}
+
+.timeline-station-year {
   color: var(--color-accent-solid);
 }
 
-.timeline-beat-kicker {
-  margin: var(--space-1) 0 0;
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-  color: var(--color-text);
+.timeline-station-index {
+  margin-left: auto;
+  letter-spacing: 0.02em;
 }
 
-.timeline-beat-line {
-  margin: var(--space-1) 0 0;
-  font-size: 0.875rem;
-  line-height: 1.45;
+.timeline-station-claim {
+  margin: 0;
+  max-width: min(18ch, 36vw);
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 4.3vw, 4.1rem);
+  font-weight: 700;
+  line-height: 0.99;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.timeline-station-body {
+  margin: 0;
+  font-size: clamp(1rem, 1.15vw, 1.1875rem);
+  line-height: 1.55;
   color: var(--color-text-secondary);
   text-wrap: pretty;
 }
 
-@media (max-width: 48rem) {
-  .timeline-beat {
-    right: var(--space-4);
-    left: var(--space-4);
-    width: auto;
+/* Every layer answers a question the reader has just been shown; this is the
+   reason the institution exists, at that layer, not in a manifesto at the end. */
+.timeline-station-action {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  gap: var(--space-3);
+  margin: 0;
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-strong);
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text);
+  text-wrap: pretty;
+}
+
+.timeline-station-action-label {
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent-solid);
+}
+
+/* ---------- the coda: what the layers add up to ----------
+   The stations name the evidence; these three movements name the problem, the
+   place THS works from, and what a reader can do. No cards and no side panel:
+   each takes the window, so the argument has the same room as the chart. */
+
+.timeline-coda {
+  margin-top: var(--space-7);
+  border-top: 2px solid var(--color-text);
+}
+
+.coda-beat {
+  padding-block: clamp(4rem, 11vh, 8rem);
+}
+
+.coda-beat + .coda-beat {
+  border-top: 1px solid var(--color-border);
+}
+
+.coda-beat-vision {
+  background: var(--color-surface);
+}
+
+.coda-beat-vision,
+.coda-beat-mission {
+  min-height: min(88vh, 56rem);
+  display: grid;
+  align-content: center;
+}
+
+.coda-title {
+  margin: var(--space-2) 0 var(--space-4);
+  max-width: 24ch;
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5.6vw, 4.1rem);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.coda-lede {
+  margin: 0;
+  max-width: 64ch;
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.5;
+  text-wrap: pretty;
+}
+
+.coda-body {
+  margin: var(--space-4) 0 0;
+  max-width: 64ch;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.coda-footnote {
+  margin: var(--space-6) 0 0;
+  max-width: 52ch;
+  padding-top: var(--space-3);
+  border-top: 2px solid var(--color-accent-solid);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+
+.coda-tools {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 var(--space-6);
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-text);
+}
+
+.coda-tools li {
+  display: grid;
+  grid-template-columns: minmax(6.5rem, 8rem) 1fr;
+  gap: var(--space-3);
+  align-items: baseline;
+  padding-block: var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.coda-tool-name {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.coda-tool-use {
+  font-size: 0.9375rem;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+/* Below the split, the station becomes a sheet at the foot of the window: the
+   chart keeps the top of the screen and the type reads at a full measure. */
+@media (max-width: 64rem) {
+  .timeline-station {
+    align-content: end;
+    justify-items: start;
+    gap: var(--space-2);
+    padding: var(--space-6) var(--space-5) calc(var(--space-8) + 6.5rem);
   }
 
-  /* On a phone the note sits under the band, so the mark can run the width
-     of the column without colliding with it. */
-  .timeline-beat-halo {
-    right: var(--space-4);
+  .timeline-station::before {
+    inset: auto 0 0;
+    width: auto;
+    height: 78%;
+    background: linear-gradient(
+      0deg,
+      var(--color-bg) 0 58%,
+      color-mix(in srgb, var(--color-bg) 86%, transparent) 74%,
+      color-mix(in srgb, var(--color-bg) 0%, transparent) 100%
+    );
+    mask-image: none;
+  }
+
+  .timeline-station > * {
+    max-width: 62ch;
+  }
+
+  .timeline-station-claim {
+    max-width: 22ch;
+    font-size: clamp(1.9rem, 5.4vw, 2.8rem);
+  }
+
+  .timeline-station-body {
+    font-size: 1rem;
+  }
+
+  .timeline-coda {
+    margin-top: var(--space-6);
+  }
+
+  .coda-beat-vision,
+  .coda-beat-mission {
+    min-height: 0;
+  }
+
+  .coda-tools {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 48rem) {
+  .timeline-station {
+    padding: var(--space-5) var(--space-4) calc(var(--space-8) + 9.5rem);
+  }
+
+  .timeline-station::before {
+    height: 84%;
+  }
+
+  .timeline-station-claim {
+    max-width: 22ch;
+    font-size: clamp(1.75rem, 7vw, 2.3rem);
+  }
+
+  .timeline-station-body {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .timeline-station-action {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: var(--space-2);
+    font-size: 0.8125rem;
+  }
+
+  .timeline-station-mark {
+    font-size: 0.625rem;
+  }
+
+  .coda-beat {
+    padding-block: var(--space-7);
+  }
+
+  .coda-title {
+    font-size: clamp(1.9rem, 8vw, 2.6rem);
+  }
+
+  .coda-tools li {
+    grid-template-columns: 1fr;
+    gap: 2px;
   }
 
   /* One row per well on a phone: the overlay is the bottom fifth of the
@@ -4591,10 +5028,42 @@ input[type='range'] {
   }
 }
 
-.timeline[data-motion='static'] .timeline-beat,
-.timeline[data-motion='static'] .timeline-beat[data-side='above'] {
-  transition: none;
+/* Reduced motion: nothing pins, so the argument simply follows the chart in
+   the flow. Each station becomes a movement of its own. */
+.timeline[data-motion='static'] .timeline-argument {
+  position: static;
+  margin-top: var(--space-6);
+  border-top: 2px solid var(--color-text);
+  pointer-events: auto;
+}
+
+.timeline[data-motion='static'] .timeline-station {
+  position: relative;
+  inset: auto;
+  justify-items: start;
+  min-height: 0;
+  padding-block: var(--space-7);
+  border-top: 1px solid var(--color-border);
   opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+
+.timeline[data-motion='static'] .timeline-station:first-child {
+  border-top: 0;
+}
+
+.timeline[data-motion='static'] .timeline-station::before {
+  display: none;
+}
+
+.timeline[data-motion='static'] .timeline-station > * {
+  max-width: 64ch;
+}
+
+.timeline[data-motion='static'] .timeline-station-claim {
+  max-width: 26ch;
+  font-size: clamp(1.9rem, 4.4vw, 3rem);
 }
 
 .timeline[data-motion='static'] .timeline-beat-halo {
@@ -4789,7 +5258,7 @@ input[type='range'] {
   font-family: var(--font-display);
   font-size: clamp(2.1rem, 6vw, 3.6rem);
   line-height: 1;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
 }
 
 .index-list {
@@ -4894,11 +5363,12 @@ input[type='range'] {
   }
 }
 
-/* ---------- the close: the problem, the answer, the one ask ----------
-   Still inside the timeline's flow. The chart has just drawn the catalogue,
-   so the problem is a reading of it, not a new topic; the answer names the
-   engine; the page ends on a single filled control, in the dark, because that
-   is the one thing left to ask. */
+/* ---------- the close: the answer, the one ask ----------
+   Still inside the timeline's flow. The problem and the mission stand in the
+   timeline's own coda, where the chart is still in view; the close begins at
+   what the engine does about it, and the page ends on a single filled control,
+   in the dark, because that is the one thing left to ask. The stat rule below
+   is shared with the coda's problem movement. */
 
 .home-close {
   padding-top: var(--space-6);
@@ -4920,7 +5390,7 @@ input[type='range'] {
   font-size: clamp(1.9rem, 4.4vw, 3rem);
   font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   text-wrap: balance;
 }
 
@@ -4950,7 +5420,7 @@ input[type='range'] {
   font-size: clamp(1.75rem, 3.6vw, 2.6rem);
   font-weight: 700;
   line-height: 0.95;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 .close-stat dd {
@@ -4965,11 +5435,6 @@ input[type='range'] {
   color: var(--color-accent-solid);
 }
 
-.close-body {
-  max-width: 64ch;
-  margin-block: var(--space-5) 0;
-  text-wrap: pretty;
-}
 
 .close-source {
   max-width: 78ch;
@@ -5046,7 +5511,7 @@ input[type='range'] {
   font-family: var(--font-display);
   font-size: clamp(2rem, 5.4vw, 3.4rem);
   line-height: 0.98;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.02em;
 }
 
 .close-ask-lede {
@@ -8308,5 +8773,450 @@ input[type='range'] {
 @media (max-width: 480px) {
   .archive-provenance dl {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- RARA: the regulatory triage ----------
+   A scanner that puts a capability in front of the statutory corpus, and the
+   register of domains where there is no statute to put it in front of. The
+   scanner is a white card on paper; the verdict and the vacuum flags borrow
+   the status tints, so a red finding is legible before it is read. */
+
+/* The framework note: the instrument is the deterministic floor for the AI to
+   come, so the four verbs it must perform are stated before the tool, not
+   buried in a method note after it. */
+.rara-framework {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: var(--space-5) var(--space-6);
+  margin: var(--space-6) 0 var(--space-5);
+  padding-block: var(--space-5);
+  border-top: 2px solid var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rara-framework h2 {
+  margin: var(--space-1) 0 var(--space-2);
+  max-width: 20ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.rara-framework-copy p:not(.overline) {
+  max-width: 48ch;
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.rara-framework-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-5);
+  margin: 0;
+  align-content: start;
+}
+
+.rara-framework-list > div {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-strong);
+}
+
+.rara-framework-list dt {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.rara-framework-list dd {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+@media (max-width: 60rem) {
+  .rara-framework {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 36rem) {
+  .rara-framework-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.rara-scan {
+  margin-top: var(--space-5);
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+}
+
+.rara-scan textarea {
+  min-height: 9rem;
+  background: var(--color-surface-sunken);
+}
+
+.rara-scan-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-4);
+  margin-top: var(--space-3);
+}
+
+.rara-count {
+  margin: 0;
+}
+
+.rara-examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.rara-examples .meta {
+  margin: 0;
+}
+
+.rara-chip {
+  padding: 0.3rem 0.7rem;
+  font: inherit;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--duration-state) var(--ease-out),
+    border-color var(--duration-state) var(--ease-out);
+}
+
+.rara-chip:hover {
+  color: var(--color-accent-text);
+  border-color: var(--color-accent-soft-border);
+}
+
+.rara-chip:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rara-result {
+  margin-top: var(--space-6);
+}
+
+.rara-weak {
+  margin: 0 0 var(--space-4);
+  padding-left: var(--space-3);
+  max-width: 68ch;
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  border-left: 3px solid var(--status-partial-ink);
+}
+
+.rara-verdict {
+  --status-ink: var(--status-partial-ink);
+  --status-tint: var(--status-partial-tint);
+  padding: var(--space-4) var(--space-5);
+  background: var(--status-tint);
+  border-left: 4px solid var(--status-ink);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.rara-verdict[data-status='RED'] {
+  --status-ink: var(--status-none-ink);
+  --status-tint: var(--status-none-tint);
+}
+
+.rara-verdict[data-status='GREEN'] {
+  --status-ink: var(--status-delivered-ink);
+  --status-tint: var(--status-delivered-tint);
+}
+
+.rara-verdict:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rara-verdict-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.rara-badge {
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  /* The verdict carrier sets the status; a standalone badge brings its own. */
+  color: var(--status-ink, var(--color-accent-text));
+}
+
+.rara-badge[data-status='RED'] {
+  --status-ink: var(--status-none-ink);
+}
+
+.rara-badge[data-status='GREEN'] {
+  --status-ink: var(--status-delivered-ink);
+}
+
+.rara-badge-vacuum {
+  --status-ink: var(--status-announced-ink);
+  color: var(--status-ink);
+}
+
+.rara-severity {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--status-ink);
+}
+
+.rara-severity-den {
+  font-family: var(--font-data);
+  font-size: 0.42em;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--color-text-muted);
+}
+
+.rara-verdict-line {
+  margin: var(--space-2) 0 0;
+  max-width: 62ch;
+  font-size: 1.0625rem;
+}
+
+.rara-verdict-meta {
+  margin: var(--space-2) 0 0;
+}
+
+.rara-matches {
+  margin: var(--space-6) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 2px solid var(--color-text);
+}
+
+.rara-match {
+  padding: var(--space-4) 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rara-match-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+}
+
+.rara-id {
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+.rara-pillar {
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+.rara-match-status {
+  margin-left: auto;
+  padding: 0.15rem 0.45rem;
+  font-family: var(--font-data);
+  font-size: 0.625rem;
+  letter-spacing: 0.08em;
+  color: var(--status-partial-ink);
+  background: var(--status-partial-tint);
+  border-radius: var(--radius-sm);
+}
+
+.rara-match-status[data-status='RED'] {
+  color: var(--status-none-ink);
+  background: var(--status-none-tint);
+}
+
+.rara-match-status[data-status='GREEN'] {
+  color: var(--status-delivered-ink);
+  background: var(--status-delivered-tint);
+}
+
+.rara-match h3 {
+  margin: var(--space-2) 0 var(--space-1);
+  font-size: 1.35rem;
+  line-height: 1.2;
+}
+
+.rara-clause {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text-secondary);
+}
+
+.rara-facts {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.rara-facts > div {
+  display: grid;
+  grid-template-columns: 10rem minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.rara-facts dt {
+  padding-top: 0.2rem;
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.rara-facts dd {
+  margin: 0;
+  max-width: 72ch;
+}
+
+.rara-score {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.rara-vacuum-block {
+  margin-top: var(--space-6);
+}
+
+.rara-subhead {
+  margin-bottom: var(--space-3);
+  font-size: 1.15rem;
+}
+
+.rara-vacuum {
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border-left: 3px solid var(--status-announced-ink);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.rara-vacuum + .rara-vacuum {
+  margin-top: var(--space-3);
+}
+
+.rara-vacuum-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+
+.rara-vacuum h4 {
+  margin: var(--space-1) 0 var(--space-2);
+  font-size: 1.1rem;
+  line-height: 1.3;
+}
+
+.rara-vacuum p {
+  margin-bottom: var(--space-2);
+}
+
+.rara-register {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-text);
+}
+
+.rara-register h2 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.rara-register-list {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rara-register-list li {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.rara-register-body h3 {
+  margin: 0 0 var(--space-1);
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.rara-register-body p {
+  margin: 0 0 var(--space-1);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.rara-register-body .meta {
+  margin: var(--space-1) 0 0;
+}
+
+.rara-method {
+  margin-top: var(--space-6);
+  padding-top: var(--space-4);
+  max-width: 78ch;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 48rem) {
+  .rara-scan {
+    padding: var(--space-4);
+  }
+
+  /* A chip is a control before it is a label: give it a thumb. */
+  .rara-chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding-block: 0.5rem;
+  }
+
+  .rara-facts > div {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+
+  .rara-register-list li {
+    grid-template-columns: 1fr;
+    gap: var(--space-1);
+  }
+
+  .rara-verdict {
+    padding: var(--space-3) var(--space-4);
   }
 }

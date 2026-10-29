@@ -19,8 +19,17 @@ export const themeColors = () => {
   return cache.colors;
 };
 
-// Append an alpha to a computed CSS color: 'oklch(L C H)' -> 'oklch(L C H / a)'.
-export const withAlpha = (color, a) =>
-  color.includes('(')
-    ? color.replace(/\(\s*([^()]*?)\s*\)\s*$/, `($1 / ${a})`)
-    : color;
+// Append an alpha to a computed CSS color. The tokens resolve to hex, but a
+// future palette may hand back a functional color; support both, because a
+// canvas fill that silently loses its alpha paints an opaque slab over the
+// page (the arcade's ground did exactly that).
+export const withAlpha = (color, a) => {
+  const value = color.trim();
+  const hex = value.replace('#', '');
+  if (/^[0-9a-f]{6}$/i.test(hex)) {
+    return `#${hex}${Math.round(a * 255).toString(16).padStart(2, '0')}`;
+  }
+  return value.includes('(')
+    ? value.replace(/\(\s*([^()]*?)\s*\)\s*$/, `($1 / ${a})`)
+    : value;
+};

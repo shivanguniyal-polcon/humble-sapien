@@ -55,6 +55,12 @@ export const CONTENTS = [
     what: 'Policy, read through the public interest test: government releases and bills answered with three questions — who benefits, who pays, who is missing.',
   },
   {
+    tab: 'rara',
+    label: 'RARA',
+    count: 'AI governance',
+    what: 'A capability in, a statutory triage out: the deterministic framework RARA AI is built on — the AI that will regulate, restrict, alert and formulate for safer AI.',
+  },
+  {
     tab: 'about',
     label: 'About',
     count: 'Who we are',

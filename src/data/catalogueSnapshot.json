@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-10-29T08:08:04.494Z",
+  "source": "India Code catalogue crawl, October 2026",
+  "counts": {
+    "central": 12776,
+    "state": 27845,
+    "all": 40621
+  },
+  "records": {
+    "instruments": 40515,
+    "amendments": 106
+  }
+}

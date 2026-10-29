@@ -42,6 +42,7 @@ import {
   GAZETTE_GAP,
   CATALOGUE_NOTE,
 } from '../data/stateOutput.js';
+import SNAPSHOT from '../data/catalogueSnapshot.json';
 import {
   buildStacks,
   dotAt,
@@ -58,6 +59,19 @@ import {
 const ALL_KIND_IDS = KINDS.map((kind) => kind.id);
 const KIND_BY_ID = Object.fromEntries(KINDS.map((kind) => [kind.id, kind]));
 
+// The date is the build's, not the browser's. The catalogue is a crawl, not a
+// live feed; the one honest way to call it current is to say when it was last
+// rebuilt from that crawl. Shown in IST, the timezone the record is read in.
+const REBUILT = new Intl.DateTimeFormat('en-IN', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+  timeZone: 'Asia/Kolkata',
+  timeZoneName: 'short',
+}).format(new Date(SNAPSHOT.generatedAt));
+
 // How much page the column is given. At 1× a pixel of catalogue costs a pixel
 // of scroll, which walks the whole archive past in under two screens; the
 // runway stretches the same scrub over several, so the frontier crawls and the
@@ -73,54 +87,77 @@ const W_STEP = 8;
 
 // One marker per year, not per finding: two findings can land in the same
 // year, and two pins on the same band would be unreadable.
-// The problem, spoken where the column passes the year it happened. A beat
-// hangs on a band, appears when the frontier draws past it, and rides the
-// scroll away above. The close then states the whole thing at length. Counts
-// in the lines are read off the column itself, so a beat can never quote a
-// number the chart is not drawing — and switching to the States re-reads them,
-// because the States carry a different census. Tokens: {n} is this year's
-// count, {total} the whole column, {since} and {share} what was written from
-// 2001 on, {peakYear} the deepest band. `year: 'peak'` follows the data
-// instead of asserting a date, so the heaviest year is the heaviest whichever
-// face is showing.
-const PROBLEM_BEATS = [
+// The argument, spoken where the column passes the layer it describes. These
+// are not “what happened this year” notes: each station names a layer of
+// complexity the state added — the statute, the rules beneath it, the
+// amendments that keep the text moving, the data that now answers questions —
+// and the last one says where that leaves a reader. The vision and the mission
+// follow the draw in the coda below, where they get the page to themselves.
+//
+// A station appears when the frontier draws past its band and holds the window
+// until the next one; the column keeps moving behind the text. Every number is
+// read off the column itself, so a station can never quote a figure the chart
+// is not drawing — and switching to the States re-reads them.
+//
+// Tokens: {n} this year's instruments, {cum} everything drawn up to this year,
+// {total} the whole column, {actsShare} the share of it that is a primary Act,
+// {since} and {sinceShare} what was written from 2001 on, {peakYear} the
+// deepest band. `year: 'peak'` follows the data instead of asserting a date.
+const STORY = [
   {
     year: 1950,
-    kicker: 'The writing starts',
-    line: 'The Constitution comes into force and the catalogue opens: {n} instruments for the year.',
+    kicker: 'The statute',
+    claim: 'A law was a text you could finish.',
+    body: 'The catalogue opens with a Constitution and a thin shelf of statutes: {n} instruments in 1950. One Act, read end to end, was the whole of the state’s mind on a subject. Understanding was a matter of time.',
+    action: 'Keep the statute whole: one instrument, its clauses, its amendments and its source on one page — not a search result that ends at a PDF.',
   },
   {
-    year: 1977,
-    kicker: 'The rulebook, rewritten',
-    line: 'The forty-second amendment takes effect — the most sweeping rewrite of the Constitution — and the year carries {n} instruments.',
+    year: 1970,
+    kicker: 'The layer beneath',
+    claim: 'Then the binding detail moved below the Act.',
+    body: 'By the time the column reaches {cum} instruments, every statute trails rules, regulations and notifications — the subordinate paper that decides how the Act actually works. The text a citizen could finish was no longer the text that governed them.',
+    action: 'Follow the Act down into the rules and notifications that decide how it works, so the binding text is never on another portal.',
   },
   {
-    year: 2001,
-    kicker: 'The last quarter',
-    line: 'From 2001 on the column draws {since} instruments — {share}% of everything it holds, in 26 of its 80 years. The paper is not only old; it is arriving faster.',
+    year: 1990,
+    kicker: 'The moving text',
+    claim: 'Then the text stopped standing still.',
+    body: 'Amendments arrive as instruments of their own, sooner than any consolidation. Only {actsShare}% of this column is a primary Act; the rest is what the Acts produced, and it keeps producing. A consolidated statute is a snapshot of a moving argument.',
+    action: 'Read amendments as a ledger, not a surprise: what changed, from what, and when, with the amended section beside the original.',
   },
   {
     year: 2005,
-    kicker: 'The right to ask',
-    line: 'The Right to Information Act comes into force: from here a citizen can demand the reasoning behind the paper, and the year carries {n} instruments.',
+    kicker: 'The answer in data',
+    claim: 'Then the state began to answer in data.',
+    body: 'The right to information made the state explain itself, and the answer came back as datasets, portals, dashboards and releases. A table without its scope is a new kind of unreadable text: numbers that look like evidence and carry no argument.',
+    action: 'Give every table its scope: publisher, date, coverage and what it cannot show, printed next to the number.',
   },
   {
     year: 'peak',
-    kicker: 'The heaviest year',
-    line: 'The deepest band in the column: {n} instruments in {peakYear} alone. One square each, every one still binding.',
+    kicker: 'The pile',
+    claim: 'Now quantity is the argument.',
+    body: 'The deepest band: {n} instruments in {peakYear} alone, and {since} since 2001 — {sinceShare}% of everything the column holds. No reader can finish this, and no institution can either. Comprehension stopped being a habit and became infrastructure.',
+    action: 'Build the reading infrastructure: tools that run in the browser, show their working, and can be checked by someone who is not the author.',
   },
-  {
-    year: 2025,
-    kicker: 'Nothing counts the year',
-    line: 'The catalogue holds what it holds. No authority publishes how much was issued this year, central or state — the gap the column cannot close.',
-  },
+];
+
+// The handles the mission names, each with the verb it makes possible. Kept
+// beside the story so the coda and the index cannot drift apart on what a tool
+// is for.
+const MISSION_TOOLS = [
+  ['Manthan', 'run the analysis again and see whether it holds'],
+  ['Mulyankan', 'set the design and read what the estimate cannot escape'],
+  ['Saral', 'take a notification apart clause by clause'],
+  ['RARA', 'find where the law is silent'],
+  ['Khata', 'follow a village’s money from sanction to work'],
+  ['Sampark', 'find the office that owes you an answer'],
 ];
 
 // The tokens a beat line may carry. Unresolved tokens are a data bug, not a
 // line of copy, so the resolver leaves nothing behind that reads as one.
-const COUNTED = new Set(['n', 'total', 'since']);
+const COUNTED = new Set(['n', 'total', 'since', 'cum']);
 const beatText = (line, beat) =>
-  line.replace(/\{(n|total|since|share|peakYear)\}/g, (match, token) => {
+  line.replace(/\{(n|total|since|cum|actsShare|sinceShare|peakYear)\}/g, (match, token) => {
     const value = beat[token === 'n' ? 'count' : token];
     if (value === undefined) return match;
     // Counts take the Indian grouping; a year or a percentage must not.
@@ -231,6 +268,62 @@ const StepStrip = ({ title, points, unitNote }) => {
       </svg>
     </figure>
   );
+};
+
+// A figure that counts up from zero the first time it enters the window. The
+// coda's numbers are the argument, and a number that arrives writing itself
+// reads as a measurement rather than a claim printed on the page. The final
+// value is the accessible name; the animation itself is hidden from assistive
+// technology and stands down entirely under reduced motion.
+const CountUp = ({ value, reduce }) => {
+  const ref = useRef(null);
+  const [seen, setSeen] = useState(false);
+
+  useEffect(() => {
+    if (reduce || seen) return undefined;
+    const node = ref.current;
+    if (!node) return undefined;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setSeen(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.45 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [reduce, seen]);
+
+  useLayoutEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    const final = value.toLocaleString('en-IN');
+    if (reduce) {
+      node.textContent = final;
+      return undefined;
+    }
+    if (!seen) {
+      node.textContent = '0';
+      return undefined;
+    }
+    let raf = 0;
+    const started = performance.now();
+    const duration = 1100;
+    const step = (now) => {
+      const t = Math.min(1, (now - started) / duration);
+      const eased = 1 - (1 - t) ** 3;
+      node.textContent = Math.round(value * eased).toLocaleString('en-IN');
+      if (t < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [value, seen, reduce]);
+
+  // No text child: every value this span shows is written from the frame, so
+  // a later render of the timeline cannot reset a finished count to zero.
+  return <span ref={ref} aria-hidden="true" />;
 };
 
 // A total that counts to its new value instead of jumping. It writes
@@ -373,10 +466,12 @@ export default function OutputTimeline() {
     });
   }, [stacks]);
 
-  // The three figures in the head must describe the same catalogue: the total
-  // is the sum of what is actually drawn, not the raw row count, or setting a
-  // kind aside would leave the head disagreeing with itself.
-  const total = jurisTotals[0] + jurisTotals[1];
+  // The head carries the catalogue's whole count, not the drawn subset: it is
+  // the dated snapshot, rebuilt from the same rows by
+  // scripts/build-catalogue-snapshot.mjs. The legend below still carries the
+  // counts of the kinds currently in the column, which is what those numbers
+  // are for.
+  const catalogue = SNAPSHOT.counts;
 
   // Each beat, placed on its own band. The last seventh of the column is
   // where the camera clamps at the foot, so a note there is hung above its
@@ -388,31 +483,55 @@ export default function OutputTimeline() {
     const total = column.bands.reduce((sum, band) => sum + band.count, 0);
     const since = column.bands.reduce((sum, band) => (band.year >= 2001 ? sum + band.count : sum), 0);
     const peak = column.bands.reduce((best, band) => (band.count > best.count ? band : best), column.bands[0]);
-    const share = total ? Math.round((since / total) * 100) : 0;
-    return PROBLEM_BEATS.map((beat) => {
+    const sinceShare = total ? Math.round((since / total) * 100) : 0;
+
+    // The running total at each band, so a station can say how much paper
+    // the column had accumulated by the layer it is describing.
+    const cumulative = new Map();
+    let running = 0;
+    for (const band of column.bands) {
+      running += band.count;
+      cumulative.set(band.year, running);
+    }
+
+    // Share of the drawn column that is a primary Act. On the central face
+    // this is a handful of per cent; on the States it is a third. Either way
+    // the point of the station is the rest.
+    let actsDrawn = 0;
+    let drawn = 0;
+    if (stacks) {
+      for (const segments of stacks[juris].values()) {
+        segments.forEach((segment, index) => {
+          drawn += segment.count;
+          if (KINDS[index]?.id === 'act') actsDrawn += segment.count;
+        });
+      }
+    }
+    const actsShare = drawn ? Math.round((actsDrawn / drawn) * 100) : 0;
+
+    return STORY.map((beat) => {
       const year = beat.year === 'peak' ? peak.year : beat.year;
       const band = column.bands.find((entry) => entry.year === year);
       if (!band) return null;
-      const above = band.top + band.height > column.height * 0.86;
       return {
         ...beat,
         year,
         count: band.count,
         total,
         since,
-        share,
+        sinceShare,
+        cum: cumulative.get(year) ?? 0,
+        actsShare,
         peakYear: peak.year,
         bandTop: band.top,
         bandHeight: band.height,
-        side: above ? 'above' : 'below',
-        top: above ? band.top - 10 : band.top + band.height + 14,
       };
     })
       .filter(Boolean)
-      // One beat speaks at a time — the most recent band drawn — so the list
-      // is ordered down the column, whatever order the copy is written in.
+      // One station speaks at a time — the most recent band drawn — so the
+      // list is ordered down the column, whatever order the copy is written in.
       .sort((a, b) => a.bandTop - b.bandTop);
-  }, [column]);
+  }, [column, stacks, juris]);
 
   const spanFrom = span?.from ?? YEAR_MIN;
   const spanTo = span?.to ?? YEAR_MAX;
@@ -1088,24 +1207,45 @@ export default function OutputTimeline() {
       {/* The section runs edge to edge; every line of text keeps the site's
           reading measure inside it. */}
       <div className="shell">
-      <div className="section-head">
-        <span className="overline">The timeline</span>
-        <h1 id="timeline-title" className="timeline-title">
-          The State writes a lot, how much have you read?
-        </h1>
-        <p className="section-strap">
-          Every Act, amending Act, ordinance, rule and notification in the
-          India Code catalogue &mdash; one named square each, one jurisdiction
-          at a time. Scroll to draw it.
-        </p>
-        {rows && (
-          <p className="timeline-total">
-            <TickingNumber value={jurisTotals[0]} reduce={reduce} className="data-num" />
-            {' '}central ·{' '}
-            <TickingNumber value={jurisTotals[1]} reduce={reduce} className="data-num" />
-            {' '}state ·{' '}
-            <TickingNumber value={total} reduce={reduce} className="data-num" /> in all
+      <div className="section-head timeline-head">
+        <div className="timeline-head-copy">
+          <span className="overline">The fifth pillar of democracy</span>
+          <h1 id="timeline-title" className="timeline-title">
+            The State writes a lot, how much have you read?
+          </h1>
+          <p className="section-strap">
+            Every Act, amending Act, ordinance, rule and notification in the
+            India Code catalogue &mdash; one named square each, one jurisdiction
+            at a time. Scroll to draw it, and to see what the layers add up to.
           </p>
+        </div>
+        {rows && (
+          <div
+            className="timeline-total"
+            role="note"
+            aria-label={`Catalogue snapshot: ${catalogue.central.toLocaleString('en-IN')} central, ${catalogue.state.toLocaleString('en-IN')} state, ${catalogue.all.toLocaleString('en-IN')} in all. Updated ${REBUILT}. Source: ${SNAPSHOT.source}.`}
+          >
+            <span className="timeline-live" aria-hidden="true">
+              <span className="timeline-live-dot" />
+              Catalogue count
+            </span>
+            <span className="timeline-total-breakdown" aria-hidden="true">
+              <TickingNumber value={catalogue.central} reduce={reduce} className="data-num" /> central
+              {' · '}
+              <TickingNumber value={catalogue.state} reduce={reduce} className="data-num" /> state
+            </span>
+            <span className="timeline-total-all" aria-hidden="true">
+              <TickingNumber value={catalogue.all} reduce={reduce} className="data-num" />
+              <span className="timeline-total-suffix">in all</span>
+            </span>
+            <time
+              className="timeline-total-stamp"
+              dateTime={SNAPSHOT.generatedAt}
+              aria-hidden="true"
+            >
+              Updated {REBUILT}
+            </time>
+          </div>
         )}
       </div>
       </div>
@@ -1125,6 +1265,28 @@ export default function OutputTimeline() {
           unitNote="own scale · dated snapshots on differing counting bases"
         />
       )}
+
+      {/* The series switches sit with the series they switch, above the
+          column, so the chart is never interrupted by its own apparatus. */}
+      <div className="timeline-toggles" role="group" aria-label="Snapshot series shown above the timeline">
+        <span className="timeline-tray-label">Snapshot series</span>
+        <button
+          type="button"
+          className={`toggle-chip ${showRti ? '' : 'toggle-off'}`}
+          aria-pressed={showRti}
+          onClick={() => setShowRti((v) => !v)}
+        >
+          RTI applications
+        </button>
+        <button
+          type="button"
+          className={`toggle-chip ${showOpenData ? '' : 'toggle-off'}`}
+          aria-pressed={showOpenData}
+          onClick={() => setShowOpenData((v) => !v)}
+        >
+          Open data resources
+        </button>
+      </div>
       </div>
 
       <div
@@ -1374,10 +1536,10 @@ export default function OutputTimeline() {
                   />
                 </div>
 
-                <div className="timeline-beats">
-                  {/* A blob of accent over the band each note is about, sized
-                      to that year's output: the note explains how much paper
-                      there is, the blob shows how much of the column it is. */}
+                <div className="timeline-halos" aria-hidden="true">
+                  {/* A wash over the band a station speaks about, sized to that
+                      year's output: the text says how much paper there is, the
+                      wash shows how much of the column it is. */}
                   {beats.map((beat) => (
                     <span
                       key={`halo-${beat.year}`}
@@ -1390,28 +1552,17 @@ export default function OutputTimeline() {
                       style={{
                         top: beat.bandTop - 5,
                         height: Math.max(beat.bandHeight + 10, 48),
-                        left: layout.axis - 12,
+                        // On the right of the column, where the narrative is
+                        // not: the mark stains the squares the sentence is
+                        // about without sitting under the text.
+                        left:
+                          layout.axis +
+                          layout.plotW -
+                          Math.min(layout.plotW * 0.42, 560) -
+                          8,
+                        width: Math.min(layout.plotW * 0.42, 560),
                       }}
-                      aria-hidden="true"
                     />
-                  ))}
-
-                  {beats.map((beat) => (
-                    <aside
-                      key={beat.year}
-                      className="timeline-beat"
-                      data-side={beat.side}
-                      data-on="false"
-                      ref={(node) => {
-                        if (node) beatRefs.current.set(String(beat.year), node);
-                        else beatRefs.current.delete(String(beat.year));
-                      }}
-                      style={{ top: beat.top }}
-                    >
-                      <span className="timeline-beat-year data-num">{beat.year}</span>
-                      <p className="timeline-beat-kicker">{beat.kicker}</p>
-                      <p className="timeline-beat-line">{beatText(beat.line, beat)}</p>
-                    </aside>
                   ))}
                 </div>
               </div>
@@ -1481,30 +1632,177 @@ export default function OutputTimeline() {
               </div>
             )}
           </div>
+
+          {/* The argument, at the scale of the window rather than inside the
+              clipped track. One station holds the screen at a time; the column
+              keeps drawing behind it, so the sentence and the evidence it
+              describes are never separated. */}
+          <div className="timeline-argument">
+            {beats.map((beat, index) => (
+              <section
+                key={beat.year}
+                className="timeline-station"
+                data-on="false"
+                ref={(node) => {
+                  if (node) beatRefs.current.set(String(beat.year), node);
+                  else beatRefs.current.delete(String(beat.year));
+                }}
+                aria-labelledby={`station-${beat.year}`}
+              >
+                <p className="timeline-station-mark">
+                  <span className="timeline-station-year data-num">{beat.year}</span>
+                  <span className="timeline-station-kicker">{beat.kicker}</span>
+                  <span className="timeline-station-index data-num" aria-hidden="true">
+                    {String(index + 1).padStart(2, '0')}/{String(beats.length).padStart(2, '0')}
+                  </span>
+                </p>
+                <h2 id={`station-${beat.year}`} className="timeline-station-claim">
+                  {beatText(beat.claim, beat)}
+                </h2>
+                <p className="timeline-station-body">{beatText(beat.body, beat)}</p>
+                <p
+                  className="timeline-station-action"
+                  role="note"
+                  aria-label={`THS: ${beatText(beat.action, beat)}`}
+                >
+                  <span className="timeline-station-action-label" aria-hidden="true">THS</span>
+                  <span aria-hidden="true">{beatText(beat.action, beat)}</span>
+                </p>
+              </section>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="shell">
-      <div className="timeline-toggles" role="group" aria-label="Snapshot series shown above the timeline">
-        <span className="timeline-tray-label">Snapshot series</span>
-        <button
-          type="button"
-          className={`toggle-chip ${showRti ? '' : 'toggle-off'}`}
-          aria-pressed={showRti}
-          onClick={() => setShowRti((v) => !v)}
-        >
-          RTI applications
-        </button>
-        <button
-          type="button"
-          className={`toggle-chip ${showOpenData ? '' : 'toggle-off'}`}
-          aria-pressed={showOpenData}
-          onClick={() => setShowOpenData((v) => !v)}
-        >
-          Open data resources
-        </button>
+      {/* The turn. The stations above name the layers; these movements name
+          what they add up to and what a reader can do about it. Each gets the
+          window rather than a card, so the argument is not a caption to the
+          chart — it is what the chart was for. */}
+      <div className="timeline-coda">
+        <section className="coda-beat" aria-labelledby="coda-problem">
+          <div className="shell">
+            <p className="overline">The problem</p>
+            <h2 id="coda-problem" className="coda-title">
+              The rules exist. The reading does not.
+            </h2>
+
+            <p className="coda-lede">
+              You have just watched the paper grow: forty thousand instruments in
+              one catalogue, drawn to its last band. Publication is not
+              comprehension. The state writes at a scale no citizen can read
+              alone, and the gap between what is written and what is understood
+              is where power quietly moves.
+            </p>
+
+            <dl className="close-stats">
+              <div className="close-stat">
+                <dt className="data-num">
+                  <CountUp value={1638784} reduce={reduce} />
+                  <span className="visually-hidden">16,38,784</span>
+                </dt>
+                <dd>
+                  Right to Information requests filed with the central government
+                  in 2022-23 alone &mdash; and 52,662 rejected. Each one is a
+                  citizen asking the state to explain what it already wrote down.
+                  It is the largest readability complaint in the world.
+                </dd>
+              </div>
+              <div className="close-stat close-stat-danger">
+                <dt className="data-num">
+                  <span aria-hidden="true">?</span>
+                  <span className="visually-hidden">No annual total exists</span>
+                </dt>
+                <dd>
+                  The annual count of Gazette notifications published, central or
+                  state. No such total exists anywhere. That absence is the
+                  finding: nobody holds the number, so nobody can say how much
+                  rule-making there has been.
+                </dd>
+              </div>
+              <div className="close-stat">
+                <dt className="data-num">
+                  <CountUp value={890} reduce={reduce} />
+                  <span className="visually-hidden">890</span>
+                </dt>
+                <dd>
+                  Central Acts in force &mdash; a reported count from the Law
+                  Ministry, May 2025, not an audited total. Add state laws, rules
+                  and notifications and nobody has the full number.
+                </dd>
+              </div>
+            </dl>
+
+            <p className="meta close-source">
+              Sources: Lok Sabha RTI statistics 2022-23; Law Ministry reported
+              count, May 2025; the timeline&rsquo;s own catalogue note on the
+              missing Gazette total. Numbers carry their dates because policies
+              move.
+            </p>
+          </div>
+        </section>
+
+        <section className="coda-beat coda-beat-vision" aria-labelledby="coda-vision">
+          <div className="shell">
+            <p className="overline">The vision</p>
+            <h2 id="coda-vision" className="coda-title">
+              THS is the fifth pillar of democracy.
+            </h2>
+
+            <p className="coda-lede">
+              Not a fifth institution added to four. The legislature makes the
+              law; the executive writes beneath it; the judiciary reads it; the
+              press reports it. Each holds a piece of the record and speaks to
+              the others. The public is spoken about.
+            </p>
+            <p className="coda-body">
+              The fifth pillar is a new role, not another seat: the public
+              holding the same record, with tools and receipts. That is the
+              contribution THS is built to make &mdash; not another publisher
+              with a search box, but a reader who can check the claim, count
+              what was never counted, and answer with the state&rsquo;s own
+              evidence.
+            </p>
+            <p className="coda-footnote">
+              The Humble Sapien. The fifth pillar of democracy.
+            </p>
+          </div>
+        </section>
+
+        <section className="coda-beat coda-beat-mission" aria-labelledby="coda-mission">
+          <div className="shell">
+            <p className="overline">The mission</p>
+            <h2 id="coda-mission" className="coda-title">
+              Read it. Then run your own logic.
+            </h2>
+
+            <p className="coda-lede">
+              Every instrument on this site ends where a static report stops:
+              the page. Move an index&rsquo;s weights. Move a regression&rsquo;s
+              bandwidth, choose another donor pool, set a different
+              counterfactual. Take a statute apart clause by clause, ask a
+              scanner where the law is silent, follow a village&rsquo;s money
+              from sanction to work.
+            </p>
+
+            <ul className="coda-tools" aria-label="Instruments named in the mission">
+              {MISSION_TOOLS.map(([name, use]) => (
+                <li key={name}>
+                  <span className="coda-tool-name">{name}</span>
+                  <span className="coda-tool-use">{use}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="coda-body">
+              Read the record. Then take it apart, use it, and run your own logic
+              on it. That is what a fifth pillar does &mdash; not more
+              information, but the means to answer with it.
+            </p>
+          </div>
+        </section>
       </div>
 
+      <div className="shell">
       <details className="timeline-method-details">
         <summary>Data &amp; methodology</summary>
       <p className="meta timeline-hint">

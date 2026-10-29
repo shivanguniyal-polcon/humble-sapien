@@ -1,10 +1,9 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import Home from './sections/Home';
 import PitAssistant from './components/PitAssistant';
+import AmbientField from './components/AmbientField';
 import Logo from './components/Logo';
-import { TOOLS } from './data/tools';
 import { PUB_TYPES } from './data/publications';
-import { SECTOR_NAV } from './data/sectorNav';
 import { requestRouteFocus } from './lib/routeFocus';
 
 // Every section behind the nav is its own chunk. The shell — header, nav,
@@ -18,6 +17,7 @@ const Data = lazy(() => import('./sections/Data'));
 const Archive = lazy(() => import('./sections/Archive'));
 const SolutionIndex = lazy(() => import('./sections/SolutionIndex'));
 const Compare = lazy(() => import('./sections/Compare'));
+const Rara = lazy(() => import('./sections/Rara'));
 const Writing = lazy(() => import('./sections/Writing'));
 const Newsletter = lazy(() => import('./sections/Newsletter'));
 const PitDesk = lazy(() => import('./sections/PitDesk'));
@@ -33,63 +33,31 @@ const RouteFallback = () => (
   </div>
 );
 
-// Tools sit second: the instruments are the product, not an appendix.
-// Tabs with contained pages carry a hover dropdown listing them; clicking the
-// heading still opens the tab's own page. The dropdown inverts the site:
-// maroon panel, white text — a band of colour across the top of the window.
+// The menu is one level, one list. The sections that hold other pages (the
+// tools, the library, the playground, the atlas) are indexed on the index
+// page, which names every door and what it opens; the menu carries the doors
+// themselves, alphabetically, plus the two pages that hold the site together:
+// Home and the index.
 const TABS = [
   { id: 'home', label: 'Home' },
-  {
-    id: 'work',
-    label: 'Tools',
-    // The dropdown carries both lines: the name a reader saw on the card, and
-    // the plain-English category that says what it is. A menu of Sanskrit
-    // names alone would be a quiz.
-    children: TOOLS.map((t) => ({ id: t.id, label: t.name, hint: t.name === t.label ? '' : t.label })),
-  },
-  {
-    id: 'research',
-    label: 'Research',
-    // The library filters by type on the page itself. The dropdown carries
-    // that same filter, so the two controls can never disagree.
-    children: PUB_TYPES.map((t) => ({
-      id: `type-${t.toLowerCase().replace(/\s+/g, '-')}`,
-      label: t,
-      sub: '',
-      query: t === 'All' ? '' : `type=${encodeURIComponent(t)}`,
-    })),
-  },
-  {
-    id: 'data',
-    label: 'Data',
-    children: [
-      { id: 'playground', label: 'Playground', sub: '' },
-      { id: 'methods', label: 'Methods & downloads' },
-      { id: 'opendata', label: 'Open data directory' },
-    ],
-  },
+  { id: 'index', label: 'Index' },
+  { id: 'work', label: 'Tools' },
+  { id: 'research', label: 'Research' },
+  { id: 'data', label: 'Data' },
   { id: 'archive', label: 'Smriti — The Archive' },
-  {
-    id: 'compare',
-    label: 'Atlas',
-    // Nav metadata only — the atlas content (sectors.js, ~92 kB) loads with
-    // the Compare chunk, not with the landing page.
-    children: SECTOR_NAV.map((s) => ({ id: s.id, label: s.label })),
-  },
-  // Writing and Newsletter are read in one sitting, so they open the page
-  // and let the page do the choosing. No dropdown.
+  { id: 'compare', label: 'Atlas' },
   { id: 'writing', label: 'Writing' },
   { id: 'newsletter', label: 'Newsletter' },
   { id: 'pitdesk', label: 'PIT Desk' },
   { id: 'about', label: 'About' },
   { id: 'support', label: 'Support' },
+  { id: 'rara', label: 'RARA' },
 ];
 
-// The V panel lists every destination, including the families — Tools,
-// Research, Data, Atlas — as one alphabetical list. A standing menu reads
-// better alphabetically than in the order the site happened to grow, and it
-// is derived from TABS, so a new tab appears without touching this code.
-// Sub-routes stay out: they belong to the page that owns them.
+// The V panel lists every destination as one alphabetical list. A standing
+// menu reads better alphabetically than in the order the site happened to
+// grow, and it is derived from TABS, so a new tab appears without touching
+// this code. Sub-routes stay out: they belong to the page that owns them.
 const MENU_TABS = [...TABS].sort((a, b) => a.label.localeCompare(b.label));
 
 // Hash routes give every surface a stable URL: #/tools/lab, #/research/pmjay-model.
@@ -101,6 +69,7 @@ const HASH_TO_TAB = {
   data: 'data',
   archive: 'archive',
   atlas: 'compare',
+  rara: 'rara',
   writing: 'writing',
   newsletter: 'newsletter',
   pitdesk: 'pitdesk',
@@ -195,10 +164,24 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className="app" data-field="true">
+      {/* The paper gets a field of its own behind every route. On Home it waits
+          for the timeline to be behind the reader, arriving with the close;
+          the timeline is already an instrument, and two animated surfaces
+          would compete for the same attention. Archive, Research and the Home
+          close get the slower, quieter current because the reading is long. */}
+      <AmbientField
+        key={route.tab}
+        quiet={
+          route.tab === 'archive' || route.tab === 'research' || route.tab === 'home'
+        }
+        gate={route.tab === 'home' ? '.home-close, .site-footer' : null}
+      />
+
       {/* No header bar. The mark floats at the top left and the whole site
-          sits behind one V at the top right — the fifth pillar, after the
-          legislature, the executive, the judiciary and the press. */}
+          sits behind one V at the top right. The tagline says fifth pillar:
+          not another institution beside the legislature, the executive, the
+          judiciary and the press, but the public holding the same record. */}
       <div className="site-float">
         <button
           type="button"
@@ -211,7 +194,8 @@ export default function App() {
         >
           <Logo markOnly />
           <span className="brand-float-word" aria-hidden="true">
-            The Humble Sapien
+            <span className="brand-float-name">The Humble Sapien</span>
+            <span className="brand-float-tagline">The fifth pillar of democracy</span>
           </span>
         </button>
 
@@ -306,6 +290,7 @@ export default function App() {
             />
           )}
           {route.tab === 'compare' && <Compare onNavigate={go} openSub={route.sub} />}
+          {route.tab === 'rara' && <Rara />}
           {route.tab === 'writing' && <Writing onNavigate={go} openSub={route.sub} />}
           {route.tab === 'newsletter' && (
             <Newsletter onNavigate={go} openSub={route.sub} />
@@ -327,11 +312,11 @@ export default function App() {
       <footer className="site-footer">
         <div className="shell">
           <p>
-            <strong>THS: The Humble Sapien.</strong> A mission-locked public
-            interest technology company: a perpetual free tier for individuals
-            and small civil society organisations, paid for by the institutions
-            that can afford to pay. Evidence with receipts, tools in the open,
-            data you can take apart.
+            <strong>THS: The Humble Sapien.</strong> The fifth pillar of
+            democracy. A mission-locked public interest technology company: a
+            perpetual free tier for individuals and small civil society
+            organisations, paid for by the institutions that can afford to pay.
+            Evidence with receipts, tools in the open, data you can take apart.
           </p>
           <p style={{ marginBottom: 0 }}>
             Datasets on this site are sourced to public releases; analysis runs

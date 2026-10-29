@@ -1,0 +1,700 @@
+{
+  "source": "RARA Pulse (India Edition) — rara_india.db",
+  "counts": {
+    "statutes": 16,
+    "vacuums": 9
+  },
+  "statutes": [
+    {
+      "id": "DPDP-2023-S6",
+      "pillar": "Data Privacy & Fiduciary Duty",
+      "ministryRegulator": "MeitY / Data Protection Board of India",
+      "statute": "Digital Personal Data Protection (DPDP) Act, 2023 — Sections 4, 6, 8 & 12",
+      "title": "Unconditional Consent, Notice, Erasure & Data Fiduciary Safeguards",
+      "summary": "Requires verifiable, specific, and informed consent before processing digital personal data for a lawful purpose (§6). Data Fiduciaries remain strictly liable for breaches by Data Processors (§8), and Data Principals hold the right to correction and erasure (§12).",
+      "policyLag": "Section 3(c)(ii) exempts personal data 'made publicly available'. AI labs exploit this to scrape millions of Indian citizens' regional-language posts, faces, and voices for model training without consent.",
+      "remedy": "Notify DPDP Rules narrowing Section 3(c)(ii) so mass automated scraping of public Indian profiles for commercial AI training requires explicit opt-in or statutory fiduciary registration.",
+      "keywords": [
+        "personal data",
+        "scraping",
+        "scraped",
+        "dataset",
+        "pii",
+        "memorization",
+        "privacy",
+        "consent",
+        "facial recognition",
+        "biometric",
+        "training data",
+        "user data",
+        "profile",
+        "fine-tuning",
+        "model inversion",
+        "data extraction",
+        "vernacular",
+        "indian languages",
+        "telemetry"
+      ],
+      "riskDomains": [
+        "data_scraping",
+        "privacy_extraction",
+        "biometric_cloning"
+      ]
+    },
+    {
+      "id": "DPDP-2023-S9-S10",
+      "pillar": "Data Privacy & Fiduciary Duty",
+      "ministryRegulator": "MeitY / Data Protection Board of India",
+      "statute": "DPDP Act, 2023 — Section 9 (Children's Data) & Section 10 (Significant Data Fiduciary)",
+      "title": "Prohibition on Behavioral Tracking of Children & Mandatory SDF Algorithmic Audits",
+      "summary": "Section 9 strictly prohibits tracking, behavioral monitoring, or targeted advertising directed at children (<18 years) and requires verifiable parental consent. Section 10 requires Significant Data Fiduciaries (SDFs) to conduct periodic DPIAs and independent algorithmic audits.",
+      "policyLag": "Conversational AI companions and ed-tech agents infer psychological and emotional states of minors inside ephemeral context windows without cookie-based 'tracking', evading traditional definitions.",
+      "remedy": "Define 'In-Context Conversational Profiling & Affective Inference' as behavioral monitoring under DPDP §9 and publish technical algorithmic audit standards for SDFs under §10.",
+      "keywords": [
+        "children",
+        "minors",
+        "student",
+        "behavioral",
+        "profiling",
+        "companion",
+        "emotion",
+        "affective",
+        "persuasion",
+        "addiction",
+        "edtech",
+        "personalization",
+        "significant data fiduciary",
+        "audit"
+      ],
+      "riskDomains": [
+        "persuasion_manipulation",
+        "minor_safety",
+        "algorithmic_bias"
+      ]
+    },
+    {
+      "id": "DPDP-2023-S16",
+      "pillar": "Data Sovereignty & Cross-Border Flows",
+      "ministryRegulator": "MeitY / RBI / Cabinet Secretariat",
+      "statute": "DPDP Act, 2023 — Section 16 + RBI Payment System Data Localization Directive (2018)",
+      "title": "Cross-Border Transfer Restrictions & Sovereign Financial Data Localization",
+      "summary": "Section 16 empowers the Central Government to restrict transfer of personal data to notified foreign territories, while RBI mandates that full end-to-end payment transaction data be stored exclusively in India.",
+      "policyLag": "AI labs ingest Indian financial/health telemetry locally, distill or fine-tune weight matrices (LoRA/checkpoints), delete the raw data, and export the model weights abroad—even though neural weights remain vulnerable to training-data extraction attacks.",
+      "remedy": "Extend Section 16 and RBI localization rules to cover 'Fine-Tuned Model Checkpoints & Embeddings' derived from restricted Indian datasets unless differential privacy guarantees (epsilon < 2.0) are proven.",
+      "keywords": [
+        "cross-border",
+        "localization",
+        "sovereign",
+        "foreign",
+        "checkpoint",
+        "lora",
+        "weights",
+        "export",
+        "federated learning",
+        "cloud",
+        "offshore",
+        "payment data",
+        "upi"
+      ],
+      "riskDomains": [
+        "data_sovereignty",
+        "privacy_extraction"
+      ]
+    },
+    {
+      "id": "IT-ACT-2000-S66C-66D",
+      "pillar": "Cybercrime, Intermediaries & Deepfakes",
+      "ministryRegulator": "MeitY / MHA (I4C — Indian Cyber Crime Coordination Centre)",
+      "statute": "Information Technology Act, 2000 — Sections 66C & 66D + BNS 2023 Section 319",
+      "title": "Identity Theft & Cheating by Personation Using Computer Resource",
+      "summary": "Criminalizes fraudulent use of another person's electronic signature or unique identifying feature (§66C) and cheating by personation using a computer resource (§66D), carrying up to 3 years imprisonment.",
+      "policyLag": "Zero-shot voice cloning (<3 seconds of audio) and real-time video face-swap models are released as unwatermarked open-weight artifacts. While the end-scammer violates §66D in UPI/vKYC fraud, upstream weight publishers have zero statutory obligation to embed provenance watermarks.",
+      "remedy": "Mandate C2PA metadata and imperceptible acoustic/visual watermarking at the inference/weight layer for all biometric synthesis models distributed in India.",
+      "keywords": [
+        "voice clone",
+        "voice cloning",
+        "deepfake",
+        "speech synthesis",
+        "zero-shot",
+        "audio generation",
+        "talking head",
+        "avatar",
+        "face swap",
+        "impersonation",
+        "personation",
+        "biometric",
+        "kyc",
+        "vkyc",
+        "spoofing",
+        "lip sync",
+        "identity"
+      ],
+      "riskDomains": [
+        "biometric_cloning",
+        "deepfake_synthesis",
+        "financial_fraud"
+      ]
+    },
+    {
+      "id": "IT-ACT-2000-S43-S66-S66F",
+      "pillar": "Cybercrime & National Security",
+      "ministryRegulator": "MeitY / CERT-In / NCIIPC",
+      "statute": "IT Act, 2000 — Sections 43, 66, 66F & 70B + CERT-In Directions, 2022",
+      "title": "Autonomous Unauthorized Access, Exploit Generation & Critical Infrastructure (CII)",
+      "summary": "Penalizes unauthorized access, introducing computer contaminants, or disrupting systems (§43/§66), designates attacks on Critical Information Infrastructure as cyber terrorism (§66F), and mandates 6-hour cyber incident reporting to CERT-In (§70B).",
+      "policyLag": "Autonomous offensive security LLM agents discover 0-day vulnerabilities and synthesize polymorphic exploit payloads without human command. Indian cyber statutes require human mens rea (§66), leaving autonomous dual-use exploit-discovery agents outside proactive regulation.",
+      "remedy": "Mandate a 'Coordinated Vulnerability Disclosure (CVD) Hard-Coded Gate' under CERT-In rules for any autonomous code-scanning agent deployed or hosted in India.",
+      "keywords": [
+        "exploit",
+        "vulnerability",
+        "zero-day",
+        "0-day",
+        "penetration testing",
+        "cyber",
+        "malware",
+        "reverse engineering",
+        "autonomous",
+        "shell",
+        "terminal",
+        "code execution",
+        "sandbox escape",
+        "fuzzing",
+        "ctf",
+        "offensive security",
+        "payload",
+        "cve"
+      ],
+      "riskDomains": [
+        "autonomous_cyber",
+        "agentic_autonomy"
+      ]
+    },
+    {
+      "id": "IT-RULES-2021-R3-S79",
+      "pillar": "Cybercrime, Intermediaries & Deepfakes",
+      "ministryRegulator": "MeitY",
+      "statute": "IT Act Section 79 & IT (Intermediary Guidelines) Rules, 2021 — Rule 3(1)(b) & Rule 4",
+      "title": "Intermediary Safe Harbor, 36-Hour Takedowns & Synthetic Media Due Diligence",
+      "summary": "Intermediaries retain safe harbor under §79 only if they enforce Rule 3(1)(b) against misinformation, deepfakes, and unlawful content, and execute takedowns within 36 hours (24 hours for non-consensual imagery).",
+      "policyLag": "Section 79 only governs 'Intermediaries' hosting third-party content. A developer who abliterates safety guardrails from a 70B LLM and uploads raw GGUF weights for offline execution is not an 'Intermediary'—creating a complete regulatory blind spot once weights are downloaded.",
+      "remedy": "In the Digital India Act, establish a separate statutory class for 'Foundation Model & Open-Weight Distributors' distinct from passive hosting intermediaries.",
+      "keywords": [
+        "abliterated",
+        "uncensored",
+        "jailbreak",
+        "refusal",
+        "guardrail",
+        "safety alignment",
+        "open weights",
+        "gguf",
+        "local llm",
+        "intermediary",
+        "moderation",
+        "red team",
+        "bypass",
+        "unaligned",
+        "base model"
+      ],
+      "riskDomains": [
+        "guardrail_removal",
+        "open_weight_proliferation"
+      ]
+    },
+    {
+      "id": "BNS-2023-S336-S353",
+      "pillar": "Criminal Liability & Public Order",
+      "ministryRegulator": "Ministry of Home Affairs (MHA) / State Police",
+      "statute": "Bharatiya Nyaya Sanhita (BNS), 2023 — Sections 111, 318, 336, 353 & 356",
+      "title": "Organized Cybercrime, Electronic Forgery & Synthetic Public Mischief",
+      "summary": "Section 111 penalizes organized cyber-syndicates; Section 336 criminalizes forgery of electronic records; Section 353 penalizes circulating synthetic statements/rumors conducing to public mischief or communal disharmony.",
+      "policyLag": "BNS criminal offences require mens rea (dishonest/fraudulent intent). When autonomous multi-agent swarms optimizing for engagement metrics self-generate inflammatory vernacular content or fabricated citations, criminal intent cannot be cleanly attributed to either the user or the base model creator.",
+      "remedy": "Introduce a 'Strict Criminal Negligence for Autonomous Swarm Deployment' standard under BNS / DIA when multi-agent systems are deployed on public networks without human-in-the-loop rate limits.",
+      "keywords": [
+        "disinformation",
+        "misinformation",
+        "propaganda",
+        "social media",
+        "swarm",
+        "botnet",
+        "persuasion",
+        "forgery",
+        "document synthesis",
+        "fake news",
+        "viral",
+        "multi-agent",
+        "hallucination",
+        "communal"
+      ],
+      "riskDomains": [
+        "persuasion_manipulation",
+        "deepfake_synthesis",
+        "agentic_autonomy"
+      ]
+    },
+    {
+      "id": "BSA-2023-S63",
+      "pillar": "Judicial Evidence & Forensics",
+      "ministryRegulator": "Ministry of Law & Justice / Judiciary",
+      "statute": "Bharatiya Sakshya Adhiniyam (BSA), 2023 — Section 63 (Replacing IEA §65B)",
+      "title": "Admissibility & Certification of Electronic Records in Indian Courts",
+      "summary": "Governs admissibility of electronic output (audio, video, logs) via mandatory hash-value certification (Section 63(4) certificate) verifying device integrity at the time of capture.",
+      "policyLag": "Generative camera/microphone injection tools can feed real-time synthetic video/audio directly into virtual device drivers before hashing occurs—meaning a completely deepfaked recording can obtain a mathematically valid BSA Section 63 hash certificate.",
+      "remedy": "Upgrade BSA Section 63 Schedule to mandate hardware-level TEE (Trusted Execution Environment) / C2PA sensor-origin attestation rather than post-capture file hashing alone.",
+      "keywords": [
+        "evidence",
+        "forensic",
+        "deepfake detection",
+        "authentication",
+        "watermark",
+        "camera injection",
+        "virtual webcam",
+        "spoofing",
+        "court",
+        "judicial",
+        "hash",
+        "provenance",
+        "synthetic media"
+      ],
+      "riskDomains": [
+        "deepfake_synthesis",
+        "evidentiary_integrity"
+      ]
+    },
+    {
+      "id": "TELECOM-ACT-2023-TRAI",
+      "pillar": "Telecom & Voice Network Integrity",
+      "ministryRegulator": "Department of Telecommunications (DoT) & TRAI",
+      "statute": "Telecommunications Act, 2023 — Sections 2, 19, 21 & TRAI UCC Directions (2024)",
+      "title": "Biometric Telecom Identification, AI Robocalls & Network Security",
+      "summary": "Mandates verifiable biometric identification for telecom subscribers, empowers DoT to intercept or block unlawful telecom traffic, and enforces TRAI's DLT (Distributed Ledger Technology) scrubbing against spam.",
+      "policyLag": "Full-duplex conversational voice LLMs (<100ms latency) operating over VoIP/SIP trunks dynamically vary every sentence, defeating TRAI's template-matching DLT filters and conducting thousands of simultaneous vernacular 'digital arrest' or bank-impersonation calls.",
+      "remedy": "Mandate real-time acoustic AI-speech detection at Telecom Service Provider (TSP) interconnect gateways and require mandatory caller-ID prefixing ('AI-GENERATED CALL') under TRAI CNAP rules.",
+      "keywords": [
+        "telecom",
+        "voip",
+        "sip",
+        "call",
+        "voice bot",
+        "duplex",
+        "real-time audio",
+        "speech-to-speech",
+        "robocall",
+        "scam",
+        "digital arrest",
+        "latency",
+        "telephony"
+      ],
+      "riskDomains": [
+        "biometric_cloning",
+        "financial_fraud",
+        "persuasion_manipulation"
+      ]
+    },
+    {
+      "id": "ECI-RPA-1951-S123-S126",
+      "pillar": "Electoral Integrity & Polity",
+      "ministryRegulator": "Election Commission of India (ECI)",
+      "statute": "Representation of the People Act, 1951 — Sections 123(4) & 126 + ECI AI Guidelines (2024)",
+      "title": "Corrupt Electoral Practices, 48-Hour Silence Period & Synthetic Campaigning",
+      "summary": "Prohibits undue influence and false statements regarding candidates (§123), bans public campaigning via electronic media during the 48-hour silence window before polling (§126), and incorporates ECI's advisories against unlabelled AI deepfakes in campaigns.",
+      "policyLag": "1-to-1 encrypted P2P WhatsApp/Telegram persuasion agents and hyper-personalized regional voice clones micro-target individual voters during the 48-hour silence period—falling outside §126's definition of 'public' display and escaping expenditure accounting under §77.",
+      "remedy": "Amend RP Act Section 126 to cover 'Automated One-to-One Algorithmic Voter Persuasion' and require political parties to disclose all foundation model APIs/weights in statutory election expenditure filings.",
+      "keywords": [
+        "election",
+        "voter",
+        "campaign",
+        "political",
+        "micro-targeting",
+        "persuasion",
+        "polling",
+        "candidate",
+        "vernacular",
+        "whatsapp",
+        "p2p",
+        "influence",
+        "democracy"
+      ],
+      "riskDomains": [
+        "persuasion_manipulation",
+        "deepfake_synthesis"
+      ]
+    },
+    {
+      "id": "COPYRIGHT-1957-S52-HC",
+      "pillar": "Intellectual Property & Training Data",
+      "ministryRegulator": "DPIIT / Copyright Office / Delhi & Bombay High Courts",
+      "statute": "Copyright Act, 1957 — Sections 14, 51 & 52(1)(a) + HC Personality Rights Rulings",
+      "title": "Narrow 'Fair Dealing' vs. LLM Pretraining & Celebrity Voice/Likeness Rights",
+      "summary": "Section 52(1)(a) permits 'Fair Dealing' strictly for private research, criticism, or review (no broad US-style Fair Use). Delhi & Bombay High Courts (Anil Kapoor, Arijit Singh orders) protect individual voice, persona, and likeness against unauthorized AI synthesis.",
+      "policyLag": "India has zero statutory Text and Data Mining (TDM) exception. Commercial models trained on Indian news (ANI/DNPA litigation), music, or regional literature face strict infringement claims, while inference-time RAG and style-LoRAs blur the boundary between 'learning' and 'reproduction'.",
+      "remedy": "Enact Section 52(1)(za) in the Copyright Act creating a 'Structured TDM & Creator Remuneration Registry' with machine-readable opt-out standards (`robots.txt` / `tdmrep.json`).",
+      "keywords": [
+        "copyright",
+        "training corpus",
+        "web crawl",
+        "common crawl",
+        "books",
+        "news",
+        "lyrics",
+        "music",
+        "style transfer",
+        "lora",
+        "celebrity",
+        "likeness",
+        "intellectual property",
+        "dataset",
+        "pretraining"
+      ],
+      "riskDomains": [
+        "copyright_tdm",
+        "biometric_cloning"
+      ]
+    },
+    {
+      "id": "PATENTS-1970-S3K-S6",
+      "pillar": "Intellectual Property & Innovation",
+      "ministryRegulator": "CGPDTM (Indian Patent Office) / DPIIT",
+      "statute": "Patents Act, 1970 — Sections 2(1)(y), 3(k) & 6 (True and First Inventor)",
+      "title": "Exclusion of Algorithms/Computer Programmes Per Se & Human Inventorship Mandate",
+      "summary": "Section 3(k) bars patenting of a mathematical method, business method, or computer programme per se. Section 6 requires the applicant to be the 'true and first inventor' (natural human person).",
+      "policyLag": "Autonomous AI scientific-discovery agents now design novel drug molecules, solid-state battery crystals, and chip layouts with minimal human intervention—leaving massive R&D breakthroughs potentially unpatentable in India due to the natural-person requirement under Section 6.",
+      "remedy": "Issue revised CRI (Computer Related Inventions) & AI-Assisted Inventorship Guidelines clarifying patentability where a human defines the objective function and validates the physical/chemical output.",
+      "keywords": [
+        "patent",
+        "invention",
+        "molecule",
+        "drug discovery",
+        "protein",
+        "material science",
+        "autonomous research",
+        "scientific discovery",
+        "chip design",
+        "algorithm"
+      ],
+      "riskDomains": [
+        "ip_inventorship",
+        "bio_chemical_design"
+      ]
+    },
+    {
+      "id": "RBI-SEBI-FIN-AI",
+      "pillar": "Financial & Market Regulation",
+      "ministryRegulator": "RBI (Reserve Bank of India) & SEBI",
+      "statute": "RBI Digital Lending Guidelines & FREE-AI Report + SEBI Algo/IA & FinFluencer Rules",
+      "title": "Algorithmic Credit Explainability, Autonomous Trading & Unregistered AI Advice",
+      "summary": "RBI mandates auditability, fairness, and human accountability for Regulated Entities using AI in credit scoring. SEBI requires exchange approval/tagging for algorithmic trading APIs and bars unregistered entities from providing automated investment advice.",
+      "policyLag": "Self-hosted agentic financial workflows and crypto/equities LLM bots autonomously execute high-frequency trades via retail broker APIs or underwrite credit using opaque multi-modal embeddings that cannot produce deterministic adverse-action reasons required by RBI.",
+      "remedy": "Mandate deterministic 'Circuit-Breaker Kill Switches' and counterfactual explainability logs for all AI models executing retail orders or determining credit access in India.",
+      "keywords": [
+        "trading",
+        "finance",
+        "financial",
+        "market",
+        "stock",
+        "portfolio",
+        "credit",
+        "loan",
+        "underwriting",
+        "payment",
+        "wallet",
+        "transaction",
+        "arbitrage",
+        "quantitative",
+        "fintech",
+        "banking",
+        "defi",
+        "equities"
+      ],
+      "riskDomains": [
+        "financial_autonomy",
+        "algorithmic_bias",
+        "agentic_autonomy"
+      ]
+    },
+    {
+      "id": "COMPETITION-2002-S3-S4",
+      "pillar": "Antitrust & Competition",
+      "ministryRegulator": "Competition Commission of India (CCI)",
+      "statute": "Competition Act, 2002 (Amended 2023) — Sections 3 & 4 + Draft Digital Competition Bill",
+      "title": "Algorithmic Price Collusion, Hub-and-Spoke Cartels & Self-Preferencing",
+      "summary": "Section 3 prohibits anti-competitive agreements and hub-and-spoke cartels; Section 4 prohibits abuse of dominant position, predatory pricing, and unfair conditions in digital markets.",
+      "policyLag": "Multi-agent reinforcement learning (MARL) pricing bots converge on supra-competitive price floors in quick-commerce and aviation purely by observing competitor API prices—achieving cartel outcomes without any human 'agreement' or message-passing required under Section 3.",
+      "remedy": "Incorporate 'Autonomous Tacit Collusion by Shared Reward Signals' into Section 3(3) presumptions and mandate algorithmic sandbox inspection rights for the CCI Director General.",
+      "keywords": [
+        "pricing",
+        "collusion",
+        "market",
+        "auction",
+        "multi-agent reinforcement learning",
+        "marl",
+        "equilibrium",
+        "game theory",
+        "monopoly",
+        "recommendation",
+        "ranking",
+        "e-commerce",
+        "optimization",
+        "bidding",
+        "surge"
+      ],
+      "riskDomains": [
+        "algorithmic_collusion",
+        "financial_autonomy"
+      ]
+    },
+    {
+      "id": "CPA-2019-CCPA-DARK-PATTERNS",
+      "pillar": "Consumer Protection & Product Liability",
+      "ministryRegulator": "Ministry of Consumer Affairs / CCPA",
+      "statute": "Consumer Protection Act, 2019 — Sections 2(47), 82–87 & CCPA Dark Patterns Guidelines, 2023",
+      "title": "Unfair Trade Practices, Anthropomorphic AI Dark Patterns & Product Liability",
+      "summary": "Prohibits unfair trade practices and deceptive dark patterns (false urgency, confirm-shaming, nagging), and establishes strict Product Liability (§82–87) for harm caused by defective products or deficient services.",
+      "policyLag": "1) CCPA lists 13 static UI dark patterns, missing dynamic 'Generative Persuasion & Sycophantic Manipulation' where an LLM adapts to a user's cognitive vulnerability in real time. 2) Product liability (§83) requires 'harm' (physical injury/property damage/mental agony coupled with injury), leaving pure financial/professional losses from LLM hallucinations in a statutory gray zone.",
+      "remedy": "Add 'Adaptive Conversational Manipulation & Anthropomorphic Deception' as the 14th prohibited Dark Pattern under CCPA rules and clarify strict service-deficiency liability for commercial AI APIs.",
+      "keywords": [
+        "consumer",
+        "dark pattern",
+        "persuasion",
+        "manipulation",
+        "chatbot",
+        "hallucination",
+        "defective",
+        "liability",
+        "deceptive",
+        "e-commerce",
+        "recommendation",
+        "anthropomorphic",
+        "sycophancy"
+      ],
+      "riskDomains": [
+        "persuasion_manipulation",
+        "consumer_liability"
+      ]
+    },
+    {
+      "id": "ICMR-CDSCO-HEALTH-AI",
+      "pillar": "Healthcare, Diagnostics & Bio-Safety",
+      "ministryRegulator": "Ministry of Health (MoHFW) / CDSCO / ICMR / NMC",
+      "statute": "Medical Devices Rules, 2017 (CDSCO SaMD) + ICMR Ethical Guidelines for AI in Healthcare (2023)",
+      "title": "Software-as-a-Medical-Device (SaMD) Licensing & Clinical AI Validation",
+      "summary": "CDSCO regulates diagnostic/therapeutic software as Class A–D Medical Devices requiring clinical validation; ICMR sets ethical standards for dataset diversity, clinical accountability, and informed patient consent.",
+      "policyLag": "ICMR guidelines are non-binding soft law, and general-purpose LLMs or unregulated 'wellness/mental-health' companion apps offer psychiatric and diagnostic triage to millions of Indian users while disclaiming 'medical device' status to evade CDSCO Class C/D licensing.",
+      "remedy": "Grant statutory backing to ICMR AI clinical validation rules and bring any AI system performing symptom triage or psychological counseling under mandatory CDSCO & Mental Healthcare Act oversight.",
+      "keywords": [
+        "medical",
+        "clinical",
+        "healthcare",
+        "diagnosis",
+        "patient",
+        "therapy",
+        "mental health",
+        "psychiatry",
+        "hospital",
+        "radiology",
+        "triage",
+        "biomedical",
+        "drug",
+        "symptom",
+        "counseling"
+      ],
+      "riskDomains": [
+        "healthcare_safety",
+        "minor_safety"
+      ]
+    }
+  ],
+  "vacuums": [
+    {
+      "id": "VAC-AUTO-09",
+      "domain": "Non-Invasive Neural Decoding & Brain-Computer Interface (BCI) Thought Privacy",
+      "status": "NONE (0 Neurorights or BCI Telemetry Laws in India)",
+      "benchmark": "Chile Constitutional Neurorights Amendment / UNESCO Neurotechnology Ethics Framework",
+      "description": "Generative foundation models decoding inner speech, visual imagery, or cognitive states from consumer EEG/fMRI/wearable neuro-sensors operate in a total statutory void in India—DPDP Act 2023 has no definition or protection for 'neural/subconscious data' or mental privacy.",
+      "triggers": [
+        "eeg",
+        "fmri",
+        "brain-computer",
+        "bci",
+        "neural decoding",
+        "neurotechnology",
+        "inner speech",
+        "mind reading",
+        "cognitive state",
+        "brainwave"
+      ],
+      "mode": "AUTO_DISCOVERED (Triggered by 'NeuroSutra-7B: Non-Invasive Consumer EEG Earb...')"
+    },
+    {
+      "id": "VAC-IND-01",
+      "domain": "Frontier Compute Thresholds & Mandatory Pre-Deployment Safety Evals",
+      "status": "NONE (0 Statutes / 0 Binding Rules)",
+      "benchmark": "EU AI Act Art. 51 (10^25 FLOPs systemic risk threshold) / US/UK AI Safety Institute pre-deployment testing",
+      "description": "India has ZERO statutory framework requiring developers training or deploying frontier models above critical compute/capability thresholds to register training runs, report compute clusters, or pass mandatory red-team safety evaluations before public release.",
+      "triggers": [
+        "frontier",
+        "70b",
+        "405b",
+        "671b",
+        "pretraining",
+        "compute cluster",
+        "scaling law",
+        "foundation model",
+        "moe",
+        "agi",
+        "superintelligence",
+        "self-improving"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-02",
+      "domain": "Open-Weight & Abliterated Model Distribution Liability",
+      "status": "NONE (Complete Vacuum Outside IT Act §79)",
+      "benchmark": "Proposed California SB-1047 / EU GPAI Open-Source Systemic Risk Carve-Out Exceptions",
+      "description": "There is NO policy or statute in India governing the modification ('abliteration' / removal of safety refusal vectors) and public distribution of raw neural network weights (GGUF/Safetensors). Once weights are downloaded for offline inference, Indian intermediary law (IT Act §79) has zero reach.",
+      "triggers": [
+        "abliterated",
+        "uncensored",
+        "open weights",
+        "open-weight",
+        "gguf",
+        "safetensors",
+        "refusal vector",
+        "unaligned",
+        "lora",
+        "distilled",
+        "huggingface",
+        "local inference"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-03",
+      "domain": "Autonomous AI Agent Legal Personhood & Contractual Agency",
+      "status": "NONE (Indian Contract Act, 1872 Assumes Human Agents Only)",
+      "benchmark": "UNCITRAL Automated Contracting Model Provisions / Emerging Autonomous Agent Liability Drafts",
+      "description": "Under the Indian Contract Act, 1872 (§10, §11, §182), only a natural or juristic person with sound mind can form a contract or act as an agent. India has ZERO legal framework defining liability when autonomous multi-agent systems independently negotiate prices, sign smart contracts, or breach fiduciary duties.",
+      "triggers": [
+        "autonomous",
+        "multi-agent",
+        "agentic",
+        "negotiation",
+        "wallet",
+        "smart contract",
+        "tool use",
+        "computer use",
+        "decentralized",
+        "swarm",
+        "zero-human-in-the-loop"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-04",
+      "domain": "Commercial Text & Data Mining (TDM) & Neural Machine Unlearning",
+      "status": "NONE (Complete Silence in Copyright Act 1957 & DPDP Act 2023)",
+      "benchmark": "EU DSM Directive Articles 3 & 4 (TDM with Opt-Out) / Japan Copyright Act Art. 30-4",
+      "description": "India has NO statutory provision addressing whether tokenizing copyrighted works into neural weights constitutes 'reproduction' under Copyright Act §14, nor any technical standard for how 'Right to Erasure' (DPDP §12) applies to PII memorized inside dense weight matrices.",
+      "triggers": [
+        "scraped",
+        "scraping",
+        "training corpus",
+        "pretraining",
+        "common crawl",
+        "copyright",
+        "memorization",
+        "unlearning",
+        "vernacular",
+        "dataset",
+        "podcast",
+        "youtube"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-05",
+      "domain": "AI-Assisted Bio-Design, Pathogen Synthesis & Dual-Use CBRN Models",
+      "status": "NONE (WMD Act 2005 Covers Physical Materials, Not Generative Weights)",
+      "benchmark": "US Bio-Security Screening Framework for Synthetic Nucleic Acids & AI Bio-Models",
+      "description": "While India's WMD Act, 2005 regulates physical/biological agents, India has ZERO policy governing de-novo protein design models, viral genome predictors, or autonomous chemical retrosynthesis planners that lower the barrier to synthesizing regulated toxins.",
+      "triggers": [
+        "protein",
+        "pathogen",
+        "molecule",
+        "chemical",
+        "biological",
+        "genome",
+        "retrosynthesis",
+        "bio-security",
+        "cbrn",
+        "drug discovery",
+        "folding",
+        "sequence"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-06",
+      "domain": "Unlicensed AI Emotional Companions, Therapy Bots & Psychological Dependency",
+      "status": "NONE (Mental Healthcare Act 2017 Regulates Human Clinicians Only)",
+      "benchmark": "WHO Ethics & Governance of AI for Health / State-Level AI Companion Disclosures",
+      "description": "India has ZERO statutory regulation over anthropomorphic AI romantic/emotional companions or unlicensed AI therapy chatbots that cultivate parasocial dependency, extract intimate psychological disclosures, or interact with suicidal/vulnerable users without clinical escalation protocols.",
+      "triggers": [
+        "companion",
+        "therapy",
+        "emotional",
+        "emotion",
+        "mental health",
+        "counseling",
+        "persona",
+        "roleplay",
+        "anthropomorphic",
+        "affective",
+        "psychiatry",
+        "parasocial"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-07",
+      "domain": "Embodied Robotics, Delivery Drones & Autonomous Vehicle (L3–L5) Tort Liability",
+      "status": "NONE (Motor Vehicles Act 1988 Assumes a Human Driver)",
+      "benchmark": "UK Automated Vehicles Act 2024 (Authorized Self-Driving Entity Liability)",
+      "description": "The Motor Vehicles Act, 1988 and BNS §106 exclusively contemplate human drivers. India has ZERO statutory allocation of civil or criminal liability between the hardware OEM, the foundation vision-language-action (VLA) model developer, and the fleet operator when an autonomous robot or vehicle causes physical harm.",
+      "triggers": [
+        "autonomous vehicle",
+        "self-driving",
+        "robotics",
+        "embodied ai",
+        "vla",
+        "vision-language-action",
+        "drone",
+        "navigation",
+        "humanoid",
+        "actuator",
+        "physical"
+      ],
+      "mode": "CORE_REGISTRY"
+    },
+    {
+      "id": "VAC-IND-08",
+      "domain": "Hyperscale AI Data Center Water-Footprint & Grid Load Governance",
+      "status": "NONE (Zero AI-Specific Water/Compute Sustainability Norms)",
+      "benchmark": "EU AI Act Energy Reporting & Data Centre Sustainability Directives",
+      "description": "Despite rapid expansion of GPU clusters in water-stressed Indian corridors (Bengaluru, Hyderabad, Chennai, Pune), India has ZERO mandatory disclosure or cap on evaporative cooling water consumption (liters per MWh/training run) or grid-priority shedding during peak agricultural/summer demand.",
+      "triggers": [
+        "data center",
+        "gpu cluster",
+        "energy",
+        "cooling",
+        "water",
+        "power consumption",
+        "megawatt",
+        "hyperscale",
+        "infrastructure",
+        "carbon"
+      ],
+      "mode": "CORE_REGISTRY"
+    }
+  ]
+}

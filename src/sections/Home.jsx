@@ -12,7 +12,7 @@ export default function Home({ onNavigate }) {
   const titleRef = useRef(null);
 
   useEffect(() => {
-    document.title = 'THS: The Humble Sapien · Public interest technology for every policy';
+    document.title = 'THS: The Humble Sapien · The fifth pillar of democracy';
     if (takeRouteFocus()) titleRef.current?.focus({ preventScroll: true });
   }, []);
 

@@ -64,7 +64,8 @@ export default function SolutionIndex({ onNavigate }) {
       </ol>
 
       <p className="meta index-foot">
-        The index and the menu are one list, kept in one place. Numbers carry
+        The menu behind V carries the same doors, alphabetised, along with the
+        two pages that hold them: the timeline and this index. Numbers carry
         their counts because a menu that overstates is a rumour.
       </p>
     </section>

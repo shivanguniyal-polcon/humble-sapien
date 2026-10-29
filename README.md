@@ -1,6 +1,6 @@
 # THS — The Humble Sapien
 
-**Public interest technology for every policy.**
+**The fifth pillar of democracy.**
 
 THS is a public interest technology initiative working toward registration as a not-for-profit civil society organisation, across the whole
 policy surface — health, sanitation, governance, technology and beyond — the
@@ -46,6 +46,35 @@ Vercel builds with `npm run build:vercel`, which bakes the Monitor API URL into
 the bundle. `vercel.json` sets that build command and the CSP `connect-src`
 entry for the Worker. `npm run smoke:site` checks the deployed bundle, the Vercel
 CSP and the Worker's CORS answer.
+
+### Keeping the catalogue count current
+
+The count on the timeline is a dated build snapshot, not a live feed.
+`npm run build` runs [`scripts/build-catalogue-snapshot.mjs`](scripts/build-catalogue-snapshot.mjs)
+first, deriving the three figures from the same rows the chart draws and
+stamping the result with the build time. The header shows that stamp under the
+count.
+
+Vercel rebuilds on every push. A weekly GitHub Action
+([`.github/workflows/catalogue-rebuild.yml`](.github/workflows/catalogue-rebuild.yml))
+also asks Vercel to rebuild every Monday, so the stamp stays within seven days.
+It uses a Deploy Hook:
+
+1. In Vercel, open the project → **Settings → Git → Deploy Hooks**, create a
+   hook for `main`, and copy its URL.
+2. In GitHub, open the repository → **Settings → Secrets and variables →
+   Actions**, add `VERCEL_DEPLOY_HOOK` with that URL.
+
+Until the secret exists, the scheduled job logs a warning and does nothing; it
+never reports a refresh it did not trigger. A rebuild restamps the date but does
+not invent new instruments. To refresh the count itself, re-crawl India Code and
+rebuild the exports:
+
+```bash
+node scripts/build-state-output.mjs
+node scripts/build-research-downloads.mjs
+npm run build:catalogue
+```
 
 The regulatory monitor and Legal Simplifier Workers live in [`workers/`](workers/),
 not under `api/`. Vercel turns every root-level `api/*.js` into a public

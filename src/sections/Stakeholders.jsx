@@ -18,6 +18,26 @@ function Matrix({ rows }) {
   const M = { top: 28, right: 28, bottom: 56, left: 72 };
   const xScale = (v) => M.left + ((v - 0.5) / 5) * (W - M.left - M.right);
   const yScale = (v) => M.top + ((5.5 - v) / 11) * (H - M.top - M.bottom);
+
+  // Power, effect and magnitude are integers, so distinct parties can share a
+  // coordinate. Offset each collision around its base point on a golden angle
+  // so the bubbles and their numbers stay readable instead of stacking.
+  const seen = new Map();
+  const placed = rows.map((r) => {
+    const baseX = xScale(r.power);
+    const baseY = yScale(effectScore(r.effect, r.magnitude));
+    const slot = `${r.power}:${r.magnitude}:${r.effect}`;
+    const n = seen.get(slot) ?? 0;
+    seen.set(slot, n + 1);
+    if (n === 0) return { ...r, x: baseX, y: baseY };
+    const angle = n * 2.39996;
+    const radius = n * (12 + r.magnitude * 2);
+    return {
+      ...r,
+      x: baseX + Math.cos(angle) * radius,
+      y: baseY + Math.sin(angle) * radius,
+    };
+  });
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Stakeholders by power and net effect">
       <rect x={M.left} y={M.top} width={W - M.left - M.right} height={yScale(0) - M.top} fill="var(--color-series-2)" fillOpacity="0.05" />
@@ -38,11 +58,11 @@ function Matrix({ rows }) {
       </text>
       <text x={W - M.right - 6} y={M.top + 18} textAnchor="end" fontSize="11.5" fill="var(--color-text-secondary)">gains, less power</text>
       <text x={W - M.right - 6} y={H - M.bottom - 10} textAnchor="end" fontSize="11.5" fill="var(--color-text-secondary)">bears the cost</text>
-      {rows.map((r, i) => (
-        <g key={r.name}>
+      {placed.map((r, i) => (
+        <g key={`${r.name}-${i}`}>
           <circle
-            cx={xScale(r.power)}
-            cy={yScale(effectScore(r.effect, r.magnitude))}
+            cx={r.x}
+            cy={r.y}
             r={7 + r.magnitude * 2.4}
             fill={EFFECT_COLOR[r.effect]}
             fillOpacity="0.28"
@@ -52,8 +72,8 @@ function Matrix({ rows }) {
             <title>{`${r.name}: ${effectLabels[r.effect]} (magnitude ${r.magnitude}, power ${r.power})`}</title>
           </circle>
           <text
-            x={xScale(r.power)}
-            y={yScale(effectScore(r.effect, r.magnitude)) + 4}
+            x={r.x}
+            y={r.y + 4}
             textAnchor="middle"
             fontSize="11"
             fill="var(--color-text)"
@@ -70,10 +90,13 @@ function Matrix({ rows }) {
 export default function Stakeholders({ onNavigate, onTool }) {
   const [policyId, setPolicyId] = useState(stakeholderPolicies[0].id);
   const [edits, setEdits] = useState({});
+  const [added, setAdded] = useState({});
+  const [draft, setDraft] = useState({ name: '', role: '' });
   const [sentNote, setSentNote] = useState('');
   const policy = stakeholderPolicies.find((p) => p.id === policyId);
 
-  const rows = policy.stakeholders.map((s, i) => ({
+  const extraRows = added[policyId] ?? [];
+  const rows = [...policy.stakeholders, ...extraRows].map((s, i) => ({
     ...s,
     ...edits[`${policyId}:${i}`],
     name: s.name,
@@ -85,6 +108,47 @@ export default function Stakeholders({ onNavigate, onTool }) {
 
   const edit = (i, patch) =>
     setEdits((e) => ({ ...e, [`${policyId}:${i}`]: { ...e[`${policyId}:${i}`], ...patch } }));
+
+  const addStakeholder = () => {
+    const name = draft.name.trim();
+    if (!name) return;
+    const role = draft.role.trim() || 'Added by the reader';
+    setAdded((a) => ({
+      ...a,
+      [policyId]: [
+        ...(a[policyId] ?? []),
+        {
+          name,
+          role,
+          effect: 'neutral',
+          magnitude: 1,
+          power: 1,
+          mechanism:
+            'Added by the reader during this session. Set the direction, magnitude and power from your own evidence.',
+          evidence:
+            'No citation is attached. This map does not vouch for a party added in the browser.',
+          counter:
+            'This row lives in the page only; it is not part of the published record.',
+        },
+      ],
+    }));
+    setDraft({ name: '', role: '' });
+  };
+
+  const resetToRecord = () => {
+    setEdits((e) => {
+      const next = { ...e };
+      Object.keys(next).forEach((k) => {
+        if (k.startsWith(`${policyId}:`)) delete next[k];
+      });
+      return next;
+    });
+    setAdded((a) => {
+      const next = { ...a };
+      delete next[policyId];
+      return next;
+    });
+  };
 
   const benefited = rows.filter((r) => r.effect === 'benefits');
   const restricted = rows.filter((r) => r.effect === 'restricted');
@@ -114,7 +178,7 @@ export default function Stakeholders({ onNavigate, onTool }) {
     whoPays: restricted.length > 0
       ? `Recorded as restricted: ${restricted.map((r) => r.name).join(', ')}.${avgRes != null ? ` Average power over the policy: ${avgRes.toFixed(1)} of 5.` : ''}`
       : 'The ledger records no restrictions yet: nobody on it is named as paying for this policy.',
-    whoMissing: `This ledger maps ${rows.length} parties from the published record${mixed.length > 0 ? ` (${mixed.length} mixed or neutral)` : ''}. Anyone absent from it has no direction, magnitude or power reading here, and their absence is unmeasured by construction. ${verdict}`,
+    whoMissing: `This ledger maps ${rows.length} parties${extraRows.length > 0 ? `, of which ${extraRows.length} ${extraRows.length === 1 ? 'was' : 'were'} added in this browser` : ' from the published record'}${mixed.length > 0 ? ` (${mixed.length} mixed or neutral)` : ''}. Anyone absent from it has no direction, magnitude or power reading here, and their absence is unmeasured by construction. ${verdict}`,
   };
 
   const sendToPit = () => {
@@ -131,6 +195,9 @@ export default function Stakeholders({ onNavigate, onTool }) {
       lines.push(`   Mechanism: ${r.mechanism}`);
       lines.push(`   Counter: ${r.counter}`);
     });
+    if (extraRows.length > 0) {
+      lines.push('', `Added in this browser (not in the published record): ${extraRows.map((r) => r.name).join(', ')}.`);
+    }
     lines.push('', verdict, '', 'Public interest check (drafted from this ledger):');
     lines.push(`Who benefits? ${pitAnswers.whoBenefits}`);
     lines.push(`Who pays? ${pitAnswers.whoPays}`);
@@ -143,7 +210,7 @@ export default function Stakeholders({ onNavigate, onTool }) {
     <section>
       <PageHead
         eyebrow="Stakeholder mapper"
-        title="Sutra."
+        title="Sutra"
         question="Who gains, who is restricted, and who decided?"
       >
         A policy is a distribution: someone gains protection or latitude,
@@ -157,7 +224,11 @@ export default function Stakeholders({ onNavigate, onTool }) {
           <button
             key={p.id}
             className={`chip ${policyId === p.id ? 'chip-active' : ''}`}
-            onClick={() => setPolicyId(p.id)}
+            onClick={() => {
+              setPolicyId(p.id);
+              setDraft({ name: '', role: '' });
+              setSentNote('');
+            }}
           >
             {p.name}
           </button>
@@ -178,9 +249,48 @@ export default function Stakeholders({ onNavigate, onTool }) {
         </p>
       </div>
 
+      <div className="ledger-add">
+        <div>
+          <h3 className="card-heading">Add a party</h3>
+          <p className="meta" style={{ marginBottom: 0 }}>
+            The seeded map is a starting reading, not a closed list. Add a
+            stakeholder it missed, then set their direction, magnitude and power
+            in the ledger below. Additions stay in this browser.
+          </p>
+        </div>
+        <div className="ledger-add-fields">
+          <label>
+            Name
+            <input
+              type="text"
+              value={draft.name}
+              onChange={(event) => setDraft({ ...draft, name: event.target.value })}
+              placeholder="Who is missing?"
+            />
+          </label>
+          <label>
+            Role
+            <input
+              type="text"
+              value={draft.role}
+              onChange={(event) => setDraft({ ...draft, role: event.target.value })}
+              placeholder="What part do they play?"
+            />
+          </label>
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={addStakeholder}
+            disabled={!draft.name.trim()}
+          >
+            + Add stakeholder
+          </button>
+        </div>
+      </div>
+
       <div className="ledger">
         {rows.map((r, i) => (
-          <article key={r.name} className="ledger-row">
+          <article key={`${r.name}-${i}`} className="ledger-row">
             <div className="ledger-head">
               <span className="ledger-index data-num">{i + 1}</span>
               <div>
@@ -235,6 +345,13 @@ export default function Stakeholders({ onNavigate, onTool }) {
             <div className="stat-cell"><span className="stat-label">Mapped</span><span className="data-num stat-value">{rows.length}</span></div>
           </div>
           <p>{verdict}</p>
+          {extraRows.length > 0 && (
+            <p className="fine-print">
+              {extraRows.length} {extraRows.length === 1 ? 'party was' : 'parties were'}{' '}
+              added in this browser and {extraRows.length === 1 ? 'is' : 'are'} not
+              part of the published record.
+            </p>
+          )}
           {benefited.length > 0 && (
             <p className="fine-print">
               <strong>Gains:</strong> {benefited.map((r) => r.name).join(', ')}.
@@ -268,11 +385,7 @@ export default function Stakeholders({ onNavigate, onTool }) {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => setEdits((e) => {
-                const next = { ...e };
-                Object.keys(next).forEach((k) => { if (k.startsWith(`${policyId}:`)) delete next[k]; });
-                return next;
-              })}
+              onClick={resetToRecord}
             >
               Reset to the record
             </button>

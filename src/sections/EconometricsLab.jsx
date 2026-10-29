@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { census2011, censusDerived } from '../data/census2011';
 import { nfhsStates, nfhsIndicators } from '../data/nfhsPanel';
 import {
@@ -589,8 +589,25 @@ function WhoCard({ who, compact }) {
 
 // ---------- the lab ----------
 
-export default function EconometricsLab({ onNavigate }) {
-  const [method, setMethod] = useState('did');
+export default function EconometricsLab({ onNavigate, query, onQueryChange }) {
+  const [method, setMethod] = useState(() => {
+    const requested = new URLSearchParams(query || '').get('m');
+    return requested && METHODS[requested] ? requested : 'did';
+  });
+
+  // The estimator rides in the URL, so a link can open the Ujjwala DiD or the
+  // Bihar synthetic control instead of dropping the reader on the default.
+  useEffect(() => {
+    const requested = new URLSearchParams(query || '').get('m');
+    if (requested && METHODS[requested] && requested !== method) {
+      setMethod(requested);
+    }
+  }, [query, method]);
+
+  const pickMethod = (id) => {
+    setMethod(id);
+    if (onQueryChange) onQueryChange(id === 'did' ? '' : `m=${encodeURIComponent(id)}`);
+  };
   const [spec, setSpec] = useState({
     olsY: 'litF', olsX: ['lit', 'logPop', 'scShare', 'stShare'],
     logitY: 'lit', logitCut: 75, logitX: ['logPop', 'scShare', 'stShare'],
@@ -987,7 +1004,7 @@ export default function EconometricsLab({ onNavigate }) {
           <button
             key={id}
             className={`chip ${method === id ? 'chip-active' : ''}`}
-            onClick={() => setMethod(id)}
+            onClick={() => pickMethod(id)}
           >
             {m.label}
           </button>

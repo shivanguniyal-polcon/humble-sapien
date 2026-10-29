@@ -85,7 +85,7 @@ export const TOOLS = [
     label: 'Gender inclusion index',
     question: 'Where do women actually stand, state by state?',
     blurb: 'A composite over five public indicators — women’s schooling, institutional births, anaemia, sex ratio and female literacy — with the weights in your hands and the method printed underneath.',
-    how: 'Move the weights and watch the state ranking move with them; the method and every source sit underneath the chart.',
+    how: 'Move the weights and watch the state ranking move with them; the method and every source sit underneath the ranking.',
   },
   {
     id: 'solutions',

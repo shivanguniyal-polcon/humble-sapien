@@ -50,8 +50,8 @@ export default function Sheet({ scheme, situation, place, clock, dates }) {
     a.download = name;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 10_000);
     setCopied(`Saved as ${name}.`);
   };
 

@@ -93,7 +93,32 @@ const download = (name, data, type) => {
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
 };
 
-const metaById = (id) => INDEX.instruments.find((entry) => entry.id === id) || null;
+const metaById = (id) =>
+  INDEX.instruments.find((entry) => String(entry.id) === String(id)) || null;
+
+const MONITOR_TABS = ['duties', 'changes', 'amendments', 'pack', 'source'];
+
+// A shareable link can open a specific circular on a specific view. Only the
+// pinned corpus is addressable: pasted text and live fetches live in one
+// browser session, so a link to them would open an empty page.
+const readMonitorQuery = (query) => {
+  const params = new URLSearchParams(query || '');
+  const meta = metaById(params.get('c'));
+  const tab = params.get('tab');
+  return {
+    // Instruments are keyed by number; return the key from the index, not the
+    // string the URL carries, so the selected-row comparison still matches.
+    id: meta ? meta.id : null,
+    tab: tab && MONITOR_TABS.includes(tab) ? tab : null,
+  };
+};
+
+const buildMonitorQuery = (id, tab) => {
+  const parts = [];
+  if (metaById(id)) parts.push(`c=${encodeURIComponent(id)}`);
+  if (tab && tab !== 'duties') parts.push(`tab=${encodeURIComponent(tab)}`);
+  return parts.join('&');
+};
 
 const ProfileFields = ({ profile, onChange }) => {
   const isBankLike = ['NBFC', 'HFC'].includes(profile.entityType);
@@ -858,18 +883,20 @@ const CollectionPlan = ({ plan, onOpen }) => {
   );
 };
 
-export default function Monitor() {
+export default function Monitor({ query = '', onQueryChange }) {
   const [profile, setProfile] = useState(() => ({ ...DEFAULT_PROFILE, ...(loadProfile() || {}) }));
   const [search, setSearch] = useState('');
   const [family, setFamily] = useState('all');
-  const [selectedId, setSelectedId] = useState(INDEX.instruments[0]?.id ?? null);
+  const [selectedId, setSelectedId] = useState(
+    () => readMonitorQuery(query).id ?? INDEX.instruments[0]?.id ?? null,
+  );
   const [loaded, setLoaded] = useState(null);
   const [previous, setPrevious] = useState(null);
   const [amendmentGraph, setAmendmentGraph] = useState(null);
   const [amendmentBusy, setAmendmentBusy] = useState(false);
   const [amendmentError, setAmendmentError] = useState('');
   const [baseLoaded, setBaseLoaded] = useState(null);
-  const [tab, setTab] = useState('duties');
+  const [tab, setTab] = useState(() => readMonitorQuery(query).tab ?? 'duties');
   const [review, setReview] = useState(emptyReview());
   const [filter, setFilter] = useState('all');
   const [editing, setEditing] = useState(null);
@@ -894,6 +921,47 @@ export default function Monitor() {
   const [liveBusy, setLiveBusy] = useState(false);
 
   useEffect(() => saveProfile(profile), [profile]);
+
+  const writeUrl = (id, nextTab) => {
+    if (!onQueryChange) return;
+    const next = buildMonitorQuery(id, nextTab);
+    if (next !== (query || '')) onQueryChange(next);
+  };
+
+  const selectInstrument = (id) => {
+    setSelectedId(id);
+    writeUrl(id, tab);
+  };
+
+  const selectTab = (id) => {
+    setTab(id);
+    writeUrl(selectedId, id);
+  };
+
+  // Browser Back and forward move the query, not just the component. Sync the
+  // two addresses back into the reader so a shared link and a back button land
+  // on the same circular and view.
+  useEffect(() => {
+    if (!onQueryChange) return;
+    const next = readMonitorQuery(query);
+    if (next.id) {
+      if (next.id !== selectedId) setSelectedId(next.id);
+      // A link with only a circular means the default view, not whatever tab
+      // the reader happened to leave open.
+      const nextTab = next.tab ?? 'duties';
+      if (nextTab !== tab) setTab(nextTab);
+      return;
+    }
+    if (next.tab && next.tab !== tab) setTab(next.tab);
+    // Back from a shared circular link to the bare tool returns to the default
+    // instrument. Pasted and live instruments have no address, so they stay,
+    // and an explicit ?tab= link keeps the view it asked for.
+    if (!next.tab && metaById(selectedId)) {
+      const fallback = INDEX.instruments[0]?.id ?? null;
+      if (fallback && fallback !== selectedId) setSelectedId(fallback);
+      if (tab !== 'duties') setTab('duties');
+    }
+  }, [query, selectedId, tab, onQueryChange]);
 
   // The fetched library, when this build has an API. The pinned fifty stay:
   // the live list is what the fetcher has added since, and each row opens
@@ -1121,7 +1189,7 @@ export default function Monitor() {
         duties: Array.isArray(row.duties) ? row.duties : [],
         live: true,
       };
-      setSelectedId(chunk.id);
+      selectInstrument(chunk.id);
       setLoaded(chunk);
       setReview(loadReview(chunk.hash));
       setScanPages([]);
@@ -1135,7 +1203,7 @@ export default function Monitor() {
 
   const openPasted = () => {
     if (!pasted) return;
-    setSelectedId('paste');
+    selectInstrument('paste');
     setLoaded(pasted);
     setReview(loadReview(pasted.hash));
     setScanPages([]);
@@ -1206,7 +1274,7 @@ export default function Monitor() {
         setPasteError('No duty sentence was found in that text. Check that it contains the instrument, not a summary of it.');
       } else {
         setPasted(chunk);
-        setSelectedId('paste');
+        selectInstrument('paste');
         setLoaded(chunk);
         setReview(loadReview(chunk.hash));
         setPasteOpen(false);
@@ -1246,7 +1314,7 @@ export default function Monitor() {
     else if (event.key === 'End') nextIndex = views.length - 1;
     if (nextIndex === null) return;
     event.preventDefault();
-    setTab(views[nextIndex][0]);
+    selectTab(views[nextIndex][0]);
     const tabs = event.currentTarget.parentElement?.querySelectorAll('[role="tab"]');
     tabs?.[nextIndex]?.focus();
   };
@@ -1277,7 +1345,7 @@ export default function Monitor() {
         </p>
       </div>
 
-      <CollectionPlan plan={COLLECTION} onOpen={setSelectedId} />
+      <CollectionPlan plan={COLLECTION} onOpen={selectInstrument} />
 
       <div className="monitor">
         <aside className="monitor-list" aria-label="Instruments">
@@ -1427,7 +1495,7 @@ export default function Monitor() {
                   type="button"
                   className={entry.id === selectedId ? 'monitor-item monitor-item-active' : 'monitor-item'}
                   aria-current={entry.id === selectedId ? 'true' : undefined}
-                  onClick={() => setSelectedId(entry.id)}
+                  onClick={() => selectInstrument(entry.id)}
                 >
                   <span className="monitor-item-date data-num">{entry.date}</span>
                   <span className="monitor-item-title">{entry.title}</span>
@@ -1514,7 +1582,7 @@ export default function Monitor() {
                     <button
                       type="button"
                       className="linklike"
-                      onClick={() => setSelectedId(instrumentMeta.predecessor)}
+                      onClick={() => selectInstrument(instrumentMeta.predecessor)}
                     >
                       {predecessor ? `${predecessor.refNo} · ${predecessor.date}` : 'the previous instrument'}
                     </button>
@@ -1549,7 +1617,7 @@ export default function Monitor() {
                     aria-controls="monitor-panel"
                     tabIndex={tab === id ? 0 : -1}
                     className={tab === id ? 'monitor-tab monitor-tab-active' : 'monitor-tab'}
-                    onClick={() => setTab(id)}
+                    onClick={() => selectTab(id)}
                     onKeyDown={(event) => onTabKeyDown(event, index)}
                   >
                     {label}

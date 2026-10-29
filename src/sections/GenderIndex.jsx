@@ -17,6 +17,13 @@ export default function GenderIndex() {
     [weights],
   );
 
+  // A fixed reference point, computed once: every ranking is also a movement
+  // from the equal-weight reading, and that movement is the judgement on show.
+  const baselineRanks = useMemo(() => {
+    const baseline = computeGenderIndex(DEFAULT_WEIGHTS);
+    return new Map(baseline.ranked.map((row) => [row.state, row.rank]));
+  }, []);
+
   const weightSum = GENDER_INDICATORS.reduce(
     (sum, ind) => sum + (Number(weights[ind.key]) || 0),
     0,
@@ -84,7 +91,7 @@ export default function GenderIndex() {
           </div>
         ))}
         {weightSum === 0 && (
-          <p className="notice notice-amber" role="status">
+          <p className="notice notice-warn" role="status">
             Every weight is zero, so there is nothing to rank. Give at least
             one indicator a weight above zero.
           </p>
@@ -95,6 +102,10 @@ export default function GenderIndex() {
         <h3 className="card-heading">
           Ranking <span className="meta">({ranked.length} of {ranked.length + unranked.length} units scored)</span>
         </h3>
+        <p className="meta">
+          The bar is the index. Arrows show rank movement from equal weights:
+          up means this weighting favours the state, down means it penalises it.
+        </p>
         <div className="table-scroll">
           <table className="data-table">
             <thead>
@@ -113,7 +124,10 @@ export default function GenderIndex() {
             </tr>
           </thead>
           <tbody>
-            {ranked.map((row) => (
+            {ranked.map((row) => {
+              const baseRank = baselineRanks.get(row.state);
+              const move = baseRank == null ? 0 : baseRank - row.rank;
+              return (
               <tr key={row.state}>
                 <td className="data-num">{row.rank}</td>
                 <td>
@@ -127,7 +141,21 @@ export default function GenderIndex() {
                     <span className="meta table-sub">{row.censusNote}</span>
                   )}
                 </td>
-                <td className="data-num index-score">{row.score}</td>
+                <td className="data-num index-score">
+                  <span className="score-bar" aria-hidden="true">
+                    <span style={{ width: `${Math.max(0, Math.min(100, row.score))}%` }} />
+                  </span>
+                  {row.score}
+                  {move !== 0 && (
+                    <span
+                      className={`rank-delta ${move > 0 ? 'rank-up' : 'rank-down'}`}
+                      title={`${Math.abs(move)} ${Math.abs(move) === 1 ? 'place' : 'places'} ${move > 0 ? 'up' : 'down'} from equal weights`}
+                      aria-label={`${Math.abs(move)} ${Math.abs(move) === 1 ? 'place' : 'places'} ${move > 0 ? 'up' : 'down'} from equal weights`}
+                    >
+                      {move > 0 ? `↑${move}` : `↓${Math.abs(move)}`}
+                    </span>
+                  )}
+                </td>
                 {GENDER_INDICATORS.map((ind) => (
                   <td className="data-num" key={ind.key}>
                     {row.parts[ind.key] ?? '—'}
@@ -137,7 +165,8 @@ export default function GenderIndex() {
                   </td>
                 ))}
               </tr>
-            ))}
+              );
+            })}
             {unranked.map((row) => (
               <tr key={row.state} className="index-unranked">
                 <td className="data-num">—</td>

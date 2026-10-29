@@ -166,6 +166,21 @@ function CitizenPanel({ text, setText }) {
             ? ` The cap of ${result.level.cap} words could not be reached in ${result.level.floors.length} sentence${result.level.floors.length > 1 ? 's' : ''}: names and quoted references set the floor.`
             : ''}
         </p>
+
+        <div className="output-sub simplifier-plain">
+          <h3 className="card-heading">Plain-language version</h3>
+          <p className="meta">
+            The rewrite comes first. Everything below it is the evidence: the
+            rule cards, the canonical frame and the phrases the dictionary
+            changed, so the plain sentence can be checked rather than trusted.
+          </p>
+          <div className="output-box">
+            {result.simplifiedText || (
+              <em className="placeholder">Nothing to simplify yet.</em>
+            )}
+          </div>
+        </div>
+
         <div className="filter-row mode-switch" role="group" aria-label="Output view">
           <button
             type="button"
@@ -186,7 +201,7 @@ function CitizenPanel({ text, setText }) {
           <span className="fine-print">
             {view === 'cards'
               ? 'One card per sentence: who must do what, by when, unless what — and what the engine could not read.'
-              : 'The rewritten paragraph as it stands today, with every phrase the dictionary replaced.'}
+              : 'The canonical frame beside each rewrite, plus every phrase the dictionary replaced.'}
           </span>
         </div>
 
@@ -249,13 +264,6 @@ function CitizenPanel({ text, setText }) {
 
         {view === 'substitution' && (
           <>
-        <label>Plain-language version</label>
-        <div className="output-box">
-          {result.simplifiedText || (
-            <em className="placeholder">Nothing to simplify yet.</em>
-          )}
-        </div>
-
         {result.propositions.length > 0 && (
           <div className="output-sub" style={{ marginTop: '1.5rem' }}>
             <h3 className="card-heading">Propositions: the frame beside the rewrite</h3>

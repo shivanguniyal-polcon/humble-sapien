@@ -83,6 +83,10 @@ export default function Touchpoints({ query, onQueryChange }) {
     const next = SCHEMES.find((s) => s.id === id);
     setSchemeId(id);
     setSituationId(next.situations[0].id);
+    // PM-JAY appears in both halves of the page. Choosing it here should
+    // move the delivery map below to the same policy, not leave the reader
+    // comparing two different schemes under one page title.
+    if (policies.some((p) => p.id === id)) setPolicyId(id);
     writeLink({ s: id, x: next.situations[0].id, p: placeRef.current });
   };
 
@@ -225,7 +229,9 @@ export default function Touchpoints({ query, onQueryChange }) {
         <p className="section-strap">
           The other half of the tool: for each policy, the steps delivery
           actually has, what to measure at each one, the evidence so far, and
-          when a step fails, exactly which office to reach.
+          when a step fails, exactly which office to reach. The maps cover
+          PM-JAY and Swachh Bharat Mission; choosing PM-JAY above selects its
+          map here, while SBM is reached from the chips below.
         </p>
       </div>
 

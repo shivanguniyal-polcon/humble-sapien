@@ -117,8 +117,12 @@ function download(name, text, type) {
   const a = document.createElement('a');
   a.href = url;
   a.download = name;
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  // Revoking on the same tick cancels the download in Safari and older
+  // Firefox; the click has only queued it at that point.
+  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 const ValidationCard = ({ validation, notes }) => (

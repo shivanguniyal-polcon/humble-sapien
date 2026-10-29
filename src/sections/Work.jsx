@@ -77,7 +77,13 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
       view = <ProjectDesk />;
       break;
     case 'lab':
-      view = <EconometricsLab onNavigate={onNavigate} />;
+      view = (
+        <EconometricsLab
+          onNavigate={onNavigate}
+          query={query}
+          onQueryChange={onQueryChange}
+        />
+      );
       break;
     case 'stakeholders':
       view = <Stakeholders onNavigate={onNavigate} onTool={onTool} />;
@@ -95,7 +101,7 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
       view = <VillagePassbook query={query} onQueryChange={onQueryChange} />;
       break;
     case 'monitor':
-      view = <Monitor />;
+      view = <Monitor query={query} onQueryChange={onQueryChange} />;
       break;
     case 'touchpoints':
       view = <Touchpoints query={query} onQueryChange={onQueryChange} />;

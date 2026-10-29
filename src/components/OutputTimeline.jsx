@@ -141,16 +141,16 @@ const STORY = [
   },
 ];
 
-// The handles the mission names, each with the verb it makes possible. Kept
-// beside the story so the coda and the index cannot drift apart on what a tool
-// is for.
+// The handles the mission names, each with the verb it makes possible and the
+// page that owns it. Kept beside the story so the coda and the tool pages
+// cannot drift apart on what a tool is for — or where a reader finds it.
 const MISSION_TOOLS = [
-  ['Manthan', 'run the analysis again and see whether it holds'],
-  ['Mulyankan', 'set the design and read what the estimate cannot escape'],
-  ['Saral', 'take a notification apart clause by clause'],
-  ['RARA', 'find where the law is silent'],
-  ['Khata', 'follow a village’s money from sanction to work'],
-  ['Sampark', 'find the office that owes you an answer'],
+  ['Manthan', 'run the analysis again and see whether it holds', 'work', 'battery'],
+  ['Mulyankan', 'set the design and read what the estimate cannot escape', 'work', 'lab'],
+  ['Saral', 'take a notification apart clause by clause', 'work', 'simplifier'],
+  ['RARA', 'find where the law is silent', 'rara'],
+  ['Khata', 'follow a village’s money from sanction to work', 'work', 'passbook'],
+  ['Sampark', 'find the office that owes you an answer', 'work', 'touchpoints'],
 ];
 
 // The tokens a beat line may carry. Unresolved tokens are a data bug, not a
@@ -365,7 +365,7 @@ const TickingNumber = ({ value, reduce, className }) => {
   );
 };
 
-export default function OutputTimeline() {
+export default function OutputTimeline({ onNavigate }) {
   const [rootRef, seen] = useInView();
   const reduce = useReducedMotion();
   const tokenTick = useTokenVersion();
@@ -1211,12 +1211,27 @@ export default function OutputTimeline() {
         <div className="timeline-head-copy">
           <span className="overline">The fifth pillar of democracy</span>
           <h1 id="timeline-title" className="timeline-title">
-            The State writes a lot, how much have you read?
+            The State writes a lot. How much have you read?
           </h1>
           <p className="section-strap">
             Every Act, amending Act, ordinance, rule and notification in the
             India Code catalogue &mdash; one named square each, one jurisdiction
             at a time. Scroll to draw it, and to see what the layers add up to.
+          </p>
+          {/* A reader who already knows what they came for should not have to
+              draw the whole column to find it. The index is the fast lane; the
+              counters and the scroll are the argument for taking the slow one. */}
+          <p className="timeline-shortcut">
+            <button
+              type="button"
+              className="linklike"
+              onClick={() => onNavigate?.('index')}
+            >
+              Skip to the index
+            </button>
+            <span className="meta">
+              Every tool, publication and archived statute, in one place.
+            </span>
           </p>
         </div>
         {rows && (
@@ -1674,6 +1689,39 @@ export default function OutputTimeline() {
         </div>
       </div>
 
+      {/* The chart's own footnote stays beside the chart. The coda that
+          follows is an argument, not an appendix. */}
+      <div className="shell">
+        <details className="timeline-method-details">
+          <summary>Data &amp; methodology</summary>
+          <p className="meta timeline-hint">
+            The column counts the kinds you put in it, in the order you put them:
+            drag a pill sideways to set the order the strata stack in, or press
+            Alt with the arrow keys on a focused pill. Click a pill to move it
+            between the column and Set aside; with a pointer you can pick one up
+            and drop it just as well, and Enter or Space works on the focused
+            pill. Drag the span handles to bound a period and the frame counts
+            what that period carried. Hover a square to name the instrument, or a
+            pin for what was counted that year; click a pin to keep the note open.
+          </p>
+
+          <div className="timeline-method">
+            <p>{CATALOGUE_NOTE}</p>
+            <p>
+              One row per instrument in{' '}
+              <a href="/research/ths_state_output_instruments.csv">the instruments CSV</a>; per-year
+              aggregates in <a href="/research/ths_state_output_series.csv">the series CSV</a>;
+              every scope and source in{' '}
+              <a href="/research/ths_state_output_sources.txt">the source list</a>.
+              Bands are ordered by year, not scaled to it: a band is as deep as the
+              number of instruments that year carried, so the column doubles as the
+              cumulative record. The RTI and open-data strips are dated snapshots on
+              their own scales &mdash; they never share the instrument axis.
+            </p>
+          </div>
+        </details>
+      </div>
+
       {/* The turn. The stations above name the layers; these movements name
           what they add up to and what a reader can do about it. Each gets the
           window rather than a card, so the argument is not a caption to the
@@ -1785,10 +1833,19 @@ export default function OutputTimeline() {
             </p>
 
             <ul className="coda-tools" aria-label="Instruments named in the mission">
-              {MISSION_TOOLS.map(([name, use]) => (
+              {MISSION_TOOLS.map(([name, use, tab, sub]) => (
                 <li key={name}>
-                  <span className="coda-tool-name">{name}</span>
-                  <span className="coda-tool-use">{use}</span>
+                  <button
+                    type="button"
+                    className="coda-tool"
+                    onClick={() => onNavigate?.(tab, sub)}
+                  >
+                    <span className="coda-tool-name">{name}</span>
+                    <span className="coda-tool-use">{use}</span>
+                    <span className="coda-tool-arrow" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </button>
                 </li>
               ))}
             </ul>
@@ -1800,37 +1857,6 @@ export default function OutputTimeline() {
             </p>
           </div>
         </section>
-      </div>
-
-      <div className="shell">
-      <details className="timeline-method-details">
-        <summary>Data &amp; methodology</summary>
-      <p className="meta timeline-hint">
-        The column counts the kinds you put in it, in the order you put them:
-        drag a pill sideways to set the order the strata stack in, or press
-        Alt with the arrow keys on a focused pill. Click a pill to move it
-        between the column and Set aside; with a pointer you can pick one up
-        and drop it just as well, and Enter or Space works on the focused
-        pill. Drag the span handles to bound a period and the frame counts
-        what that period carried. Hover a square to name the instrument, or a
-        pin for what was counted that year; click a pin to keep the note open.
-      </p>
-
-      <div className="timeline-method">
-        <p>{CATALOGUE_NOTE}</p>
-        <p>
-          One row per instrument in{' '}
-          <a href="/research/ths_state_output_instruments.csv">the instruments CSV</a>; per-year
-          aggregates in <a href="/research/ths_state_output_series.csv">the series CSV</a>;
-          every scope and source in{' '}
-          <a href="/research/ths_state_output_sources.txt">the source list</a>.
-          Bands are ordered by year, not scaled to it: a band is as deep as the
-          number of instruments that year carried, so the column doubles as the
-          cumulative record. The RTI and open-data strips are dated snapshots on
-          their own scales &mdash; they never share the instrument axis.
-        </p>
-      </div>
-      </details>
       </div>
 
       {/* The pill in hand. Fixed to the viewport so the frame's own overflow

@@ -36,8 +36,10 @@ const RouteFallback = () => (
 // The menu is one level, one list. The sections that hold other pages (the
 // tools, the library, the playground, the atlas) are indexed on the index
 // page, which names every door and what it opens; the menu carries the doors
-// themselves, alphabetically, plus the two pages that hold the site together:
-// Home and the index.
+// themselves, plus the two pages that hold the site together: Home and the
+// index. The order is editorial, not alphabetical: the work first, then the
+// desks, then the institution. Tools buried at the twelfth row of a menu is
+// how a site tells a reader its best rooms do not matter.
 const TABS = [
   { id: 'home', label: 'Home' },
   { id: 'index', label: 'Index' },
@@ -46,19 +48,17 @@ const TABS = [
   { id: 'data', label: 'Data' },
   { id: 'archive', label: 'Smriti — The Archive' },
   { id: 'compare', label: 'Atlas' },
+  { id: 'pitdesk', label: 'PIT Desk' },
+  { id: 'rara', label: 'RARA' },
   { id: 'writing', label: 'Writing' },
   { id: 'newsletter', label: 'Newsletter' },
-  { id: 'pitdesk', label: 'PIT Desk' },
   { id: 'about', label: 'About' },
   { id: 'support', label: 'Support' },
-  { id: 'rara', label: 'RARA' },
 ];
 
-// The V panel lists every destination as one alphabetical list. A standing
-// menu reads better alphabetically than in the order the site happened to
-// grow, and it is derived from TABS, so a new tab appears without touching
-// this code. Sub-routes stay out: they belong to the page that owns them.
-const MENU_TABS = [...TABS].sort((a, b) => a.label.localeCompare(b.label));
+// The V panel prints TABS in that order. Sub-routes stay out: they belong to
+// the page that owns them.
+const MENU_TABS = TABS;
 
 // Hash routes give every surface a stable URL: #/tools/lab, #/research/pmjay-model.
 const HASH_TO_TAB = {
@@ -216,7 +216,8 @@ export default function App() {
             className="pillar-menu-toggle"
             aria-label="Menu — the fifth pillar of democracy"
           >
-            <span aria-hidden="true">V</span>
+            <span className="pillar-menu-mark" aria-hidden="true">V</span>
+            <span className="pillar-menu-word" aria-hidden="true">Menu</span>
           </summary>
 
           {/* One list, one level. The menu is a set of doors, not a

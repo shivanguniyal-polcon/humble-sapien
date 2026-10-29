@@ -21,7 +21,7 @@ export default function Home({ onNavigate }) {
       {/* The timeline is the page: its heading is the h1, and route focus lands
           on the wrapper so the next Tab starts inside the chart's controls. */}
       <div id="page-title" tabIndex={-1} ref={titleRef}>
-        <OutputTimeline />
+        <OutputTimeline onNavigate={onNavigate} />
       </div>
 
       <HomeClose onNavigate={onNavigate} />

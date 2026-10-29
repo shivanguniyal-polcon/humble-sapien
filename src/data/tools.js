@@ -33,7 +33,7 @@ export const TOOLS = [
   },
   {
     id: 'stakeholders',
-    name: 'Sutra.',
+    name: 'Sutra',
     label: 'Stakeholder mapper',
     question: 'Who gains, who is restricted, and who decided?',
     blurb: 'A distributional ledger for any policy: direction, magnitude and power per party, with the verdict read back to you.',

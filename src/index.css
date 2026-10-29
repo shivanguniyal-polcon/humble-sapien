@@ -354,10 +354,14 @@ main {
 }
 
 .pillar-menu-toggle {
-  display: grid;
-  place-items: center;
-  width: 3rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: auto;
+  min-width: 3rem;
   height: 3rem;
+  padding: 0 0.65rem;
   list-style: none;
   background: var(--color-surface-raised);
   border: 1px solid var(--color-border-strong);
@@ -375,6 +379,27 @@ main {
 
 .pillar-menu-toggle::-webkit-details-marker {
   display: none;
+}
+
+/* The letter is the concept; the word is the affordance. A first-time reader
+   should not have to know that V stands for the fifth pillar to find the
+   menu. The rule is drawn in currentColor, so it inverts with the plate. */
+.pillar-menu-mark {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.pillar-menu-word {
+  padding-left: 0.55rem;
+  border-left: 1px solid currentColor;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 @media (hover: hover) {
@@ -3362,11 +3387,60 @@ input[type='range'] {
 
 /* tools floor: instrument cards */
 
+.tool-shelf {
+  margin-top: var(--space-5);
+}
+
+.tool-shelf:first-of-type {
+  margin-top: 0;
+}
+
+.tool-shelf-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-1) var(--space-4);
+  align-items: baseline;
+  padding-bottom: var(--space-3);
+  border-bottom: 1.5px solid var(--color-border-strong);
+}
+
+.tool-shelf-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+}
+
+.tool-shelf-head p {
+  grid-column: 1 / -1;
+  margin: 0;
+  max-width: 64ch;
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  text-wrap: pretty;
+}
+
+.tool-shelf-count {
+  grid-column: 2;
+  grid-row: 1;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .tool-cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
   gap: var(--space-4);
   margin-block: var(--space-5);
+}
+
+.tool-shelf .tool-cards {
+  margin-block: var(--space-4) 0;
 }
 
 .tool-card {
@@ -3933,6 +4007,19 @@ input[type='range'] {
 
 .timeline-head-copy {
   min-width: 0;
+}
+
+.timeline-shortcut {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  margin: var(--space-4) 0 0;
+  font-size: 0.9375rem;
+}
+
+.timeline-shortcut .meta {
+  font-size: 0.8125rem;
 }
 
 .timeline-total {
@@ -4885,12 +4972,57 @@ input[type='range'] {
 }
 
 .coda-tools li {
+  padding: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* The mission names six doors. They are buttons, not captions: a reader sold
+   on the mission should be able to walk through the door it just opened. */
+.coda-tool {
   display: grid;
-  grid-template-columns: minmax(6.5rem, 8rem) 1fr;
+  grid-template-columns: minmax(6.5rem, 8rem) minmax(0, 1fr) auto;
   gap: var(--space-3);
   align-items: baseline;
+  width: 100%;
   padding-block: var(--space-3);
-  border-bottom: 1px solid var(--color-border);
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: color var(--duration-state) var(--ease-out);
+}
+
+.coda-tool-arrow {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  transition:
+    transform var(--duration-state) var(--ease-out),
+    color var(--duration-state) var(--ease-out);
+}
+
+@media (hover: hover) {
+  .coda-tool:hover .coda-tool-name,
+  .coda-tool:hover .coda-tool-arrow {
+    color: var(--color-accent-text);
+  }
+
+  .coda-tool:hover .coda-tool-arrow {
+    transform: translateX(3px);
+  }
+}
+
+.coda-tool:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coda-tool,
+  .coda-tool-arrow {
+    transition: none;
+  }
 }
 
 .coda-tool-name {
@@ -4993,9 +5125,20 @@ input[type='range'] {
     font-size: clamp(1.9rem, 8vw, 2.6rem);
   }
 
-  .coda-tools li {
-    grid-template-columns: 1fr;
-    gap: 2px;
+  .coda-tool {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px var(--space-3);
+  }
+
+  .coda-tool-name,
+  .coda-tool-use {
+    grid-column: 1;
+  }
+
+  .coda-tool-arrow {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 
   /* One row per well on a phone: the overlay is the bottom fifth of the

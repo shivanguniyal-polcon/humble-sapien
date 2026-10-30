@@ -11,22 +11,11 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { themeColors, withAlpha } from '../lib/theme';
+import { useReducedMotion } from '../lib/useReducedMotion.js';
 
 const LATTICE = 54;
 const RADIUS = 172;
 const TICK = 4.6;
-
-const useReducedMotion = () => {
-  const [reduce, setReduce] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const read = () => setReduce(query.matches);
-    read();
-    query.addEventListener('change', read);
-    return () => query.removeEventListener('change', read);
-  }, []);
-  return reduce;
-};
 
 // A pointer the field can actually answer, and enough width for margins. The
 // CSS hides the canvas at the same breakpoint; this guard keeps the frame loop

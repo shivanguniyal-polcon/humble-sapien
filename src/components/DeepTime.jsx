@@ -110,7 +110,7 @@ export default function DeepTime({ onNavigate }) {
         ref={listRef}
         onKeyDown={onKeyDown}
       >
-        {ERAS.map((e, i) => (
+        {ERAS.map((e) => (
           <button
             key={e.id}
             role="tab"

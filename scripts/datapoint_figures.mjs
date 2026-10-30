@@ -76,11 +76,6 @@ const circle = (cx, cy, r, opts = {}) => {
   return `<circle cx="${n(cx, 2)}" cy="${n(cy, 2)}" r="${n(r, 2)}" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" opacity="${opacity}"/>`;
 };
 
-const pathEl = (d, opts = {}) => {
-  const { fill = 'none', stroke = INK, width = 2, opacity = 1, join = 'round', cap = 'round' } = opts;
-  return `<path d="${d}" fill="${fill}" stroke="${stroke}" stroke-width="${width}" opacity="${opacity}" stroke-linejoin="${join}" stroke-linecap="${cap}"/>`;
-};
-
 const header = (width, title, subtitle) => {
   const parts = [text(48, 52, title, { size: 25, weight: 700 })];
   if (subtitle) parts.push(text(48, 78, subtitle, { size: 14.5, fill: MUTED }));
@@ -296,7 +291,6 @@ const figure3 = () => {
 
   rows.forEach((row, index) => {
     const y = top + index * rowH + rowH / 2;
-    const isIndia = row.region === 'india';
     parts.push(text(left - 18, y - 4, row.short, { size: 13, weight: 700, fill: COLOURS.india, anchor: 'end' }));
     parts.push(text(left - 18, y + 14, `${row.jurisdiction} · ${row.year} · ${row.genre}`, { size: 10.5, fill: MUTED, anchor: 'end' }));
 

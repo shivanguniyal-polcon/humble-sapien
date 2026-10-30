@@ -73,8 +73,10 @@ const parseCsvLine = (line) => {
       } else if (ch === '"') quoted = false;
       else cell += ch;
     } else if (ch === '"') quoted = true;
-    else if (ch === ',') cells.push(cell), (cell = '');
-    else cell += ch;
+    else if (ch === ',') {
+      cells.push(cell);
+      cell = '';
+    } else cell += ch;
   }
   cells.push(cell);
   return cells;

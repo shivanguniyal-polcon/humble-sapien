@@ -16,7 +16,7 @@
 import { escapeHtml } from '../legal/exports.js';
 import { getClauseType } from './clauses.js';
 import { FLAG_LABELS } from './risk.js';
-import { exportedRows, rejectedRows, reviewDecision } from './review.js';
+import { exportedRows, rejectedRows } from './review.js';
 
 // The clause types a client actually cares about, in the order a brief
 // should read them: what binds you, what forbids you, what you may do, and
@@ -168,8 +168,9 @@ export const buildClientBriefText = (result, { gate = null, manifest = null, mat
 
 // The brief, as a print-ready document. A4 or Letter, one page where it can
 // be, and the print stylesheet is part of the file so what the partner sees
-// on screen is what comes out of the printer.
-export const buildClientBriefHtml = (result, { gate = null, manifest = null, matter = null, delta = null, review = null } = {}) => {
+// on screen is what comes out of the printer. The print brief has no
+// comparison block, so it takes no `delta`; the text brief does.
+export const buildClientBriefHtml = (result, { gate = null, manifest = null, matter = null, review = null } = {}) => {
   const s = result.source || {};
   const m = matter || {};
   const groups = groupsOf(result, review);

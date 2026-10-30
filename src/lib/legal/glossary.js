@@ -20,6 +20,8 @@
 //
 // Dictionary version is part of the audit manifest. Change a rule, bump it.
 
+import { escapeRegExp } from './text.js';
+
 export const DICTIONARY_VERSION = 'ths-statutory-1.0.0';
 
 const R = (from, to, risk, note) => ({ from, to, risk, note });
@@ -336,8 +338,6 @@ export const DEFAULT_JURISDICTION = 'in-bare-act';
 
 export const getJurisdiction = (id) =>
   JURISDICTIONS.find((j) => j.id === id) || JURISDICTIONS[0];
-
-const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Mask every occurrence of a protected term so the dictionary cannot rewrite
 // a word the instrument itself defines. The mask is a control character pair

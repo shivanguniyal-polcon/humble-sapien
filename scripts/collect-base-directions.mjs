@@ -16,7 +16,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 import { fileURLToPath } from 'url';
-import { parseListing, parseDate, textOf } from '../workers/src/monitor/parse.js';
+import { parseListing, parseDate } from '../workers/src/monitor/parse.js';
 import { articleText, looksLikeInstrument } from '../workers/src/monitor/article.js';
 import { htmlToText } from '../src/lib/monitor/text.js';
 

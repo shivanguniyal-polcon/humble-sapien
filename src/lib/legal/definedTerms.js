@@ -12,6 +12,8 @@
 // unrecovered lead-in ("unless the context otherwise requires") is reported so
 // a reviewer knows the section was read, not skipped.
 
+import { escapeRegExp } from './text.js';
+
 const KEYWORD = /\b(means|includes|refers to|has the meaning (?:given|assigned) to|shall be deemed to include)\b/gi;
 
 const QUOTES = ['"', '“', '‘', "'"];
@@ -135,8 +137,6 @@ const formsOf = (term) => {
   forms.push(`${term}'`, `${term}s'`);
   return forms;
 };
-
-const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 // Which defined terms a given sentence leans on. The term is usually quoted
 // in the source ("authorised officer" means ...), so the match runs on word

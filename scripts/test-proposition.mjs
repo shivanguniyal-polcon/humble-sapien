@@ -365,7 +365,7 @@ for (const [kind, p, shape] of renderCases) {
 // nothing to test passes vacuously and is not counted as engaged. Critical
 // classes: force flip, invented actor, silently dropped number.
 import {
-  CHECKS, THRESHOLD, checkForce, checkType, checkNumbers, checkActor,
+  THRESHOLD, checkForce, checkType, checkNumbers, checkActor,
   checkQualifiers, checkCoverage, compareSentence, compareEngines,
   thresholdVerdict, drawReviewSample,
 } from '../src/lib/legal/shadow.js';

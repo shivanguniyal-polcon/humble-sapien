@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { STATES, INDIA_VIEWBOX } from '../data/india/indiaAdmin';
 import { LGD_SNAPSHOT_LABEL, LGD_SOURCE } from '../data/india/lgd-meta';
+import { downloadFile } from '../lib/download.js';
 import { loadState, loadVillages } from '../lib/india/load';
 import {
   buildTree,
@@ -373,13 +374,8 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
   // directory join found one, and a blank where it refused to guess.
   const downloadHierarchy = () => {
     if (!path.length) return;
-    const blob = new Blob([hierarchyCsv(path)], { type: 'text/csv;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `ths-hierarchy-${slugify(path[path.length - 1].name) || 'place'}.csv`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 0);
+    const name = `ths-hierarchy-${slugify(path[path.length - 1].name) || 'place'}.csv`;
+    downloadFile(name, hierarchyCsv(path), 'text/csv;charset=utf-8');
   };
 
   const handleShape = (shape) => {

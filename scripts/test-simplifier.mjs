@@ -24,12 +24,6 @@ function ok(name, cond, detail = '') {
   if (!cond) failures += 1;
   console.log(`${cond ? 'PASS' : 'FAIL'}  ${name}${detail ? `: ${detail}` : ''}`);
 }
-function approx(name, got, want, tol = 1e-6) {
-  const good = got != null && Math.abs(got - want) <= tol;
-  if (!good) failures += 1;
-  console.log(`${good ? 'PASS' : 'FAIL'}  ${name}: got ${got}, want ${want}`);
-}
-
 // 1. Provenance: every row points back at the exact characters of the source.
 {
   const text = 'The Centre may make rules. Every beneficiary shall be entitled to the benefits.';

@@ -8,10 +8,10 @@ import {
 } from '../lib/legal/exports.js';
 import { buildDocx, docxFileName } from '../lib/legal/docx.js';
 import { buildClientBriefText, buildClientBriefHtml, printHtml } from '../lib/legal/clientBrief.js';
-import { CONFIDENCE_MEANING } from '../lib/legal/confidence.js';
+import { downloadFile } from '../lib/download.js';
 import {
   buildReviewFile, parseReviewFile, reviewDecision, reviewCounts,
-  exportedRows, rejectedRows,
+  exportedRows,
 } from '../lib/legal/review.js';
 import { currencyCheck } from '../lib/legal/currency.js';
 import {
@@ -23,18 +23,6 @@ import {
   createRunRecord, appendRun, readRuns, clearRuns,
   exportAuditCsv, exportAuditJson, verifyRun,
 } from '../lib/legal/audit.js';
-
-const download = (name, data, type) => {
-  const blob = data instanceof Blob ? data : new Blob([data], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
-};
 
 const FlagChip = ({ flag }) => (
   <span className={`flag-chip flag-${flag}`}>
@@ -405,7 +393,7 @@ export default function LegalReview({ text, onTextChange }) {
 
   const handleReviewExport = async () => {
     const raw = await buildReviewFile(result, { gate, review, matter: matterFields });
-    download('ths-review-file.json', raw, 'application/json');
+    downloadFile('ths-review-file.json', raw, 'application/json');
     recordRun('review-file');
     setNotice({
       tone: 'ok',
@@ -979,7 +967,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download('ths-review.md', buildMarkdown(result, { gate, manifest, review }), 'text/markdown');
+                  downloadFile('ths-review.md', buildMarkdown(result, { gate, manifest, review }), 'text/markdown');
                   recordRun('markdown');
                 }}
                 disabled={!gateCheck.complete || !result.rows.length}
@@ -990,7 +978,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download('ths-review.html', buildHtml(result, { gate, manifest, review }), 'text/html');
+                  downloadFile('ths-review.html', buildHtml(result, { gate, manifest, review }), 'text/html');
                   recordRun('html');
                 }}
                 disabled={!gateCheck.complete || !result.rows.length}
@@ -1001,7 +989,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download(docxFileName(result), buildDocx(result, { review }), 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+                  downloadFile(docxFileName(result), buildDocx(result, { review }), 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
                   recordRun('docx');
                 }}
                 disabled={!gateCheck.complete || !result.rows.length}
@@ -1012,7 +1000,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download('ths-redline-pack.csv', buildRedlineCsv(result, { review }), 'text/csv');
+                  downloadFile('ths-redline-pack.csv', buildRedlineCsv(result, { review }), 'text/csv');
                   recordRun('csv');
                 }}
                 disabled={!gateCheck.complete || !result.rows.length}
@@ -1054,7 +1042,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download('ths-client-brief.html', buildClientBriefHtml(result, { gate, manifest, matter: matterFields, review }), 'text/html');
+                  downloadFile('ths-client-brief.html', buildClientBriefHtml(result, { gate, manifest, matter: matterFields, review }), 'text/html');
                   recordRun('client-brief-file');
                 }}
                 disabled={!result.rows.length}
@@ -1065,7 +1053,7 @@ export default function LegalReview({ text, onTextChange }) {
                 type="button"
                 className="btn btn-secondary"
                 onClick={() => {
-                  download('ths-client-brief.txt', buildClientBriefText(result, { gate, manifest, matter: matterFields, review }), 'text/plain');
+                  downloadFile('ths-client-brief.txt', buildClientBriefText(result, { gate, manifest, matter: matterFields, review }), 'text/plain');
                   recordRun('client-brief-text');
                 }}
                 disabled={!result.rows.length}
@@ -1092,14 +1080,14 @@ export default function LegalReview({ text, onTextChange }) {
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => download('ths-methodology.txt', methodologyCard(result, manifest), 'text/plain')}
+                    onClick={() => downloadFile('ths-methodology.txt', methodologyCard(result, manifest), 'text/plain')}
                   >
                     Download the card
                   </button>
                   <button
                     type="button"
                     className="btn btn-secondary"
-                    onClick={() => download('ths-manifest.json', JSON.stringify(manifest, null, 2), 'application/json')}
+                    onClick={() => downloadFile('ths-manifest.json', JSON.stringify(manifest, null, 2), 'application/json')}
                   >
                     Download the manifest
                   </button>
@@ -1166,7 +1154,7 @@ export default function LegalReview({ text, onTextChange }) {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => download('ths-run-log.csv', exportAuditCsv(runs), 'text/csv')}
+                onClick={() => downloadFile('ths-run-log.csv', exportAuditCsv(runs), 'text/csv')}
                 disabled={!runs.length}
               >
                 Export the log as CSV
@@ -1174,7 +1162,7 @@ export default function LegalReview({ text, onTextChange }) {
               <button
                 type="button"
                 className="btn btn-secondary"
-                onClick={() => download('ths-run-log.json', exportAuditJson(runs), 'application/json')}
+                onClick={() => downloadFile('ths-run-log.json', exportAuditJson(runs), 'application/json')}
                 disabled={!runs.length}
               >
                 Export the log with sources
@@ -1230,7 +1218,7 @@ export default function LegalReview({ text, onTextChange }) {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => download('ths-comparison.txt', buildDeltaReport(delta), 'text/plain')}
+              onClick={() => downloadFile('ths-comparison.txt', buildDeltaReport(delta), 'text/plain')}
             >
               Download the comparison
             </button>

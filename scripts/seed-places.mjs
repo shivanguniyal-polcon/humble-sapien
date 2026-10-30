@@ -45,7 +45,6 @@ const villageChunkFor = async (districtId) => {
 };
 
 const base = [];
-const perState = new Map();
 
 // The passbook capture is anchored to a real village in the directory: the
 // GP name is matched to a village in its block, case-insensitively. A capture

@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react';
 import NumInput from '../components/NumInput';
 import PageHead from '../components/PageHead';
 import { shareDataset, useSharedDatasets, togglePin } from '../lib/datasetStore';
+import { downloadFile } from '../lib/download.js';
 import { usePitDraft } from '../lib/pitStore';
 import { findUnitColumn, coverageLines } from '../lib/coverage';
 import { sanitizeHtml } from '../lib/sanitize';
@@ -110,20 +111,6 @@ const PLACEHOLDERS = {
   queueing: 'arrival_rate,service_rate,servers,time_unit,pit_group,pit_effect\n...',
   'monte-carlo': 'variable_id,label,kind,dist,min,max,mean,sd,mu,sigma,alpha,beta,mode,scale,runs,seed\n...',
 };
-
-function download(name, text, type) {
-  const blob = new Blob([text], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  // Revoking on the same tick cancels the download in Safari and older
-  // Firefox; the click has only queued it at that point.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
-}
 
 const ValidationCard = ({ validation, notes }) => (
   <div className="card">
@@ -469,7 +456,7 @@ export default function Battery({ onNavigate }) {
       provenance,
       pit,
     };
-    download('ths-battery-project.json', JSON.stringify(project, null, 2), 'application/json');
+    downloadFile('ths-battery-project.json', JSON.stringify(project, null, 2), 'application/json');
   };
 
   const loadProject = (file) => {
@@ -1168,14 +1155,14 @@ export default function Battery({ onNavigate }) {
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      onClick={() => download('ths-battery-report.html', report.html, 'text/html')}
+                      onClick={() => downloadFile('ths-battery-report.html', report.html, 'text/html')}
                     >
                       Download HTML
                     </button>
                     <button
                       type="button"
                       className="btn btn-secondary"
-                      onClick={() => download('ths-battery-run.json', JSON.stringify(report.json, null, 2), 'application/json')}
+                      onClick={() => downloadFile('ths-battery-run.json', JSON.stringify(report.json, null, 2), 'application/json')}
                     >
                       Download JSON
                     </button>

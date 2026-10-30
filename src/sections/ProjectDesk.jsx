@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import NumInput from '../components/NumInput';
 import PageHead from '../components/PageHead';
+import { downloadFile } from '../lib/download.js';
 import { FIELD_GROUPS, fieldByKey, publicFieldKeys } from '../battery/project/schema.js';
 import {
   buildMemo,
@@ -154,18 +155,6 @@ function computeRun(values, mode, compareBoth) {
   const memoFull = buildMemo(memoResult, raw, { precision: MEMO_PRECISION });
 
   return { raw, comparison, base, supported, headline: selected, switching, memo, memoFull };
-}
-
-function download(name, text, type) {
-  const blob = new Blob([text], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 }
 
 function WeightsInput({ id, value, onChange, describedBy }) {
@@ -726,7 +715,7 @@ export default function ProjectDesk() {
           : `The case covers debt service and stays above the ${Number(values.lockupDscr).toFixed(2)}x lock-up.`;
   const memoText = run?.memoFull?.text || run?.memo?.text || '';
   const downloadMemo = () => {
-    if (memoText) download(`project-memo-${caseId}.txt`, memoText, 'text/plain;charset=utf-8');
+    if (memoText) downloadFile(`project-memo-${caseId}.txt`, memoText, 'text/plain;charset=utf-8');
   };
 
   return (

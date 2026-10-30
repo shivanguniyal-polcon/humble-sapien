@@ -1,20 +1,9 @@
 import datasets from '../data/datasets.json';
 import { toCsv } from '../lib/csv.js';
+import { downloadFile } from '../lib/download.js';
 
 // Show your working: every model on this site, its data, its assumptions,
 // its fit, and its failures. Downloads are generated in the browser.
-
-const download = (name, text, type) => {
-  const blob = new Blob([text], { type });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = name;
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
-};
 
 const seriesToRows = () => {
   const rows = [];
@@ -205,7 +194,7 @@ export default function Methods() {
             <button
               key={d.file}
               className="btn btn-secondary"
-              onClick={() => download(d.file, toCsv(d.rows()), 'text/csv')}
+              onClick={() => downloadFile(d.file, toCsv(d.rows()), 'text/csv')}
             >
               Download {d.file.replace('ths_', '').replace('.csv', '')}
             </button>
@@ -213,7 +202,7 @@ export default function Methods() {
           <button
             className="btn btn-secondary"
             onClick={() =>
-              download('ths_data_commons.json', JSON.stringify(datasets, null, 2), 'application/json')
+              downloadFile('ths_data_commons.json', JSON.stringify(datasets, null, 2), 'application/json')
             }
           >
             Download everything (JSON)

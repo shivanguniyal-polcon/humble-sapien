@@ -16,6 +16,7 @@
 // reported.
 
 import { countWords, punctuate, capitalize, splitLong } from './segments.js';
+import { escapeRegExp } from './text.js';
 import { flesch } from '../flesch.js';
 
 export const LEVELS = [
@@ -98,8 +99,6 @@ const TIERS = {
     ['are not', "aren't"],
   ],
 };
-
-const escapeRegExp = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 const applyTier = (text, tier, tag) => {
   let out = text;

@@ -109,7 +109,6 @@ const NO_SHALL_RE = /^\s*no\s+([^,.;]{1,60}?)\s+(?:shall|may)\b/i;
 const DUTY_OF_RE =
   /\b(?:it\s+(?:shall|will|is)\s+be\s+the\s+(?:obligation|duty|responsibility)|the\s+(?:duty|obligation|responsibility))\s+of\s+([^,.;]{2,60}?)(?=\s+to\s+|[,.;]|$)/i;
 
-const CONDITION_HEAD = /^(?:provided that|provided|subject to|where|if)\b/i;
 const EXCEPTION_HEAD = /^(?:unless|other than|except|apart from)\b/i;
 const HEAD_RE = /^(?:provided that|provided|subject to|where|if|unless|other than|except|apart from)\b/i;
 
@@ -494,7 +493,7 @@ export const propositionFromSentence = (sentence, context = {}) => {
   if (kind === 'definition') {
     const m = DEFINITION_RE.exec(text);
     if (m) {
-      subject = `\"${m[1].trim()}\"`;
+      subject = `"${m[1].trim()}"`;
       modality = 'means';
       predicate = m[2].trim();
     } else {

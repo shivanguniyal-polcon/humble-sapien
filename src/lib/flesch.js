@@ -1,8 +1,6 @@
 // Readability scoring: Flesch Reading Ease and Flesch–Kincaid grade level.
 // Standard formulas; syllables estimated by vowel-group heuristic.
 
-const countWords = (text) => text.trim().split(/\s+/).filter(Boolean).length;
-
 const countSentences = (text) =>
   (text.match(/[.!?]+/g) || []).length || (text.trim() ? 1 : 0);
 

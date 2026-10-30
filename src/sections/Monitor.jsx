@@ -25,6 +25,7 @@ import {
 } from '../lib/legal/applicability.js';
 import { extractAmendmentGraph } from '../lib/legal/amendments.js';
 import { baseExcerpts, baseRefFor } from '../lib/legal/base.js';
+import { downloadFile } from '../lib/download.js';
 import { instrumentFromText } from '../lib/monitor/read.js';
 import { diffObligations, diffSentences } from '../lib/monitor/diff.js';
 import {
@@ -78,20 +79,6 @@ const FILTERS = [
   { id: 'dependency', label: 'Someone you rely on' },
   { id: 'out-of-scope', label: 'Out of scope' },
 ];
-
-const download = (name, data, type) => {
-  const blob = new Blob([data], { type });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = name;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  // Revoking straight away cancels the download in Safari and older Firefox;
-  // the click has only queued it at that point.
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
-};
 
 const metaById = (id) =>
   INDEX.instruments.find((entry) => String(entry.id) === String(id)) || null;
@@ -493,7 +480,7 @@ const AmendmentDiff = ({ graph, busy, error, instrument, meta, base, onOpen }) =
         return refs.length ? { op: edge.op, targetRef: edge.targetRef, addresses: refs, excerpts } : null;
       })
       .filter(Boolean);
-    download(
+    downloadFile(
       `amendment-diff-${slug}.json`,
       JSON.stringify({
         extractor: graph.version,
@@ -773,7 +760,7 @@ const CollectionPlan = ({ plan, onOpen }) => {
   if (!plan?.bases?.length) return null;
   const totals = plan.totals;
   const downloadPlan = () => {
-    download(
+    downloadFile(
       'amendment-collection-plan.json',
       JSON.stringify(plan, null, 2),
       'application/json',
@@ -1159,10 +1146,10 @@ export default function Monitor({ query = '', onQueryChange }) {
       setManifest(built);
       if (kind === 'md') {
         const markdown = buildPackMarkdown({ instrument: loaded, profile, rows, review, manifest: built, changes, ocr });
-        download(packFileName(loaded, 'md'), markdown, 'text/markdown');
+        downloadFile(packFileName(loaded, 'md'), markdown, 'text/markdown');
       } else {
         const pack = buildPackDocx({ instrument: loaded, profile, rows, review, manifest: built, ocr });
-        download(pack.name, pack.bytes, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+        downloadFile(pack.name, pack.bytes, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
       }
     } catch {
       setError('The pack could not be built in this browser.');

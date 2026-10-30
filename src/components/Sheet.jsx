@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { LEVELS } from '../data/schemes';
+import { downloadFile } from '../lib/download.js';
 import { deadlineLines, buildLetter, describePlace } from '../lib/india/letter';
 
 // The sheet.
@@ -43,15 +44,7 @@ export default function Sheet({ scheme, situation, place, clock, dates }) {
   // message than paste it.
   const download = () => {
     const name = `${scheme.name}-${situation.id}.txt`.replace(/[^\w.-]+/g, '-');
-    const blob = new Blob([letter], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10_000);
+    downloadFile(name, letter, 'text/plain;charset=utf-8');
     setCopied(`Saved as ${name}.`);
   };
 

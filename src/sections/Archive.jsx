@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import PageHead from '../components/PageHead';
 import DeepTime from '../components/DeepTime';
 import ARCHIVE from '../data/archive/index.json';
+import { downloadFile } from '../lib/download.js';
 import { ledgerHistory, parseAmendmentLedger, sortLedger } from '../lib/legal/ledger.js';
 import { checkoutSections } from '../lib/legal/versions.js';
 import {
@@ -92,18 +93,6 @@ const textHeading = (meta) => {
   if (meta.coverage === 'summary') return 'Summary in Smriti';
   if (meta.coverage === 'excerpt') return 'Selected text in Smriti';
   return 'Pinned text';
-};
-
-const download = (name, data) => {
-  const blob = new Blob([data], { type: 'application/json;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = name;
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
-  setTimeout(() => URL.revokeObjectURL(url), 10_000);
 };
 
 export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
@@ -276,7 +265,7 @@ export default function Archive({ openId = null, onOpen, onBack, onNavigate }) {
 
   const downloadRecord = () => {
     if (!meta) return;
-    download(
+    downloadFile(
       archiveFileName(meta),
       archiveRecordJson(meta, currentDoc || { text: '', sourceUrl: meta.sourceUrl }),
     );

@@ -55,6 +55,7 @@ import {
   YEAR_MIN,
   YEAR_MAX,
 } from '../lib/outputChart.js';
+import { useReducedMotion } from '../lib/useReducedMotion.js';
 
 const ALL_KIND_IDS = KINDS.map((kind) => kind.id);
 const KIND_BY_ID = Object.fromEntries(KINDS.map((kind) => [kind.id, kind]));
@@ -201,18 +202,6 @@ const useInView = (margin = '200px') => {
     return () => observer.disconnect();
   }, [seen, margin]);
   return [ref, seen];
-};
-
-const useReducedMotion = () => {
-  const [reduce, setReduce] = useState(false);
-  useEffect(() => {
-    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const read = () => setReduce(query.matches);
-    read();
-    query.addEventListener('change', read);
-    return () => query.removeEventListener('change', read);
-  }, []);
-  return reduce;
 };
 
 // A repaint signal for token changes. The canvas raster reads the tokens once

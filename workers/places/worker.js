@@ -233,7 +233,7 @@ export default {
       }
 
       return error(404, `No route for GET ${path}. See GET /v1/ for the index.`);
-    } catch (err) {
+    } catch {
       return error(500, 'The request could not be read from the database.');
     }
   },

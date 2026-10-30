@@ -209,9 +209,10 @@ export const bootstrap = (count, statistic, { seed = 42, draws = 600 } = {}) => 
 
 // Shuffle the group labels and re-run the statistic. The result is the
 // distribution the statistic would have if the grouping carried no
-// information, which is the null the headline claim has to beat.
-export const permutationTest = (statistic, { seed = 7, draws = 2000 } = {}) => {
-  const rand = rng(seed);
+// information, which is the null the headline claim has to beat. The caller
+// owns the shuffle and its generator, so the same function serves any
+// statistic and the seed stays explicit at the call site.
+export const permutationTest = (statistic, { draws = 2000 } = {}) => {
   const observed = statistic();
   const nullValues = [];
   for (let b = 0; b < draws; b += 1) nullValues.push(statistic(true));

@@ -6,6 +6,7 @@ import TouchpointLadder from '../components/TouchpointLadder';
 import Clock from '../components/Clock';
 import Sheet from '../components/Sheet';
 import PageHead from '../components/PageHead';
+import { deadlineLines } from '../lib/india/letter';
 
 // The map data is a quarter of a megabyte of state outlines. It is only
 // needed on this page, so it is loaded when the page is opened rather than
@@ -67,6 +68,7 @@ export default function Touchpoints({ query, onQueryChange }) {
   });
   const [place, setPlace] = useState(null);
   const [dates, setDates] = useState({});
+  const [addressLevel, setAddressLevel] = useState('');
   const [copied, setCopied] = useState(null);
   const [policyId, setPolicyId] = useState(policies[0].id);
 
@@ -97,6 +99,9 @@ export default function Touchpoints({ query, onQueryChange }) {
 
   const pickPlace = (placeString) => {
     placeRef.current = placeString;
+    // A new place means a new ladder; an address chosen for the old one
+    // should not survive the move.
+    setAddressLevel('');
     writeLink({ s: schemeId, x: situationId, p: placeString });
   };
 
@@ -120,6 +125,29 @@ export default function Touchpoints({ query, onQueryChange }) {
   const setDate = (id, value) => {
     setDates((prev) => ({ ...prev, [dateKey(id)]: value }));
   };
+
+  // The letter goes to the citizen's own rung by default. Once a deadline on
+  // that rung has passed, the default moves up one rung, because the law
+  // itself says the next office is the one to ask. The citizen can move it
+  // again, and the village stays in the letter whichever rung is chosen.
+  const anyPassed = useMemo(
+    () => deadlineLines(situation.clock, activeDates).some((l) => l.passed),
+    [situation, activeDates]
+  );
+  const homeLevel = place ? place.rung : null;
+  const escalated = homeLevel === 'village' && anyPassed;
+  const rungs = situation.rungs || [];
+  const chosenLevel =
+    addressLevel && rungs.some((r) => r.level === addressLevel)
+      ? addressLevel
+      : escalated
+        ? 'block'
+        : homeLevel;
+  const letterRung = rungs.find((r) => r.level === chosenLevel) || null;
+  const stateName =
+    place && Array.isArray(place.path) && place.path.length
+      ? place.path[place.path.length - 1]
+      : '';
 
   // A link a relative can open, and a volunteer at a help desk can read.
   const share = async () => {
@@ -193,9 +221,23 @@ export default function Touchpoints({ query, onQueryChange }) {
             situation={situation}
             rung={place ? place.rung : null}
             placeLabel={place ? place.label : null}
+            addressedLevel={letterRung ? letterRung.level : null}
+            onAddress={place ? setAddressLevel : undefined}
             onPickSituation={pickSituation}
           />
-          <Clock clock={situation.clock} dates={activeDates} onDate={setDate} />
+          {situation.clock ? (
+            <Clock clock={situation.clock} dates={activeDates} onDate={setDate} />
+          ) : (
+            <div className="clock-empty">
+              <p className="meta">
+                {situation.clockGap || 'No deadline is recorded for this situation yet.'}
+              </p>
+              <p className="meta">
+                The letter asks for a written reply; it does not claim a date this record cannot
+                support.
+              </p>
+            </div>
+          )}
         </div>
       </div>
 
@@ -220,32 +262,14 @@ export default function Touchpoints({ query, onQueryChange }) {
         scheme={scheme}
         situation={situation}
         place={place}
+        rung={letterRung}
+        rungs={rungs}
+        homeLevel={homeLevel}
+        escalated={escalated}
+        onAddress={setAddressLevel}
         clock={situation.clock}
         dates={activeDates}
       />
-
-      <div className="section-head section-head-tight">
-        <h3>Delivery maps</h3>
-        <p className="section-strap">
-          The other half of the tool: for each policy, the steps delivery
-          actually has, what to measure at each one, the evidence so far, and
-          when a step fails, exactly which office to reach. The maps cover
-          PM-JAY and Swachh Bharat Mission; choosing PM-JAY above selects its
-          map here, while SBM is reached from the chips below.
-        </p>
-      </div>
-
-      <div className="filter-row" role="group" aria-label="Choose policy">
-      {policies.map((p) => (
-        <button
-          key={p.id}
-          className={`chip ${policyId === p.id ? 'chip-active' : ''}`}
-          onClick={() => setPolicyId(p.id)}
-        >
-          {p.name}
-        </button>
-      ))}
-      </div>
 
       {NAME_TRAPS.length > 0 && (
         <div className="card traps-card">
@@ -265,63 +289,111 @@ export default function Touchpoints({ query, onQueryChange }) {
         </div>
       )}
 
-      <div className="touchpoint-list">
-        {(() => {
-          const policy = policies.find((p) => p.id === policyId) || policies[0];
-          const dir = escalation[policy.id] || [];
-          return (
-            <article key={policy.id} className="touchpoint-card">
-              <h3>{policy.name}</h3>
-              <p className="touchpoint-line">
-                <strong>What to measure:</strong> {policy.strap}
-              </p>
-              {policy.touchpoints.map((t) => {
-                const stepNo = t.name.split('.')[0];
-                const esc = dir.find((d) => d.touchpoint.split('.')[0] === stepNo);
-                return (
-                  <div key={t.name} className="touchpoint-step">
-                    <h4>{t.name}</h4>
-                    <p className="touchpoint-line">
-                      <strong>What to measure:</strong> {t.what}
-                    </p>
-                    <p className="evidence">
-                      <strong>Evidence:</strong> {t.evidence}
-                    </p>
+      {/* The policy half of the page is a researcher's map. A citizen on a
+          phone needs the ladder and the sheet first, so the maps wait behind
+          one tap. */}
+      <details className="delivery-maps">
+        <summary>
+          <span className="delivery-maps-title">Delivery maps</span>
+          <span className="meta">Where policy delivery fails, and who to reach</span>
+        </summary>
 
-                    {esc && (
-                      <div className="escalation">
-                        <h5>If it fails: who to reach</h5>
-                        {esc.steps.map((s, i) => (
-                          <div key={i} className="escalation-step">
-                            <div className="escalation-top">
-                              <span className="chip chip-tag">{s.level}</span>
-                              <span
-                                className={`chip chip-tag ${s.verified ? '' : 'chip-locked'}`}
-                                title={s.source}
-                              >
-                                {s.verified
-                                  ? 'Verified on official page'
-                                  : 'Verify before relying'}
-                              </span>
-                            </div>
-                            <p className="escalation-office">
-                              <strong>{s.office}</strong>
-                              <span className="meta">: {s.authority}</span>
-                            </p>
-                            <p className="escalation-reach data-num">{s.reach}</p>
-                            <p className="meta escalation-note">{s.note}</p>
-                            <p className="meta escalation-source">Source: {s.source}</p>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </article>
-          );
-        })()}
-      </div>
+        <p className="section-strap">
+          For each policy, the steps delivery actually has, what to measure at
+          each one, the evidence so far, and when a step fails, exactly which
+          office to reach. The maps cover PM-JAY and Swachh Bharat Mission;
+          choosing PM-JAY above selects its map here, while SBM is reached from
+          the chips below.
+        </p>
+        <p className="meta delivery-maps-note">
+          State-specific numbers appear only for the State you picked. The
+          national route is shown for every State.
+        </p>
+
+        <div className="filter-row" role="group" aria-label="Choose policy">
+          {policies.map((p) => (
+            <button
+              key={p.id}
+              className={`chip ${policyId === p.id ? 'chip-active' : ''}`}
+              onClick={() => setPolicyId(p.id)}
+            >
+              {p.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="touchpoint-list">
+          {(() => {
+            const policy = policies.find((p) => p.id === policyId) || policies[0];
+            const dir = escalation[policy.id] || [];
+            const exampleFor = (s) =>
+              s.example &&
+              stateName &&
+              s.example.state.toLowerCase() === stateName.toLowerCase()
+                ? s.example
+                : null;
+            return (
+              <article key={policy.id} className="touchpoint-card">
+                <h3>{policy.name}</h3>
+                <p className="touchpoint-line">
+                  <strong>What to measure:</strong> {policy.strap}
+                </p>
+                {policy.touchpoints.map((t) => {
+                  const stepNo = t.name.split('.')[0];
+                  const esc = dir.find((d) => d.touchpoint.split('.')[0] === stepNo);
+                  return (
+                    <div key={t.name} className="touchpoint-step">
+                      <h4>{t.name}</h4>
+                      <p className="touchpoint-line">
+                        <strong>What to measure:</strong> {t.what}
+                      </p>
+                      <p className="evidence">
+                        <strong>Evidence:</strong> {t.evidence}
+                      </p>
+
+                      {esc && (
+                        <div className="escalation">
+                          <h5>If it fails: who to reach</h5>
+                          {esc.steps.map((s, i) => {
+                            const example = exampleFor(s);
+                            return (
+                              <div key={i} className="escalation-step">
+                                <div className="escalation-top">
+                                  <span className="chip chip-tag">{s.level}</span>
+                                  <span
+                                    className={`chip chip-tag ${s.verified ? '' : 'chip-locked'}`}
+                                    title={s.source}
+                                  >
+                                    {s.verified
+                                      ? 'Verified on official page'
+                                      : 'Verify before relying'}
+                                  </span>
+                                </div>
+                                <p className="escalation-office">
+                                  <strong>{s.office}</strong>
+                                  <span className="meta">: {s.authority}</span>
+                                </p>
+                                <p className="escalation-reach data-num">{s.reach}</p>
+                                {example && (
+                                  <p className="escalation-reach data-num escalation-example">
+                                    {example.reach}
+                                  </p>
+                                )}
+                                <p className="meta escalation-note">{s.note}</p>
+                                <p className="meta escalation-source">Source: {s.source}</p>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </article>
+            );
+          })()}
+        </div>
+      </details>
     </section>
   );
 }

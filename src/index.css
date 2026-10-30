@@ -6615,6 +6615,37 @@ input[type='range'] {
   border-radius: var(--radius-md);
 }
 
+.locator-codes-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  cursor: pointer;
+  list-style: none;
+}
+
+.locator-codes-summary::-webkit-details-marker {
+  display: none;
+}
+
+.locator-codes-summary::before {
+  content: '▸';
+  color: var(--clay-600);
+  font-size: 0.8rem;
+}
+
+.locator-codes[open] > .locator-codes-summary::before {
+  content: '▾';
+}
+
+.locator-codes-summary .locator-group-title {
+  margin: 0;
+}
+
+.locator-codes-body {
+  margin-top: var(--space-3);
+}
+
 .locator-codes-head {
   display: flex;
   flex-wrap: wrap;
@@ -6927,6 +6958,39 @@ input[type='range'] {
   padding: 0.15rem 0.6rem;
 }
 
+/* The address is a choice on the ladder. A citizen whose own rung is the
+   problem must be able to send the letter one level up without losing the
+   village the letter is about. */
+.ladder-address {
+  margin-left: auto;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding: 0.2rem 0.65rem;
+  cursor: pointer;
+}
+
+.ladder-address:hover {
+  border-color: var(--clay-400);
+  color: var(--clay-800);
+}
+
+.ladder-address.is-addressed {
+  background: var(--clay-100);
+  border-color: var(--clay-400);
+  color: var(--clay-800);
+}
+
+@media (max-width: 34rem) {
+  .ladder-address {
+    margin-left: 0;
+  }
+}
+
 .ladder-office {
   margin: 0 0 var(--space-1);
   font-size: 1rem;
@@ -7012,6 +7076,11 @@ input[type='range'] {
 /* The clock sits under the ladder in the same column, so it needs the
    inter-group space. Two bordered boxes with nothing between them read as
    one broken frame. */
+.clock-empty {
+  margin: var(--space-3) 0 0;
+  max-width: 44rem;
+}
+
 .clock {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -7207,6 +7276,55 @@ input[type='range'] {
   color: var(--color-text-secondary);
 }
 
+.delivery-maps {
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-4);
+}
+
+.delivery-maps > summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2) var(--space-3);
+  cursor: pointer;
+  list-style: none;
+}
+
+.delivery-maps > summary::-webkit-details-marker {
+  display: none;
+}
+
+.delivery-maps > summary::before {
+  content: '▸';
+  color: var(--clay-600);
+  font-size: 0.9rem;
+}
+
+.delivery-maps[open] > summary::before {
+  content: '▾';
+}
+
+.delivery-maps[open] > summary {
+  margin-bottom: var(--space-3);
+}
+
+.delivery-maps-title {
+  font-size: 1.05rem;
+  font-weight: 650;
+  color: var(--clay-800);
+}
+
+.delivery-maps-note {
+  margin: 0 0 var(--space-3);
+  max-width: 46rem;
+}
+
+.escalation-example {
+  margin-top: 0.25rem;
+  color: var(--color-text-secondary);
+}
+
 .touchpoint-step {
   margin-top: var(--space-4);
   padding-top: var(--space-3);
@@ -7244,6 +7362,107 @@ input[type='range'] {
 
 .sheet-note {
   margin: 0 0 var(--space-3);
+}
+
+.sheet-address {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-3);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.sheet-address select {
+  flex: 1 1 16rem;
+  min-height: 2.4rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+}
+
+.sheet-escalated {
+  margin: 0 0 var(--space-3);
+  padding: var(--space-3);
+  background: var(--clay-50);
+  border-left: 3px solid var(--clay-600);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+}
+
+.sheet-letter-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.sheet-letter-head h4 {
+  margin: 0;
+}
+
+.sheet-lang {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.sheet-lang .chip {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.65rem;
+}
+
+.sheet-lang-note {
+  margin: 0;
+  max-width: 34rem;
+}
+
+.sheet-applicant {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: var(--space-3);
+  margin: 0 0 var(--space-2);
+}
+
+.sheet-applicant label {
+  display: grid;
+  gap: 0.25rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 650;
+  color: var(--color-text-muted);
+}
+
+.sheet-applicant input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.92rem;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+.sheet-applicant-note {
+  margin: 0 0 var(--space-3);
+}
+
+.sheet-receipt {
+  margin: var(--space-3) 0;
+  padding: var(--space-3);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface-sunken);
+  font-size: 0.9rem;
 }
 
 .sheet-title {

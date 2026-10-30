@@ -419,42 +419,48 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       </nav>
 
       {path.length > 0 && (
-        <section className="locator-codes" aria-label="Directory codes for this place">
-          <div className="locator-codes-head">
-            <h4 className="locator-group-title">Directory and LGD codes</h4>
-            <button type="button" className="btn btn-secondary locator-codes-download" onClick={downloadHierarchy}>
-              Download hierarchy (CSV)
-            </button>
-          </div>
-          <ol className="locator-code-list">
-            {path.map((p) => (
-              <li key={`${p.level}-${p.id}`} className="locator-code-row">
-                <span className="locator-code-level">{LEVEL_NAME[p.level]}</span>
-                <span className="locator-code-name">{p.name}</span>
-                <code className="locator-code">
-                  {directoryCode(p)}
-                  {p.lgd_code ? ` · LGD ${p.lgd_code}` : ' · no LGD'}
-                </code>
-              </li>
-            ))}
-          </ol>
-          {villageEntry && (
-            <p className="meta locator-gp">
-              {villageEntry.gp_name ? (
-                <>
-                  Gram Panchayat: <strong>{villageEntry.gp_name}</strong>
-                  {villageEntry.gp_code ? ` (GP ${villageEntry.gp_code})` : ''}
-                </>
-              ) : (
-                'No Gram Panchayat recorded in the directory for this village.'
-              )}
+        <details className="locator-codes">
+          <summary className="locator-codes-summary">
+            <span className="locator-group-title">Directory and LGD codes</span>
+            <span className="meta">the codes behind this place</span>
+          </summary>
+          <div className="locator-codes-body">
+            <div className="locator-codes-head">
+              <span className="meta">One row per level, so a form can be filled in exactly.</span>
+              <button type="button" className="btn btn-secondary locator-codes-download" onClick={downloadHierarchy}>
+                Download hierarchy (CSV)
+              </button>
+            </div>
+            <ol className="locator-code-list">
+              {path.map((p) => (
+                <li key={`${p.level}-${p.id}`} className="locator-code-row">
+                  <span className="locator-code-level">{LEVEL_NAME[p.level]}</span>
+                  <span className="locator-code-name">{p.name}</span>
+                  <code className="locator-code">
+                    {directoryCode(p)}
+                    {p.lgd_code ? ` · LGD ${p.lgd_code}` : ' · no LGD'}
+                  </code>
+                </li>
+              ))}
+            </ol>
+            {villageEntry && (
+              <p className="meta locator-gp">
+                {villageEntry.gp_name ? (
+                  <>
+                    Gram Panchayat: <strong>{villageEntry.gp_name}</strong>
+                    {villageEntry.gp_code ? ` (GP ${villageEntry.gp_code})` : ''}
+                  </>
+                ) : (
+                  'No Gram Panchayat recorded in the directory for this village.'
+                )}
+              </p>
+            )}
+            <p className="meta locator-codes-note">{HIERARCHY_NOTE}</p>
+            <p className="meta locator-codes-note">
+              Source: {LGD_SOURCE}, snapshot {LGD_SNAPSHOT_LABEL}.
             </p>
-          )}
-          <p className="meta locator-codes-note">{HIERARCHY_NOTE}</p>
-          <p className="meta locator-codes-note">
-            Source: {LGD_SOURCE}, snapshot {LGD_SNAPSHOT_LABEL}.
-          </p>
-        </section>
+          </div>
+        </details>
       )}
 
       <div className="locator-grid">

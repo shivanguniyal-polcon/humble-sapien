@@ -66,7 +66,10 @@ export default function Clock({ clock, dates, onDate }) {
                   <strong className="clock-date">
                     {d.days ? `${d.days} days` : `${d.hours} hours`}
                   </strong>{' '}
-                  from {anchorLabel ? anchorLabel.toLowerCase() : 'the date you give above'}
+                  from{' '}
+                  {anchorLabel
+                    ? anchorLabel.charAt(0).toLowerCase() + anchorLabel.slice(1)
+                    : 'the date you give above'}
                 </p>
               )}
               {d.note && <p className="clock-note">{d.note}</p>}

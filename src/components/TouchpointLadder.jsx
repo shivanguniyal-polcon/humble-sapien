@@ -15,6 +15,8 @@ export default function TouchpointLadder({
   situation,
   rung,
   placeLabel,
+  addressedLevel,
+  onAddress,
   onPickSituation,
 }) {
   if (!scheme) return null;
@@ -55,6 +57,16 @@ export default function TouchpointLadder({
                 <span className="ladder-level">{r.level}</span>
                 {isYours && (
                   <span className="ladder-here">your rung{placeLabel ? ` · ${placeLabel}` : ''}</span>
+                )}
+                {onAddress && (
+                  <button
+                    type="button"
+                    className={`ladder-address ${addressedLevel === r.level ? 'is-addressed' : ''}`}
+                    aria-pressed={addressedLevel === r.level}
+                    onClick={() => onAddress(r.level)}
+                  >
+                    {addressedLevel === r.level ? 'The letter goes here' : 'Address the letter here'}
+                  </button>
                 )}
               </div>
 

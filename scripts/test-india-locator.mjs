@@ -410,6 +410,7 @@ const schemeCopy = SCHEMES.flatMap((s) => [
     sit.label,
     sit.complaint,
     sit.ask,
+    sit.clockGap,
     ...(sit.clock
       ? sit.clock.deadlines.flatMap((d) => [d.what, d.claim, d.unmet, d.note, d.then])
       : []),
@@ -508,6 +509,105 @@ for (const scheme of SCHEMES) {
       new Set(what).size === what.length, what.join(' | '));
   }
 }
+
+// ---------------------------------------------------- 4c. the clocked and the
+// -------------------------------------------------------- gaps left open
+//
+// The schemes that carried no clock were checked against their own
+// guidelines and against the State Right to Service schedule. Four had a
+// period a citizen can quote. The rest state what was read and what it does
+// not fix, so an empty clock is a finding rather than a builder's omission,
+// and a situation cannot be added without answering the question one way or
+// the other.
+
+for (const scheme of SCHEMES) {
+  for (const sit of scheme.situations) {
+    const tag = `${scheme.name} · ${sit.label}`;
+    ok(`${tag} says when no clock is recorded`,
+      Boolean(sit.clock) !== Boolean(sit.clockGap),
+      sit.clock ? 'has both a clock and a gap note' : 'has neither');
+    if (sit.clockGap) {
+      ok(`${tag} gap note names the document it checked`,
+        /\b(Guidelines|guidelines|Rules|scheme|Scheme|charter|Act|FAQ|framework)\b/.test(sit.clockGap),
+        sit.clockGap);
+      ok(`${tag} gap note is long enough to say what was checked`,
+        sit.clockGap.length > 80, `${sit.clockGap.length}`);
+      ok(`${tag} gap note has no em dash`, !sit.clockGap.includes('—'));
+    }
+  }
+}
+
+const sitOf = (id, sid) =>
+  SCHEMES.find((s) => s.id === id).situations.find((s) => s.id === sid);
+const deadlineOf = (id, sid, anchor) =>
+  sitOf(id, sid).clock.deadlines.find((d) => d.anchor === anchor);
+
+// Each of these four periods was read in an official document. The test pins
+// the period and the source so a later edit cannot quietly turn a guideline
+// into a law or lengthen a deadline.
+const ekyc = deadlineOf('pmkisan', 'notregistered', 'ekyc');
+ok('PM-KISAN carries the twenty-four-hour e-KYC status period',
+  ekyc && ekyc.hours === 24 && !ekyc.days, `${ekyc && (ekyc.days || ekyc.hours)}`);
+ok('PM-KISAN e-KYC period is a published guideline',
+  ekyc && ekyc.status === 'guideline', ekyc && ekyc.status);
+ok('PM-KISAN e-KYC clock cites the portal note',
+  /pmkisan\.gov\.in/.test((ekyc && ekyc.source) || ''), ekyc && ekyc.source);
+ok('PM-KISAN e-KYC note says land verification has no period',
+  /land-record|land record/.test((ekyc && ekyc.note) || ''), ekyc && ekyc.note);
+
+const kisanGrievance = deadlineOf('pmkisan', 'nocredit', 'complained');
+ok('PM-KISAN grievance period is fourteen days',
+  kisanGrievance && kisanGrievance.days === 14,
+  `${kisanGrievance && kisanGrievance.days}`);
+ok('PM-KISAN grievance note keeps the word preferably',
+  /preferably/i.test((kisanGrievance && kisanGrievance.note) || ''),
+  kisanGrievance && kisanGrievance.note);
+
+const pmayFirst = deadlineOf('pmayg', 'money', 'sanctioned');
+ok('PMAY-G first instalment is seven days from sanction',
+  pmayFirst && pmayFirst.days === 7, `${pmayFirst && pmayFirst.days}`);
+ok('PMAY-G first instalment clock cites the framework',
+  /Framework for Implementation of PMAY-G/.test((pmayFirst && pmayFirst.source) || ''),
+  pmayFirst && pmayFirst.source);
+ok('PMAY-G first instalment note says later instalments have no payment period',
+  /second and third instalments/.test((pmayFirst && pmayFirst.note) || ''),
+  pmayFirst && pmayFirst.note);
+const pmayGrievance = deadlineOf('pmayg', 'money', 'complained');
+ok('PMAY-G instalment grievance is fifteen days',
+  pmayGrievance && pmayGrievance.days === 15,
+  `${pmayGrievance && pmayGrievance.days}`);
+
+const svan = deadlineOf('svanidhi', 'loan', 'applied');
+ok('PM SVANidhi Letter of Recommendation period is fifteen days',
+  svan && svan.days === 15, `${svan && svan.days}`);
+ok('PM SVANidhi note says the bank has no period',
+  /bank/.test((svan && svan.note) || ''), svan && svan.note);
+
+const saubhagya = deadlineOf('saubhagya', 'connection', 'applied');
+ok('Saubhagya clock is set by law',
+  saubhagya && saubhagya.status === 'statutory', saubhagya && saubhagya.status);
+ok('Saubhagya clock cites Rule 4(11)',
+  /Rule 4\(11\)/.test((saubhagya && saubhagya.clause) || ''),
+  saubhagya && saubhagya.clause);
+ok('Saubhagya clock counts from a complete application',
+  /complete/.test((saubhagya && saubhagya.claim) || ''), saubhagya && saubhagya.claim);
+ok('Saubhagya note gives the hilly-terrain limit',
+  /thirty days/.test((saubhagya && saubhagya.note) || ''), saubhagya && saubhagya.note);
+
+// The four schemes that had no clock now carry one. The seven that remain
+// carry a gap note, and the count is pinned so a silent deletion fails the
+// test rather than emptying the page.
+for (const [id, name] of [
+  ['pmkisan', 'PM-KISAN'],
+  ['pmayg', 'PMAY-G'],
+  ['svanidhi', 'PM SVANidhi'],
+  ['saubhagya', 'Saubhagya'],
+]) {
+  const scheme = SCHEMES.find((s) => s.id === id);
+  ok(`${name} now carries a clock`, scheme.situations.some((s) => s.clock), id);
+}
+const gapped = SCHEMES.flatMap((s) => s.situations).filter((s) => s.clockGap);
+ok('the schemes with no published period record the gap', gapped.length === 8, `${gapped.length}`);
 
 // The arithmetic. A deadline the citizen can quote has to land on the same
 // day whichever way it is computed, and the letter on the sheet has to say
@@ -675,6 +775,157 @@ ok('a situation with no clock still has a letter',
   /I ask that a tap connection be given/.test(noClock), noClock);
 ok('a letter with no clock still names the place',
   /I live in Rampur, Uttar Pradesh/.test(noClock), noClock);
+
+// ------------------------------------------- 4c. address, Hindi, applicant
+//
+// A letter addressed to the block must still say which village it is about.
+// Losing the village to reach the block was the failure the sheet had.
+
+const mgn = SCHEMES.find((s) => s.id === 'mgnrega');
+const wages = mgn.situations.find((s) => s.id === 'wages');
+const blockRung = wages.rungs.find((r) => r.level === 'block');
+const villagePlace = {
+  path: ['Jeevan Wala', 'Doiwala', 'Dehradun', 'Uttarakhand'],
+  gp: { code: '23009', name: 'Jeevan Wala' },
+};
+const addressed = buildLetter({
+  scheme: mgn,
+  situation: wages,
+  place: villagePlace,
+  rung: blockRung,
+  clock: wages.clock,
+  dates: { closed: '2026-09-15' },
+});
+ok('an escalated letter keeps the village and the panchayat',
+  /I live in Jeevan Wala, Gram Panchayat Jeevan Wala, Doiwala, Dehradun, Uttarakhand\./.test(addressed), addressed);
+ok('an escalated letter is addressed to the block office',
+  addressed.startsWith('Programme Officer\n'), addressed.split('\n')[0]);
+
+const hindiLetter = buildLetter({
+  scheme: mgn,
+  situation: wages,
+  place: villagePlace,
+  rung: blockRung,
+  clock: wages.clock,
+  dates: { closed: '2026-09-15' },
+  lang: 'hi',
+  applicant: { name: 'गुरजीत सिंह', mobile: '9876543210', id: 'UK-01-001' },
+});
+ok('the Hindi letter is in Devanagari', /[\u0900-\u097F]/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter addresses the officer in Hindi',
+  /^कार्यक्रम अधिकारी\n/.test(hindiLetter), hindiLetter.split('\n')[0]);
+ok('the Hindi letter keeps the village and the panchayat',
+  /मेरा पता: Jeevan Wala, Gram Panchayat Jeevan Wala/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter states the complaint in the first person',
+  /मैंने काम किया, पर मेरी मज़दूरी नहीं दी गई।/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter dates the deadline in Hindi',
+  /30 सितंबर 2026/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter keeps the statutory citation',
+  /Schedule II paragraph 29\(1\)/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter carries the applicant details',
+  /नाम: गुरजीत सिंह/.test(hindiLetter) && /मोबाइल नंबर: 9876543210/.test(hindiLetter) && /UK-01-001/.test(hindiLetter));
+ok('the Hindi letter carries the receipt rule',
+  /दूसरी प्रति/.test(hindiLetter), hindiLetter);
+ok('the Hindi letter does not fall back to the English complaint',
+  !/I did the work and my wages were not paid/.test(hindiLetter));
+
+// The four schemes that gained a clock in this pass carry reviewed Hindi for
+// the same situations, so the toggle is not offered on a letter that would
+// fall back to English. The e-KYC clock also exercises the hour formatting:
+// a Hindi letter must not print "12:00 am".
+const kisan = SCHEMES.find((s) => s.id === 'pmkisan');
+const kisanSit = kisan.situations.find((s) => s.id === 'notregistered');
+const kisanHi = buildLetter({
+  scheme: kisan,
+  situation: kisanSit,
+  place: villagePlace,
+  rung: kisanSit.rungs[0],
+  clock: kisanSit.clock,
+  dates: { ekyc: '2026-09-01' },
+  lang: 'hi',
+});
+ok('the PM-KISAN situation offers a Hindi letter', Boolean(kisanSit.hi));
+ok('the PM-KISAN Hindi letter addresses the village office in Hindi',
+  /^ग्राम राजस्व कार्यालय\n/.test(kisanHi), kisanHi.split('\n')[0]);
+ok('the PM-KISAN Hindi letter carries the Hindi complaint and claim',
+  /मैं पंजीकृत नहीं हूँ/.test(kisanHi) && /चौबीस घंटे के भीतर/.test(kisanHi));
+ok('the PM-KISAN Hindi letter writes the hour deadline without am or pm',
+  /2 सितंबर 2026, 00:00/.test(kisanHi) && !/\b(am|pm)\b/.test(kisanHi), kisanHi);
+
+for (const [id, name] of [
+  ['pmkisan', 'PM-KISAN'],
+  ['pmayg', 'PMAY-G'],
+  ['svanidhi', 'PM SVANidhi'],
+  ['saubhagya', 'Saubhagya'],
+]) {
+  const scheme = SCHEMES.find((s) => s.id === id);
+  ok(`${name} offers Hindi for its clocked situations`,
+    scheme.situations.filter((s) => s.clock).every((s) => Boolean(s.hi)), id);
+}
+
+const noHindi = buildLetter({
+  scheme: { name: 'Jal Jeevan Mission' },
+  situation: {
+    label: 'My village has no tap water',
+    complaint: 'My village has no tap water.',
+    ask: 'I ask that a tap connection be given to my household.',
+  },
+  place: { path: ['Rampur', 'Uttar Pradesh'] },
+  rung: { office: 'Gram Panchayat', where: 'The Gram Panchayat office' },
+  lang: 'hi',
+});
+ok('a scheme without reviewed Hindi stays in English',
+  /I live in Rampur, Uttar Pradesh/.test(noHindi) && !/[\u0900-\u097F]/.test(noHindi), noHindi);
+
+// A Hindi letter never mixes the two languages. The sheet offers Hindi only
+// where the situation carries reviewed Hindi text, so a clocked situation
+// without that text is written in English from the first line to the last.
+// Where Hindi is offered, every anchor and deadline carries it, or the
+// letter would fall back to an English legal sentence mid-page.
+for (const s of SCHEMES) {
+  for (const x of s.situations) {
+    if (!x.hi) {
+      const english = buildLetter({
+        scheme: s,
+        situation: x,
+        place: { path: ['Rampur', 'Uttar Pradesh'] },
+        rung: x.rungs[0],
+        clock: x.clock,
+        dates: {},
+        lang: 'hi',
+      });
+      ok(`${s.name} · ${x.label} without reviewed Hindi stays in English`,
+        !/[\u0900-\u097F]/.test(english), english.slice(0, 120));
+      continue;
+    }
+    ok(`${s.name} · ${x.label} Hindi letter is complete`,
+      Boolean(x.hi.label && x.hi.complaint && x.hi.ask));
+    for (const a of x.clock ? x.clock.anchors : []) {
+      ok(`${s.name} · ${x.label} · ${a.id} Hindi date line`,
+        Boolean(a.hi && a.hi.sentence && a.hi.sentence.includes('{date}')));
+    }
+    for (const d of x.clock ? x.clock.deadlines : []) {
+      ok(`${s.name} · ${x.label} · ${d.what} Hindi claim`,
+        Boolean(d.hi && d.hi.claim && d.hi.claim.includes('{due}') && d.hi.unmet));
+    }
+  }
+}
+
+// A State example is only printed for that State. The generic line has to
+// stand on its own, because that is what every other State reads.
+for (const [policyId, directions] of Object.entries(escalation)) {
+  for (const direction of directions) {
+    for (const step of direction.steps) {
+      if (!step.example) continue;
+      ok(`${policyId} · ${step.office}: the example names its State`,
+        Boolean(step.example.state && step.example.reach));
+      ok(`${policyId} · ${step.office}: the generic reach stands alone`,
+        !step.reach.includes(step.example.state) && !/example:/i.test(step.reach), step.reach);
+      ok(`${policyId} · ${step.office}: the example is not the generic reach`,
+        step.reach !== step.example.reach);
+    }
+  }
+}
 
 // The escalation directory and the ladder have to use the same name for the
 // same document. The CGRMS issues a Unique Ticket Number. Calling it a

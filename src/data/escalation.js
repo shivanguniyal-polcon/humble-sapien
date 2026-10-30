@@ -51,9 +51,14 @@ export const escalation = {
         },
         {
           level: 'Escalate',
-          office: 'State Health Agency (SHA): e.g. Gujarat PMJAY-MA',
+          office: 'State Health Agency (SHA)',
           authority: 'Project Director / CEO (PMJAY)',
-          reach: 'Gujarat: 1800 233 1022 · cohealth@gujarat.gov.in · Grievance Manager: GRIEVMAN1-PMJAY-GNR@GUJARAT.GOV.IN',
+          reach: 'Ask 14555 for your State grievance nodal officer, or use the State SHA portal.',
+          example: {
+            state: 'Gujarat',
+            reach:
+              'Gujarat: 1800 233 1022 · cohealth@gujarat.gov.in · Grievance Manager: GRIEVMAN1-PMJAY-GNR@GUJARAT.GOV.IN',
+          },
           note: 'Each state runs its own SHA; ask 14555 for your state grievance nodal officer.',
           verified: true,
           source: 'ma.gujarat.gov.in/Contact%20SNC%20Officials.html',
@@ -76,7 +81,12 @@ export const escalation = {
           level: 'Escalate',
           office: 'State Health Agency',
           authority: 'State Grievance Nodal Officer',
-          reach: 'UP example: Swasthya Bhawan, Lucknow · support@dgmhup.in · 1800 180 5145 / 1800 180 5146',
+          reach: 'The State grievance nodal officer, through the State SHA portal or 14555.',
+          example: {
+            state: 'Uttar Pradesh',
+            reach:
+              'Uttar Pradesh: Swasthya Bhawan, Lucknow · support@dgmhup.in · 1800 180 5145 / 1800 180 5146',
+          },
           note: 'Ask for the empanelment desk if the gap is geographic access.',
           verified: true,
           source: 'dgmh.up.gov.in/en/Contactus',
@@ -207,7 +217,12 @@ export const escalation = {
           level: 'First stop',
           office: 'Ward office → Municipal Corporation complaint centre',
           authority: 'Ward officer, then the Municipal Commissioner’s grievance channel',
-          reach: 'Ahmedabad example: CCRS 155303 · WhatsApp +91 75678 55303 · ccrs@ahmedabadcity.gov.in · Commissioner: mc@ahmedabadcity.gov.in · 079-25391811',
+          reach: 'Your municipal corporation’s complaint centre, or the Swachhata helpline 1969.',
+          example: {
+            state: 'Gujarat',
+            reach:
+              'Ahmedabad: CCRS 155303 · WhatsApp +91 75678 55303 · ccrs@ahmedabadcity.gov.in · Commissioner: mc@ahmedabadcity.gov.in · 079-25391811',
+          },
           note: 'AMC’s CCRS accepts complaints by phone, WhatsApp, email, SMS and at ward offices; escalates to the Deputy Commissioner.',
           verified: true,
           source: 'amccrs.apphost.in/AMCPortal',
@@ -230,7 +245,12 @@ export const escalation = {
           level: 'First stop',
           office: 'Municipal Corporation / District Panchayat (as applicable)',
           authority: 'Municipal Commissioner or CEO, Zila Panchayat',
-          reach: 'Delhi (MCD) example: 155305 · Dr. S.P.M. Civic Centre, Minto Road, New Delhi 110002 · mcd-ithelpdesk@mcd.nic.in',
+          reach: 'Your municipal corporation or district panchayat.',
+          example: {
+            state: 'Delhi',
+            reach:
+              'Delhi (MCD): 155305 · Dr. S.P.M. Civic Centre, Minto Road, New Delhi 110002 · mcd-ithelpdesk@mcd.nic.in',
+          },
           note: 'Report slippage with the declared ODF status date and current evidence.',
           verified: true,
           source: 'mcdonline.nic.in/portal/contactUs',

@@ -74,15 +74,15 @@ export function formatDay(date) {
   return date.toISOString().slice(0, 10);
 }
 
-export function formatStamp(date) {
-  return date.toLocaleString(undefined, { dateStyle: 'medium', timeStyle: 'short' });
+export function formatStamp(date, locale = undefined) {
+  return date.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' });
 }
 
 // The date a deadline falls, as a citizen reads it. A day deadline is read
 // in UTC, because a date that shifts by a day with the reader's timezone
 // would send somebody to the counter a day early or a day late.
-export function formatDue(due, deadline) {
+export function formatDue(due, deadline, locale = undefined) {
   if (!due) return '';
-  if (deadline.hours && !deadline.days) return formatStamp(due);
-  return due.toLocaleDateString(undefined, { dateStyle: 'medium', timeZone: 'UTC' });
+  if (deadline.hours && !deadline.days) return formatStamp(due, locale);
+  return due.toLocaleDateString(locale, { dateStyle: 'medium', timeZone: 'UTC' });
 }

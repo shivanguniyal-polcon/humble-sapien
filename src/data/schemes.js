@@ -23,7 +23,9 @@
 //
 // A situation may also carry a clock: the deadlines the law sets. Each one
 // counts from a date the citizen gives, and each says what to do once it has
-// passed. A situation with no clock has no deadline this tool can cite.
+// passed. Where no document sets a period, the situation carries a clockGap
+// instead: the document that was read, and what it does not fix. A blank
+// clock is then a finding, not a gap in the build.
 
 // A deadline is set by a statute or published as a guideline, and the
 // difference is worth the citizen's money: a section can be quoted in a
@@ -32,7 +34,8 @@
 export const DEADLINE_STATUS = {
   statutory: {
     label: 'Set by law',
-    detail: 'A statute sets this period. It can be quoted in a complaint.',
+    detail:
+      'An Act, or a rule made under it, sets this period. It can be quoted in a complaint.',
   },
   guideline: {
     label: 'Published guideline',
@@ -88,6 +91,15 @@ const GRGUIDE_DOC = 'PM-JAY Grievance Redressal Guidelines, January 2019';
 const GRGUIDE_WHERE = 'hem.nha.gov.in';
 const ABGUIDE_DOC = 'AB-NHPM Operational Guidelines';
 const ABGUIDE_WHERE = 'National Health Authority';
+const PMK_DOC = 'PM-KISAN Operational Guidelines, revised 21 June 2019';
+const PMK_WHERE = 'pmkisan.gov.in';
+const PMK_KYC_DOC = 'PM-KISAN note on the modes and processes of e-KYC';
+const PMAY_DOC = 'Framework for Implementation of PMAY-G, 2022';
+const PMAY_WHERE = 'rh.odisha.gov.in (official copy)';
+const SVAN_DOC = 'PM SVANidhi Scheme Guidelines';
+const SVAN_WHERE = 'pmsvanidhi.mohua.gov.in';
+const ELEC_DOC = 'Electricity (Rights of Consumers) Rules, 2020, as amended in 2024';
+const ELEC_WHERE = 'powermin.gov.in';
 
 const provision = (clause, doc, where) => ({
   clause,
@@ -111,6 +123,11 @@ export const SCHEMES = [
         label: 'I need a job card',
         complaint: 'I applied for a job card and have not been given one.',
         ask: 'I ask that my job card be issued to me, and that you reply to me in writing.',
+        hi: {
+          label: 'मुझे जॉब कार्ड चाहिए',
+          complaint: 'मैंने जॉब कार्ड के लिए आवेदन किया था, पर मुझे जॉब कार्ड नहीं दिया गया।',
+          ask: 'मेरी प्रार्थना है कि मुझे जॉब कार्ड जारी किया जाए और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -177,6 +194,7 @@ export const SCHEMES = [
               id: 'applied',
               label: 'The day you applied for the job card',
               sentence: 'I applied for a job card on {date}.',
+              hi: { sentence: 'मैंने {date} को जॉब कार्ड के लिए आवेदन किया था।' },
             },
           ],
           deadlines: [
@@ -191,6 +209,11 @@ export const SCHEMES = [
               ...provision('Schedule II paragraph 2', ACT_DOC, ACT_WHERE),
               note: 'The card carries the unique job card number, the photographs of the adult members, the bank or post office account number and the insurance policy number.',
               then: 'Ask the Programme Officer, who decides complaints about the Gram Panchayat.',
+              hi: {
+                claim: 'आवेदन के पंद्रह दिन के भीतर, {due} तक, ग्राम पंचायत को मेरा जॉब कार्ड जारी करना था',
+                unmet: 'मुझे अब तक जॉब कार्ड नहीं दिया गया।',
+                then: 'कार्यक्रम अधिकारी से शिकायत करें, जो ग्राम पंचायत के बारे में शिकायतों पर निर्णय लेते हैं।',
+              },
             },
           ],
         },
@@ -200,6 +223,11 @@ export const SCHEMES = [
         label: 'I applied for work and got none',
         complaint: 'I asked for work and was not given any.',
         ask: 'I ask that work be given to me, that the unemployment allowance for the days it was not be paid, and that you reply to me in writing.',
+        hi: {
+          label: 'मैंने काम माँगा, काम नहीं मिला',
+          complaint: 'मैंने काम के लिए आवेदन किया, पर मुझे काम नहीं दिया गया।',
+          ask: 'मेरी प्रार्थना है कि मुझे काम दिया जाए, जिन दिनों काम नहीं मिला उनके लिए बेरोज़गारी भत्ता दिया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -262,8 +290,8 @@ export const SCHEMES = [
         // passed.
         clock: {
           anchors: [
-            { id: 'applied', label: 'The day you applied for work', sentence: 'I applied for work on {date}.' },
-            { id: 'complained', label: 'The day you complained to the office', sentence: 'I complained to the office on {date}.' },
+            { id: 'applied', label: 'The day you applied for work', sentence: 'I applied for work on {date}.', hi: { sentence: 'मैंने {date} को काम के लिए आवेदन किया था।' } },
+            { id: 'complained', label: 'The day you complained to the office', sentence: 'I complained to the office on {date}.', hi: { sentence: 'मैंने {date} को कार्यालय में शिकायत की थी।' } },
           ],
           deadlines: [
             {
@@ -277,6 +305,11 @@ export const SCHEMES = [
               ...provision('section 7(1) and Schedule II paragraph 14', ACT_DOC, ACT_WHERE),
               note: 'Both the Gram Panchayat and the Programme Officer are bound to see that it is.',
               then: 'Ask the Programme Officer for the unemployment allowance, which the Act makes due from the day the work was not given.',
+              hi: {
+                claim: 'आवेदन के पंद्रह दिन के भीतर, {due} तक, मुझे काम दिया जाना था',
+                unmet: 'मुझे काम नहीं दिया गया।',
+                then: 'कार्यक्रम अधिकारी से बेरोज़गारी भत्ते की माँग करें, जो काम न मिलने के दिन से देय है।',
+              },
             },
             {
               anchor: 'complained',
@@ -289,6 +322,11 @@ export const SCHEMES = [
               ...provision('sections 23(5) and 23(6), and Schedule I paragraph 29', ACT_DOC, ACT_WHERE),
               note: 'The complaint has to reach the Programme Officer: a complaint about the Gram Panchayat is referred there by law. The Scheme also says the grievance has to be redressed within 15 days of the enquiry being completed.',
               then: 'Take it to the District Programme Coordinator, who is bound to redress the grievance.',
+              hi: {
+                claim: 'कार्यक्रम अधिकारी को मेरी शिकायत मिलने के सात दिन के भीतर, {due} तक, उसका निपटारा करना था',
+                unmet: 'मेरी शिकायत का कोई उत्तर नहीं मिला।',
+                then: 'जिला कार्यक्रम समन्वयक के पास जाएँ, जो शिकायत का निपटारा करने के लिए बाध्य हैं।',
+              },
             },
             {
               anchor: 'applied',
@@ -301,6 +339,11 @@ export const SCHEMES = [
               ...provision('sections 7(1), 7(4) and 7(5)', ACT_DOC, ACT_WHERE),
               note: 'Fifteen days to be given work, then fifteen more from the day the allowance became due.',
               then: 'Ask the Programme Officer to sanction and pay it, and put the request in writing. The Act makes the State bear the cost.',
+              hi: {
+                claim: 'बेरोज़गारी भत्ता आवेदन के पंद्रह दिन बाद देय हुआ, और उस दिन के पंद्रह दिन के भीतर, {due} तक, उसे दिया या देय बताया जाना था',
+                unmet: 'मुझे बेरोज़गारी भत्ता नहीं दिया गया।',
+                then: 'कार्यक्रम अधिकारी से इसे स्वीकृत कर भुगतान करने की लिखित माँग करें।',
+              },
             },
           ],
         },
@@ -310,6 +353,11 @@ export const SCHEMES = [
         label: 'My wages were not paid',
         complaint: 'I did the work and my wages were not paid.',
         ask: 'I ask that my wages be paid, that the compensation for the delay be paid with them, and that you reply to me in writing.',
+        hi: {
+          label: 'मेरी मज़दूरी नहीं मिली',
+          complaint: 'मैंने काम किया, पर मेरी मज़दूरी नहीं दी गई।',
+          ask: 'मेरी प्रार्थना है कि मेरी मज़दूरी दी जाए, विलंब का मुआवज़ा उसके साथ दिया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -376,6 +424,7 @@ export const SCHEMES = [
               id: 'closed',
               label: 'The day the muster roll was closed',
               sentence: 'The muster roll for the work I did was closed on {date}.',
+              hi: { sentence: 'जिस काम पर मैंने काम किया, उसका मस्टर रोल {date} को बंद हुआ था।' },
             },
           ],
           deadlines: [
@@ -390,6 +439,11 @@ export const SCHEMES = [
               ...provision('Schedule II paragraph 29(1)', ACT_DOC, ACT_WHERE),
               note: 'The Act says the wages are to be paid within fifteen days of the muster roll being closed.',
               then: 'Ask the Programme Officer for the payment, with the muster roll page and your bank passbook.',
+              hi: {
+                claim: 'मस्टर रोल बंद होने के पंद्रह दिन के भीतर, {due} तक, मेरी मज़दूरी देनी थी',
+                unmet: 'मेरी मज़दूरी नहीं दी गई।',
+                then: 'मस्टर रोल की प्रति और बैंक पासबुक के साथ कार्यक्रम अधिकारी से भुगतान की माँग करें।',
+              },
             },
             {
               anchor: 'closed',
@@ -402,6 +456,11 @@ export const SCHEMES = [
               ...provision('Schedule II paragraph 29(1) and 29(1)(a)', ACT_DOC, ACT_WHERE),
               note: 'After the sixteenth day the Act adds 0.05 per cent of the unpaid wages for every day of delay. A delay in paying that compensation counts in the same way.',
               then: 'Claim the compensation along with the wages, in writing to the Programme Officer, and keep the muster roll page with it.',
+              hi: {
+                claim: 'सत्रहवें दिन से हर दिन की देरी पर बकाया मज़दूरी का 0.05 प्रतिशत मुआवज़ा मुझे देय था, जिसकी तिथि {due} थी',
+                unmet: 'मुझे यह मुआवज़ा नहीं दिया गया।',
+                then: 'मज़दूरी के साथ मुआवज़े की माँग कार्यक्रम अधिकारी को लिखित रूप में करें और मस्टर रोल की प्रति रखें।',
+              },
             },
           ],
         },
@@ -422,6 +481,11 @@ export const SCHEMES = [
         label: 'My village has no tap water',
         complaint: 'My village has no tap water.',
         ask: 'I ask that a tap connection be given to my household, and that you reply to me in writing.',
+        // The mission publishes no period for a household connection. The
+        // record says what was checked, so an empty clock is a finding and
+        // not an omission.
+        clockGap:
+          'The Jal Jeevan Mission Operational Guidelines (2019) set no period for a household tap connection. Uttarakhand’s Right to Service schedule lists a new water connection, but its time limit could not be read from the official copy.',
         rungs: [
           {
             level: 'village',
@@ -488,6 +552,8 @@ export const SCHEMES = [
         label: 'The water is not safe to drink',
         complaint: 'The water my village gets is not safe to drink.',
         ask: 'I ask that the water be tested, that it be made safe, and that you reply to me in writing.',
+        clockGap:
+          'The Jal Jeevan Mission Operational Guidelines (2019) set no period for a water-quality complaint or for testing a source. Its water-quality framework sets a 24-hour limit for carrying a sample to a laboratory, which is not a deadline to act on the complaint.',
         rungs: [
           {
             level: 'village',
@@ -562,6 +628,11 @@ export const SCHEMES = [
         label: 'I am not registered, or my e-KYC is stuck',
         complaint: 'I am not registered, or my e-KYC has not gone through.',
         ask: 'I ask that my registration be completed, or that my e-KYC be fixed, and that you reply to me in writing.',
+        hi: {
+          label: 'मैं पंजीकृत नहीं हूँ, या मेरा ई-केवाईसी अटका है',
+          complaint: 'मैं पंजीकृत नहीं हूँ, या मेरा ई-केवाईसी पूरा नहीं हुआ है।',
+          ask: 'मेरी प्रार्थना है कि मेरा पंजीकरण पूरा किया जाए, या मेरा ई-केवाईसी ठीक किया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -619,12 +690,50 @@ export const SCHEMES = [
             source: 'pmkisan.gov.in/grievance.aspx',
           },
         ],
+        // The portal note gives one period a farmer can hold the office to:
+        // the result of an e-KYC has to show in the beneficiary status after
+        // twenty-four hours. The guidelines set no period for the land-record
+        // check that follows, so none is claimed here.
+        clock: {
+          anchors: [
+            {
+              id: 'ekyc',
+              label: 'The day you completed e-KYC',
+              sentence: 'I completed e-KYC on {date}.',
+              hi: { sentence: 'मैंने {date} को ई-केवाईसी पूरा किया था।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'ekyc',
+              hours: 24,
+              status: 'guideline',
+              what: 'Your e-KYC result must show in your beneficiary status',
+              claim:
+                'My e-KYC result had to show in my beneficiary status within twenty-four hours of my e-KYC, by {due}',
+              unmet: 'My beneficiary status still does not show the e-KYC result.',
+              hi: {
+                claim:
+                  'मेरे ई-केवाईसी का परिणाम चौबीस घंटे के भीतर, {due} तक, मेरी लाभार्थी स्थिति में दिखना चाहिए था',
+                unmet: 'मेरी लाभार्थी स्थिति में अब तक ई-केवाईसी का परिणाम नहीं दिख रहा है।',
+              },
+              ...provision('the status note', PMK_KYC_DOC, PMK_WHERE),
+              note: 'The note reads: the status of the e-KYC done through any mode will be reflected in the beneficiary status after 24 hours. The guidelines set no period for the land-record verification that follows, so this date covers the status entry only.',
+              then: 'Ask the State nodal officer to have the e-KYC record checked, and carry the date you completed it.',
+            },
+          ],
+        },
       },
       {
         id: 'nocredit',
         label: 'An instalment did not come',
         complaint: 'The instalment has not come into my account.',
         ask: 'I ask that the instalment be paid to me, and that you reply to me in writing.',
+        hi: {
+          label: 'एक किस्त नहीं आई',
+          complaint: 'मेरी किस्त मेरे खाते में नहीं आई है।',
+          ask: 'मेरी प्रार्थना है कि मुझे किस्त का भुगतान किया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -680,6 +789,39 @@ export const SCHEMES = [
             source: 'pmkisan.gov.in/grievance.aspx',
           },
         ],
+        // The guidelines ask for a grievance to be disposed of on merit
+        // "preferably within two weeks". The source carries the word
+        // preferably, so the clock repeats it rather than turning a target
+        // into a guarantee.
+        clock: {
+          anchors: [
+            {
+              id: 'complained',
+              label: 'The day you complained to the State or national office',
+              sentence: 'I complained to the office on {date}.',
+              hi: { sentence: 'मैंने {date} को कार्यालय में शिकायत की थी।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'complained',
+              days: 14,
+              status: 'guideline',
+              what: 'Your grievance must be disposed of on merit',
+              claim:
+                'Under the scheme guidelines my grievance had to be disposed of on merit, preferably within two weeks of my complaint, by {due}',
+              unmet: 'My grievance has not been disposed of.',
+              hi: {
+                claim:
+                  'योजना के दिशानिर्देशों के अनुसार मेरी शिकायत को गुण-दोष के आधार पर, अधिमानतः दो सप्ताह के भीतर, {due} तक निपटाया जाना चाहिए था',
+                unmet: 'मेरी शिकायत अब तक निपटाई नहीं गई है।',
+              },
+              ...provision('section 7, grievance mechanism', PMK_DOC, PMK_WHERE),
+              note: 'The guidelines say a grievance received should be disposed of on merit "preferably within two weeks". They fix no period for the instalment itself: the scheme pays three instalments a year, one every four months, and no rule says which day a particular farmer must be credited.',
+              then: 'Send the complaint number and the date to the State nodal officer, then to the national grievance cell on the portal.',
+            },
+          ],
+        },
       },
     ],
   },
@@ -697,6 +839,11 @@ export const SCHEMES = [
         label: 'I cannot make or use my card',
         complaint: 'I cannot make my card, or I cannot use it for treatment.',
         ask: 'I ask that my card be made, or returned to me if the hospital has kept it, and that you reply to me in writing.',
+        hi: {
+          label: 'कार्ड बनाने या उपयोग करने में बाधा',
+          complaint: 'मेरा कार्ड नहीं बन रहा है, या अस्पताल में उसका उपयोग नहीं हो पा रहा है।',
+          ask: 'मेरी प्रार्थना है कि मेरा कार्ड बनाया जाए, या अस्पताल ने रोक रखा है तो वह वापस दिया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -756,8 +903,8 @@ export const SCHEMES = [
         ],
         clock: {
           anchors: [
-            { id: 'grieved', label: 'The day you registered the grievance', sentence: 'I registered the grievance on {date}.' },
-            { id: 'decided', label: 'The day you got the decision', sentence: 'I got the decision on {date}.' },
+            { id: 'grieved', label: 'The day you registered the grievance', sentence: 'I registered the grievance on {date}.', hi: { sentence: 'मैंने {date} को शिकायत दर्ज की थी।' } },
+            { id: 'decided', label: 'The day you got the decision', sentence: 'I got the decision on {date}.', hi: { sentence: 'मुझे {date} को निर्णय मिला था।' } },
           ],
           deadlines: [
             {
@@ -771,6 +918,11 @@ export const SCHEMES = [
               ...provision('section 7.2', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'If your complaint is about your eligibility or about a denial of service, the guidelines say it has to be resolved within 48 hours of the complaint being received.',
               then: 'Ask the District Nodal Officer to take the case up, and quote the Unique Ticket Number.',
+              hi: {
+                claim: 'मेरी शिकायत मिलने के 48 घंटे के भीतर, {due} तक, उसका समाधान करना था',
+                unmet: 'मेरी शिकायत का कोई उत्तर नहीं मिला।',
+                then: 'जिला नोडल अधिकारी से मामला उठाने को कहें और यूनिक टिकट नंबर बताएँ।',
+              },
             },
             {
               anchor: 'grieved',
@@ -783,6 +935,11 @@ export const SCHEMES = [
               ...provision('Table 1', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'For a card the hospital kept, or a card that was never made, the guidelines give that officer 30 days from the receipt of the grievance.',
               then: 'If it is not resolved in 30 days, ask for it to be moved to the Grievance Redressal Committee, and keep the Unique Ticket Number.',
+              hi: {
+                claim: 'जिला या राज्य शिकायत नोडल अधिकारी के पास मेरी शिकायत मिलने से 30 दिन के भीतर, {due} तक, उसका समाधान करना था',
+                unmet: 'मेरी शिकायत का समाधान नहीं हुआ।',
+                then: '30 दिन में समाधान न हो तो शिकायत समाधान समिति के पास भेजने को कहें और यूनिक टिकट नंबर रखें।',
+              },
             },
             {
               anchor: 'grieved',
@@ -795,6 +952,11 @@ export const SCHEMES = [
               ...provision('sections 9.3.3 and 9.3.4', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'Thirty days from the receipt of the grievance.',
               then: 'Keep the Unique Ticket Number. Every further step quotes it.',
+              hi: {
+                claim: 'शिकायत समाधान समिति के पास मेरी शिकायत मिलने से 30 दिन के भीतर, {due} तक, उस पर निर्णय लेना था',
+                unmet: 'मेरी शिकायत पर निर्णय नहीं मिला।',
+                then: 'यूनिक टिकट नंबर रखें। आगे की हर कार्रवाई में वही उद्धृत होता है।',
+              },
             },
             {
               anchor: 'decided',
@@ -807,6 +969,11 @@ export const SCHEMES = [
               ...provision('sections 9.3.5 and 9.3.6', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'The appeal goes to the committee with powers of appeal, within 30 days of the decision. Miss the 30 days and the decision becomes final and binding.',
               then: 'File the appeal on CGRMS within the 30 days and keep the acknowledgement.',
+              hi: {
+                claim: 'निर्णय से 30 दिन के भीतर, {due} तक, मुझे अपनी अपील दर्ज करनी थी',
+                unmet: 'अपील दर्ज करने का समय बीत गया।',
+                then: '30 दिन के भीतर CGRMS पर अपील दर्ज करें और पावती रखें।',
+              },
             },
           ],
         },
@@ -816,6 +983,11 @@ export const SCHEMES = [
         label: 'The hospital refused to treat me',
         complaint: 'The hospital refused to treat me.',
         ask: 'I ask that the hospital be directed to treat me, that my claim be settled, and that you reply to me in writing.',
+        hi: {
+          label: 'अस्पताल ने इलाज से मना किया',
+          complaint: 'अस्पताल ने मेरा इलाज करने से मना कर दिया।',
+          ask: 'मेरी प्रार्थना है कि अस्पताल को मेरा इलाज करने का निर्देश दिया जाए, मेरा क्लेम निपटाया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -875,10 +1047,10 @@ export const SCHEMES = [
         ],
         clock: {
           anchors: [
-            { id: 'asked', label: 'The day the hospital asked for pre-authorisation', sentence: 'The hospital asked for pre-authorisation on {date}.' },
-            { id: 'complained', label: 'The day you complained at the hospital', sentence: 'I complained at the hospital on {date}.' },
-            { id: 'grieved', label: 'The day you registered the grievance', sentence: 'I registered the grievance on {date}.' },
-            { id: 'decided', label: 'The day you got the decision', sentence: 'I got the decision on {date}.' },
+            { id: 'asked', label: 'The day the hospital asked for pre-authorisation', sentence: 'The hospital asked for pre-authorisation on {date}.', hi: { sentence: 'अस्पताल ने {date} को पूर्व-प्राधिकरण (pre-authorisation) माँगा था।' } },
+            { id: 'complained', label: 'The day you complained at the hospital', sentence: 'I complained at the hospital on {date}.', hi: { sentence: 'मैंने {date} को अस्पताल में शिकायत की थी।' } },
+            { id: 'grieved', label: 'The day you registered the grievance', sentence: 'I registered the grievance on {date}.', hi: { sentence: 'मैंने {date} को शिकायत दर्ज की थी।' } },
+            { id: 'decided', label: 'The day you got the decision', sentence: 'I got the decision on {date}.', hi: { sentence: 'मुझे {date} को निर्णय मिला था।' } },
           ],
           deadlines: [
             {
@@ -892,6 +1064,11 @@ export const SCHEMES = [
               ...provision('sections 4.5(G) and 4.5(H)', ABGUIDE_DOC, ABGUIDE_WHERE),
               note: 'If the insurer neither approves nor rejects within 6 hours, the request counts as approved by default. In an emergency the code can come over the phone, and the papers follow.',
               then: 'Ask the Ayushman Mitra for the pre-authorisation number in writing before you leave.',
+              hi: {
+                claim: 'मेरे इलाज के पूर्व-प्राधिकरण अनुरोध पर बीमाकर्ता को 6 घंटे के भीतर, {due} तक, निर्णय देना था',
+                unmet: 'मेरे पूर्व-प्राधिकरण अनुरोध का समय पर उत्तर नहीं मिला।',
+                then: 'जाने से पहले आयुष्मान मित्र से पूर्व-प्राधिकरण संख्या लिखित में लें।',
+              },
             },
             {
               anchor: 'complained',
@@ -904,6 +1081,11 @@ export const SCHEMES = [
               ...provision('section 7.2', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'A complaint about a refusal of treatment, or about money demanded at the hospital, has to be resolved within 48 hours of the complaint being received.',
               then: 'Ask the District Nodal Officer to take the case up, and quote the Unique Ticket Number.',
+              hi: {
+                claim: 'इनकार की मेरी शिकायत मिलने के 48 घंटे के भीतर, {due} तक, उसका समाधान करना था',
+                unmet: 'मेरी शिकायत का कोई उत्तर नहीं मिला।',
+                then: 'जिला नोडल अधिकारी से मामला उठाने को कहें और यूनिक टिकट नंबर बताएँ।',
+              },
             },
             {
               anchor: 'grieved',
@@ -916,6 +1098,11 @@ export const SCHEMES = [
               ...provision('Table 1', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'A refusal registered at the time of discharge, or after it, has 15 days. A refusal at the time of admission has to be settled in 48 hours.',
               then: 'Ask for it to be moved to the Grievance Redressal Committee, and keep the Unique Ticket Number.',
+              hi: {
+                claim: 'जिला या राज्य शिकायत नोडल अधिकारी के पास मेरी शिकायत मिलने से 15 दिन के भीतर, {due} तक, उसका समाधान करना था',
+                unmet: 'मेरी शिकायत का समाधान नहीं हुआ।',
+                then: 'शिकायत समाधान समिति के पास भेजने को कहें और यूनिक टिकट नंबर रखें।',
+              },
             },
             {
               anchor: 'grieved',
@@ -928,6 +1115,11 @@ export const SCHEMES = [
               ...provision('sections 9.3.3 and 9.3.4', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'Thirty days from the receipt of the grievance.',
               then: 'Keep the Unique Ticket Number. Every further step quotes it.',
+              hi: {
+                claim: 'शिकायत समाधान समिति के पास मेरी शिकायत मिलने से 30 दिन के भीतर, {due} तक, उस पर निर्णय लेना था',
+                unmet: 'मेरी शिकायत पर निर्णय नहीं मिला।',
+                then: 'यूनिक टिकट नंबर रखें। आगे की हर कार्रवाई में वही उद्धृत होता है।',
+              },
             },
             {
               anchor: 'decided',
@@ -940,6 +1132,11 @@ export const SCHEMES = [
               ...provision('sections 9.3.5 and 9.3.6', GRGUIDE_DOC, GRGUIDE_WHERE),
               note: 'The appeal goes to the committee with powers of appeal, within 30 days of the decision. Miss the 30 days and the decision becomes final and binding.',
               then: 'File the appeal on CGRMS within the 30 days and keep the acknowledgement.',
+              hi: {
+                claim: 'निर्णय से 30 दिन के भीतर, {due} तक, मुझे अपनी अपील दर्ज करनी थी',
+                unmet: 'अपील दर्ज करने का समय बीत गया।',
+                then: '30 दिन के भीतर CGRMS पर अपील दर्ज करें और पावती रखें।',
+              },
             },
           ],
         },
@@ -960,6 +1157,11 @@ export const SCHEMES = [
         label: 'I am not on the list',
         complaint: 'I am not on the wait list for a house.',
         ask: 'I ask that my name be added to the wait list, that I be told my place on it, and that you reply to me in writing.',
+        hi: {
+          label: 'मेरा नाम सूची में नहीं है',
+          complaint: 'मेरा नाम घर के लिए प्रतीक्षा सूची में नहीं है।',
+          ask: 'मेरी प्रार्थना है कि मेरा नाम प्रतीक्षा सूची में जोड़ा जाए, मुझे उसमें अपना स्थान बताया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -1017,12 +1219,49 @@ export const SCHEMES = [
             source: 'pmayg.dord.gov.in',
           },
         ],
+        // The framework sets a period for a grievance and none for
+        // selection: a household’s place on the wait list is not a deadline
+        // the record can carry.
+        clock: {
+          anchors: [
+            {
+              id: 'complained',
+              label: 'The day you complained to the office',
+              sentence: 'I complained to the office on {date}.',
+              hi: { sentence: 'मैंने {date} को कार्यालय में शिकायत की थी।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'complained',
+              days: 15,
+              status: 'guideline',
+              what: 'Your grievance must be disposed of',
+              claim:
+                'Under the framework my grievance had to be disposed of within fifteen days of my complaint, by {due}',
+              unmet: 'My grievance has not been disposed of.',
+              hi: {
+                claim:
+                  'ढाँचे के अनुसार मेरी शिकायत को शिकायत की तारीख से पंद्रह दिन के भीतर, {due} तक निपटाया जाना चाहिए था',
+                unmet: 'मेरी शिकायत अब तक निपटाई नहीं गई है।',
+              },
+              ...provision('section 12.2', PMAY_DOC, PMAY_WHERE),
+              note: 'The framework tells the officer designated at each level to dispose of a grievance within fifteen days of receiving it. It sets no period for a household to be added to the wait list.',
+              then: 'Send the complaint to the District Programme Officer, and keep the dated copy.',
+            },
+          ],
+        },
       },
       {
         id: 'money',
         label: 'The instalment did not come',
         complaint: 'The instalment for my house has not come.',
         ask: 'I ask that the instalment be paid to me, and that you reply to me in writing.',
+        hi: {
+          label: 'घर की किस्त नहीं आई',
+          complaint: 'मेरे घर की किस्त नहीं आई है।',
+          ask: 'मेरी प्रार्थना है कि मुझे किस्त का भुगतान किया जाए, और मुझे लिखित उत्तर दिया जाए।',
+        },
         rungs: [
           {
             level: 'village',
@@ -1079,6 +1318,63 @@ export const SCHEMES = [
             source: 'pmayg.dord.gov.in',
           },
         ],
+        // Two periods are published. The first instalment has a seven-day
+        // release target counted from sanction; a grievance has fifteen
+        // days. The framework sets no payment period for the second and
+        // third instalments, and the note says so instead of giving a date
+        // the record cannot support.
+        clock: {
+          anchors: [
+            {
+              id: 'sanctioned',
+              label: 'The day the sanction order was issued',
+              sentence: 'My house was sanctioned on {date}.',
+              hi: { sentence: 'मेरे घर का स्वीकृति आदेश {date} को जारी हुआ था।' },
+            },
+            {
+              id: 'complained',
+              label: 'The day you complained to the office',
+              sentence: 'I complained to the office on {date}.',
+              hi: { sentence: 'मैंने {date} को कार्यालय में शिकायत की थी।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'sanctioned',
+              days: 7,
+              status: 'guideline',
+              what: 'The first instalment must be released',
+              claim:
+                'The first instalment had to be released within seven days of my sanction order, by {due}',
+              unmet: 'I have not been paid the first instalment.',
+              hi: {
+                claim:
+                  'स्वीकृति आदेश के सात दिन के भीतर, {due} तक, मेरी पहली किस्त जारी की जानी चाहिए थी',
+                unmet: 'मुझे पहली किस्त का भुगतान नहीं हुआ है।',
+              },
+              ...provision('the instalment release timeline', PMAY_DOC, PMAY_WHERE),
+              note: 'The framework’s release timeline says the first instalment is to be released within seven days after sanction. It sets no payment period for the second and third instalments, which are tied to construction stages, so this date covers the first instalment only.',
+              then: 'Ask the District Programme Officer for the fund transfer order number and the date it was sent.',
+            },
+            {
+              anchor: 'complained',
+              days: 15,
+              status: 'guideline',
+              what: 'Your grievance about the instalment must be disposed of',
+              claim:
+                'Under the framework my grievance about the instalment had to be disposed of within fifteen days of my complaint, by {due}',
+              unmet: 'My grievance about the instalment has not been disposed of.',
+              hi: {
+                claim:
+                  'ढाँचे के अनुसार किस्त के बारे में मेरी शिकायत को शिकायत की तारीख से पंद्रह दिन के भीतर, {due} तक निपटाया जाना चाहिए था',
+                unmet: 'किस्त के बारे में मेरी शिकायत अब तक निपटाई नहीं गई है।',
+              },
+              ...provision('section 12.2', PMAY_DOC, PMAY_WHERE),
+              note: 'The same fifteen-day period covers a grievance at any stage, including a later instalment that has no payment period of its own.',
+              then: 'Send the complaint to the District Programme Officer, and keep the dated copy.',
+            },
+          ],
+        },
       },
     ],
   },
@@ -1096,6 +1392,8 @@ export const SCHEMES = [
         label: 'My connection is not coming',
         complaint: 'My gas connection has not come.',
         ask: 'I ask that my connection be made, and that you reply to me in writing.',
+        clockGap:
+          'The PMUY guidelines (2016) and the PMUY portal set no period from application to connection. The oil companies’ citizen charters say seven working days for a new connection, but count it from their own conditions being met, not from your application, so it is not recorded as a deadline here.',
         rungs: [
           {
             level: 'village',
@@ -1169,6 +1467,11 @@ export const SCHEMES = [
         label: 'My loan was rejected or not paid',
         complaint: 'My loan was rejected, or the money has not come.',
         ask: 'I ask that my loan be sanctioned and paid, or that you tell me in writing why it was refused.',
+        hi: {
+          label: 'मेरा ऋण अस्वीकार हुआ या नहीं मिला',
+          complaint: 'मेरा ऋण अस्वीकार कर दिया गया, या पैसा नहीं आया।',
+          ask: 'मेरी प्रार्थना है कि मेरा ऋण स्वीकृत और भुगतान किया जाए, या मुझे लिखित रूप में बताया जाए कि वह क्यों अस्वीकार हुआ।',
+        },
         rungs: [
           {
             level: 'village',
@@ -1226,6 +1529,41 @@ export const SCHEMES = [
             source: 'pmsvanidhi.mohua.gov.in and /Home/Contact',
           },
         ],
+        // The guidelines set one period a vendor can hold the urban local
+        // body to, and none for the bank. The note keeps the two apart.
+        clock: {
+          anchors: [
+            {
+              id: 'applied',
+              label: 'The day you applied',
+              sentence: 'I applied on {date}.',
+              hi: { sentence: 'मैंने {date} को आवेदन किया था।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'applied',
+              days: 15,
+              status: 'guideline',
+              what: 'The urban local body must verify your application and issue the Letter of Recommendation',
+              claim:
+                'The urban local body had to verify my application and issue my Letter of Recommendation within fifteen days of my application, by {due}',
+              unmet: 'I have not been given the Letter of Recommendation.',
+              hi: {
+                claim:
+                  'शहरी स्थानीय निकाय को मेरे आवेदन की जाँच करके पंद्रह दिन के भीतर, {due} तक, मेरा अनुशंसा पत्र जारी करना था',
+                unmet: 'मुझे अनुशंसा पत्र अब तक नहीं दिया गया है।',
+              },
+              ...provision(
+                'the verification and Letter of Recommendation paragraph',
+                SVAN_DOC,
+                SVAN_WHERE
+              ),
+              note: 'The guidelines say verification and issue of the Letter of Recommendation shall be completed within fifteen days of the submission of the application. They set no period for the bank to sanction or disburse the loan.',
+              then: 'Ask the urban local body for the reason in writing, then take it to the State nodal officer listed on the portal.',
+            },
+          ],
+        },
       },
     ],
   },
@@ -1243,6 +1581,8 @@ export const SCHEMES = [
         label: 'My loan or training was refused',
         complaint: 'My loan or my training was refused.',
         ask: 'I ask that my loan or my training be approved, or that you tell me in writing why it was refused.',
+        clockGap:
+          'The PM Vishwakarma guidelines set no period for verifying an application, sanctioning or paying a loan, or disposing of a grievance. The five to seven days in the FAQ is the length of basic training after skill verification, not a processing deadline.',
         rungs: [
           {
             level: 'village',
@@ -1315,6 +1655,8 @@ export const SCHEMES = [
         label: 'Opening or closing the account',
         complaint: 'I want to open or close my account, and I have not been able to do it.',
         ask: 'I ask that my account be opened or closed, and that you reply to me in writing.',
+        clockGap:
+          'The Sukanya Samriddhi Account Scheme, 2019 sets no period for opening or closing an account. India Post’s citizen charter carries a same-day counter-service standard, but it is a general postal standard rather than a period the scheme rules give you.',
         rungs: [
           {
             level: 'village',
@@ -1388,6 +1730,8 @@ export const SCHEMES = [
         label: 'Registering, or fixing my record',
         complaint: 'I want to register, or to correct my record, and it has not been done.',
         ask: 'I ask that my record be registered or corrected, and that you reply to me in writing.',
+        clockGap:
+          'The e-Shram FAQ says a Universal Account Number is assigned after registration, without a period. Its grievance page tracks a complaint as open, in progress or closed, and sets no disposal period.',
         rungs: [
           {
             level: 'village',
@@ -1461,6 +1805,8 @@ export const SCHEMES = [
         label: 'My scholarship was not paid',
         complaint: 'My scholarship has not been paid.',
         ask: 'I ask that my scholarship be paid, and that you reply to me in writing.',
+        clockGap:
+          'The CSSS guidelines (updated 7 February 2024) set no period between institute verification and disbursement. The portal publishes closing dates for each academic year, which are cut-off dates, not a deadline for paying a student.',
         rungs: [
           {
             level: 'village',
@@ -1535,6 +1881,11 @@ export const SCHEMES = [
         label: 'My connection was refused or cancelled',
         complaint: 'My electricity connection was refused or cancelled.',
         ask: 'I ask that my connection be restored, or that you tell me in writing why it was cancelled.',
+        hi: {
+          label: 'मेरा कनेक्शन अस्वीकार हुआ या काट दिया गया',
+          complaint: 'मेरा बिजली कनेक्शन अस्वीकार कर दिया गया, या काट दिया गया।',
+          ask: 'मेरी प्रार्थना है कि मेरा कनेक्शन बहाल किया जाए, या मुझे लिखित रूप में बताया जाए कि वह क्यों काटा गया।',
+        },
         rungs: [
           {
             level: 'village',
@@ -1592,6 +1943,39 @@ export const SCHEMES = [
             source: 'lpdd.ladakh.gov.in/Saubhagya.php',
           },
         ],
+        // A connection is a service under the Electricity (Rights of
+        // Consumers) Rules, so the clock is the rule rather than the scheme
+        // page. The rule sets four limits; the rural one is used, and the
+        // note gives the others so the citizen can see which applies.
+        clock: {
+          anchors: [
+            {
+              id: 'applied',
+              label: 'The day you applied for the connection',
+              sentence: 'I applied for a connection on {date}.',
+              hi: { sentence: 'मैंने {date} को कनेक्शन के लिए आवेदन किया था।' },
+            },
+          ],
+          deadlines: [
+            {
+              anchor: 'applied',
+              days: 15,
+              status: 'statutory',
+              what: 'Your connection must be released in a rural area',
+              claim:
+                'Under the Electricity (Rights of Consumers) Rules my connection had to be released within fifteen days of my complete application, by {due}',
+              unmet: 'My connection has not been released.',
+              hi: {
+                claim:
+                  'बिजली (उपभोक्ता अधिकार) नियमों के अनुसार मेरा कनेक्शन पूरे आवेदन के पंद्रह दिन के भीतर, {due} तक, जारी किया जाना चाहिए था',
+                unmet: 'मेरा कनेक्शन अब तक जारी नहीं हुआ है।',
+              },
+              ...provision('Rule 4(11)', ELEC_DOC, ELEC_WHERE),
+              note: 'Rule 4(11) fixes three days in a metropolitan area, seven in another municipal area and fifteen in a rural area, counted from an application complete in all respects. In a rural area of a State or Union Territory with hilly terrain the limit is thirty days, so check which of these your State falls under before you quote the date.',
+              then: 'Complain to the distribution company’s grievance cell, then to the Electricity Ombudsman for your State.',
+            },
+          ],
+        },
       },
     ],
   },
@@ -1609,6 +1993,8 @@ export const SCHEMES = [
         label: 'The kitchen is not running, or the meal is poor',
         complaint: 'The kitchen at my child’s school is not running, or the meal served there is poor.',
         ask: 'I ask that the kitchen be made to run every day, that the meal be checked, and that you reply to me in writing.',
+        clockGap:
+          'The PM POSHAN guidelines (2023), chapter 11, set no period for resolving a complaint. The Ministry’s RTI note says complaints are acted on in 10 to 15 days, but does not fix the event the period runs from, so it is not recorded as a deadline here.',
         rungs: [
           {
             level: 'village',

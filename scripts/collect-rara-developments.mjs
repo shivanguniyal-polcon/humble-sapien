@@ -201,7 +201,10 @@ const limit = Math.max(1, Number(option('limit', 12)));
 const only = option('source', null);
 const out = path.resolve(root, option('out', 'src/data/rara/developments.json'));
 const pushUrl = option('push', null);
-const pushToken = option('token', process.env.RARA_INGEST_TOKEN || '');
+// Trimmed: a secret pasted with a trailing newline is the same 64 characters
+// to a human and a different bearer token to the Worker, which answers 401 with
+// no hint about why. Whitespace is never part of a token.
+const pushToken = String(option('token', process.env.RARA_INGEST_TOKEN || '') || '').trim();
 const dry = args.includes('--dry');
 // Push the snapshot already on disk instead of fetching the feeds again, so a
 // scheduled run does not hit every source twice.
@@ -476,6 +479,11 @@ if (pushUrl) {
       const body = await response.text();
       if (!response.ok) {
         console.error(`push failed: HTTP ${response.status} ${body.slice(0, 200)}`);
+        if (response.status === 401) {
+          // Length only: enough to tell a wrong token from a truncated one,
+          // without putting any of it in a log.
+          console.error(`The store rejected the bearer token (${pushToken.length} characters). Check RARA_INGEST_TOKEN against the Worker's ADMIN_TOKEN.`);
+        }
         process.exitCode = 1;
       } else {
         console.log(`pushed ${payload.items.length} developments to ${endpoint} — ${body.slice(0, 120)}`);

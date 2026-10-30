@@ -2,7 +2,7 @@
 
 **The fifth pillar of democracy.**
 
-THS is a public interest technology initiative working toward registration as a not-for-profit civil society organisation, across the whole
+THS is a mission-locked public interest technology LLP, working across the whole
 policy surface — health, sanitation, governance, technology and beyond — the
 way public-interest technology organisations work on tech policy: close to the
 systems that shape people's lives, adversarial to weak evidence, useful to the

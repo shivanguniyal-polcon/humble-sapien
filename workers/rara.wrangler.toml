@@ -1,0 +1,41 @@
+# The RARA development store: D1, one Worker.
+#
+# Deployed at https://ths-rara-tracker.shivang-uniyal27.workers.dev against the
+# D1 database `ths-rara`. Redeploy after a schema or route change:
+#
+#   wrangler secret put ADMIN_TOKEN -c workers/rara.wrangler.toml
+#   wrangler deploy -c workers/rara.wrangler.toml
+#
+# The site reads it through VITE_RARA_API at build time. The scheduled collector
+# pushes with RARA_INGEST_URL and RARA_INGEST_TOKEN; those must be repository
+# secrets, or the workflow commits the snapshot and never reaches D1.
+#
+# Local development needs none of that:
+#
+#   wrangler dev -c workers/rara.wrangler.toml --local --port 8788
+#
+# The collector can then push into it:
+#
+#   node scripts/collect-rara-developments.mjs --push http://localhost:8788 --token local
+#
+# Set ADMIN_TOKEN in .dev.vars for local ingest. Without it the read API works
+# and ingest refuses, which is the same behaviour as production.
+
+name = "ths-rara-tracker"
+main = "rara-worker.js"
+compatibility_date = "2026-10-21"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "ths-rara"
+database_id = "1fec12f7-7eff-4bfe-981a-f0baaede68f5"
+
+# The origins that may read this API, comma-separated: the deployed site, and
+# the two local Vite ports so `npm run dev` and `npm run preview` still work.
+# No wildcard: the value is never echoed back unless the caller is on the list.
+[vars]
+ALLOWED_ORIGIN = "https://ths-site.shivang-uniyal27.workers.dev,http://localhost:5173,http://localhost:4173"

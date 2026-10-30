@@ -1,0 +1,59 @@
+name: Collect AI developments
+
+# The tracker promises a six-hourly collection, so the schedule is the promise.
+# One run fetches the primary feeds, checks the tracker's rules, commits the
+# snapshot the site ships, and — when the Worker is configured — pushes the
+# same payload into D1 for the live read. A missing ingest URL is a warning,
+# not a silent success: the snapshot is still committed, and the step says what
+# did not happen.
+
+on:
+  schedule:
+    - cron: '20 */6 * * *' # 00:20, 06:20, 12:20, 18:20 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rara-collector
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Collect the feeds
+        run: node scripts/collect-rara-developments.mjs --days 21
+
+      - name: Check the tracker
+        run: node scripts/test-rara-tracker.mjs
+
+      - name: Commit the snapshot
+        run: |
+          if git diff --quiet -- src/data/rara/developments.json; then
+            echo "No new developments in this window."
+            exit 0
+          fi
+          git config user.name "rara-collector"
+          git config user.email "actions@users.noreply.github.com"
+          git add src/data/rara/developments.json
+          git commit -m "Refresh the AI development snapshot"
+          git push
+
+      - name: Push to the Cloudflare store
+        env:
+          RARA_INGEST_URL: ${{ secrets.RARA_INGEST_URL }}
+          RARA_INGEST_TOKEN: ${{ secrets.RARA_INGEST_TOKEN }}
+        run: |
+          if [ -z "$RARA_INGEST_URL" ]; then
+            echo "::warning::RARA_INGEST_URL is not set; the snapshot was committed but not pushed to D1."
+            exit 0
+          fi
+          node scripts/collect-rara-developments.mjs --push-only --push "$RARA_INGEST_URL" --token "$RARA_INGEST_TOKEN"

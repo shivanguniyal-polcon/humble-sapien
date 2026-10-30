@@ -26,6 +26,19 @@ const JSON_TYPE = 'application/json; charset=utf-8';
 
 const originOf = (env) => env.ALLOWED_ORIGIN || '*';
 
+// A response carries one allowed origin, but a deployment may need several —
+// the live site, a workers.dev address before the domain lands, and localhost
+// during development. ALLOWED_ORIGIN takes a comma-separated list; this picks
+// the one that matches the caller and leaves everything else on the first
+// entry, so the header is never widened to a wildcard. The OCR route below
+// compares against the same resolved value, so its check still holds.
+const withOrigin = (request, env) => {
+  const allowed = String(env.ALLOWED_ORIGIN || '*').split(',').map((value) => value.trim()).filter(Boolean);
+  if (!allowed.length || allowed.includes('*')) return env;
+  const caller = request.headers.get('origin');
+  return { ...env, ALLOWED_ORIGIN: caller && allowed.includes(caller) ? caller : allowed[0] };
+};
+
 const headers = (env, extra = {}) => ({
   'content-type': JSON_TYPE,
   'access-control-allow-origin': originOf(env),
@@ -212,6 +225,7 @@ const handle = async (request, env) => {
 
 export default {
   async fetch(request, env) {
+    env = withOrigin(request, env);
     try {
       return await handle(request, env);
     } catch (error) {

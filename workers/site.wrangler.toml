@@ -1,0 +1,37 @@
+# The public site: the Vite build as Worker static assets.
+#
+# Deploy with:
+#
+#   VITE_MONITOR_API=https://ths-monitor-api.shivang-uniyal27.workers.dev \
+#   VITE_RARA_API=https://ths-rara-tracker.shivang-uniyal27.workers.dev \
+#     npm run build
+#   wrangler deploy -c workers/site.wrangler.toml
+#
+# Both variables are load-bearing. A plain `npm run build` ships a Monitor chunk
+# with no API host and a tracker that quietly reads its committed snapshot, so
+# the pages still render and the failure is invisible. `build:vercel` sets the
+# Monitor one for the same reason. Security headers live in public/_headers.
+#
+# Local development still runs through Vite (`npm run dev`); this config is for
+# the deployed surface only.
+#
+# The asset directory is relative to this file. The build is ~45 MB across ~940
+# files with a 3.4 MB largest asset, well inside the 20,000-file and 25 MiB
+# per-file limits.
+#
+# not_found_handling is what makes the hash router safe to keep: any path that
+# does not match a file returns index.html instead of a 404, so a reader who
+# lands on /tools/lab still gets the application shell.
+
+name = "ths-site"
+main = "site.js"
+compatibility_date = "2026-10-21"
+workers_dev = true
+
+[observability]
+enabled = true
+
+[assets]
+directory = "../dist"
+binding = "ASSETS"
+not_found_handling = "single-page-application"

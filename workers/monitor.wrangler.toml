@@ -42,6 +42,7 @@ bucket_name = "ths-monitor-files"
 crons = ["0 6,18 * * *", "15 */6 * * *"]
 
 [vars]
-# The single public site. Local development against this Worker must send
-# this origin too, or the OCR route refuses the call.
-ALLOWED_ORIGIN = "https://humble-sapien.vercel.app"
+# The public sites, comma-separated: the Workers deployment, the Vercel origin
+# it replaces while the changeover is open, and the local Vite port. OCR refuses
+# any other origin.
+ALLOWED_ORIGIN = "https://ths-site.shivang-uniyal27.workers.dev,https://humble-sapien.vercel.app,http://localhost:5173"

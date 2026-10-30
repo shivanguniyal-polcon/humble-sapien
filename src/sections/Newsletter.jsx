@@ -7,22 +7,35 @@ import PageHead from '../components/PageHead';
 // into ../data/newsletter.js. Every issue carries the same slots — masthead,
 // data snapshot, lead, field note, tool spotlight, reading list — so the
 // design reproduces identically no matter who writes the copy.
+//
+// Issues can be written ahead of their release date. They stay readable, but
+// the page says forthcoming rather than passing a future date off as published.
+const now = new Date();
+const TODAY = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(
+  now.getDate(),
+).padStart(2, '0')}`;
+const isForthcoming = (issue) => issue.date > TODAY;
+const FIRST_PUBLISHED = NEWSLETTER.find((issue) => !isForthcoming(issue))?.id ?? NEWSLETTER[0].id;
+
 export default function Newsletter({ onNavigate, openSub }) {
-  // Deep links from the nav dropdown: #/newsletter/<issue-id>. Newest first.
+  // Deep links from the nav dropdown: #/newsletter/<issue-id>. Newest first;
+  // with no deep link, open the latest issue that is actually out.
   const [open, setOpen] = useState(
     openSub && NEWSLETTER.some((n) => n.id === openSub)
       ? openSub
-      : NEWSLETTER[0].id,
+      : FIRST_PUBLISHED,
   );
 
   const [seenSub, setSeenSub] = useState(openSub);
   if (openSub !== seenSub) {
     setSeenSub(openSub);
     if (openSub && NEWSLETTER.some((n) => n.id === openSub)) setOpen(openSub);
+    else if (!openSub) setOpen(FIRST_PUBLISHED);
   }
 
   const issue = NEWSLETTER.find((n) => n.id === open);
   const isMonthly = issue.type === 'monthly';
+  const forthcoming = isForthcoming(issue);
 
   return (
     <section>
@@ -45,9 +58,13 @@ export default function Newsletter({ onNavigate, openSub }) {
             key={n.id}
             className={`chip ${open === n.id ? 'chip-active' : ''}`}
             aria-pressed={open === n.id}
-            onClick={() => setOpen(n.id)}
+            onClick={() => {
+              setOpen(n.id);
+              onNavigate('newsletter', n.id);
+            }}
           >
             №{n.issue} · {n.title.split('.')[0].split(':')[0]}
+            {isForthcoming(n) ? ' · Forthcoming' : ''}
           </button>
         ))}
       </div>
@@ -55,8 +72,14 @@ export default function Newsletter({ onNavigate, openSub }) {
       <article className="card newsletter">
         <header className="nl-masthead">
           <p className="meta">
-            Issue {issue.issue} · {issue.dateLabel} · {issue.author} · about{' '}
-            {issue.minutes} minutes
+            Issue {issue.issue} · {issue.dateLabel}
+            {forthcoming && (
+              <>
+                {' '}
+                <span className="nl-forthcoming">Forthcoming</span>
+              </>
+            )}
+            {' '}· {issue.author} · about {issue.minutes} minutes
           </p>
           <p className="nl-edition">
             <span className="nl-edition-badge">
@@ -258,12 +281,19 @@ export default function Newsletter({ onNavigate, openSub }) {
       <div className="card tool-ending">
         <h3>Get the next one</h3>
         <p>
-          The newsletter is one face of the same work. If an issue made you want
-          to check a promise, run a model or take apart a dataset, the
+          Send one line and we will add you to the list. No account, no tracking,
+          and every issue also stays here as a page you can keep. If an issue
+          made you want to check a promise or take apart a dataset, the
           instruments are free and waiting.
         </p>
         <div className="btn-row">
-          <button className="btn btn-primary" onClick={() => onNavigate('work')}>
+          <a
+            className="btn btn-primary"
+            href="mailto:shivang.uni@gmail.com?subject=Subscribe%20to%20the%20THS%20newsletter"
+          >
+            Subscribe by email
+          </a>
+          <button className="btn btn-secondary" onClick={() => onNavigate('work')}>
             Open the tools
           </button>
           <button className="btn btn-secondary" onClick={() => onNavigate('research')}>

@@ -9,6 +9,8 @@
 import { useRef, useState } from 'react';
 import PageHead from '../components/PageHead';
 import RARA from '../data/rara.json';
+import DEVELOPMENTS from '../data/rara/developments.json';
+import LEGAL from '../data/rara/legal-texts.json';
 import { runTriage } from '../lib/rara';
 
 const STATUS_LABEL = {
@@ -75,6 +77,22 @@ export default function Rara() {
         call.
       </PageHead>
 
+      {/* The record comes before the scanner: a reader who wants the current
+          picture should not have to type a capability first. */}
+      <div className="rara-tracker-callout">
+        <div>
+          <p className="overline">The live record</p>
+          <p>
+            {DEVELOPMENTS.items.length} AI developments, read against{' '}
+            {LEGAL.texts.length} exact provisions across six Indian instruments.
+            Each row shows the words the law uses — or the word it does not have.
+          </p>
+        </div>
+        <a className="btn btn-primary" href="#/rara/tracker">
+          Open the tracker
+        </a>
+      </div>
+
       {/* The instrument is not the whole argument: it is the checkable layer
           the larger system has to stand on. Saying so before the scanner also
           sets the terms — a model may draft, but not over a record it cannot
@@ -82,12 +100,12 @@ export default function Rara() {
       <section className="rara-framework" aria-labelledby="rara-framework-title">
         <div className="rara-framework-copy">
           <p className="overline">The framework</p>
-          <h2 id="rara-framework-title">RARA AI will be built on this.</h2>
+          <h2 id="rara-framework-title">A design thesis, with a checkable floor.</h2>
           <p>
-            This page is the deterministic layer of a larger system: the AI that
-            will regulate, restrict, alert and formulate for safer AI. RARA AI
-            will run on the same corpus, the same citations and the same refusal
-            to invent a gap that the scanner already keeps.
+            RARA AI is a design thesis, not a shipped product: the AI layer will
+            regulate, restrict, alert and formulate for safer AI, but only over
+            the same corpus, the same citations and the same refusal to invent a
+            gap that the scanner already keeps.
           </p>
         </div>
         <dl className="rara-framework-list">

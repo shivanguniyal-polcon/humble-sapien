@@ -1,0 +1,414 @@
+{
+  "version": "2026-10-29",
+  "note": "Exact excerpts, not summaries. Each quote is a contiguous span from the official text named in sourceUrl. A fragment is marked excerpt: true. The tracker compares development language with these words; it does not decide that a provision applies.",
+  "texts": [
+    {
+      "id": "IT-ACT-2000-S66C",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 66C",
+      "title": "Punishment for identity theft",
+      "quote": "Whoever, fraudulently or dishonestly make use of the electronic signature, password or any other unique identification feature of any other person, shall be punished with imprisonment of either description for a term which may extend to three years and shall also be liable to fine which may extend to rupees one lakh.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media",
+        "security"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "IT-ACT-2000-S66D",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 66D",
+      "title": "Punishment for cheating by personation by using computer resource",
+      "quote": "Whoever, by means of any communication device or computer resource cheats by personation, shall be punished with imprisonment of either description for a term which may extend to three years and shall also be liable to fine which may extend to one lakh rupees.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media",
+        "finance",
+        "security"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "DPDP-2023-S6",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 6(1)",
+      "title": "Consent",
+      "quote": "The consent given by the Data Principal shall be free, specific, informed, unconditional and unambiguous with a clear affirmative action, and shall signify an agreement to the processing of her personal data for the specified purpose and be limited to such personal data as is necessary for such specified purpose.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "children",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "DPDP-2023-S8-5",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 8(5)",
+      "title": "General obligations of a Data Fiduciary: security safeguards",
+      "quote": "A Data Fiduciary shall protect personal data in its possession or under its control, including in respect of any processing undertaken by it or on its behalf by a Data Processor, by taking reasonable security safeguards to prevent personal data breach.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "DPDP-2023-S8-6",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 8(6)",
+      "title": "General obligations of a Data Fiduciary: breach intimation",
+      "quote": "In the event of a personal data breach, the Data Fiduciary shall give the Board and each affected Data Principal, intimation of such breach in such form and manner as may be prescribed.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "DPDP-2023-S9-3",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 9(3)",
+      "title": "Prohibition on tracking or behavioural monitoring of children",
+      "quote": "A Data Fiduciary shall not undertake tracking or behavioural monitoring of children or targeted advertising directed at children.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "children",
+        "personal-data"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "DPDP-2023-S16-1",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 16(1)",
+      "title": "Cross-border transfer of personal data",
+      "quote": "The Central Government may, by notification, restrict the transfer of personal data by a Data Fiduciary for processing to such country or territory outside India as may be so notified.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "BNS-2023-S319-1",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "instrumentShort": "BNS",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 319(1)",
+      "title": "Cheating by personation: definition",
+      "quote": "A person is said to cheat by personation if he cheats by pretending to be some other person, or by knowingly substituting one person for or another, or representing that he or any other person is a person other than he or such other person really is.",
+      "sourceUrl": "https://www.ncrb.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf",
+      "sourceTitle": "The Bharatiya Nyaya Sanhita, 2023 (NCRB copy)",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "BNS-2023-S319-2",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "instrumentShort": "BNS",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 319(2)",
+      "title": "Cheating by personation: punishment",
+      "quote": "Whoever cheats by personation shall be punished with imprisonment of either description for a term which may extend to five years, or with fine, or with both.",
+      "sourceUrl": "https://www.ncrb.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf",
+      "sourceTitle": "The Bharatiya Nyaya Sanhita, 2023 (NCRB copy)",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "COPYRIGHT-1957-S52-1-A",
+      "instrument": "Copyright Act, 1957",
+      "instrumentShort": "Copyright Act",
+      "instrumentType": "Act",
+      "regulator": "Intellectual Property India",
+      "pinCite": "s. 52(1)(a)",
+      "title": "Fair dealing for private or personal use, research, criticism or review",
+      "quote": "Certain acts not to be infringement of copyright.— (1) The following acts shall not constitute an infringement of copyright, namely,— (a) a fair dealing with any work, not being a computer programme, for the purposes of— (i) private or personal use, including research; (ii) criticism or review, whether of that work or of any other work; (iii) the reporting of current events and current affairs, including the reporting of a lecture delivered in public.",
+      "sourceUrl": "https://copyright.gov.in/Copyright_Act_1957/chapter_xi.html",
+      "sourceTitle": "The Copyright Act, 1957, Chapter XI",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "ip",
+        "personal-data"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "PATENTS-1970-S3-K",
+      "instrument": "Patents Act, 1970",
+      "instrumentShort": "Patents Act",
+      "instrumentType": "Act",
+      "regulator": "Intellectual Property India",
+      "pinCite": "s. 3(k)",
+      "title": "What are not inventions: computer programmes and algorithms",
+      "quote": "a mathematical or business method or a computer programme per se or algorithms;",
+      "sourceUrl": "https://ipindia.gov.in/frontend/pdf/patents/1_113_1_The_Patents_Act__1970___incorporating_all_amendments_till_1-08-2024.pdf",
+      "sourceTitle": "The Patents Act, 1970 (as amended to 1 August 2024)",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "ip",
+        "autonomy"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "COMPETITION-2002-S3-1",
+      "instrument": "Competition Act, 2002",
+      "instrumentShort": "Competition Act",
+      "instrumentType": "Act",
+      "regulator": "Competition Commission of India",
+      "pinCite": "s. 3(1)",
+      "title": "Anti-competitive agreements",
+      "quote": "No enterprise or association of enterprises or person or association of persons shall enter into any agreement in respect of production, supply, distribution, storage, acquisition or control of goods or provision of services, which causes or is likely to cause an appreciable adverse effect on competition within India.",
+      "sourceUrl": "https://www.cci.gov.in/images/legalframeworkact/en/the-competition-act-20021652103427.pdf",
+      "sourceTitle": "The Competition Act, 2002",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "finance",
+        "autonomy"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "COMPETITION-2002-S3-3-A",
+      "instrument": "Competition Act, 2002",
+      "instrumentShort": "Competition Act",
+      "instrumentType": "Act",
+      "regulator": "Competition Commission of India",
+      "pinCite": "s. 3(3)(a)",
+      "title": "Anti-competitive agreements: price fixing",
+      "quote": "directly or indirectly determines purchase or sale prices;",
+      "sourceUrl": "https://www.cci.gov.in/images/legalframeworkact/en/the-competition-act-20021652103427.pdf",
+      "sourceTitle": "The Competition Act, 2002",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "finance"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "COMPETITION-2002-S4-1",
+      "instrument": "Competition Act, 2002",
+      "instrumentShort": "Competition Act",
+      "instrumentType": "Act",
+      "regulator": "Competition Commission of India",
+      "pinCite": "s. 4(1)",
+      "title": "Abuse of dominant position",
+      "quote": "No enterprise or group shall abuse its dominant position.",
+      "sourceUrl": "https://www.cci.gov.in/images/legalframeworkact/en/the-competition-act-20021652103427.pdf",
+      "sourceTitle": "The Competition Act, 2002",
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "finance"
+      ],
+      "excerpt": false
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": false,
+      "id": "IT-ACT-2000-S43A",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 43A",
+      "title": "Compensation for failure to protect data",
+      "quote": "Where a body corporate, possessing, dealing or handling any sensitive personal data or information in a computer resource which it owns, controls or operates, is negligent in implementing and maintaining reasonable security practices and procedures and thereby causes wrongful loss or wrongful gain to any person, such body corporate shall be liable to pay damages by way of compensation to the person so affected.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "topics": [
+        "personal-data",
+        "security"
+      ]
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": false,
+      "id": "IT-ACT-2000-S66E",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 66E",
+      "title": "Punishment for violation of privacy",
+      "quote": "Whoever, intentionally or knowingly captures, publishes or transmits the image of a private area of any person without his or her consent, under circumstances violating the privacy of that person, shall be punished with imprisonment which may extend to three years or with fine not exceeding two lakh rupees, or with both.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "topics": [
+        "personal-data",
+        "synthetic-media"
+      ]
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": false,
+      "id": "DPDP-2023-S9-1",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 9(1)",
+      "title": "Verifiable parental consent before processing a child’s data",
+      "quote": "The Data Fiduciary shall, before processing any personal data of a child or a person with disability who has a lawful guardian obtain verifiable consent of the parent of such child or the lawful guardian, as the case may be, in such manner as may be prescribed.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023 (Gazette)",
+      "topics": [
+        "children",
+        "personal-data"
+      ]
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": false,
+      "id": "DPDP-2023-S9-2",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 9(2)",
+      "title": "No processing likely to harm a child’s well-being",
+      "quote": "A Data Fiduciary shall not undertake such processing of personal data that is likely to cause any detrimental effect on the well-being of a child.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023 (Gazette)",
+      "topics": [
+        "children",
+        "personal-data",
+        "health"
+      ]
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": true,
+      "id": "DPDP-2023-S17-2-B",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 17(2)(b)",
+      "title": "Research exemption, unless a decision is taken about a person",
+      "quote": "necessary for research, archiving or statistical purposes if the personal data is not to be used to take any decision specific to a Data Principal and such processing is carried on in accordance with such standards as may be prescribed.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023 (Gazette)",
+      "topics": [
+        "personal-data",
+        "ip"
+      ]
+    },
+    {
+      "retrievedAt": "2026-10-29",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "excerpt": true,
+      "id": "COPYRIGHT-1957-S51-A",
+      "instrument": "Copyright Act, 1957",
+      "instrumentShort": "Copyright Act",
+      "instrumentType": "Act",
+      "regulator": "Copyright Office, DPIIT",
+      "pinCite": "s. 51(a)(i)",
+      "title": "When copyright is deemed to be infringed",
+      "quote": "Copyright in a work shall be deemed to be infringed— (a) when any person, without a licence granted by the owner of the copyright or the Registrar of Copyrights under this Act or in contravention of the conditions of a licence so granted or of any condition imposed by a competent authority under this Act— (i) does anything, the exclusive right to do which is by this Act conferred upon the owner of the copyright",
+      "sourceUrl": "https://www.copyright.gov.in/Documents/CopyrightRules1957.pdf",
+      "sourceTitle": "The Copyright Act, 1957 (as amended)",
+      "topics": [
+        "ip"
+      ]
+    }
+  ]
+}

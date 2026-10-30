@@ -56,9 +56,9 @@ VITE_MONITOR_API=http://127.0.0.1:8788 npm run dev
 Without `VITE_MONITOR_API` the OCR button is disabled and says so. Page text
 extraction still works: it happens in the browser and uploads nothing.
 
-The committed Worker config points `ALLOWED_ORIGIN` at the Vercel site. For OCR
-against a local Worker, start it with `--var ALLOWED_ORIGIN:*` (local only) or
-with the local site origin, for example:
+`ALLOWED_ORIGIN` is a comma-separated list of the origins allowed to call the
+API. For OCR against a local Worker, start it with `--var ALLOWED_ORIGIN:*`
+(local only) or with the local site origin, for example:
 
 ```bash
 npm run monitor:api -- --var ALLOWED_ORIGIN:http://localhost:5173
@@ -75,8 +75,9 @@ wrangler secret put REPLICATE_API_TOKEN -c workers/monitor.wrangler.toml
 wrangler deploy -c workers/monitor.wrangler.toml
 ```
 
-Set `ALLOWED_ORIGIN` in `[vars]` to the Vercel site origin
-(`https://humble-sapien.vercel.app`). `*` is for local work only.
+Set `ALLOWED_ORIGIN` in `[vars]` to a comma-separated list: the Workers
+site, the Vercel origin while the changeover is open, and localhost. `*` is for
+local work only.
 
 ## Deployed
 
@@ -84,9 +85,13 @@ The monitor runs at **https://ths-monitor-api.shivang-uniyal27.workers.dev**
 (deployed 24 October 2026) with D1 `ths-monitor`, R2 `ths-monitor-files` and
 both cron patterns registered. `ADMIN_TOKEN` is a Worker secret.
 
-The site is on Vercel at **https://humble-sapien.vercel.app** and is the only
-public site. `vercel.json` runs `npm run build:vercel` for production, which
-bakes the API URL into the Monitor chunk. Use the scripts, not raw commands:
+The site is on Workers static assets at
+**https://ths-site.shivang-uniyal27.workers.dev** — see
+[`site.wrangler.toml`](site.wrangler.toml). The Vercel deployment at
+**https://humble-sapien.vercel.app** stays live until the custom domain moves,
+and both origins are allowed, so nothing breaks mid-changeover.
+
+Both builds bake the API URL into the Monitor chunk, so use the scripts:
 
 ```bash
 npm run build:vercel   # vite build with the production API baked in
@@ -109,8 +114,8 @@ browser does — root HTML, index chunk, Work chunk, the dependency map that
 names the Monitor chunk — and fails with exit 1 if that chunk no longer
 contains the API host. It reads the site and the API from its defaults, or
 from `SITE_URL` and `MONITOR_API`. Hashed chunk names mean a build-tool rename
-fails the check loudly instead of passing it silently. `ALLOWED_ORIGIN` is the
-Vercel origin; the read API is open, but OCR returns 403 for any other origin.
+fails the check loudly instead of passing it silently. `ALLOWED_ORIGIN` is the comma-separated
+allowlist; the read API is open, but OCR returns 403 for any origin not on it.
 
 The cron is `0 6,18 * * *` for discovery, plus `15 */6 * * *` to drain a
 backlog. Free-plan cron invocations get 10 ms of CPU, which will not parse a

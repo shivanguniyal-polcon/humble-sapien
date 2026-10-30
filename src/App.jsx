@@ -18,6 +18,7 @@ const Archive = lazy(() => import('./sections/Archive'));
 const SolutionIndex = lazy(() => import('./sections/SolutionIndex'));
 const Compare = lazy(() => import('./sections/Compare'));
 const Rara = lazy(() => import('./sections/Rara'));
+const RaraTracker = lazy(() => import('./sections/RaraTracker'));
 const Writing = lazy(() => import('./sections/Writing'));
 const Newsletter = lazy(() => import('./sections/Newsletter'));
 const PitDesk = lazy(() => import('./sections/PitDesk'));
@@ -132,7 +133,10 @@ export default function App() {
   }, []);
 
   const go = (tab, sub, query) => {
-    const head = TAB_TO_HASH[tab] || 'home';
+    // Callers sometimes carry a URL head rather than a tab id — the newsletter
+    // links are written as #/tools/<id>, for one. Accept either spelling so a
+    // stored link cannot quietly fall back to Home.
+    const head = TAB_TO_HASH[tab] || (HASH_TO_TAB[tab] ? tab : 'home');
     const next = `#/${head}${sub ? `/${sub}` : ''}${query ? `?${query}` : ''}`;
     if (window.location.hash === next) {
       setRoute(parseHash());
@@ -291,7 +295,9 @@ export default function App() {
             />
           )}
           {route.tab === 'compare' && <Compare onNavigate={go} openSub={route.sub} />}
-          {route.tab === 'rara' && <Rara />}
+          {route.tab === 'rara' && (
+            route.sub === 'tracker' ? <RaraTracker /> : <Rara />
+          )}
           {route.tab === 'writing' && <Writing onNavigate={go} openSub={route.sub} />}
           {route.tab === 'newsletter' && (
             <Newsletter onNavigate={go} openSub={route.sub} />
@@ -328,6 +334,15 @@ export default function App() {
             </button>
             .
           </p>
+          <nav className="footer-nav" aria-label="Footer">
+            <button type="button" onClick={() => go('index')}>Index</button>
+            <button type="button" onClick={() => go('work')}>Tools</button>
+            <button type="button" onClick={() => go('research')}>Research</button>
+            <button type="button" onClick={() => go('archive')}>Smriti</button>
+            <button type="button" onClick={() => go('compare')}>Atlas</button>
+            <button type="button" onClick={() => go('about')}>About</button>
+            <a href="mailto:shivang.uni@gmail.com?subject=Hello%20THS">Contact</a>
+          </nav>
         </div>
       </footer>
     </div>

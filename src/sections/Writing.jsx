@@ -13,6 +13,7 @@ export default function Writing({ onNavigate, openSub }) {
   if (openSub !== seenSub) {
     setSeenSub(openSub);
     if (openSub && ESSAYS.some((e) => e.id === openSub)) setOpen(openSub);
+    else if (!openSub) setOpen('evolve');
   }
 
   const essay = ESSAYS.find((e) => e.id === open);
@@ -35,7 +36,10 @@ export default function Writing({ onNavigate, openSub }) {
             key={e.id}
             className={`chip ${open === e.id ? 'chip-active' : ''}`}
             aria-pressed={open === e.id}
-            onClick={() => setOpen(e.id)}
+            onClick={() => {
+              setOpen(e.id);
+              onNavigate('writing', e.id);
+            }}
           >
             {e.title.split(',')[0].split(':')[0]}
           </button>
@@ -67,7 +71,10 @@ export default function Writing({ onNavigate, openSub }) {
           are free and waiting.
         </p>
         <div className="btn-row">
-          <button className="btn btn-primary" onClick={() => onNavigate('work')}>
+          <button
+            className="btn btn-primary"
+            onClick={() => onNavigate('work', 'scorecards')}
+          >
             Open the promise scorecards
           </button>
           <button className="btn btn-secondary" onClick={() => onNavigate('data')}>

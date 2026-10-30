@@ -65,6 +65,7 @@ export default function Compare({ onNavigate, openSub }) {
   if (openSub !== seenSub) {
     setSeenSub(openSub);
     if (openSub && sectors.some((s) => s.id === openSub)) setSectorId(openSub);
+    else if (!openSub) setSectorId('tech');
   }
 
   const sector = sectors.find((s) => s.id === sectorId);
@@ -92,7 +93,10 @@ export default function Compare({ onNavigate, openSub }) {
             key={s.id}
             className={`chip ${sectorId === s.id ? 'chip-active' : ''}`}
             aria-pressed={sectorId === s.id}
-            onClick={() => setSectorId(s.id)}
+            onClick={() => {
+              setSectorId(s.id);
+              onNavigate('compare', s.id);
+            }}
           >
             {s.label}
           </button>

@@ -51,7 +51,9 @@ const LockPanel = ({ title, rows, onUnlock, onSupport }) => (
       <p className="meta">
         This dataset is part of <strong>THS Data Commons Plus</strong>, the
         paid tier that cross-subsidises THS&apos;s free tools and field work.
-        The schema and first rows are previewable below.
+        The schema and first rows are previewable below; the full table opens
+        without payment. The Commons Plus licence covers institutional and
+        commercial use, not reading.
       </p>
       <div className="preview-fade">
         <table className="data-table">
@@ -67,11 +69,11 @@ const LockPanel = ({ title, rows, onUnlock, onSupport }) => (
         </table>
       </div>
       <div className="btn-row" style={{ marginTop: '1.5rem' }}>
-        <button className="btn btn-primary" onClick={onSupport}>
-          Support THS to unlock the Commons
+        <button className="btn btn-primary" onClick={onUnlock}>
+          Open the full table free
         </button>
-        <button className="btn btn-secondary" onClick={onUnlock}>
-          Open demo access
+        <button className="btn btn-secondary" onClick={onSupport}>
+          Support the Commons
         </button>
       </div>
     </div>
@@ -104,6 +106,7 @@ export default function Data({ onNavigate, openSub }) {
       // A dataset id, or no sub at all: the playground. Without the else
       // branch, #/data left the methods page on screen.
       if (openSub && catalog.some((d) => d.id === openSub)) setActiveId(openSub);
+      else setActiveId('pmjay');
       setView('playground');
     }
   }
@@ -252,21 +255,30 @@ export default function Data({ onNavigate, openSub }) {
         <button
           className={`chip ${view === 'playground' ? 'chip-active' : ''}`}
           aria-pressed={view === 'playground'}
-          onClick={() => setView('playground')}
+          onClick={() => {
+            setView('playground');
+            onNavigate('data', activeId);
+          }}
         >
           Playground
         </button>
         <button
           className={`chip ${view === 'methods' ? 'chip-active' : ''}`}
           aria-pressed={view === 'methods'}
-          onClick={() => setView('methods')}
+          onClick={() => {
+            setView('methods');
+            onNavigate('data', 'methods');
+          }}
         >
           Methods &amp; downloads
         </button>
         <button
           className={`chip ${view === 'opendata' ? 'chip-active' : ''}`}
           aria-pressed={view === 'opendata'}
-          onClick={() => setView('opendata')}
+          onClick={() => {
+            setView('opendata');
+            onNavigate('data', 'opendata');
+          }}
         >
           Open data directory
         </button>
@@ -280,6 +292,7 @@ export default function Data({ onNavigate, openSub }) {
           onOpenDataset={(run) => {
             setActiveId(run);
             setView('playground');
+            onNavigate('data', run);
           }}
         />
       ) : (
@@ -292,7 +305,10 @@ export default function Data({ onNavigate, openSub }) {
                 <button
                   key={d.id}
                   className={`dataset-card ${activeId === d.id ? 'dataset-active' : ''}`}
-                  onClick={() => setActiveId(d.id)}
+                  onClick={() => {
+                    setActiveId(d.id);
+                    onNavigate('data', d.id);
+                  }}
                 >
                   <div className="dataset-title">{d.title}</div>
                   <div className="dataset-meta">

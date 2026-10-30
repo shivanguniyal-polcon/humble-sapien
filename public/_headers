@@ -1,0 +1,20 @@
+# Security headers for the deployed site.
+#
+# These mirror what vercel.json set before the move, so the migration does not
+# quietly drop a control. Cloudflare parses this file instead of serving it.
+#
+# One addition to the old policy: connect-src also names the RARA API. The
+# previous policy was written before that Worker existed, and a policy that
+# blocks it would fail in the browser with no server-side error to find.
+#
+# Cache-Control is left alone, so fingerprinted assets keep Cloudflare's
+# default revalidate-every-time behaviour rather than being pinned for a year.
+
+/*
+Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://ths-monitor-api.shivang-uniyal27.workers.dev https://ths-places-api.shivang-uniyal27.workers.dev https://ths-rara-tracker.shivang-uniyal27.workers.dev; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+Referrer-Policy: strict-origin-when-cross-origin
+Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+Strict-Transport-Security: max-age=63072000; includeSubDomains
+X-XSS-Protection: 0

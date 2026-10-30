@@ -28,9 +28,9 @@ export default function AtlasMap({ sector, sectors }) {
         aria-label={`World map. ${lit.size} countries are lit for ${sector.label}; ${elsewhere} more are covered by other sectors of the atlas. India's boundary is drawn as claimed by the Government of India.`}
       >
         <rect className="atlas-map-sea" x="0" y="0" width="100%" height="100%" />
-        {WORLD_COUNTRIES.map(([iso, name, d]) => (
+        {WORLD_COUNTRIES.map(([iso, name, d], index) => (
           <path
-            key={iso}
+            key={`${iso}-${index}`}
             className={lit.has(iso) ? 'is-lit' : studied.has(iso) ? 'is-studied' : 'is-base'}
             d={d}
           >

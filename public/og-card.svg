@@ -4,7 +4,7 @@
        (white ground, clay-600 maroon mark, paper-800 ink text). -->
   <rect x="0" y="0" width="1200" height="630" fill="#FFFFFF" />
 
-  <text x="72" y="102" font-family="'IBM Plex Mono', Menlo, monospace" font-size="24" font-weight="500" letter-spacing="2.5" fill="#7A1F2B">Working toward not-for-profit registration · Est. 2023</text>
+  <text x="72" y="102" font-family="'IBM Plex Mono', Menlo, monospace" font-size="24" font-weight="500" letter-spacing="2.5" fill="#7A1F2B">A mission-locked LLP · Est. 2023</text>
 
   <!-- the mark, traced from the approved raster master -->
   <g transform="translate(72,150) scale(1.6)">

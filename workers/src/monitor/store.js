@@ -4,6 +4,8 @@
 // one thing, so the same code runs in a Worker, in the local runner and in
 // the tests. Nothing here knows about HTTP or PDFs.
 
+import { OCR_GLOBAL_LIMIT_PER_DAY } from './config.js';
+
 const statement = (db, sql, ...args) => db.prepare(sql).bind(...args);
 
 export const insertInstrument = async (db, record) => {
@@ -200,29 +202,77 @@ export const stats = async (db) => {
   };
 };
 
-// One OCR attempt per page per IP per day, capped. The read is not atomic
-// with the write, which is acceptable for a small free allowance: the worst
-// case is a few extra pages, never a negative or unbounded count.
-export const takeOcrSlot = async (db, { day, ip, limit = 5 }) => {
-  const row = await statement(db, 'SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?', day, ip).first();
-  const used = row?.pages || 0;
-  if (used >= limit) return { allowed: false, used, limit };
-  await statement(
+// The per-IP row is written first, so a caller already over its own allowance
+// never touches the shared global counter. The global row is written second;
+// if it refuses, the per-IP increment is returned before any provider call.
+const takeGlobalSlot = async (db, { day, limit }) => {
+  if (limit <= 0) return { allowed: false, used: 0, limit };
+  const result = await statement(
     db,
-    `INSERT INTO ocr_usage (day, ip, pages) VALUES (?, ?, 1)
-     ON CONFLICT(day, ip) DO UPDATE SET pages = pages + 1`,
+    `INSERT INTO ocr_global_usage (day, pages) VALUES (?, 1)
+     ON CONFLICT(day) DO UPDATE SET pages = pages + 1
+     WHERE pages < ?`,
     day,
-    ip,
+    limit,
   ).run();
-  return { allowed: true, used: used + 1, limit };
+  const changes = Number(result?.meta?.changes ?? result?.changes ?? 0);
+  const row = await statement(db, 'SELECT pages FROM ocr_global_usage WHERE day = ?', day).first();
+  return { allowed: changes > 0, used: row?.pages ?? 0, limit };
 };
 
-// A failed provider call should not cost the reader a page of the day's
-// allowance. The count never goes below zero.
-export const releaseOcrSlot = (db, { day, ip }) =>
+const releaseLocalSlot = (db, { day, ip }) =>
   statement(
     db,
     'UPDATE ocr_usage SET pages = MAX(pages - 1, 0) WHERE day = ? AND ip = ?',
     day,
     ip,
   ).run();
+
+// One OCR page per IP per day, capped. The conditional upsert decides and
+// increments in one statement, so concurrent requests cannot all pass the
+// same read. A dispatched provider call always spends its slot; only a
+// request refused before dispatch is free.
+const takeLocalSlot = async (db, { day, ip, limit }) => {
+  if (limit <= 0) return { allowed: false, used: 0, limit };
+  const result = await statement(
+    db,
+    `INSERT INTO ocr_usage (day, ip, pages) VALUES (?, ?, 1)
+     ON CONFLICT(day, ip) DO UPDATE SET pages = pages + 1
+     WHERE pages < ?`,
+    day,
+    ip,
+    limit,
+  ).run();
+  const changes = Number(result?.meta?.changes ?? result?.changes ?? 0);
+  const row = await statement(db, 'SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?', day, ip).first();
+  return { allowed: changes > 0, used: row?.pages ?? 0, limit };
+};
+
+export const takeOcrSlot = async (
+  db,
+  { day, ip, limit = 5, dailyLimit = OCR_GLOBAL_LIMIT_PER_DAY },
+) => {
+  const local = await takeLocalSlot(db, { day, ip, limit });
+  if (!local.allowed) {
+    return { allowed: false, reason: 'ip', used: local.used, limit, global: null, dailyLimit };
+  }
+  let global;
+  try {
+    global = await takeGlobalSlot(db, { day, limit: dailyLimit });
+  } catch (error) {
+    await releaseLocalSlot(db, { day, ip });
+    throw error;
+  }
+  if (!global.allowed) {
+    await releaseLocalSlot(db, { day, ip });
+    return {
+      allowed: false,
+      reason: 'global',
+      used: local.used,
+      limit,
+      global: global.used,
+      dailyLimit,
+    };
+  }
+  return { allowed: true, reason: null, used: local.used, limit, global: global.used, dailyLimit };
+};

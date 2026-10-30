@@ -2,15 +2,15 @@
 #
 # Deploy with:
 #
-#   VITE_MONITOR_API=https://ths-monitor-api.shivang-uniyal27.workers.dev \
-#   VITE_RARA_API=https://ths-rara-tracker.shivang-uniyal27.workers.dev \
-#     npm run build
+#   npm run build
 #   wrangler deploy -c workers/site.wrangler.toml
 #
-# Both variables are load-bearing. A plain `npm run build` ships a Monitor chunk
-# with no API host and a tracker that quietly reads its committed snapshot, so
-# the pages still render and the failure is invisible. `build:vercel` sets the
-# Monitor one for the same reason. Security headers live in public/_headers.
+# The two API hosts are baked in by the build scripts. A build that omits them
+# ships a Monitor chunk with no API host and a tracker that quietly reads its
+# committed snapshot: the pages still render and the failure is invisible.
+# `build` and `build:vercel` both set them, and scripts/check-api-wiring.mjs
+# fails CI if a host, either CSP or a Worker allowlist drifts. Security headers
+# live in public/_headers.
 #
 # Local development still runs through Vite (`npm run dev`); this config is for
 # the deployed surface only.

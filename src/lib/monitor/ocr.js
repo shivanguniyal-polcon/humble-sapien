@@ -10,7 +10,9 @@ export const MONITOR_API = String(import.meta.env?.VITE_MONITOR_API || '').repla
 export const ocrConfigured = () => Boolean(MONITOR_API);
 
 const messageFor = (body, status) => {
-  if (status === 429) return 'The daily OCR allowance for this connection is used up. Try again tomorrow, or paste the text.';
+  if (status === 429) {
+    return body?.error?.message || 'The daily OCR allowance for this connection is used up. Try again tomorrow, or paste the text.';
+  }
   if (status === 503) return 'OCR is not configured on this deployment. Paste the text, or set the provider secret.';
   return body?.error?.message || 'That page could not be read. Try again, or paste the text.';
 };

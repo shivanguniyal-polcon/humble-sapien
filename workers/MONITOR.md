@@ -130,7 +130,7 @@ plan can raise it.
 | GET | `/v1/health` | counts, queue depth, last run |
 | GET | `/v1/instruments?q=` | recent, or FTS5 search with a snippet |
 | GET | `/v1/instruments/:id` | text, duties, sentences, source URL |
-| POST | `/v1/ocr` | `{image, mediaType, page}`; 5 pages/IP/day |
+| POST | `/v1/ocr` | `{image, mediaType, page}`; 5 pages/IP/day and 200 pages/day globally |
 | POST | `/v1/admin/fetch` | bearer `ADMIN_TOKEN`; `{limit, drain, source}` |
 
 OCR providers:
@@ -143,6 +143,10 @@ OCR providers:
 
 Images are not stored by default. `OCR_STORE_IMAGES=1` writes each page to R2
 under `ocr/<day>/<hash>.jpg` and returns the key in the provenance.
+
+The global OCR ceiling is `OCR_GLOBAL_LIMIT_PER_DAY` (default 200). It is a
+hard cap across all addresses, so rotating IPs cannot spend the provider
+balance; the per-IP limit still decides who gets the shared allowance.
 
 ## Limits, stated plainly
 

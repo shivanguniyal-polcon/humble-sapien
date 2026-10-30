@@ -22,6 +22,7 @@
 
 import { analyse } from './pipeline.js';
 import { buildManifest } from './exports.js';
+import { csvCell } from '../csv.js';
 
 export const AUDIT_VERSION = 'ths-audit-1.0.0';
 export const STORAGE_KEY = 'ths.legal.audit.v1';
@@ -168,11 +169,6 @@ export const clearRuns = () => {
 };
 
 // ---- exports --------------------------------------------------------------
-
-const csvCell = (value) => {
-  const s = String(value ?? '');
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-};
 
 // The log as a flat CSV: one row per run, one column per field, no nesting.
 // This is the shape a firm's document management system or SIEM ingests

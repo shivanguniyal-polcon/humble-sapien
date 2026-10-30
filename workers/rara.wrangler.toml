@@ -34,8 +34,9 @@ binding = "DB"
 database_name = "ths-rara"
 database_id = "1fec12f7-7eff-4bfe-981a-f0baaede68f5"
 
-# The origins that may read this API, comma-separated: the deployed site, and
-# the two local Vite ports so `npm run dev` and `npm run preview` still work.
-# No wildcard: the value is never echoed back unless the caller is on the list.
+# The origins that may read this API, comma-separated: the Worker-hosted site,
+# the Vercel deployment, and the two local Vite ports so `npm run dev` and
+# `npm run preview` still work. No wildcard: the value is never echoed back
+# unless the caller is on the list.
 [vars]
-ALLOWED_ORIGIN = "https://ths-site.shivang-uniyal27.workers.dev,http://localhost:5173,http://localhost:4173"
+ALLOWED_ORIGIN = "https://ths-site.shivang-uniyal27.workers.dev,https://humble-sapien.vercel.app,http://localhost:5173,http://localhost:4173"

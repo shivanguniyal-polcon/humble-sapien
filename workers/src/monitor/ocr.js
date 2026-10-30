@@ -16,6 +16,12 @@ export const OCR_MODEL_DEFAULT = 'lucataco/glm-ocr';
 export const OCR_MAX_BYTES = 2 * 1024 * 1024;
 export const OCR_PROMPT = 'Transcribe every word on this document page in reading order. Return the text only, with no commentary and no markdown fences.';
 
+// Standard base64, with optional padding. Whitespace is stripped before the
+// check, so a copied payload with line breaks is still accepted. Unpadded
+// input is padded on return, so atob and the provider both get a complete
+// page.
+const BASE64 = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}(?:==)?|[A-Za-z0-9+/]{3}=?)?$/;
+
 const dataUrl = (image, mediaType) => `data:${mediaType || 'image/jpeg'};base64,${image}`;
 
 const outputText = (output) => {
@@ -92,21 +98,35 @@ export const ocrProviderConfigured = (env) => {
   return Boolean(env.REPLICATE_API_TOKEN);
 };
 
-export const readPage = async ({ env, image, mediaType = 'image/jpeg', fetch: fetchImpl = fetch }) => {
-  if (!image) {
+export const validateImage = (image) => {
+  if (typeof image !== 'string' || image.length === 0) {
     const error = new Error('No page image was sent.');
     error.code = 'no-image';
+    error.status = 400;
     throw error;
   }
-  const approximate = Math.floor((String(image).length * 3) / 4);
+  const cleaned = image.replace(/\s+/g, '');
+  const approximate = Math.floor((cleaned.length * 3) / 4);
   if (approximate > OCR_MAX_BYTES) {
     const error = new Error('That page image is too large.');
     error.code = 'image-too-large';
+    error.status = 413;
     throw error;
   }
+  if (!cleaned || !BASE64.test(cleaned)) {
+    const error = new Error('That page is not valid base64.');
+    error.code = 'invalid-image';
+    error.status = 400;
+    throw error;
+  }
+  return cleaned + '='.repeat((4 - (cleaned.length % 4)) % 4);
+};
+
+export const readPage = async ({ env, image, mediaType = 'image/jpeg', fetch: fetchImpl = fetch }) => {
+  const page = validateImage(image);
   const provider = (env.OCR_PROVIDER || OCR_PROVIDER_DEFAULT).toLowerCase();
   const run = provider === 'openai' ? openaiCompatible : replicate;
-  return run({ env, image, mediaType, fetchImpl });
+  return run({ env, image: page, mediaType, fetchImpl });
 };
 
 // The provenance line the reader and the pack carry. The image is only kept

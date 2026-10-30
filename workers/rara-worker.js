@@ -13,35 +13,8 @@
 // Deploy with workers/rara.wrangler.toml. Without ADMIN_TOKEN the read API
 // still works and ingest refuses rather than accepting anonymous writes.
 
-const JSON_TYPE = 'application/json; charset=utf-8';
-
-const originOf = (env) => env.ALLOWED_ORIGIN || '*';
-
-// A response carries one allowed origin, but a deployment may need several —
-// the live site, a workers.dev address before the domain lands, and localhost
-// during development. ALLOWED_ORIGIN takes a comma-separated list; this picks
-// the one that matches the caller and leaves everything else on the first
-// entry, so the header is never widened to a wildcard.
-const withOrigin = (request, env) => {
-  const allowed = String(env.ALLOWED_ORIGIN || '*').split(',').map((value) => value.trim()).filter(Boolean);
-  if (!allowed.length || allowed.includes('*')) return env;
-  const caller = request.headers.get('origin');
-  return { ...env, ALLOWED_ORIGIN: caller && allowed.includes(caller) ? caller : allowed[0] };
-};
-
-const headers = (env, extra = {}) => ({
-  'content-type': JSON_TYPE,
-  'access-control-allow-origin': originOf(env),
-  'access-control-allow-headers': 'content-type, authorization',
-  'access-control-allow-methods': 'GET, POST, OPTIONS',
-  'cache-control': 'no-store',
-  ...extra,
-});
-
-const json = (body, status, env) =>
-  new Response(JSON.stringify(body, null, 2), { status, headers: headers(env) });
-
-const failure = (status, code, message, env) => json({ error: { code, message } }, status, env);
+import { bearerMatches } from './lib/auth.js';
+import { failure, failureFor, headers, json, withOrigin } from './lib/http.js';
 
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS developments (
@@ -87,10 +60,8 @@ const ready = (db) => {
   return schemaReady;
 };
 
-const authorised = (request, env) => {
-  if (!env.ADMIN_TOKEN) return false;
-  return request.headers.get('authorization') === `Bearer ${env.ADMIN_TOKEN}`;
-};
+const authorised = (request, env) =>
+  bearerMatches(request.headers.get('authorization'), env.ADMIN_TOKEN);
 
 const readJson = async (request, limit = 4_000_000) => {
   const declared = Number(request.headers.get('content-length') || 0);
@@ -111,6 +82,15 @@ const readJson = async (request, limit = 4_000_000) => {
     const error = new Error('The body is not valid JSON.');
     error.status = 400;
     throw error;
+  }
+};
+
+const parseTopics = (raw) => {
+  try {
+    const topics = JSON.parse(raw || '[]');
+    return Array.isArray(topics) ? topics : [];
+  } catch {
+    return [];
   }
 };
 
@@ -175,6 +155,13 @@ const ingest = async (request, env) => {
   const body = await readJson(request);
   const items = Array.isArray(body.items) ? body.items : [];
   if (!items.length) return failure(400, 'empty', 'The payload carries no items.', env);
+  // A batch is one transaction, and the collector sends a few hundred rows.
+  // The cap keeps a mistyped or hostile payload from spending the whole
+  // request on work that D1 would reject halfway through.
+  const MAX_ITEMS = 5_000;
+  if (items.length > MAX_ITEMS) {
+    return failure(413, 'too-many', `A run may carry at most ${MAX_ITEMS} items.`, env);
+  }
 
   const seenAt = new Date().toISOString();
   const rows = items.map((item) => rowFor(item, seenAt)).filter(Boolean);
@@ -262,7 +249,7 @@ const readDevelopments = async (request, env) => {
       sourceType: row.source_type,
       tier: row.tier,
       place: row.iso ? { city: row.city, country: row.country, iso: row.iso } : null,
-      topics: JSON.parse(row.topics || '[]'),
+      topics: parseTopics(row.topics),
       fetchedAt: row.fetched_at,
       seenAt: row.seen_at,
     })),
@@ -292,7 +279,7 @@ export default {
       }
 
       if (url.pathname === '/ingest' && request.method === 'POST') {
-        if (!authorised(request, env)) {
+        if (!(await authorised(request, env))) {
           return failure(401, 'unauthorised', 'Ingest requires a bearer token.', env);
         }
         await ready(env.DB);
@@ -302,7 +289,7 @@ export default {
       return failure(404, 'not-found', 'No such route.', env);
     } catch (error) {
       console.error('rara-worker', error?.stack || error);
-      return failure(error?.status || 500, 'failed', error?.message || 'The request failed.', env);
+      return failureFor(error, env);
     }
   },
 };

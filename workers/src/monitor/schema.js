@@ -1,12 +1,12 @@
 // The fetcher's schema. D1 is SQLite, so this is SQLite: one row per
 // instrument version, one row per queued extraction, a standalone FTS5 table
-// kept in step by the store, and a small usage table for the OCR endpoint.
+// kept in step by the store, and two small usage tables for the OCR endpoint.
 //
 // Versions are keyed on the PDF's sha256. A master direction that is
 // re-issued under the same URL is a new row, not an overwrite, so the
 // library can show what changed.
 
-export const SCHEMA_VERSION = 'monitor-1';
+export const SCHEMA_VERSION = 'monitor-2';
 
 export const SCHEMA = `
 CREATE TABLE IF NOT EXISTS instruments (
@@ -69,6 +69,11 @@ CREATE TABLE IF NOT EXISTS ocr_usage (
   ip TEXT NOT NULL,
   pages INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (day, ip)
+);
+
+CREATE TABLE IF NOT EXISTS ocr_global_usage (
+  day TEXT PRIMARY KEY,
+  pages INTEGER NOT NULL DEFAULT 0
 );
 `;
 

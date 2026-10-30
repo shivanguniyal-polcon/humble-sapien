@@ -8,6 +8,8 @@
 // The locator keeps both facts side by side rather than pretending the
 // tehsil is a tier of the scheme ladder.
 
+import { csvCell } from '../csv.js';
+
 // A file-name-safe form of a name. The build script writes one chunk per
 // state using the same rule, so the two must agree.
 export const slugify = (name) =>
@@ -276,11 +278,6 @@ const CSV_HEADERS = [
   'gp_code',
   'gp_name',
 ];
-
-const csvCell = (value) => {
-  const text = String(value == null ? '' : value);
-  return /[",\n\r]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-};
 
 export function hierarchyCsv(path = []) {
   const rows = hierarchyRows(path).map((row) =>

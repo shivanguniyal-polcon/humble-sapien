@@ -11,7 +11,7 @@ import { ensureSchema } from '../workers/src/monitor/schema.js';
 import { parseDate, parseListing, refFromTitle } from '../workers/src/monitor/parse.js';
 import {
   claimNext, enqueue, getInstrument, insertInstrument, latestByPdfUrl,
-  releaseOcrSlot, saveExtraction, search, stats, takeOcrSlot,
+  saveExtraction, search, stats, takeOcrSlot,
 } from '../workers/src/monitor/store.js';
 import { drainQueue, runFetch } from '../workers/src/monitor/fetch.js';
 import { articleText, looksLikeInstrument } from '../workers/src/monitor/article.js';
@@ -296,6 +296,14 @@ ok('replicate is configured with a token', ocrProviderConfigured({ REPLICATE_API
 ok('openai needs both base and model', ocrProviderConfigured({ OCR_PROVIDER: 'openai', OCR_BASE_URL: 'u' }) === false);
 ok('openai is configured with base and model', ocrProviderConfigured({ OCR_PROVIDER: 'openai', OCR_BASE_URL: 'u', OCR_MODEL: 'm' }) === true);
 eq('an empty image is refused', await codeOf(readPage({ env: { REPLICATE_API_TOKEN: 'x' }, image: '' })), 'no-image');
+eq('a non-base64 image is refused', await codeOf(readPage({
+  env: { REPLICATE_API_TOKEN: 'x' },
+  image: 'not base64!',
+})), 'invalid-image');
+eq('an over-padded image is refused', await codeOf(readPage({
+  env: { REPLICATE_API_TOKEN: 'x' },
+  image: 'aGVsbG8==',
+})), 'invalid-image');
 eq('an oversized image is refused', await codeOf(readPage({
   env: { REPLICATE_API_TOKEN: 'x' },
   image: 'a'.repeat(3 * 1024 * 1024),
@@ -338,11 +346,44 @@ const slots = [];
 for (let i = 0; i < 3; i += 1) slots.push(await takeOcrSlot(usage, { day: '2026-10-24', ip: '1.2.3.4', limit: 2 }));
 eq('the OCR allowance stops at the limit', slots.map((slot) => slot.allowed), [true, true, false]);
 ok('the limit is reported', slots[2].limit === 2 && slots[2].used === 2);
-await releaseOcrSlot(usage, { day: '2026-10-24', ip: '1.2.3.4' });
-eq('a failed call gives the page back', (await usage.prepare('SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?').bind('2026-10-24', '1.2.3.4').first()).pages, 1);
-await releaseOcrSlot(usage, { day: '2026-10-24', ip: '1.2.3.4' });
-await releaseOcrSlot(usage, { day: '2026-10-24', ip: '1.2.3.4' });
-eq('the count never goes negative', (await usage.prepare('SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?').bind('2026-10-24', '1.2.3.4').first()).pages, 0);
+
+const concurrent = await Promise.all(
+  Array.from({ length: 10 }, () => takeOcrSlot(usage, { day: '2026-10-25', ip: '5.6.7.8', limit: 3 })),
+);
+eq('concurrent requests admit only the limit', concurrent.filter((slot) => slot.allowed).length, 3);
+const concurrentRow = await usage.prepare('SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?').bind('2026-10-25', '5.6.7.8').first();
+eq('concurrent requests write only the limit', concurrentRow.pages, 3);
+const afterConcurrent = await takeOcrSlot(usage, { day: '2026-10-25', ip: '5.6.7.8', limit: 3 });
+eq('the request after the limit is refused', afterConcurrent.allowed, false);
+eq('the refusal names the per-IP limit', afterConcurrent.reason, 'ip');
+
+const globalSlots = await Promise.all(
+  Array.from({ length: 10 }, (_, i) => takeOcrSlot(usage, {
+    day: '2026-10-26', ip: `10.0.0.${i}`, limit: 5, dailyLimit: 3,
+  })),
+);
+eq('the global ceiling admits only its limit', globalSlots.filter((slot) => slot.allowed).length, 3);
+const globalRow = await usage.prepare('SELECT pages FROM ocr_global_usage WHERE day = ?').bind('2026-10-26').first();
+eq('the global ceiling writes only its limit', globalRow.pages, 3);
+const globalDenied = await takeOcrSlot(usage, {
+  day: '2026-10-26', ip: '10.0.0.99', limit: 5, dailyLimit: 3,
+});
+eq('a fresh IP is refused when the global ceiling is spent', globalDenied.allowed, false);
+eq('the refusal names the global ceiling', globalDenied.reason, 'global');
+const globalDeniedLocal = await usage.prepare('SELECT pages FROM ocr_usage WHERE day = ? AND ip = ?')
+  .bind('2026-10-26', '10.0.0.99').first();
+eq('a global refusal returns the per-IP slot', globalDeniedLocal.pages, 0);
+
+const sharedDay = '2026-10-27';
+await takeOcrSlot(usage, { day: sharedDay, ip: '192.0.2.1', limit: 1, dailyLimit: 2 });
+const sameIpAgain = await takeOcrSlot(usage, { day: sharedDay, ip: '192.0.2.1', limit: 1, dailyLimit: 2 });
+eq('a per-IP refusal is not admitted', sameIpAgain.allowed, false);
+eq('a per-IP refusal does not read the global counter', sameIpAgain.global, null);
+const sharedGlobalRow = await usage.prepare('SELECT pages FROM ocr_global_usage WHERE day = ?').bind(sharedDay).first();
+eq('a per-IP refusal leaves the global counter alone', sharedGlobalRow.pages, 1);
+const otherIp = await takeOcrSlot(usage, { day: sharedDay, ip: '192.0.2.2', limit: 1, dailyLimit: 2 });
+eq('another address can use the global slot', otherIp.allowed, true);
+eq('the global counter is still exact', otherIp.global, 2);
 
 // ---- the browser OCR client ----------------------------------------------
 
@@ -375,6 +416,21 @@ const rateLimited = await (async () => {
 })();
 ok('a rate limit is explained', /daily OCR allowance/.test(rateLimited.message));
 eq('a rate limit keeps its code', rateLimited.code, 'rate-limited');
+const globalLimited = await (async () => {
+  try {
+    await ocrPage({
+      api: 'https://api.test',
+      image: 'Zm9v',
+      fetch: async () => new Response(JSON.stringify({
+        error: { code: 'rate-limited', message: 'OCR has reached its daily ceiling for this deployment.' },
+      }), { status: 429 }),
+    });
+    return null;
+  } catch (error) {
+    return error;
+  }
+})();
+ok('the global ceiling reason reaches the reader', /daily ceiling/.test(globalLimited.message), globalLimited.message);
 const unconfigured = await (async () => {
   try {
     await ocrPage({ api: '', image: 'Zm9v' });
@@ -425,6 +481,90 @@ const missing = await worker.fetch(new Request('http://api.test/v1/instruments/n
 eq('a missing instrument is 404', missing.status, 404);
 const noAdmin = await worker.fetch(new Request('http://api.test/v1/admin/fetch', { method: 'POST', body: '{}' }), env);
 eq('the admin trigger is off without a token', noAdmin.status, 503);
+
+const ocrDb = new NodeD1(':memory:');
+await ensureSchema(ocrDb);
+const ocrEnv = { DB: ocrDb, FILES: new MemoryBucket(), ALLOWED_ORIGIN: '*', REPLICATE_API_TOKEN: 'r8_test' };
+const realFetch = globalThis.fetch;
+const realError = console.error;
+globalThis.fetch = ocrFetch({ detail: 'payment required' }, 402);
+console.error = () => {};
+const ocrStatuses = [];
+try {
+  for (let i = 0; i < 6; i += 1) {
+    const response = await worker.fetch(new Request('http://api.test/v1/ocr', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', 'cf-connecting-ip': '203.0.113.9' },
+      body: JSON.stringify({ image: 'aGVsbG8=', mediaType: 'image/jpeg' }),
+    }), ocrEnv);
+    ocrStatuses.push(response.status);
+  }
+} finally {
+  globalThis.fetch = realFetch;
+  console.error = realError;
+}
+const ocrRow = await ocrDb.prepare('SELECT pages FROM ocr_usage WHERE ip = ?')
+  .bind('203.0.113.9').first();
+eq('a failed provider call is a 502', ocrStatuses[0], 502);
+eq('a failed provider call still spends the page', ocrRow.pages, 5);
+eq('the sixth failing page is refused', ocrStatuses[5], 429);
+const oversized = await worker.fetch(new Request('http://api.test/v1/ocr', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', 'cf-connecting-ip': '203.0.113.9' },
+  body: JSON.stringify({ image: 'a'.repeat(2_800_000), mediaType: 'image/jpeg' }),
+}), ocrEnv);
+eq('an oversized page is refused before the quota', oversized.status, 413);
+const afterOversized = await ocrDb.prepare('SELECT pages FROM ocr_usage WHERE ip = ?')
+  .bind('203.0.113.9').first();
+eq('an oversized page does not spend a slot', afterOversized.pages, 5);
+const malformed = await worker.fetch(new Request('http://api.test/v1/ocr', {
+  method: 'POST',
+  headers: { 'content-type': 'application/json', 'cf-connecting-ip': '203.0.113.9' },
+  body: JSON.stringify({ image: 'not base64!', mediaType: 'image/jpeg' }),
+}), ocrEnv);
+eq('a malformed page is refused before the quota', malformed.status, 400);
+const afterMalformed = await ocrDb.prepare('SELECT pages FROM ocr_usage WHERE ip = ?')
+  .bind('203.0.113.9').first();
+eq('a malformed page does not spend a slot', afterMalformed.pages, 5);
+const afterMalformedGlobal = await ocrDb.prepare('SELECT pages FROM ocr_global_usage').first();
+eq('a malformed page does not spend the global slot', afterMalformedGlobal.pages, 5);
+
+const globalDb = new NodeD1(':memory:');
+await ensureSchema(globalDb);
+const globalEnv = {
+  DB: globalDb,
+  FILES: new MemoryBucket(),
+  ALLOWED_ORIGIN: '*',
+  REPLICATE_API_TOKEN: 'r8_test',
+  OCR_GLOBAL_LIMIT_PER_DAY: '1',
+};
+globalThis.fetch = ocrFetch({ detail: 'payment required' }, 402);
+console.error = () => {};
+let firstGlobal;
+let secondGlobal;
+try {
+  firstGlobal = await worker.fetch(new Request('http://api.test/v1/ocr', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'cf-connecting-ip': '198.51.100.1' },
+    body: JSON.stringify({ image: 'aGVsbG8=', mediaType: 'image/jpeg' }),
+  }), globalEnv);
+  secondGlobal = await worker.fetch(new Request('http://api.test/v1/ocr', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', 'cf-connecting-ip': '198.51.100.2' },
+    body: JSON.stringify({ image: 'aGVsbG8=', mediaType: 'image/jpeg' }),
+  }), globalEnv);
+} finally {
+  globalThis.fetch = realFetch;
+  console.error = realError;
+}
+eq('the first global request reaches the provider', firstGlobal.status, 502);
+eq('a fresh IP is refused at the global ceiling', secondGlobal.status, 429);
+const globalRouteRow = await globalDb.prepare('SELECT pages FROM ocr_global_usage WHERE day = ?')
+  .bind(new Date().toISOString().slice(0, 10)).first();
+eq('the global route counter reads one', globalRouteRow.pages, 1);
+const secondIpRow = await globalDb.prepare('SELECT pages FROM ocr_usage WHERE ip = ?')
+  .bind('198.51.100.2').first();
+eq('a global refusal returns the fresh IP slot', secondIpRow.pages, 0);
 
 console.log(`\n${checks - failures}/${checks} checks passed`);
 process.exit(failures ? 1 : 0);

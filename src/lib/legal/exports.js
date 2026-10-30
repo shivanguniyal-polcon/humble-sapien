@@ -10,6 +10,7 @@
 // answers, so the same run always produces the same file.
 
 import { hashObject, sha256Hex } from '../../battery/hash.js';
+import { csvCell } from '../csv.js';
 import { escapeHtml } from '../../battery/modules/decisionTree.js';
 import { FLAG_LABELS, FLAG_MEANING } from './risk.js';
 import { PIPELINE_VERSION } from './pipeline.js';
@@ -467,11 +468,6 @@ export const buildHtml = (result, { gate = null, manifest = null, review = null 
 };
 
 // ---- the redline pack (CSV) -----------------------------------------------
-
-const csvCell = (value) => {
-  const s = String(value ?? '');
-  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-};
 
 export const buildRedlineCsv = (result, { review = null } = {}) => {
   const header = [

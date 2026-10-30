@@ -6,3 +6,7 @@
 
 export const API_VERSION = 'monitor-api-1';
 export const OCR_LIMIT_PER_DAY = 5;
+
+// A ceiling across every address, so rotating IPs cannot spend the provider
+// balance. Override with the OCR_GLOBAL_LIMIT_PER_DAY binding.
+export const OCR_GLOBAL_LIMIT_PER_DAY = 200;

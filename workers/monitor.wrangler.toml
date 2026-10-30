@@ -46,3 +46,5 @@ crons = ["0 6,18 * * *", "15 */6 * * *"]
 # it replaces while the changeover is open, and the local Vite port. OCR refuses
 # any other origin.
 ALLOWED_ORIGIN = "https://ths-site.shivang-uniyal27.workers.dev,https://humble-sapien.vercel.app,http://localhost:5173"
+# Across every address, not per IP. Raise or lower without a code change.
+OCR_GLOBAL_LIMIT_PER_DAY = "200"

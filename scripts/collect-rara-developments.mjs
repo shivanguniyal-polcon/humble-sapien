@@ -460,12 +460,33 @@ if (!dry && !pushOnly) {
   console.log(`wrote ${path.relative(root, out)} — ${items.length} developments, ${payload.primaryCount} primary, from ${payload.sourceCount} sources`);
 }
 
-if (pushUrl) {
+// A bearer token is only as private as the transport under it. https
+// everywhere, http only for a loopback dev Worker, so a mistyped host cannot
+// receive the credential in clear text.
+const safePushBase = (value) => {
+  try {
+    const url = new URL(String(value));
+    const loopback = ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname);
+    if (url.protocol === 'https:' || (url.protocol === 'http:' && loopback)) {
+      return `${url.origin}${url.pathname.replace(/\/+$/, '')}`;
+    }
+  } catch {
+    // Fall through to the refusal below.
+  }
+  return null;
+};
+
+const pushBase = pushUrl ? safePushBase(pushUrl) : null;
+
+if (pushUrl && !pushBase) {
+  console.error('Refusing to push: the URL must be https, or http on localhost.');
+  process.exitCode = 2;
+} else if (pushUrl) {
   if (!pushToken) {
     console.error('No --token and no RARA_INGEST_TOKEN; the snapshot was not pushed.');
     process.exitCode = 2;
   } else {
-    const endpoint = `${pushUrl.replace(/\/$/, '')}/ingest`;
+    const endpoint = `${pushBase}/ingest`;
     try {
       const response = await fetch(endpoint, {
         method: 'POST',

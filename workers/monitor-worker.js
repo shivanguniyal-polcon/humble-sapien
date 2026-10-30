@@ -13,45 +13,17 @@
 
 import { SCHEMA_VERSION, ensureSchema } from './src/monitor/schema.js';
 import {
-  getInstrument, recent, releaseOcrSlot, search, stats, takeOcrSlot,
+  getInstrument, recent, search, stats, takeOcrSlot,
 } from './src/monitor/store.js';
 import { FETCHER_VERSION, SOURCES, drainQueue, runFetch } from './src/monitor/fetch.js';
 import {
-  OCR_VERSION, ocrProviderConfigured, provenanceOf, readPage, storePage,
+  OCR_VERSION, ocrProviderConfigured, provenanceOf, readPage, storePage, validateImage,
 } from './src/monitor/ocr.js';
 import { sha256Hex } from './src/monitor/extract.js';
-import { API_VERSION, OCR_LIMIT_PER_DAY } from './src/monitor/config.js';
+import { API_VERSION, OCR_GLOBAL_LIMIT_PER_DAY, OCR_LIMIT_PER_DAY } from './src/monitor/config.js';
 
-const JSON_TYPE = 'application/json; charset=utf-8';
-
-const originOf = (env) => env.ALLOWED_ORIGIN || '*';
-
-// A response carries one allowed origin, but a deployment may need several —
-// the live site, a workers.dev address before the domain lands, and localhost
-// during development. ALLOWED_ORIGIN takes a comma-separated list; this picks
-// the one that matches the caller and leaves everything else on the first
-// entry, so the header is never widened to a wildcard. The OCR route below
-// compares against the same resolved value, so its check still holds.
-const withOrigin = (request, env) => {
-  const allowed = String(env.ALLOWED_ORIGIN || '*').split(',').map((value) => value.trim()).filter(Boolean);
-  if (!allowed.length || allowed.includes('*')) return env;
-  const caller = request.headers.get('origin');
-  return { ...env, ALLOWED_ORIGIN: caller && allowed.includes(caller) ? caller : allowed[0] };
-};
-
-const headers = (env, extra = {}) => ({
-  'content-type': JSON_TYPE,
-  'access-control-allow-origin': originOf(env),
-  'access-control-allow-headers': 'content-type, authorization',
-  'access-control-allow-methods': 'GET, POST, OPTIONS',
-  'cache-control': 'no-store',
-  ...extra,
-});
-
-const json = (body, status, env, extra) =>
-  new Response(JSON.stringify(body, null, 2), { status, headers: headers(env, extra) });
-
-const failure = (status, code, message, env) => json({ error: { code, message } }, status, env);
+import { bearerMatches } from './lib/auth.js';
+import { failure, failureFor, headers, json, withOrigin } from './lib/http.js';
 
 // One schema check per isolate. CREATE IF NOT EXISTS is cheap, but it is not
 // free, and the read path is the one a visitor waits on.
@@ -83,11 +55,11 @@ const readJson = async (request, limit = 3_000_000) => {
   }
 };
 
-const authorised = (request, env) => {
-  if (!env.ADMIN_TOKEN) return false;
-  const header = request.headers.get('authorization') || '';
-  return header === `Bearer ${env.ADMIN_TOKEN}`;
-};
+const authorised = (request, env) =>
+  bearerMatches(request.headers.get('authorization'), env.ADMIN_TOKEN);
+
+const globalOcrLimit = (env) =>
+  Math.max(1, Number(env.OCR_GLOBAL_LIMIT_PER_DAY) || OCR_GLOBAL_LIMIT_PER_DAY);
 
 const INDEX = (env) => ({
   name: 'THS regulatory monitor',
@@ -104,7 +76,7 @@ const INDEX = (env) => ({
     'POST /v1/ocr': 'read one scanned page (rate limited)',
     'POST /v1/admin/fetch': 'manual discovery + drain, requires ADMIN_TOKEN',
   },
-  limits: `OCR accepts ${OCR_LIMIT_PER_DAY} pages per address per day and 2 MB per page.`,
+  limits: `OCR accepts ${OCR_LIMIT_PER_DAY} pages per address per day, with a global ceiling of ${globalOcrLimit(env)} pages per day and 2 MB per page.`,
   guarantees: [
     'PDFs are stored in R2 and text in D1; nothing is sent to a model except pages you explicitly OCR.',
     'Automatic extraction reads the PDF text layer only. A scan is stored and labelled no-text, never guessed.',
@@ -170,18 +142,32 @@ const handle = async (request, env) => {
     if (!ocrProviderConfigured(env)) {
       return failure(503, 'ocr-not-configured', 'OCR is not configured on this deployment.', env);
     }
+    let image;
+    try {
+      image = validateImage(body.image);
+    } catch (error) {
+      return failure(error.status || 400, error.code || 'image', error.message, env);
+    }
     const ip = request.headers.get('cf-connecting-ip') || 'local';
     const day = new Date().toISOString().slice(0, 10);
-    const slot = await takeOcrSlot(env.DB, { day, ip, limit: OCR_LIMIT_PER_DAY });
+    const slot = await takeOcrSlot(env.DB, {
+      day,
+      ip,
+      limit: OCR_LIMIT_PER_DAY,
+      dailyLimit: globalOcrLimit(env),
+    });
     if (!slot.allowed) {
-      return failure(429, 'rate-limited', `OCR is limited to ${slot.limit} pages per day here. Try again tomorrow.`, env);
+      const message = slot.reason === 'global'
+        ? 'OCR has reached its daily ceiling for this deployment. Try again tomorrow.'
+        : `OCR is limited to ${slot.limit} pages per day here. Try again tomorrow.`;
+      return failure(429, 'rate-limited', message, env);
     }
     try {
-      const read = await readPage({ env, image: body.image, mediaType: body.mediaType });
-      const bytes = Uint8Array.from(atob(body.image), (character) => character.charCodeAt(0));
+      const read = await readPage({ env, image, mediaType: body.mediaType });
+      const bytes = Uint8Array.from(atob(image), (character) => character.charCodeAt(0));
       const imageSha256 = await sha256Hex(bytes);
       const imageKey = await storePage({
-        bucket: env.FILES, env, image: body.image, day, sha256: imageSha256, mediaType: body.mediaType,
+        bucket: env.FILES, env, image, day, sha256: imageSha256, mediaType: body.mediaType,
       });
       return json({
         text: read.text,
@@ -190,16 +176,16 @@ const handle = async (request, env) => {
         limit: slot.limit,
       }, 200, env);
     } catch (error) {
-      await releaseOcrSlot(env.DB, { day, ip });
       if (error.code === 'ocr-not-configured') {
         return failure(503, 'ocr-not-configured', 'OCR is not configured on this deployment.', env);
       }
-      return failure(502, 'ocr-failed', String(error.message || error).slice(0, 300), env);
+      console.error('monitor-worker ocr', error?.stack || error);
+      return failure(502, 'ocr-failed', 'The page could not be read.', env);
     }
   }
   if (request.method === 'POST' && path === '/v1/admin/fetch') {
     await ready(env.DB);
-    if (!authorised(request, env)) {
+    if (!(await authorised(request, env))) {
       return failure(env.ADMIN_TOKEN ? 401 : 503, 'admin', env.ADMIN_TOKEN
         ? 'Send the admin token as a bearer token.'
         : 'This deployment has no ADMIN_TOKEN, so the manual trigger is off.', env);
@@ -229,7 +215,8 @@ export default {
     try {
       return await handle(request, env);
     } catch (error) {
-      return failure(500, 'unhandled', String(error?.message || error).slice(0, 300), env);
+      console.error('monitor-worker', error?.stack || error);
+      return failureFor(error, env);
     }
   },
 

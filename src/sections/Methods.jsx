@@ -1,4 +1,5 @@
 import datasets from '../data/datasets.json';
+import { toCsv } from '../lib/csv.js';
 
 // Show your working: every model on this site, its data, its assumptions,
 // its fit, and its failures. Downloads are generated in the browser.
@@ -13,15 +14,6 @@ const download = (name, text, type) => {
   a.click();
   a.remove();
   setTimeout(() => URL.revokeObjectURL(url), 10_000);
-};
-
-const toCsv = (rows) => {
-  const cols = Object.keys(rows[0]);
-  const esc = (v) => {
-    const s = String(v ?? '');
-    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
-  };
-  return [cols.join(','), ...rows.map((r) => cols.map((c) => esc(r[c])).join(','))].join('\n');
 };
 
 const seriesToRows = () => {

@@ -35,6 +35,7 @@ import {
   CATALOGUE_NOTE,
 } from '../src/data/stateOutput.js';
 import { INSTRUMENTS } from '../src/data/stateOutputInstruments.js';
+import { csvCell } from '../src/lib/csv.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(HERE, '..');
@@ -46,11 +47,6 @@ const byId = new Map(publications.map((pub) => [pub.id, pub]));
 const write = (name, contents) => {
   fs.writeFileSync(path.join(OUT, name), contents);
   console.log(`wrote ${name} (${Buffer.byteLength(contents)} bytes)`);
-};
-
-const csvCell = (value) => {
-  const text = value == null ? '' : String(value);
-  return /[",\n]/.test(text) ? `"${text.replaceAll('"', '""')}"` : text;
 };
 const csv = (headers, rows) =>
   [headers, ...rows].map((row) => row.map(csvCell).join(',')).join('\n') + '\n';

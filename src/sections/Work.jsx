@@ -107,7 +107,7 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
       view = <Touchpoints query={query} onQueryChange={onQueryChange} />;
       break;
     case 'scorecards':
-      view = <Scorecards onNavigate={onNavigate} onTool={onTool} />;
+      view = <Scorecards onNavigate={onNavigate} />;
       break;
     case 'notes':
       view = <FieldNotes />;

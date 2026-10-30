@@ -24,7 +24,7 @@ import {
 } from '../src/data/opendata.js';
 import { escalation } from '../src/data/escalation.js';
 import { DICTIONARY_VERSION, JURISDICTIONS } from '../src/lib/legal/glossary.js';
-import { promises, promiseSources, STATUS_LABELS } from '../src/data/promises.js';
+import { promises, promiseSources, STATUS_LABELS, SECTOR_LABELS } from '../src/data/promises.js';
 import {
   KINDS,
   JURIS,
@@ -351,14 +351,16 @@ const sourceText = (id, title) => {
   write(
     'ths_promise_evidence.txt',
     [
-      'Gujarat 2022 health promises: promise, status and evidence',
-      '==========================================================',
+      'Gujarat 2022 health and child-development promises: promise, status and evidence',
+      '==================================================================================',
       '',
       'Status vocabulary:',
       ...Object.entries(STATUS_LABELS).map(([key, label]) => `  ${key}: ${label}`),
       '',
       ...promises.flatMap((promise) => [
         promise.promise,
+        `Sector: ${SECTOR_LABELS[promise.sector] || promise.sector}`,
+        `Page: ${promise.page}`,
         `Status: ${STATUS_LABELS[promise.status] || promise.status}`,
         `Reading: ${promise.reading}`,
         'Evidence:',

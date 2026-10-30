@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T13:11:17.755Z",
+  "generatedAt": "2026-10-30T22:29:02.790Z",
   "windowDays": 21,
   "complete": true,
   "failedSources": [],
@@ -18,7 +18,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-10-30T13:11:17.755Z",
+      "fetchedAt": "2026-10-30T22:29:02.790Z",
       "ok": true,
       "count": 6
     },
@@ -33,7 +33,7 @@
         "country": "United Kingdom",
         "iso": "GB"
       },
-      "fetchedAt": "2026-10-30T13:11:17.986Z",
+      "fetchedAt": "2026-10-30T22:29:03.119Z",
       "ok": true,
       "count": 6
     },
@@ -48,7 +48,7 @@
         "country": "France",
         "iso": "FR"
       },
-      "fetchedAt": "2026-10-30T13:11:18.397Z",
+      "fetchedAt": "2026-10-30T22:29:03.386Z",
       "ok": true,
       "count": 6
     },
@@ -63,7 +63,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-10-30T13:11:18.549Z",
+      "fetchedAt": "2026-10-30T22:29:03.468Z",
       "ok": true,
       "count": 6
     },
@@ -78,7 +78,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-10-30T13:11:19.261Z",
+      "fetchedAt": "2026-10-30T22:29:04.262Z",
       "ok": true,
       "count": 6
     },
@@ -93,7 +93,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-10-30T13:11:19.493Z",
+      "fetchedAt": "2026-10-30T22:29:04.442Z",
       "ok": true,
       "count": 6
     },
@@ -108,7 +108,7 @@
         "country": "Canada",
         "iso": "CA"
       },
-      "fetchedAt": "2026-10-30T13:11:19.770Z",
+      "fetchedAt": "2026-10-30T22:29:04.546Z",
       "ok": true,
       "count": 1
     },
@@ -119,7 +119,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-10-30T13:11:20.253Z",
+      "fetchedAt": "2026-10-30T22:29:05.090Z",
       "ok": true,
       "count": 45
     },
@@ -130,7 +130,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-10-30T13:11:23.508Z",
+      "fetchedAt": "2026-10-30T22:29:08.297Z",
       "ok": true,
       "count": 25
     },
@@ -145,7 +145,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-10-30T13:11:26.298Z",
+      "fetchedAt": "2026-10-30T22:29:11.104Z",
       "ok": true,
       "count": 2
     },
@@ -160,7 +160,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-10-30T13:11:26.893Z",
+      "fetchedAt": "2026-10-30T22:29:12.120Z",
       "ok": true,
       "count": 2
     },
@@ -175,7 +175,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-10-30T13:11:28.449Z",
+      "fetchedAt": "2026-10-30T22:29:13.633Z",
       "ok": true,
       "count": 2
     },
@@ -190,7 +190,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-10-30T13:11:30.021Z",
+      "fetchedAt": "2026-10-30T22:29:14.991Z",
       "ok": true,
       "count": 10
     },
@@ -201,7 +201,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-10-30T13:11:38.593Z",
+      "fetchedAt": "2026-10-30T22:29:25.313Z",
       "ok": true,
       "count": 12
     }
@@ -227,7 +227,27 @@
       "topics": [
         "competition"
       ],
-      "fetchedAt": "2026-10-30T13:11:26.298Z"
+      "fetchedAt": "2026-10-30T22:29:11.104Z"
+    },
+    {
+      "title": "nemotron-halloween",
+      "summary": "",
+      "url": "https://huggingface.co/blog/nvidia/nemotron-halloween",
+      "publishedAt": "2026-10-30T17:57:24.000Z",
+      "sourceId": "huggingface-blog",
+      "sourceLabel": "Hugging Face",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "Paris",
+        "country": "France",
+        "iso": "FR"
+      },
+      "publisher": null,
+      "categories": [],
+      "id": "dev-b2263e9f8412",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Auction of 91-Day, 182-Day and 364-Day Treasury Bills",
@@ -249,7 +269,85 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-10-30T13:11:26.298Z"
+      "fetchedAt": "2026-10-30T22:29:11.104Z"
+    },
+    {
+      "title": "Audits, risk checks & incident reporting—TRAI moves to regulate AI in telecom despite no new law - ThePrint",
+      "summary": "Audits, risk checks & incident reporting—TRAI moves to regulate AI in telecom despite no new law ThePrint",
+      "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxQdjRCeHc4WWRGVEc3TXBoMkVRaVNFZlhueFRjVXB5RTFleFIyUkNrVDhqWk9sWm5NMG1kdVRodzhzOXgxUmQ4Slo3aTFkYWFsdkxLTGNtaU9JcURTX2x4RkdkYi1aYUExMjk5S2xWRWl3UnB3NVBqTjA5c0xqRFkzYWEyanhIUzRHSkx4bmhLUVNPWG9pYWthcUtkLXBqSG5TVzNEa00xSjdNWGVySXFOVUFkWXpwbS1EWHlsMk5zOGo1MDc1ZXJV0gHMAUFVX3lxTE1feGJ6SmZJRzU3UThJZHlXWmRnRTBpUTFtMTZTMXFkSVVlVllhNzNhTzRYTE5aVVY4UlIzWUFBcnJGZlBjLWotWXk5WkRNODEtX0o5V3VCSWFIRFBJXzVkdjJaclRIak9lWWtDQ3NmV21UZXVXWElER2ZTQU5sUWh4d1hXQllsVjRKc0NoVDUxRXBvTV9NS1FMZE53NDYwaUFKeFl5T0stXzVSMi14dXJ3aHdBSzR2VTNlZ1lLbjdrWjlaZFZXTzFlV3V6bg?oc=5",
+      "publishedAt": "2026-10-30T15:24:43.000Z",
+      "sourceId": "google-news-ai-policy",
+      "sourceLabel": "Google News · India AI policy",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": null,
+      "publisher": "ThePrint",
+      "categories": [],
+      "id": "dev-8356c43e63cc",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
+    },
+    {
+      "title": "Things That Go Beep in the Night: Agentic AI Joins the Search for Extraterrestrial Signals",
+      "summary": "While science fiction lore tells us that humans will meet extraterrestrial life in the form of little green men, the detail that should raise hairs this Halloween is this: the search for extraterrestrial intelligence took a major leap forward with AI, and it increasingly focuses on AI agents built by humans listening for AI agents […]",
+      "url": "https://blogs.nvidia.com/blog/ai-joins-the-search-for-extraterrestrial-signals",
+      "publishedAt": "2026-10-30T15:00:10.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Artificial Intelligence",
+        "Nemotron",
+        "NVIDIA Holoscan",
+        "Science"
+      ],
+      "id": "dev-691aeb39c444",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
+    },
+    {
+      "title": "‘How should law respond to deepfakes?’: Justice Surya Kant flags AI-era legal challenges - The Economic Times",
+      "summary": "‘How should law respond to deepfakes?’: Justice Surya Kant flags AI-era legal challenges The Economic Times",
+      "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxQbjhsZEFPLTV5WW9ZUlZINE82bDg2TGk5TmtkanJmY3lobzBGSmNCQTVRdDBiVHBmckNWTXFKdHQxY24wTmMtODAwU3lFMlBaTHBqNDdnemlBSENBOFVhVXdxNS1KSjBkRmxWLTBmX2hINHlFcXk3dDR3LUNHOVlNQllvbkhWVWRMM3Y1LXAtbWFDV1JGVWkySEZpTUwxY2RHWVo4UWoyWkVzc1l6RU1CNEthNGNzQ1B0OVpFeVItMEV2X3N3SHRWbHdFTktWaHBHUjFOaE5wODhCWkVOOWswVdIB5gFBVV95cUxPYXZYaFp1VG5kcXBGNEhCWjlOT19hU3VSZ0dEeUFnNE9TNHl3aTZHQUNtajRkZ1RGTUtsNWVaS29Bb253YndXamNUZ0drRWNtbG9hTnMwdnhpSVo1NllJRjhidzZCdjRxZ3BVbVNHTDgwZWs1Sk1KamthbVdhc19VTC1ubzgwWmZDM2FrZTVxUFRvZTJ4SjM2ekhvYXpmYXBTRmo0U1VwSjExbU0xSF8zRkpTTHJyUVMzZEdQV3pmMGRyaF9lcDRaUzVKa1RoVlppZDlTWklPZ1QzbWc3VlJwZWlOVnY4UQ?oc=5",
+      "publishedAt": "2026-10-30T14:54:12.000Z",
+      "sourceId": "google-news-ai-policy",
+      "sourceLabel": "Google News · India AI policy",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": null,
+      "publisher": "The Economic Times",
+      "categories": [],
+      "id": "dev-daef53a76897",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
+    },
+    {
+      "title": "MP pushes for regulation of AI in healthcare, medical education - The Times of India",
+      "summary": "MP pushes for regulation of AI in healthcare, medical education The Times of India",
+      "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxOeW5lMVdZVUFob09wd0VtNnhsaTMyQUtHdU45Nm4tMWc1a0YtZk9kWF9VX3JHdEY5bENsVUMwYkRCOUsyN1dsa1ZGNDVFTDR3Z0lmdWM0SXNjX2EwU3M4XzR2R1Z6b0VTbmhsVU9IeHZTLWdCamw3a3c4NzRwZUItSVZHYWp2anVzN3kwazl4WUEwTjBlTURvVllZeHdBTlFxdWVIeU9ZcEtrcjlCd2JnMjd2eDltNF95cU05N1JBUnYwb0RJRnQ0SWpJQVhhYVByeXRmM0EzdWRxd9IB3wFBVV95cUxNU2RmY1lKLW1Vb1JISkZmVUFtbUV6ZlVNWEx0ZVRVcHJJeThyenBPOHBhamYwQWxzVnNIdUVBVHBWRXNmbzRYQl9naXRzZUJhZUhybzhQRjFUY2ZLcHBsNmpzZE5xTFZndHdtZWdCTXZ2RFdFYnJncnhBVUNHTE1uLXA2N0ZwczNqSDIwTjZaNC1TRDRxaWUyR29nNzV1a3RZVG90RG1SdUc1SEpWb1UxallwYUMzbnBia1RFMTAyRFljUmtFeURKSkJMa2ZZZDhXU0k4aTR4WmhjZGFtMGZN?oc=5",
+      "publishedAt": "2026-10-30T13:11:00.000Z",
+      "sourceId": "google-news-ai-policy",
+      "sourceLabel": "Google News · India AI policy",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": null,
+      "publisher": "The Times of India",
+      "categories": [],
+      "id": "dev-6dee50c87a96",
+      "topics": [
+        "health"
+      ],
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confidence",
@@ -273,7 +371,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "Google to put more ads in AI Mode as AI search slows revenue growth",
@@ -299,7 +397,7 @@
       ],
       "id": "dev-ac460da97693",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Constitution must guide courts on AI and deepfakes, says CJI Surya Kant - India Today",
@@ -315,7 +413,7 @@
       "categories": [],
       "id": "dev-ac305af19446",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "Draft Guidelines on Responsible Use of Artificial Intelligence (AI) in Telecommunication Networks and Provision of Telecommunication Services",
@@ -335,7 +433,7 @@
       "categories": [],
       "id": "dev-b5f501952abe",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:28.449Z"
+      "fetchedAt": "2026-10-30T22:29:13.633Z"
     },
     {
       "title": "TRAI releases draft Guidelines on Responsible Use of Artificial Intelligence (AI) in Telecommunication Networks and Provision of Telecommunication Services for stakeholders comments.",
@@ -355,13 +453,13 @@
       "categories": [],
       "id": "dev-f71bc410d1e7",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:28.449Z"
+      "fetchedAt": "2026-10-30T22:29:13.633Z"
     },
     {
       "title": "Waiting for an AI law is a poor compliance strategy - YourStory.com",
       "summary": "Waiting for an AI law is a poor compliance strategy YourStory.com",
       "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPQlg1ZVIzMXhWNXJLcmVMUWlJREc3TWItSy1zaTQyeVJaRVBjdWxHdS1Pck5KWFBXYVJYZE5BNnpWWU1vSElLSXAxWHZqRWNrR2tTRVk5YUludmdoQUtvYkRqcG9STGpNaFV3YmE0N0t1bDF6d1J3Sm0yZEtvS1VFN1dJQUtfMGNn?oc=5",
-      "publishedAt": "2026-10-30T09:56:15.000Z",
+      "publishedAt": "2026-10-30T10:02:49.000Z",
       "sourceId": "google-news-ai-policy",
       "sourceLabel": "Google News · India AI policy",
       "sourceType": "news",
@@ -371,7 +469,51 @@
       "categories": [],
       "id": "dev-63b3aa3daebd",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
+    },
+    {
+      "title": "Making it easier for websites to express AI training preferences",
+      "summary": "OpenAI will honor a shared robots.txt signal to help website operators communicate their AI training preferences to participating providers.",
+      "url": "https://openai.com/index/helping-websites-express-ai-training-preferences",
+      "publishedAt": "2026-10-30T09:30:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Company"
+      ],
+      "id": "dev-25cc4c9bb2e3",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
+    },
+    {
+      "title": "Community safety report and new protections for teens",
+      "summary": "OpenAI is strengthening violence prevention in ChatGPT with expanded safeguards, earlier interventions, and a new commitment to public safety reporting.",
+      "url": "https://openai.com/index/community-safety-report-and-new-protections-for-teens",
+      "publishedAt": "2026-10-30T09:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Safety"
+      ],
+      "id": "dev-c7606af40dbb",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
     },
     {
       "title": "Rs. 300 Cr lost in AI cyberattacks on NBFCs: Why did the public learn about it from the media, not regulators?",
@@ -400,7 +542,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "NY enacts ban on 'unsafe' chatbot with kids as states push AI regulation boundaries - The Times of India",
@@ -416,7 +558,29 @@
       "categories": [],
       "id": "dev-736316dce3cf",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
+    },
+    {
+      "title": "Fair use benefits everyone",
+      "summary": "OpenAI shares excerpts from court briefs by creators, academics, accessibility advocates, and legal experts, among others, on how fair use supports AI training and innovation.",
+      "url": "https://openai.com/index/fair-use-benefits-everyone",
+      "publishedAt": "2026-10-30T00:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Company"
+      ],
+      "id": "dev-d2282bcce162",
+      "topics": [],
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
     },
     {
       "title": "Microsoft Research Focus – Edition #97",
@@ -438,7 +602,7 @@
       ],
       "id": "dev-8eef8a1c6a51",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "Elucidating the Design Space of LM Data Attribution",
@@ -458,7 +622,7 @@
         "personal-data",
         "ip"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Rethinking Neural Thickets Without Weight Perturbations",
@@ -474,7 +638,7 @@
       "categories": [],
       "id": "dev-91d195a114db",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Read, Allocate, Route: Role-Coupled Tokenization for Pixel-Space Generative Transformers",
@@ -492,7 +656,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Luggage re-identification: A study of strategies towards a real-world application",
@@ -510,7 +674,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "From extreme weather to agricultural consequences with agentic AI",
@@ -529,7 +693,7 @@
         "finance",
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Probing Spatial State Representations in Visual Foundation Models",
@@ -545,7 +709,7 @@
       "categories": [],
       "id": "dev-99d6137e4fc2",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "ShallowDefend: Harnessing Shallow Safety Alignment for Multi-Turn Defender",
@@ -561,7 +725,7 @@
       "categories": [],
       "id": "dev-e90d22f03e32",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Testimony from Timelines: Evidence-Grounded Significance Testing of Temporal Clinical Hypotheses",
@@ -579,7 +743,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "TextSeal2: Distortion-Free LLM Watermarking with Copula Mixing and Memoryless Races",
@@ -597,7 +761,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "When to Assist and What to Suggest: Joint Gating and Memory-Grounded Hint Generation in One Compact Decoder",
@@ -613,7 +777,7 @@
       "categories": [],
       "id": "dev-e27d38c1683c",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Collaborative AI agents for autonomous experimental research with solid-state quantum spins",
@@ -631,7 +795,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Pre-Crime for Agents, at the Last Second: Probing When a Recruited Agent Gives In",
@@ -650,7 +814,7 @@
         "autonomy",
         "competition"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Multistatic ISAC with Deep Learning-Based Clutter Suppression for 5G and Beyond",
@@ -666,7 +830,7 @@
       "categories": [],
       "id": "dev-1af589f37c5d",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "VeriCUA: Verification as Agentic Exploration for Computer-Using Agents",
@@ -684,7 +848,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Multi-View MoE: Letting Every Router Shape Expert Computation",
@@ -702,7 +866,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "PIVOT: Progressive Intervention via Online Teacher Correction",
@@ -720,7 +884,7 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Every Token Needs Its Own Teacher: Multi-teacher Adaptive On-policy Self-distillation",
@@ -736,7 +900,7 @@
       "categories": [],
       "id": "dev-617a1e0fd916",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Gym-Anything for Robotics: Scaling physical simulations with digital agents",
@@ -754,7 +918,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Comparing Human Role-Players and LLM-Simulated Clients in Online Counselling Training: An Analysis of Counselling Patterns",
@@ -770,7 +934,7 @@
       "categories": [],
       "id": "dev-a24854c415c8",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "FARMS: A Verifiable Foundation for Automated Computational Science",
@@ -786,7 +950,7 @@
       "categories": [],
       "id": "dev-2fa9f6c32be6",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Advancing Clinical Genomic Analysis with a Skill-Centred Agent",
@@ -805,7 +969,7 @@
         "autonomy",
         "health"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Ramanujan Challenge Results: AI-Assisted Evaluation Pipeline for Multi-Format Proofs",
@@ -821,7 +985,7 @@
       "categories": [],
       "id": "dev-4a6968906690",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Retrieval as Traversal: Value-Indexed Memory for Stateful Long-Context Agents",
@@ -837,7 +1001,7 @@
       "categories": [],
       "id": "dev-d2672409332e",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "On the Fundamental Limits of Prefill-Based Decoding Length Prediction",
@@ -855,7 +1019,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Efficient Scalable Oversight via Rewinding",
@@ -871,7 +1035,7 @@
       "categories": [],
       "id": "dev-5d8c4f5d5acb",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Homebrewed SLMs: Autoregressive and Masked Diffusion Language Models Built at Home for Portuguese",
@@ -887,7 +1051,7 @@
       "categories": [],
       "id": "dev-74f349724016",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "BURGER: Benchmarking and Understanding Robotic Generalization via Embodied Drawing",
@@ -907,7 +1071,7 @@
         "autonomy",
         "ip"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "IndicIPR-QA: A Benchmark for Extractive Question Answering on Indian IPR Laws",
@@ -925,7 +1089,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "How I Aligned Your Model: Scaling Up Multilingual Safety Training with Templates",
@@ -941,7 +1105,7 @@
       "categories": [],
       "id": "dev-cdbdbdceab86",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "A Low-Rank Space Captures Linear Alignment Between LLM and Human Neural Activity During Naturalistic Language Listening",
@@ -959,7 +1123,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Discovering Interpretable Acoustic Features in Autoregressive Voice-Cloning TTS Models",
@@ -975,7 +1139,7 @@
       "categories": [],
       "id": "dev-3ac7f4c31c9e",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Algebraic World Model: From Exploration to Proofs",
@@ -991,7 +1155,7 @@
       "categories": [],
       "id": "dev-878eb2c2bfdb",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "AI in the EGI e-infrastructure -- Past experiences and future strategies",
@@ -1009,7 +1173,7 @@
       "topics": [
         "ip"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Agentic University: Collaborative Agents for Personalized Learning",
@@ -1027,7 +1191,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "Fast and accurate neural triage decoding of ultra-high-rate quantum LDPC codes",
@@ -1043,7 +1207,7 @@
       "categories": [],
       "id": "dev-405a545f683f",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "rTaste: Do Research Agents Have Taste? Evaluating Early Stage Research Judgment",
@@ -1061,7 +1225,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "MetaRefine: Score Refinement with Multi-Level Features for Image Assessment",
@@ -1077,7 +1241,7 @@
       "categories": [],
       "id": "dev-4b1b2533c958",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:20.253Z"
+      "fetchedAt": "2026-10-30T22:29:05.090Z"
     },
     {
       "title": "An updated Model Spec for more capable and beneficial AI",
@@ -1099,7 +1263,7 @@
       ],
       "id": "dev-7bf0065ceb16",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
     },
     {
       "title": "Into the Omniverse: How Developers Turn Ideas Into Simulations With Frontier AI Agents",
@@ -1126,7 +1290,7 @@
       ],
       "id": "dev-1112027d5901",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
     },
     {
       "title": "Crowds Believe in You: Online Prediction Markets Overestimate How Often People Achieve Their Own Goals",
@@ -1144,7 +1308,7 @@
       "topics": [
         "competition"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "The Price of a Chance in Artificial Societies",
@@ -1163,7 +1327,7 @@
         "autonomy",
         "competition"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Measuring Organizational Influence on Digital News: An Information-Theoretic Framework for Media Pluralism and Editorial Independence",
@@ -1179,7 +1343,7 @@
       "categories": [],
       "id": "dev-a24f62cf2b0a",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Who Owns Digital News, and Who Gets Cited: Measuring Media Concentration Across 77 Countries and Seven AI Systems",
@@ -1198,7 +1362,7 @@
         "synthetic-media",
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Granite Switch 4.1.1 — Update models like you update software",
@@ -1218,7 +1382,7 @@
       "categories": [],
       "id": "dev-f3538b6fb36f",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Reconstructing Missing Mandi Prices in North-East India with Regional Factors",
@@ -1237,12 +1401,12 @@
         "finance",
         "competition"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "AI Legal by UWO Brings AI-Powered Research and Drafting to Lawyers and Law Students - The Tribune",
       "summary": "AI Legal by UWO Brings AI-Powered Research and Drafting to Lawyers and Law Students The Tribune",
-      "url": "https://news.google.com/rss/articles/CBMi5gFBVV95cUxOUTNHZVNOSmJGM2NoMGRhLUdURzFpbnJrdERESldIdnloMWxuNnRmcExLUlQwNU1jLXVSc1pnUmdXdGZOMnBKcWtJYUJwNnV6bHdkMHFmdmhNOEdKUW1WdmpnSXFGeGtDbjBHMFN1Qk9rSlVpdHNCT3phaXNXb2NqZm1oZ0NxTU1oY3hvQXIxRDhSZ3hVLURqcUxBMkNnSV92TXIxRlNLa0RyNWFHcWhWUFNDaUo4cUh5djcxQTZIbW5FT3hRTlZQaEZmSU9GSGpqeEptajlYcTVNaHZmUFZHSDJ0aUdUd9IB5gFBVV95cUxOUTNHZVNOSmJGM2NoMGRhLUdURzFpbnJrdERESldIdnloMWxuNnRmcExLUlQwNU1jLXVSc1pnUmdXdGZOMnBKcWtJYUJwNnV6bHdkMHFmdmhNOEdKUW1WdmpnSXFGeGtDbjBHMFN1Qk9rSlVpdHNCT3phaXNXb2NqZm1oZ0NxTU1oY3hvQXIxRDhSZ3hVLURqcUxBMkNnSV92TXIxRlNLa0RyNWFHcWhWUFNDaUo4cUh5djcxQTZIbW5FT3hRTlZQaEZmSU9GSGpqeEptajlYcTVNaHZmUFZHSDJ0aUdUdw?oc=5",
+      "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPTlJ3U1YtNlFLWkxDdXZjeHJoUFluNWhxLUZ1ODcyODhHWnVYNTBuUXhCOXNyVEx4VFIzdllPa1NxZ3Y0UVhMLUJxTktCVkpma3JvQy1BaXBTbG90bEZPeDI1U1RRNm1pWlZJcnZGdUVjQ1BnTVJremhlUHVyQi1kbzRfcHhoYl9VVHJ5b21FclFTaTdVZHpJUDl5UlNBd01sTFFOeWxDendWZS00bDlOQlFSNDZWUkJEN2Exc0dBRk5PRkN1Z3fSAcoBQVVfeXFMUFN6OWlvVlNFTVlTQ2dRM3hxNEZWUDZ0YTBzYkI2bDIwU1Z1TlR6Q2xWc2VVVG1Vc0M5dGJnMUpZbmc1eVZGUFdSNUVtQ2EyanF6SmRQQVNsYnNoX3J5VDhLYldMY3I1Y2lYTlUxZ3UwN1BhVHB5RzlHU2dlZnVBczZKeDBJNS1HZm5ucW1GcG9qcVlfWDNqVFhZSFdnTjFaTlRNdGxUZFdYLU9Kd1psZ2xId2htdEFxekVidGhnX2c5ZkxYSUFseTdOQQ?oc=5",
       "publishedAt": "2026-10-29T12:17:57.000Z",
       "sourceId": "google-news-ai-policy",
       "sourceLabel": "Google News · India AI policy",
@@ -1251,9 +1415,9 @@
       "place": null,
       "publisher": "The Tribune",
       "categories": [],
-      "id": "dev-600ac190b2aa",
+      "id": "dev-3ce14b9d7a87",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "Incorporating Machine-Others: An Enactive Exploration of Human-LLM Interactions",
@@ -1269,7 +1433,7 @@
       "categories": [],
       "id": "dev-4991032e6cab",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "TokWatt: an open, boundary-annotated database of AI inference energy, from chat answers to agents",
@@ -1285,7 +1449,7 @@
       "categories": [],
       "id": "dev-34a2c2d1cc0f",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Meesho rules out platform fees, says AI is cutting delivery costs but raising server bills",
@@ -1311,7 +1475,7 @@
       ],
       "id": "dev-e7d15e742978",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Behind the Paper Explosion: Author Growth and Widening Gaps in Computer Science",
@@ -1327,7 +1491,7 @@
       "categories": [],
       "id": "dev-a83fa2773f1a",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Device-Induced Mobility Heterogeneity and Its Impact on Federated Next-Location Prediction",
@@ -1345,7 +1509,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "GPU-Resident Speculative Decoding for In-Browser LLM Inference with WebGPU",
@@ -1361,7 +1525,7 @@
       "categories": [],
       "id": "dev-9571b154fa23",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "When the Top Answer Decides: Gender Bias in Decision Models",
@@ -1377,7 +1541,7 @@
       "categories": [],
       "id": "dev-3b42c381fe6c",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "How we detect frontier model misalignment",
@@ -1401,7 +1565,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
     },
     {
       "title": "Letting AI Formulate the Research Question: Autonomous Research Agents",
@@ -1419,7 +1583,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Data Provenance and Ethics in the Curricula of U.S. Health AI Education Programs",
@@ -1440,7 +1604,7 @@
         "ip",
         "health"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "OPINION | India Wants Machines To Police Deepfakes. First, They Must Learn To Say Im Not Sure - ABP Live English",
@@ -1456,7 +1620,7 @@
       "categories": [],
       "id": "dev-0863aa0d39f2",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "New York Passes Law Limiting AI Chatbots Usage For Minors - NDTV",
@@ -1472,7 +1636,7 @@
       "categories": [],
       "id": "dev-ca9bae3b2c81",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "AI Is Changing Legal Jobs: Which Skills Will Law Graduates Need to Stay Relevant? - Shiksha.com",
@@ -1488,7 +1652,7 @@
       "categories": [],
       "id": "dev-fbd670da88dd",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "How Ropes & Gray is developing AI for transactional diligence",
@@ -1508,7 +1672,7 @@
       "categories": [],
       "id": "dev-2d9928289658",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:02.790Z"
     },
     {
       "title": "Sarvam AI signs deal to develop AI systems for Indian military",
@@ -1533,7 +1697,7 @@
       ],
       "id": "dev-cbcb1b9b4bcf",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Robustness of Chatbot LLM Judgments of Presidential Actions and Hypothetical Reforms",
@@ -1549,7 +1713,7 @@
       "categories": [],
       "id": "dev-45a1ff2f2dd5",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "IIIT-H, Ati Robotics develop AI navigation for warehouse robots",
@@ -1573,7 +1737,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:26.893Z"
+      "fetchedAt": "2026-10-30T22:29:12.120Z"
     },
     {
       "title": "Does the Citation Matter? Quality, Grounding, and Physician-Rubric Accuracy of Google's AI Overviews for Medical Information",
@@ -1592,7 +1756,7 @@
         "ip",
         "health"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Unlocking with the Heart: Investigating User Perceptions of ECG-Based Biometric Authentication",
@@ -1611,7 +1775,7 @@
         "identity",
         "security"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Announcing Project ProtoStar: Making Publicly Funded Science AI-Ready",
@@ -1631,7 +1795,7 @@
       "categories": [],
       "id": "dev-e1c742c1d925",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Welcome Le Chonk: Mistral Large 4 on Hugging Face",
@@ -1651,7 +1815,7 @@
       "categories": [],
       "id": "dev-a1765f446c5b",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Introducing AnySpeechRecognizer and AnyDecisionModel: Open Models for Speech and Decisions on Apple Platforms",
@@ -1671,7 +1835,7 @@
       "categories": [],
       "id": "dev-85d975255b4f",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Student-LLM Interactions During Math Learning: Limited Epistemic Proactivity Overall, but Within-chat Change Predicts Performance Without AI",
@@ -1689,7 +1853,7 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "TrussTutor-Bench: Benchmarking large language models on solution accuracy, sycophancy, and error detection in statics",
@@ -1707,7 +1871,7 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Getting hired in AI: Navigating Canada’s evolving AI job market",
@@ -1732,7 +1896,7 @@
         "finance",
         "labour"
       ],
-      "fetchedAt": "2026-10-30T13:11:19.770Z"
+      "fetchedAt": "2026-10-30T22:29:04.546Z"
     },
     {
       "title": "India Weighs Pre-Release Safety Tests for Frontier AI Models - The 420.in",
@@ -1748,23 +1912,7 @@
       "categories": [],
       "id": "dev-ab957f779531",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
-    },
-    {
-      "title": "Social media regulation and safe AI among India committee’s 2026–27 review subjects - Goodreturns",
-      "summary": "Social media regulation and safe AI among India committee’s 2026–27 review subjects Goodreturns",
-      "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxPRVVVMi0zcWNKM3Z3eW5ZUGkxd3IzWVk4cGFvX0pDcU9LYW1EaVJXdlB6VEhHZjRsRTFUbHUybWI4cjZDQmJYZzhkVUVRZUduUUY5OHhWMnBoNmFnSUZrWld4bGN4OWR4NzNFaXAyaF9GOWU0YlNPbUFjLVNiUWRTeU1XRllkSG9UTTAzVWtwekRRRjU5XzVwa3VfaXBqaWFTd3d1UzhkQkhzNjlEa25CX1VkVzg1TG13ZUlsVmlSNFdOSEIxNTV2S1BZYTNqUQ?oc=5",
-      "publishedAt": "2026-10-28T17:12:01.000Z",
-      "sourceId": "google-news-ai-policy",
-      "sourceLabel": "Google News · India AI policy",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": null,
-      "publisher": "Goodreturns",
-      "categories": [],
-      "id": "dev-29e8132aefef",
-      "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "Gemini 4 Carbon: Our next frontier model",
@@ -1784,7 +1932,7 @@
       "categories": [],
       "id": "dev-34b0bf3f94c3",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     },
     {
       "title": "Thin, Light and Built for Everything: NVIDIA RTX Spark Windows Laptops Gain New Models, Agent Tools and Games",
@@ -1813,67 +1961,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
-    },
-    {
-      "title": "NVIDIA Nemotron 3.5 Transcribe and Granary v2: Intelligent Multilingual Transcription You Can Prompt and Adapt",
-      "summary": "",
-      "url": "https://huggingface.co/blog/nvidia/nemotron-transcribe-granary",
-      "publishedAt": "2026-10-28T14:58:17.000Z",
-      "sourceId": "huggingface-blog",
-      "sourceLabel": "Hugging Face",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "Paris",
-        "country": "France",
-        "iso": "FR"
-      },
-      "publisher": null,
-      "categories": [],
-      "id": "dev-7ae8eb20550e",
-      "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
-    },
-    {
-      "title": "Anthropic flags copyright law as major risk said that could cripple AI business - India Today",
-      "summary": "Anthropic flags copyright law as major risk said that could cripple AI business India Today",
-      "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQVTRUMVlCRlRGOG1vTktPYktNMU00Nk9SdDc4b0tVMmVKdm5QbF80M1pyU3FZMkNKR3lEd2VRRHJKcW92YnBKLU9keEU0ZUxCNXVzRmZIcFkxdV9aOXNmcHZETzMyMXptTHRKUG5HVmptdi1wTC1YSlNEaG8tMlQtV2dQOGw3R0NaRGVUSmRjbWV5RVhqWXVhV1h4dWV0cmF4eEpzUUYtQUg1emVCbXV6cFlrTFJIcWloZlBrSmszWUxFVm1ESnV4cmtTcUlKSHAyd3NHRnNGYVNxcmd1YVhZ0gHkAUFVX3lxTE9adW5ubGo3aWczaVF1Zjc5YllucHlWdi1oUTFHQjA1YTVUOWI4SkVIQzkwYVhHSFJDcG9rbkF6Vm5DR1RlQzY4ZlExMF94enVPVzdjTS00aEQ4djQ2MUdBcUhXVkxrbmkzcWFOOFZJVVkyNlo1alVmUWhUZWlqT1doSGh4d3RfUUhxcUdteElxcVpLRm9kTEpRWm1KcHIyWUFuVnl2cE9qTlp6SkVDMWRZM1NfLUVsOFUxTFFKRjVFSlhvUVNqUlJSek16V3JJRzUxVDdPWTJvTFg2UU5WaEFvbW9OTw?oc=5",
-      "publishedAt": "2026-10-28T13:18:50.000Z",
-      "sourceId": "google-news-ai-policy",
-      "sourceLabel": "Google News · India AI policy",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": null,
-      "publisher": "India Today",
-      "categories": [],
-      "id": "dev-414df2d99fed",
-      "topics": [
-        "ip"
-      ],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
-    },
-    {
-      "title": "OpenAI and ServiceNow expand partnership across enterprise workflows",
-      "summary": "OpenAI and ServiceNow expand their partnership to bring OpenAI models and agents into ServiceNow and ServiceNow workflows into ChatGPT and Codex.",
-      "url": "https://openai.com/index/openai-servicenow-partnership-expansion",
-      "publishedAt": "2026-10-28T13:15:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Company"
-      ],
-      "id": "dev-75e2017ed4c5",
-      "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
     },
     {
       "title": "Measuring the Inaccessible: Can AI Evaluate Accessibility in Heritage Tourism?",
@@ -1891,7 +1979,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "Integrated data, metadata, and paradata management system for 3D Digital Cultural Heritage objects: Workflow automation, federated authentication, and publication",
@@ -1910,29 +1998,7 @@
         "identity",
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
-    },
-    {
-      "title": "The future of the firm",
-      "summary": "How AI might enter the org chart—beneath, beside, and between us.",
-      "url": "https://openai.com/index/the-future-of-the-firm",
-      "publishedAt": "2026-10-28T10:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Intelligence Age"
-      ],
-      "id": "dev-0dc3cf0b7c98",
-      "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "The State of the Practice in Privacy Impact Assessments: Understanding the Professionals' Perspectives, Experiences, and Current Procedures",
@@ -1950,7 +2016,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "From Leniency to Suspicion: How an Open Post-Training Recipe Changes Whom LLM Fact-Checkers Believe",
@@ -1969,29 +2035,7 @@
         "identity",
         "labour"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
-    },
-    {
-      "title": "Legora is building the agentic operating system for legal work",
-      "summary": "See how Legora uses OpenAI models, ChatGPT, and Codex to accelerate legal workflows, expand contract analysis, and free lawyers to focus on higher-value work.",
-      "url": "https://openai.com/index/legora",
-      "publishedAt": "2026-10-28T09:30:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [],
-      "id": "dev-41c97fe8dc29",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-10-30T13:11:17.755Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "What is Frontier AI Regulation? Inside the India’s Efforts to Make AI Safe - Indian Masterminds",
@@ -2007,23 +2051,7 @@
       "categories": [],
       "id": "dev-59ff1365c8e3",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
-    },
-    {
-      "title": "India considers new law to rein in AI risks - NewsBytes",
-      "summary": "India considers new law to rein in AI risks NewsBytes",
-      "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOa3JsYURoRXJuWkdvR0tNZ0Ixb0luRTRkWHFzT24zZmJfV3BDN19rZk15RUlfTHJtbkg3X3puaVRhbUJ4M19yZzZldGVGdHRXWFIyWXFxek1wZmRmZXBYVGlyLTdvVWdmQ2tFR2o4bjJHSEl1ZncxLVBZMEc4QnBIWmtjWlVob1VBekpwaE1VSnViN3VQZXc?oc=5",
-      "publishedAt": "2026-10-28T06:36:55.000Z",
-      "sourceId": "google-news-ai-policy",
-      "sourceLabel": "Google News · India AI policy",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": null,
-      "publisher": "NewsBytes",
-      "categories": [],
-      "id": "dev-a06b9c8387b9",
-      "topics": [],
-      "fetchedAt": "2026-10-30T13:11:38.593Z"
+      "fetchedAt": "2026-10-30T22:29:25.313Z"
     },
     {
       "title": "The Indian Financial Automated Advice Bias (IFAAB) Dataset : Auditing Socioeconomic and Demographic Disparities in LLM-Generated Financial Advice in India",
@@ -2045,7 +2073,7 @@
         "finance",
         "labour"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "IKTRACE: A Natural Language Processing Framework for Identifying Indigenous Knowledge Representation in Academic Literature",
@@ -2063,7 +2091,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-10-30T13:11:23.508Z"
+      "fetchedAt": "2026-10-30T22:29:08.297Z"
     },
     {
       "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
@@ -2088,7 +2116,7 @@
       ],
       "id": "dev-feb4caa835f1",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Build specialized multimodal models with LFM3",
@@ -2108,7 +2136,7 @@
       "categories": [],
       "id": "dev-db98bf59a6c7",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.397Z"
+      "fetchedAt": "2026-10-30T22:29:03.386Z"
     },
     {
       "title": "Genie 4: A new generation of world simulation",
@@ -2128,7 +2156,7 @@
       "categories": [],
       "id": "dev-5ef94984dce4",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     },
     {
       "title": "How AI Is Changing the Pace of Discovery for Millions Living With Dementia",
@@ -2154,7 +2182,7 @@
       ],
       "id": "dev-4a299d1e9f3d",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
     },
     {
       "title": "NSE chief asks brokers’ body to set up a task force against AI cyberattacks",
@@ -2180,7 +2208,7 @@
       ],
       "id": "dev-877d0316d9b1",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "AI cybersecurity doomsday, or a case of FUD",
@@ -2207,7 +2235,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Paytm rolls out enterprise AI service in pivot beyond payments",
@@ -2233,7 +2261,7 @@
       ],
       "id": "dev-e7d79d382062",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "AI for the last-minute question paper: A plug for exam leaks?",
@@ -2257,7 +2285,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-10-30T13:11:26.893Z"
+      "fetchedAt": "2026-10-30T22:29:12.120Z"
     },
     {
       "title": "India’s draft AI regulations could be out in November, says IT Minister Ashwini Vaishnaw",
@@ -2283,7 +2311,7 @@
       ],
       "id": "dev-5253018c8853",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Bringing foundational models to the front lines of TB screening",
@@ -2308,7 +2336,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Kazakhstan Expands Compute for Its AI Future",
@@ -2334,7 +2362,7 @@
       ],
       "id": "dev-822412740c4f",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
     },
     {
       "title": "Flint-interactive: A language for creating interactive data visualizations",
@@ -2356,7 +2384,7 @@
       ],
       "id": "dev-d5083253508c",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "NVIDIA Unveils Minerva to Bring End-to-End Observability for AI Factories",
@@ -2380,7 +2408,7 @@
       ],
       "id": "dev-99c8819be3a7",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
+      "fetchedAt": "2026-10-30T22:29:04.442Z"
     },
     {
       "title": "Beyond tree cover: mapping the world’s forest types",
@@ -2400,7 +2428,7 @@
       "categories": [],
       "id": "dev-655df0fb22ac",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     },
     {
       "title": "Is training AI on song lyrics fair use? US court weighs question as India proposes mandatory licensing",
@@ -2427,7 +2455,7 @@
       ],
       "id": "dev-9107635523c9",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Five strategic developments from Eternal’s Q2FY27 earnings call",
@@ -2454,34 +2482,7 @@
       ],
       "id": "dev-36d99455d043",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:30.021Z"
-    },
-    {
-      "title": "Leading European Financial Services Organizations Embrace Open Models to Build Proprietary Intelligence",
-      "summary": "At GTC Berlin, banks, payment companies and financial data providers are showing what production-scale intelligence looks like — built on NVIDIA accelerated computing, powered by open weight models and running on their own infrastructure. Revolut is rebuilding its technology stack on a single foundation model PRAGMA, powered by NVIDIA accelerated computing. Using the NVIDIA cuDF […]",
-      "url": "https://blogs.nvidia.com/blog/european-financial-services-organizations-open-models-proprietary-intelligence",
-      "publishedAt": "2026-10-22T05:00:56.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Financial Services",
-        "GTC 2026",
-        "NVIDIA Blackwell"
-      ],
-      "id": "dev-e12302cd4e2c",
-      "topics": [
-        "finance"
-      ],
-      "fetchedAt": "2026-10-30T13:11:19.493Z"
+      "fetchedAt": "2026-10-30T22:29:14.991Z"
     },
     {
       "title": "Empowering frontline maternal care with AI-assisted ultrasound",
@@ -2506,7 +2507,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Solving a 31-year-old grand challenge in mathematics – the KLS conjecture",
@@ -2528,7 +2529,7 @@
       ],
       "id": "dev-5deb86848ff9",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "Called to serve: Tech, research, and positive impact",
@@ -2550,7 +2551,7 @@
       ],
       "id": "dev-88ef1e9846f1",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "Grounding AI agents in biological reality: Building blocks for autonomous wet labs",
@@ -2576,7 +2577,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Accelerating the search for antimicrobial peptides with Google Antigravity",
@@ -2596,7 +2597,7 @@
       "categories": [],
       "id": "dev-1d4cff712a9a",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     },
     {
       "title": "Proof-based general-purpose computing with Magnetar",
@@ -2620,7 +2621,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-10-30T13:11:18.549Z"
+      "fetchedAt": "2026-10-30T22:29:03.468Z"
     },
     {
       "title": "Putting Earth AI to work: Geospatial agents for our planet's biggest challenges",
@@ -2644,7 +2645,7 @@
       ],
       "id": "dev-09a39f2629eb",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Analyzing technical documents with Deep Review",
@@ -2668,7 +2669,7 @@
       ],
       "id": "dev-09678c4af343",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:19.261Z"
+      "fetchedAt": "2026-10-30T22:29:04.262Z"
     },
     {
       "title": "Google DeepMind and Singapore Government collaborate to build fine-tuned AI model for scam detection",
@@ -2688,7 +2689,7 @@
       "categories": [],
       "id": "dev-5cb1618c1db5",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     },
     {
       "title": "Developing Gemini 4 Argon responsibly and safely",
@@ -2708,7 +2709,7 @@
       "categories": [],
       "id": "dev-25432b6b093a",
       "topics": [],
-      "fetchedAt": "2026-10-30T13:11:17.986Z"
+      "fetchedAt": "2026-10-30T22:29:03.119Z"
     }
   ]
 }

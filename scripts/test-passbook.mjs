@@ -15,6 +15,16 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  buildQuestions,
+  buildRtiText,
+  buildShareText,
+  dateLabel,
+  monthLong,
+  rupees,
+} from '../src/lib/passbook.js';
+import { copyFor } from '../src/lib/passbookCopy.js';
+import { flyerContent, qrMatrix } from '../src/lib/passbookFlyer.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const DATA = JSON.parse(readFileSync(join(root, 'src/data/passbook/index.json'), 'utf8'));
@@ -186,6 +196,92 @@ for (const gp of DATA.gps) {
     gp.finance.schemes.every((scheme) => gp.sourceIds.monthly.includes(scheme.sourceId) &&
       DATA.sources.some((source) => source.id === scheme.sourceId)));
 }
+
+// 6. The reading layer: both languages, the generated questions, and the two
+// documents a resident can carry out of the page. These are pure functions, so
+// the checks need no browser.
+const doc = { ...DATA, gp: DATA.gps[0] };
+const enCopy = copyFor('en');
+const hiCopy = copyFor('hi');
+
+ok('the English and Hindi packs carry the same keys',
+  Object.keys(enCopy).sort().join(',') === Object.keys(hiCopy).sort().join(','),
+  Object.keys(enCopy).filter((key) => !(key in hiCopy)).join(', '));
+ok('every copy key has the same shape in both languages',
+  Object.keys(enCopy).every((key) => typeof enCopy[key] === typeof hiCopy[key]));
+
+// Catch a key the page asks for but neither pack defines, and a ten-key drift
+// that key-parity alone would miss only if the page used a different name.
+const pageSource = readFileSync(join(root, 'src/sections/VillagePassbook.jsx'), 'utf8');
+const usedKeys = new Set([...pageSource.matchAll(/\bt\.([A-Za-z0-9_]+)/g)].map((match) => match[1]));
+ok('every copy key the page uses exists in both languages',
+  [...usedKeys].every((key) => key in enCopy && key in hiCopy),
+  [...usedKeys].filter((key) => !(key in enCopy) || !(key in hiCopy)).join(', '));
+
+const questionsEn = buildQuestions(doc, { lang: 'en' });
+const questionsHi = buildQuestions(doc, { lang: 'hi' });
+ok('the questions are generated in both languages, in the same order',
+  questionsEn.length >= 5 && questionsEn.length === questionsHi.length,
+  `${questionsEn.length} / ${questionsHi.length}`);
+ok('no question leaks an undefined or NaN value',
+  [...questionsEn, ...questionsHi].every((question) =>
+    question && !/undefined|NaN|null/.test(question)));
+ok('the Hindi questions are written in Devanagari',
+  questionsHi.every((question) => /[\u0900-\u097F]/.test(question)));
+ok('the figure-bearing questions quote a rupee amount',
+  questionsEn.filter((question) => question.includes('₹')).length >= 4,
+  `${questionsEn.filter((question) => question.includes('₹')).length} of ${questionsEn.length}`);
+
+const shareHi = buildShareText(doc, { lang: 'hi', url: 'https://example.test/khata' });
+ok('the WhatsApp summary names the GP, the year and the three headline figures',
+  shareHi.includes(doc.gp.nameHi) && shareHi.includes(doc.year) &&
+  shareHi.includes(rupees(doc.gp.finance.totals.receipts, 'hi')) &&
+  shareHi.includes(rupees(doc.gp.finance.totals.payments, 'hi')) &&
+  shareHi.includes(rupees(doc.gp.finance.xvfc.closing, 'hi')));
+ok('the WhatsApp summary carries the share link',
+  shareHi.includes('https://example.test/khata'));
+
+const rtiEn = buildRtiText(doc, { lang: 'en' });
+const rtiHi = buildRtiText(doc, { lang: 'hi' });
+ok('the RTI draft names every captured activity code',
+  doc.gp.works.every((work) => rtiEn.includes(work.activityCode) && rtiHi.includes(work.activityCode)));
+ok('the RTI draft leaves the applicant fields to fill in',
+  rtiEn.includes('[name]') && rtiEn.includes('[date]') && rtiHi.includes('[नाम]') && rtiHi.includes('[दिनांक]'));
+ok('the RTI draft carries the data hash',
+  rtiEn.includes(doc.dataHash) && rtiHi.includes(doc.dataHash));
+
+const flyer = flyerContent(doc, { url: 'https://example.test/#/tools/passbook?s=25&d=49' });
+ok('the image flyer is written in Hindi',
+  flyer.brand === 'खाता' && /[\u0900-\u097F]/.test(flyer.kicker) &&
+  /[\u0900-\u097F]/.test(flyer.title));
+ok('the image flyer carries the three headline figures',
+  flyer.stats.length === 3 &&
+  flyer.stats[0].value === rupees(doc.gp.finance.totals.receipts, 'hi') &&
+  flyer.stats[1].value === rupees(doc.gp.finance.totals.payments, 'hi') &&
+  flyer.stats[2].value === rupees(doc.gp.finance.xvfc.closing, 'hi'));
+ok('the image flyer carries the first three Gram Sabha questions',
+  flyer.questions.length === 3 && flyer.questions.every((question) => /[\u0900-\u097F]/.test(question)));
+ok('the image flyer keeps the share link and the source hash',
+  flyer.url === 'https://example.test/#/tools/passbook?s=25&d=49' &&
+  flyer.source.includes('eGramSwaraj') &&
+  flyer.source.includes(doc.dataHash.replace(/^sha256:/, '').slice(0, 16)));
+
+// The QR must be a real code for the printed URL, not a decorative square.
+const qr = qrMatrix(flyer.url);
+const qrPattern = (matrix) => Array.from({ length: matrix.count }, (_, row) =>
+  Array.from({ length: matrix.count }, (_, column) => (matrix.isDark(row, column) ? '1' : '0')).join('')
+).join('');
+ok('the flyer QR is a full QR matrix',
+  qr.count >= 21 && qrPattern(qr).includes('1'));
+ok('the flyer QR encodes the supplied URL, not a fixed image',
+  qrPattern(qr) !== qrPattern(qrMatrix('https://example.test/#/tools/passbook?s=25&d=49&v=Other')));
+
+ok('rupees uses Indian digit grouping', rupees(1199395) === '₹11,99,395', rupees(1199395));
+ok('the prose month name is not the chart abbreviation',
+  monthLong('Nov') === 'November' && monthLong('Nov', 'hi') === 'नवंबर');
+ok('a captured date reads in Indian order',
+  dateLabel('2026-03-31') === '31 Mar 2026', dateLabel('2026-03-31'));
+ok('an unknown language falls back to English', copyFor('fr') === enCopy);
 
 console.log(`\n${failures === 0 ? 'PASS' : 'FAIL'}  ${failures === 0 ? 'all passbook checks passed' : `${failures} check(s) failed`}`);
 process.exit(failures === 0 ? 0 : 1);

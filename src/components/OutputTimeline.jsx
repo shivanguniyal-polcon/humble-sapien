@@ -1199,9 +1199,9 @@ export default function OutputTimeline({ onNavigate }) {
       <div className="section-head timeline-head">
         <div className="timeline-head-copy">
           <span className="overline">The fifth pillar of democracy</span>
-          <h1 id="timeline-title" className="timeline-title">
+          <h2 id="timeline-title" className="timeline-title" tabIndex={-1}>
             The State writes a lot. How much have you read?
-          </h1>
+          </h2>
           <p className="section-strap">
             Every Act, amending Act, ordinance, rule and notification in the
             India Code catalogue &mdash; one named square each, one jurisdiction
@@ -1774,33 +1774,6 @@ export default function OutputTimeline({ onNavigate }) {
               count, May 2025; the timeline&rsquo;s own catalogue note on the
               missing Gazette total. Numbers carry their dates because policies
               move.
-            </p>
-          </div>
-        </section>
-
-        <section className="coda-beat coda-beat-vision" aria-labelledby="coda-vision">
-          <div className="shell">
-            <p className="overline">The vision</p>
-            <h2 id="coda-vision" className="coda-title">
-              THS is the fifth pillar of democracy.
-            </h2>
-
-            <p className="coda-lede">
-              Not a fifth institution added to four. The legislature makes the
-              law; the executive writes beneath it; the judiciary reads it; the
-              press reports it. Each holds a piece of the record and speaks to
-              the others. The public is spoken about.
-            </p>
-            <p className="coda-body">
-              The fifth pillar is a new role, not another seat: the public
-              holding the same record, with tools and receipts. That is the
-              contribution THS is built to make &mdash; not another publisher
-              with a search box, but a reader who can check the claim, count
-              what was never counted, and answer with the state&rsquo;s own
-              evidence.
-            </p>
-            <p className="coda-footnote">
-              The Humble Sapien. The fifth pillar of democracy.
             </p>
           </div>
         </section>

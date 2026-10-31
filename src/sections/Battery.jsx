@@ -19,8 +19,14 @@ import {
   decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
   budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
   GENERAL_RULES, MODULE_FORMATS, BATTERY_VERSION, formatINRCompact,
+  MODULE_BINDINGS, effectiveBindings, validateBindings, applyBindings,
+  formatBindingValue, bindingReceipt,
+  sweepableFields, defaultSweepRange, sweepValues, runSweep, cbaRunParams,
+  cbaSweepPrepare, SWEEP_NOTES,
 } from '../battery';
 import BriefForm from '../components/BriefForm';
+import BatteryBindings from '../components/BatteryBindings';
+import BatterySweep from '../components/BatterySweep';
 import { briefToInput, briefToParams } from '../battery/businessCase';
 
 // Reference parameters carry more precision than a display column needs. Four
@@ -190,12 +196,170 @@ export default function Battery({ onNavigate }) {
   const [provenance, setProvenance] = useState(DISCOUNT_PRESETS[0].provenance);
 
   const [results, setResults] = useState(null);
+  const [runInput, setRunInput] = useState(null);
   const [runParams, setRunParams] = useState(null);
   const [manifest, setManifest] = useState(null);
+  const [bound, setBound] = useState({});
   const [runError, setRunError] = useState('');
   const [pit, setPit] = useState({ whoBenefits: '', whoPays: '', whoMissing: '' });
   const [report, setReport] = useState(null);
+  const [sweep, setSweep] = useState({
+    fieldKey: '', from: null, to: null, steps: 5, result: null, error: '', busy: false,
+  });
   const frameRef = useRef(null);
+  // A sweep is async because of the manifests. A token keeps a slow result
+  // from landing after the module or a parameter has moved on.
+  const sweepRunRef = useRef(0);
+
+  const parsedInput = useMemo(() => {
+    try {
+      return JSON.parse(inputText);
+    } catch {
+      return null;
+    }
+  }, [inputText]);
+  const bindingSpec = MODULE_BINDINGS[moduleId] ?? [];
+  const bindingValues = useMemo(
+    () => effectiveBindings(moduleId, parsedInput, bound),
+    [moduleId, parsedInput, bound],
+  );
+  const sweepFields = useMemo(
+    () => sweepableFields(
+      moduleId,
+      moduleId === 'cba'
+        ? { discountRate: discountPct, horizonYears: horizon }
+        : bindingValues,
+    ),
+    [moduleId, discountPct, horizon, bindingValues],
+  );
+  const sweepField = sweepFields.find((field) => field.key === sweep.fieldKey) || sweepFields[0] || null;
+  const sweepDefaults = sweepField ? defaultSweepRange(sweepField, sweepField.current) : null;
+  const sweepRange = {
+    from: sweep.from ?? sweepDefaults?.from ?? null,
+    to: sweep.to ?? sweepDefaults?.to ?? null,
+    steps: sweep.steps,
+  };
+
+  const resetSweep = () => {
+    sweepRunRef.current += 1;
+    setSweep({
+      fieldKey: '', from: null, to: null, steps: 5, result: null, error: '', busy: false,
+    });
+  };
+
+  const invalidateSweep = () => {
+    sweepRunRef.current += 1;
+    setSweep((prev) => ({
+      ...prev, result: null, error: '', busy: false,
+    }));
+  };
+
+  // A new sample, input or module starts a new run, so Stage 2 settings and
+  // the run receipt from the previous one must not survive it.
+  const clearBoundSettings = () => {
+    setBound({});
+    setRunInput(null);
+    setRunParams(null);
+    resetSweep();
+  };
+
+  // A bound value is part of the proof, not a view filter. Once it moves, the
+  // previous run is no longer the run on screen, so its result and manifest
+  // go with it rather than sitting there under a "re-run (identical output)"
+  // label that would now be false.
+  const changeBinding = (key, value) => {
+    setBound((prev) => ({ ...prev, [key]: value }));
+    setResults(null);
+    setManifest(null);
+    setReport(null);
+    setRunInput(null);
+    setRunParams(null);
+    setRunError('');
+    invalidateSweep();
+  };
+
+  const chooseSweepField = (key) => {
+    const field = sweepFields.find((entry) => entry.key === key);
+    const range = field ? defaultSweepRange(field, field.current) : null;
+    setSweep((prev) => ({
+      ...prev,
+      fieldKey: key,
+      from: range?.from ?? null,
+      to: range?.to ?? null,
+      result: null,
+      error: '',
+      busy: false,
+    }));
+  };
+
+  const updateSweepRange = (patch) => setSweep((prev) => ({
+    ...prev, ...patch, result: null, error: '',
+  }));
+
+  const runSweepNow = async () => {
+    if (!sweepField) return;
+    if (moduleId === 'cba' && cbaParamsInvalid) {
+      setSweep((prev) => ({
+        ...prev,
+        result: null,
+        error: 'Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before sweeping.',
+      }));
+      return;
+    }
+    if (!parsedInput || typeof parsedInput !== 'object') {
+      setSweep((prev) => ({
+        ...prev, result: null, error: 'The structured input is not valid JSON. Fix it before sweeping.',
+      }));
+      return;
+    }
+    const checked = sweepValues(sweepField, sweepRange.from, sweepRange.to, sweepRange.steps);
+    if (checked.errors.length > 0) {
+      setSweep((prev) => ({ ...prev, result: null, error: checked.errors.join(' ') }));
+      return;
+    }
+    const token = sweepRunRef.current + 1;
+    sweepRunRef.current = token;
+    setSweep((prev) => ({ ...prev, busy: true, result: null, error: '' }));
+    // Let the button paint before the first synchronous run.
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    try {
+      const prepare = moduleId === 'cba'
+        ? cbaSweepPrepare({
+            input: parsedInput,
+            discountPct,
+            horizon,
+            sensitivity,
+            provenance,
+            presetId,
+            briefParams,
+          })
+        : undefined;
+      const out = await runSweep({
+        module: moduleChoice.mod,
+        moduleId,
+        input: parsedInput,
+        values: bindingValues,
+        fieldKey: sweepField.key,
+        points: checked.values,
+        prepare,
+      });
+      if (sweepRunRef.current !== token) return;
+      if (out.errors) {
+        setSweep((prev) => ({ ...prev, busy: false, error: out.errors.join(' ') }));
+        return;
+      }
+      setSweep((prev) => ({
+        ...prev, busy: false, result: { ...out, warnings: checked.warnings },
+      }));
+    } catch (error) {
+      if (sweepRunRef.current !== token) return;
+      setSweep((prev) => ({
+        ...prev,
+        busy: false,
+        error: String(error && error.message ? error.message : error),
+      }));
+    }
+  };
 
   const pitCheck = checkPit(pit);
 
@@ -226,6 +390,7 @@ export default function Battery({ onNavigate }) {
     setResults(null);
     setManifest(null);
     setReport(null);
+    clearBoundSettings();
     if (moduleId === 'cba') setHorizon(sample.horizonYears);
   };
 
@@ -241,6 +406,7 @@ export default function Battery({ onNavigate }) {
     setResults(null);
     setManifest(null);
     setReport(null);
+    clearBoundSettings();
   };
 
   const shareWithLab = () => {
@@ -271,6 +437,7 @@ export default function Battery({ onNavigate }) {
     setResults(null);
     setManifest(null);
     setReport(null);
+    clearBoundSettings();
     setStage(2);
   };
 
@@ -295,6 +462,7 @@ export default function Battery({ onNavigate }) {
     setResults(null);
     setManifest(null);
     setReport(null);
+    clearBoundSettings();
   };
 
   const runIngest = () => {
@@ -308,6 +476,7 @@ export default function Battery({ onNavigate }) {
         const check = moduleChoice.mod.validate(parsed);
         if (check.errors.length === 0) {
           setInputText(JSON.stringify(parsed, null, 2));
+          clearBoundSettings();
           setStructErrors([]);
           setStructWarnings(check.warnings);
           setAdapterNotes([
@@ -323,6 +492,7 @@ export default function Battery({ onNavigate }) {
     const adapted = adapter ? adapter(dataset, { horizonYears: horizon }) : null;
     if (adapted && adapted.input) {
       setInputText(JSON.stringify(adapted.input, null, 2));
+      clearBoundSettings();
       const check = moduleChoice.mod.validate(adapted.input);
       setStructErrors(check.errors);
       setStructWarnings(check.warnings);
@@ -356,7 +526,17 @@ export default function Battery({ onNavigate }) {
   const runExecute = async () => {
     try {
       const input = JSON.parse(inputText);
-      const v = moduleChoice.mod.validate(input);
+      const boundValues = effectiveBindings(moduleId, input, bound);
+      const bindingErrors = validateBindings(moduleId, boundValues, input);
+      if (bindingErrors.length > 0) {
+        setStructErrors(bindingErrors);
+        setRunError('The bound parameters have errors. Fix them before running.');
+        return;
+      }
+      // Stage 2 writes its settings into a copy of the input. The original
+      // stays in the editor; the bound copy is what the manifest pins.
+      const boundInput = applyBindings(moduleId, input, boundValues);
+      const v = moduleChoice.mod.validate(boundInput);
       setStructErrors(v.errors);
       setStructWarnings(v.warnings);
       if (v.errors.length > 0) {
@@ -370,24 +550,7 @@ export default function Battery({ onNavigate }) {
       // One parameter object feeds the run, the manifest and the report. The
       // numeric fields bind the engine; values and meta are the receipt the
       // report prints, kept here so the run hash and the report hash agree.
-      const displayParams = moduleId === 'cba'
-        ? {
-            values: {
-              discountRate: `${discountPct}%`,
-              horizonYears: horizon,
-              ...(briefParams?.values ?? {}),
-            },
-            meta: {
-              discountRate: {
-                label: 'Discount rate',
-                provenance,
-                status: (DISCOUNT_PRESETS.find((p) => p.id === presetId) || {}).status || 'custom',
-              },
-              horizonYears: { label: 'Horizon (years)', provenance: 'Declared by the analyst.', status: 'custom' },
-              ...(briefParams?.meta ?? {}),
-            },
-          }
-        : moduleId === 'scenario'
+      const displayParams = moduleId === 'scenario'
           ? {
               values: { referenceCase: 'PM-JAY calibrated' },
               meta: {
@@ -398,28 +561,28 @@ export default function Battery({ onNavigate }) {
                 },
               },
             }
-          : {
-              values: { parameters: 'Declared in the structured input' },
-              meta: {
-                parameters: {
-                  label: 'Module parameters',
-                  provenance: 'Declared in the structured input; the input hash in the audit manifest pins them.',
-                  status: 'custom',
+          : bindingSpec.length > 0
+            ? bindingReceipt(moduleId, boundValues, boundInput)
+            : {
+                values: { parameters: 'Declared in the structured input' },
+                meta: {
+                  parameters: {
+                    label: 'Module parameters',
+                    provenance: 'Declared in the structured input; the input hash in the audit manifest pins them.',
+                    status: 'custom',
+                  },
                 },
-              },
-            };
+              };
+      const boundRaw = bindingSpec.length > 0
+        ? Object.fromEntries(bindingSpec.map((field) => [field.key, boundInput[field.key]]))
+        : {};
       const params = moduleId === 'cba'
-        ? {
-            discountRate: discountPct / 100,
-            sensitivityLo: sensitivity[0] / 100,
-            sensitivityHi: sensitivity[1] / 100,
-            horizonYears: horizon,
-            ...displayParams,
-          }
-        : displayParams;
+        ? cbaRunParams({ discountPct, horizon, sensitivity, provenance, presetId, briefParams })
+        : { ...boundRaw, ...displayParams };
       setRunParams(params);
-      const out = moduleChoice.mod.run(input, params);
-      const man = await buildManifest({ module: moduleChoice.id, input, params, results: out });
+      setRunInput(boundInput);
+      const out = moduleChoice.mod.run(boundInput, params);
+      const man = await buildManifest({ module: moduleChoice.id, input: boundInput, params, results: out });
       setResults(out);
       setManifest(man);
       setRunError('');
@@ -436,11 +599,11 @@ export default function Battery({ onNavigate }) {
         setRunError('Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before building the report.');
         return;
       }
-      if (!runParams) {
+      if (!runParams || !runInput) {
         setRunError('Run the module before building the report.');
         return;
       }
-      const input = JSON.parse(inputText);
+      const input = runInput;
       const params = runParams;
       const out = await buildReport({
         module: moduleChoice.mod,
@@ -468,6 +631,7 @@ export default function Battery({ onNavigate }) {
       sensitivity,
       horizon,
       provenance,
+      bindings: bound,
       pit,
     };
     downloadFile('ths-battery-project.json', JSON.stringify(project, null, 2), 'application/json');
@@ -485,8 +649,12 @@ export default function Battery({ onNavigate }) {
         setSensitivity(p.sensitivity || [0, 5]);
         setHorizon(p.horizon ?? 10);
         setProvenance(p.provenance || '');
+        setBound(p.bindings && typeof p.bindings === 'object' ? p.bindings : {});
+        resetSweep();
         setPit(p.pit || { whoBenefits: '', whoPays: '', whoMissing: '' });
         setResults(null);
+        setRunInput(null);
+        setRunParams(null);
         setManifest(null);
         setReport(null);
         setStage(1);
@@ -684,7 +852,10 @@ export default function Battery({ onNavigate }) {
               <label>Structured module input (editable JSON)</label>
               <textarea
                 value={inputText}
-                onChange={(e) => setInputText(e.target.value)}
+                onChange={(e) => {
+                  setInputText(e.target.value);
+                  invalidateSweep();
+                }}
                 spellCheck="false"
                 style={{ fontFamily: 'var(--font-data)', fontSize: '0.78rem', minHeight: '9rem' }}
               />
@@ -776,6 +947,7 @@ export default function Battery({ onNavigate }) {
                       setDiscountPct(p.discountRate * 100);
                       setSensitivity(p.sensitivity.map((x) => x * 100));
                       setProvenance(p.provenance);
+                      invalidateSweep();
                     }}
                   >
                     {DISCOUNT_PRESETS.map((p) => (
@@ -791,12 +963,21 @@ export default function Battery({ onNavigate }) {
                     min="0"
                     max="100"
                     value={discountPct}
-                    onChange={setDiscountPct}
+                    onChange={(value) => {
+                      setDiscountPct(value);
+                      invalidateSweep();
+                    }}
                   />
                 </div>
                 <div className="control">
                   <label>Horizon (years)</label>
-                  <select value={horizon} onChange={(e) => setHorizon(Number(e.target.value))}>
+                  <select
+                    value={horizon}
+                    onChange={(e) => {
+                      setHorizon(Number(e.target.value));
+                      invalidateSweep();
+                    }}
+                  >
                     {HORIZON_PRESETS.map((h) => (
                       <option key={h.id} value={h.years}>{h.label} ({h.years})</option>
                     ))}
@@ -813,7 +994,13 @@ export default function Battery({ onNavigate }) {
                 </div>
                 <div className="control">
                   <label>Provenance note (required)</label>
-                  <textarea value={provenance} onChange={(e) => setProvenance(e.target.value)} />
+                  <textarea
+                    value={provenance}
+                    onChange={(e) => {
+                      setProvenance(e.target.value);
+                      invalidateSweep();
+                    }}
+                  />
                 </div>
               </>
             ) : moduleId === 'scenario' ? (
@@ -857,21 +1044,30 @@ export default function Battery({ onNavigate }) {
                   </p>
                 </div>
               </>
-            ) : moduleId === 'mcda' ? (
-              <p className="fine-print">
-                The weights and scores live in the structure, so this receipt
-                records the scoring method instead. minmax scales every
-                criterion to 0 to 1 first and inverts cost criteria; use it
-                when criteria sit on different scales. weighted-sum takes the
-                scores as given and negates cost criteria. Weights are
-                normalised to sum to 1, and the run reports the exact weight
-                move that flips the lead.
-              </p>
             ) : (
-              <p className="fine-print">
-                {moduleChoice.mod.bindNote ||
-                  'This module takes no economic parameters outside the structure. The distributional column is the public interest parameter.'}
-              </p>
+              <>
+                {moduleId === 'mcda' && (
+                  <p className="fine-print">
+                    The weights and scores live in the structure. The scoring
+                    method is bound below; minmax scales every criterion to 0 to
+                    1 first and inverts cost criteria, while weighted-sum takes
+                    the scores as given. Weights are normalised to sum to 1.
+                  </p>
+                )}
+                {bindingSpec.length > 0 ? (
+                  <BatteryBindings
+                    moduleId={moduleId}
+                    input={parsedInput || {}}
+                    values={bindingValues}
+                    onChange={changeBinding}
+                  />
+                ) : (
+                  <p className="fine-print">
+                    {moduleChoice.mod.bindNote ||
+                      'This module takes no settings outside the structure. The distributional column is the public interest parameter.'}
+                  </p>
+                )}
+              </>
             )}
             <div className="btn-row">
               <button
@@ -938,25 +1134,53 @@ export default function Battery({ onNavigate }) {
                         <td>{VERIFICATION_LABELS.custom}</td>
                       </tr>
                     </>
-                  ) : moduleId === 'mcda' ? (
-                    <tr>
-                      <th scope="row">Weights, scores and method</th>
-                      <td>In the structure</td>
-                      <td>{VERIFICATION_LABELS.custom}</td>
-                    </tr>
                   ) : (
-                    <tr>
-                      <th scope="row">{moduleChoice.mod.bindRowLabel || 'Parameters'}</th>
-                      <td>In the structure</td>
-                      <td>{VERIFICATION_LABELS.custom}</td>
-                    </tr>
+                    <>
+                      {bindingSpec.map((field) => (
+                        <tr key={field.key}>
+                          <th scope="row">{field.label}</th>
+                          <td className="data-num">{formatBindingValue(field, bindingValues[field.key], parsedInput)}</td>
+                          <td>{VERIFICATION_LABELS.custom}</td>
+                        </tr>
+                      ))}
+                      {moduleId === 'mcda' && (
+                        <tr>
+                          <th scope="row">Weights and scores</th>
+                          <td>In the structure</td>
+                          <td>{VERIFICATION_LABELS.custom}</td>
+                        </tr>
+                      )}
+                      {bindingSpec.length === 0 && (
+                        <tr>
+                          <th scope="row">{moduleChoice.mod.bindRowLabel || 'Parameters'}</th>
+                          <td>In the structure</td>
+                          <td>{VERIFICATION_LABELS.custom}</td>
+                        </tr>
+                      )}
+                    </>
                   )}
                 </tbody>
               </table>
               <p className="fine-print" style={{ marginBottom: 0 }}>
-                Provenance: {provenance || 'the structure itself'}
+                Provenance: {moduleId === 'cba'
+                  ? (provenance || 'the structure itself')
+                  : bindingSpec.length > 0
+                    ? 'each bound value is declared by the analyst; the structure is declared in the input.'
+                    : 'the structure itself'}
               </p>
             </div>
+            <BatterySweep
+              fields={sweepFields}
+              field={sweepField}
+              range={sweepRange}
+              onField={chooseSweepField}
+              onRange={updateSweepRange}
+              onRun={runSweepNow}
+              result={sweep.result}
+              error={sweep.error}
+              busy={sweep.busy}
+              note={SWEEP_NOTES[moduleId] || 'The other Stage 2 values stay fixed while this one moves.'}
+            />
           </div>
         </div>
       )}

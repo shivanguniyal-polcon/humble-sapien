@@ -13,6 +13,9 @@ import {
   decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
   budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,
   buildManifest, verifyManifest, buildReport, checkPit, canonicalJSON,
+  MODULES, MODULE_BINDINGS, bindingOptions, effectiveBindings, validateBindings,
+  applyBindings, bindingReceipt, sweepableFields, defaultSweepRange, sweepValues,
+  runSweep, cbaSweepPrepare, SWEEP_METRICS, formatSweepValue,
 } from '../src/battery/index.js';
 
 let failures = 0;
@@ -164,6 +167,202 @@ ok('parseNumber empty flagged', parseNumber('').empty);
   ok('CBA reports the root nearest the discount rate', Math.abs(r.irr - 0.2) < 1e-6, String(r.irr));
   ok('CBA has no single break-even rate with multiple roots', r.breakEvenDiscount === null);
   ok('CBA results name every root', /2 roots/.test(cba.renderResults(r, {})), cba.renderResults(r, {}));
+}
+
+// 5b. Stage 2 bindings: every module declares its settings, and the values
+// reach both the engine and the manifest.
+{
+  ok('every module declares a Stage 2 binding list',
+    MODULES.every((module) => Array.isArray(MODULE_BINDINGS[module.id])));
+  ok('modules with no separable settings say so with an empty list',
+    ['cba', 'scenario', 'stakeholder-game'].every((id) => MODULE_BINDINGS[id].length === 0),
+    ['cba', 'scenario', 'stakeholder-game'].map((id) => `${id}:${MODULE_BINDINGS[id].length}`).join(', '));
+
+  const markovValues = effectiveBindings('markov', markovSample, {
+    cycles: 4, cycleYears: 2, discountRate: 6, halfCycleCorrection: false,
+  });
+  ok('markov bindings are shown in display units',
+    markovValues.cycles === 4 && markovValues.cycleYears === 2 &&
+      markovValues.discountRate === 6 && markovValues.halfCycleCorrection === false,
+    JSON.stringify(markovValues));
+  ok('markov bindings validate',
+    validateBindings('markov', markovValues, markovSample).length === 0);
+  const markovInput = applyBindings('markov', markovSample, markovValues);
+  ok('percentage bindings convert back to engine fractions',
+    markovInput.discountRate === 0.06, String(markovInput.discountRate));
+  const markovRun = markov.run(markovInput);
+  ok('the run uses the bound cycle count', markovRun.cycles === 4, String(markovRun.cycles));
+  ok('the receipt names the bound value',
+    bindingReceipt('markov', markovValues, markovSample).values.cycles === '4');
+
+  const seeded = effectiveBindings('monte-carlo', monteCarloSample, { seed: 42 });
+  const seededRun = monteCarlo.run(applyBindings('monte-carlo', monteCarloSample, seeded));
+  ok('the Monte Carlo seed binding changes the experiment',
+    seededRun.seed === 42 && canonicalJSON(seededRun) !== canonicalJSON(monteCarlo.run(monteCarloSample)));
+
+  const eq = effectiveBindings('equity-cba', equitySample, { discountRate: 7 });
+  ok('the equity discount is bound in percent', eq.discountRate === 7, String(eq.discountRate));
+  ok('the equity discount reaches the input as a fraction',
+    applyBindings('equity-cba', equitySample, eq).discountRate === 0.07);
+
+  const bad = validateBindings('monte-carlo', { runs: 99, seed: 1.5 }, monteCarloSample);
+  ok('binding validation rejects bad values', bad.length === 2, bad.join('; '));
+  ok('decision-tree root options come from the input nodes',
+    bindingOptions(MODULE_BINDINGS['decision-tree'][0], decisionTreeSample).length === decisionTreeSample.nodes.length);
+
+  const params = {
+    ...Object.fromEntries(Object.keys(markovValues).map((key) => [key, markovInput[key]])),
+    ...bindingReceipt('markov', markovValues, markovInput),
+  };
+  const withParams = await buildManifest({ module: 'markov', input: markovInput, params, results: markovRun });
+  const withoutParams = await buildManifest({ module: 'markov', input: markovInput, params: {}, results: markovRun });
+  ok('the manifest hashes the bound model parameters',
+    withParams.paramHash !== withoutParams.paramHash && params.cycles === 4 && params.discountRate === 0.06,
+    `${withParams.paramHash} vs ${withoutParams.paramHash}`);
+
+  // Every module with a declared list, not just the ones checked above: a
+  // changed binding must validate, land in the input, and change the params
+  // hash. A control that does not move the manifest would be decoration.
+  const samples = {
+    'decision-tree': decisionTreeSample, cba: cbaSample, mcda: mcdaSample,
+    scenario: scenarioSample, cea: ceaSample, 'equity-cba': equitySample,
+    markov: markovSample, 'budget-impact': budgetImpactSample,
+    'stakeholder-game': gameTheorySample, queueing: queueingSample,
+    'monte-carlo': monteCarloSample,
+  };
+  const alternate = (field, current, input) => {
+    if (field.kind === 'boolean') return !current;
+    if (field.kind === 'select') {
+      return bindingOptions(field, input).map((o) => o.value).find((v) => String(v) !== String(current));
+    }
+    if (field.kind === 'text') return `${current || 'value'} (bound)`;
+    const base = Number(current);
+    const within = (n) => (field.min == null || n >= field.min) && (field.max == null || n <= field.max);
+    const candidates = field.percent
+      ? [base === 7 ? 8 : 7, 0]
+      : [Number.isFinite(base) ? base + (field.integer ? 1 : 0.5) : 1, 2, 1];
+    const fit = candidates.find((n) => within(n) && n !== base && (!field.integer || Number.isInteger(n)));
+    return fit === undefined ? base : fit;
+  };
+  const manifestParams = (moduleId, input, values) => ({
+    ...Object.fromEntries((MODULE_BINDINGS[moduleId] ?? []).map((field) => [field.key, input[field.key]])),
+    ...bindingReceipt(moduleId, values, input),
+  });
+
+  for (const [moduleId, sample] of Object.entries(samples)) {
+    const fields = MODULE_BINDINGS[moduleId] ?? [];
+    if (fields.length === 0) continue;
+    const baseValues = effectiveBindings(moduleId, sample, {});
+    const overrides = {};
+    for (const field of fields) {
+      const next = alternate(field, baseValues[field.key], sample);
+      if (next !== undefined) overrides[field.key] = next;
+    }
+    const values = effectiveBindings(moduleId, sample, overrides);
+    const errors = validateBindings(moduleId, values, sample);
+    ok(`${moduleId}: every binding validates`, errors.length === 0, errors.join('; '));
+    const boundInput = applyBindings(moduleId, sample, values);
+    ok(`${moduleId}: every binding reaches the input`,
+      fields.every((field) => boundInput[field.key] !== undefined),
+      fields.map((field) => field.key).join(', '));
+    const baseInput = applyBindings(moduleId, sample, baseValues);
+    const mod = MODULES.find((entry) => entry.id === moduleId);
+    const before = await buildManifest({
+      module: moduleId, input: baseInput,
+      params: manifestParams(moduleId, baseInput, baseValues),
+      results: mod.run(baseInput),
+    });
+    const after = await buildManifest({
+      module: moduleId, input: boundInput,
+      params: manifestParams(moduleId, boundInput, values),
+      results: mod.run(boundInput),
+    });
+    ok(`${moduleId}: the manifest names the bound parameters`,
+      before.paramHash !== after.paramHash && Object.keys(values).length === fields.length,
+      `${before.paramHash} vs ${after.paramHash}`);
+  }
+  ok('modules without general bindings have a dedicated panel or a bind note',
+    MODULES.filter((module) => (MODULE_BINDINGS[module.id] ?? []).length === 0)
+      .every((module) => ['cba', 'scenario'].includes(module.id) || 'bindNote' in module),
+    MODULES.filter((module) => (MODULE_BINDINGS[module.id] ?? []).length === 0).map((module) => module.id).join(', '));
+}
+
+// 5c. Sensitivity sweep: one setting, every point a full run and manifest.
+{
+  const discount = MODULE_BINDINGS.markov.find((field) => field.key === 'discountRate');
+  const opening = defaultSweepRange(discount, 6);
+  ok('sweep default range brackets the current value',
+    opening.from < 6 && opening.to > 6 && opening.from >= 0 && opening.to <= 100,
+    JSON.stringify(opening));
+
+  const points = sweepValues(discount, 4, 8, 5);
+  ok('sweep points are evenly spaced',
+    points.errors.length === 0 && points.values.length === 5 &&
+      Math.abs(points.values[0] - 4) < 1e-9 && Math.abs(points.values[4] - 8) < 1e-9 &&
+      Math.abs(points.values[2] - 6) < 1e-9,
+    JSON.stringify(points.values));
+  ok('sweep rejects an inverted range', sweepValues(discount, 8, 4, 5).errors.length > 0);
+  ok('sweep rejects a missing endpoint', sweepValues(discount, null, 8, 5).errors.length > 0);
+  ok('sweep rejects one point', sweepValues(discount, 4, 8, 1).errors.length > 0);
+  ok('sweep rejects more than the cap', sweepValues(discount, 4, 8, 26).errors.length > 0);
+  ok('sweep keeps the range inside the binding bounds', sweepValues(discount, -1, 4, 3).errors.length > 0);
+  ok('integer sweeps collapse to distinct whole values',
+    sweepValues(MODULE_BINDINGS.markov.find((field) => field.key === 'cycles'), 5, 7, 5).values.length === 3);
+
+  const base = effectiveBindings('markov', markovSample, {});
+  const discounts = sweepValues(discount, 3, 9, 4).values;
+  const sweep = await runSweep({
+    module: markov, moduleId: 'markov', input: markovSample,
+    values: base, fieldKey: 'discountRate', points: discounts,
+  });
+  ok('markov sweep runs every point', !sweep.errors && sweep.rows.length === 4,
+    sweep.errors ? sweep.errors.join('; ') : '');
+  ok('the sweep writes each point into the model',
+    sweep.rows.every((row, i) => Math.abs(row.input.discountRate - discounts[i] / 100) < 1e-9));
+  ok('the sweep builds one manifest per point',
+    sweep.rows.every((row) => row.manifest && row.manifest.outputHash.length === 64));
+  ok('the markov result moves with the discount',
+    new Set(sweep.rows.map((row) => row.metricText)).size === 4,
+    sweep.rows.map((row) => row.metricText).join('; '));
+  ok('the markov output hash moves with the discount',
+    sweep.distinct.outputs === 4 && sweep.distinct.params === 4,
+    `${sweep.distinct.outputs} outputs, ${sweep.distinct.params} params`);
+
+  const servers = MODULE_BINDINGS.queueing.find((field) => field.key === 'servers');
+  const serverPoints = sweepValues(servers, 1, 3, 3).values;
+  const queueBase = effectiveBindings('queueing', queueingSample, {});
+  const queueSweep = await runSweep({
+    module: queueing, moduleId: 'queueing', input: queueingSample,
+    values: queueBase, fieldKey: 'servers', points: serverPoints,
+  });
+  ok('more servers never lengthen the wait',
+    queueSweep.rows.every((row, i) => i === 0 || row.metricValue <= queueSweep.rows[i - 1].metricValue),
+    queueSweep.rows.map((row) => row.metricText).join('; '));
+
+  const cbaField = sweepableFields('cba', { discountRate: 3, horizonYears: 10 })[0];
+  const cbaPoints = sweepValues(cbaField, 3, 7, 3).values;
+  const cbaSweep = await runSweep({
+    module: cba, moduleId: 'cba', input: cbaSample,
+    values: {}, fieldKey: 'discountRate', points: cbaPoints,
+    prepare: cbaSweepPrepare({
+      input: cbaSample, discountPct: 3, horizon: 10, sensitivity: [0, 5],
+      provenance: 'test', presetId: 'custom', briefParams: null,
+    }),
+  });
+  ok('a CBA sweep changes the result and the parameter hash',
+    !cbaSweep.errors && cbaSweep.distinct.outputs === 3 && cbaSweep.distinct.params === 3,
+    cbaSweep.errors ? cbaSweep.errors.join('; ') : `${cbaSweep.distinct.outputs}/${cbaSweep.distinct.params}`);
+  ok('a CBA sweep leaves the input hash fixed',
+    cbaSweep.distinct.inputs === 1, String(cbaSweep.distinct.inputs));
+
+  ok('reproducibility settings are not sweepable',
+    sweepableFields('monte-carlo', effectiveBindings('monte-carlo', monteCarloSample, {})).length === 0);
+  ok('every module with sweep fields declares a metric',
+    MODULES.every((module) => {
+      const fields = sweepableFields(module.id, {});
+      return fields.length === 0 || Boolean(SWEEP_METRICS[module.id]);
+    }));
+  ok('sweep values print with their unit', formatSweepValue(discount, 4.5) === '4.5%');
 }
 
 // 6. Manifest determinism and verification.

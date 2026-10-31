@@ -41,6 +41,15 @@ export {
 } from './modules/scenario.js';
 export { buildReport, checkPit, PIT_QUESTIONS, distributionalReceipt, formatDistributional } from './report.js';
 export {
+  MODULE_BINDINGS, bindingOptions, effectiveBindings, validateBindings,
+  applyBindings, formatBindingValue, bindingReceipt, moduleHasBindings,
+} from './bindings.js';
+export {
+  MAX_SWEEP_POINTS, SWEEP_METRICS, SWEEP_NOTES, sweepableFields, defaultSweepRange,
+  sweepValues, cbaRunParams, cbaSweepPrepare, runSweep, formatSweepValue,
+  sweepFieldLabel,
+} from './sweep.js';
+export {
   cbaFromRows, mcdaFromRows, scenarioFromRows, TREE_CSV_NOTE,
   decisionTreeFromRows, ceaFromRows, equityFromRows, markovFromRows,
   budgetImpactFromRows, gameTheoryFromRows, queueingFromRows, monteCarloFromRows,

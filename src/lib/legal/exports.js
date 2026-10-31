@@ -11,6 +11,7 @@
 
 import { hashObject, sha256Hex } from '../../battery/hash.js';
 import { csvCell } from '../csv.js';
+import { GAZETTE_CSS, gazetteHead, gazetteFoot } from '../print/gazette.js';
 import { escapeHtml } from '../../battery/modules/decisionTree.js';
 import { FLAG_LABELS, FLAG_MEANING } from './risk.js';
 import { PIPELINE_VERSION } from './pipeline.js';
@@ -390,78 +391,95 @@ export const buildHtml = (result, { gate = null, manifest = null, review = null 
 <title>${escapeHtml(result.source.title || 'Reviewed plain-language rewrite')}</title>
 <style>
   body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1b1815; background: #fff; margin: 0; padding: 2.5rem 1.5rem; line-height: 1.55; }
-  main { max-width: 62rem; margin: 0 auto; }
-  h1 { font-size: 1.9rem; line-height: 1.15; margin: 0.25rem 0 0.5rem; }
-  h2 { font-size: 1.25rem; margin-top: 2.25rem; border-bottom: 1.5px solid #e0ddd8; padding-bottom: 0.35rem; }
-  .kicker { font-family: 'Courier New', monospace; font-size: 0.72rem; letter-spacing: 0.02em; color: #7a1f2b; }
-  .fine-print { font-size: 0.85rem; color: #4b4640; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-block: 0.75rem; }
-  th, td { text-align: left; padding: 0.45rem 0.6rem 0.45rem 0; border-bottom: 1px solid #eceae6; vertical-align: top; }
-  thead th { font-family: 'Courier New', monospace; font-size: 0.68rem; letter-spacing: 0.02em; color: #4b4640; border-bottom: 1.5px solid #c7c2bb; }
-  .num, .mono { font-family: 'IBM Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+  ${GAZETTE_CSS}
+  .num, .mono { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; font-variant-numeric: tabular-nums; }
   .num { width: 2.5rem; color: #6f6a63; }
   .src { color: #4b4640; width: 34%; }
   .plain { width: 34%; }
-  .flag { font-family: 'Courier New', monospace; font-size: 0.68rem; border-radius: 999px; padding: 0.15rem 0.6rem; white-space: nowrap; }
+  .flag { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; font-size: 0.66rem; border-radius: 999px; padding: 0.12rem 0.55rem; white-space: nowrap; }
   .flag-green { background: #eceae6; color: #322e29; }
   .flag-amber { background: #f0e1e3; color: #641622; }
   .flag-red { background: #7a1f2b; color: #fff; }
-  .conf { font-family: 'Courier New', monospace; font-size: 0.68rem; white-space: nowrap; }
+  .conf { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; font-size: 0.66rem; white-space: nowrap; }
   .conf-high { color: #2f6b3c; }
   .conf-medium { color: #7a5a12; }
   .conf-low { color: #7a1f2b; }
   .gate { background: #fff; border: 1px solid #eceae6; border-top: 3px solid #7a1f2b; padding: 1rem 1.25rem; }
   .warnings { font-size: 0.88rem; color: #641622; }
-  .stamp { font-family: 'Courier New', monospace; font-size: 0.72rem; white-space: pre-wrap; background: #f6f5f3; border: 1px solid #eceae6; padding: 1rem; }
-  .summary { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
-  .summary div { border: 1px solid #eceae6; padding: 0.6rem 0.9rem; border-radius: 8px; font-size: 0.85rem; }
-  .summary strong { display: block; font-size: 1.3rem; }
-  @media print { body { padding: 0; } h2 { break-after: avoid; } table { break-inside: auto; } tr { break-inside: avoid; } }
+  .summary { display: flex; flex-wrap: wrap; gap: 0 1rem; margin: 1rem 0 1.4rem; padding: 0.6rem 0; border-top: 1px solid #c7c2bb; border-bottom: 1px solid #c7c2bb; }
+  .summary div { padding: 0.1rem 1rem 0.1rem 0; border-right: 1px solid #eceae6; font-size: 0.78rem; color: #4b4640; }
+  .summary div:last-child { border-right: 0; padding-right: 0; }
+  .summary strong { display: block; font-family: 'Newsreader', Georgia, 'Times New Roman', serif; font-size: 1.3rem; line-height: 1.15; color: #1b1815; }
+  @media print { body { padding: 0; } .gate { break-inside: avoid; } }
 </style>
 </head>
 <body>
-<main>
-  <p class="kicker">THS Legal Simplifier · ${escapeHtml(result.jurisdiction.label)} · ${escapeHtml(manifest ? manifest.engine : PIPELINE_VERSION)}</p>
-  <h1>${escapeHtml(result.source.title || 'Reviewed plain-language rewrite')}</h1>
-  <p class="fine-print">${escapeHtml(result.source.citation || 'No citation recorded.')}${result.source.version ? ` · version ${escapeHtml(result.source.version)}` : ''}${result.source.date ? ` · ${escapeHtml(result.source.date)}` : ''}</p>
+<main class="gz">
+${gazetteHead({
+  imprint: 'THS Legal Simplifier',
+  edition: `${result.jurisdiction.label} · ${manifest ? manifest.engine : PIPELINE_VERSION}`,
+  title: result.source.title || 'Reviewed plain-language rewrite',
+  standfirst: 'Every sentence of the source beside its plain-language rewrite, with the flag, the confidence and the reason that sentence carries that flag.',
+  meta: [
+    ['Citation', result.source.citation || 'No citation recorded.'],
+    ['Version', result.source.version || ''],
+    ['Source date', result.source.date || ''],
+    ['Register', result.jurisdiction.label],
+    ['High confidence', manifest && manifest.confidence ? String(manifest.confidence.high) : ''],
+  ],
+})}
 
-  <div class="summary">
-    <div><strong>${result.summary.green}</strong>literal</div>
-    <div><strong>${result.summary.amber}</strong>interpretive</div>
-    <div><strong>${result.summary.red}</strong>legal judgement</div>
-    <div><strong>${manifest && manifest.confidence ? manifest.confidence.high : 0}</strong>high confidence</div>
-    <div><strong>${manifest && manifest.confidence ? manifest.confidence.low : 0}</strong>verify against source</div>
-    <div><strong>${result.readability.simplified.grade}</strong>grade after</div>
-    <div><strong>${result.readability.simplified.score}</strong>reading ease after</div>
+  <div class="gz-body">
+    <div class="summary gz-wide">
+      <div><strong>${result.summary.green}</strong>literal</div>
+      <div><strong>${result.summary.amber}</strong>interpretive</div>
+      <div><strong>${result.summary.red}</strong>legal judgement</div>
+      <div><strong>${manifest && manifest.confidence ? manifest.confidence.high : 0}</strong>high confidence</div>
+      <div><strong>${manifest && manifest.confidence ? manifest.confidence.low : 0}</strong>verify against source</div>
+      <div><strong>${result.readability.simplified.grade}</strong>grade after</div>
+      <div><strong>${result.readability.simplified.score}</strong>reading ease after</div>
+    </div>
+
+    ${warnings}
+
+    <section class="gz-wide">
+      <h2>Source and rewrite, side by side</h2>
+      <table>
+        <thead><tr><th>#</th><th>Clause</th><th>Type</th><th>Flag</th><th>Confidence</th><th>Source</th><th>Rewrite</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </section>
+
+    <section class="gz-wide">
+      <h2>Why each sentence carries that flag</h2>
+      <table>
+        <thead><tr><th>Sentence</th><th>Flag</th><th>Confidence</th><th>Reasons</th></tr></thead>
+        <tbody>${reasons}</tbody>
+      </table>
+    </section>
+
+    ${rejected}
+
+    ${definitions}
+
+    <div class="gz-columns">
+      ${gateBlock}
+
+      ${method}
+
+      <section>
+        <h2>Limitations</h2>
+        <ul class="fine-print">
+          <li>This is a draft simplification, not legal advice, and not a certification that the source text is current or in force.</li>
+          <li>Flags describe the rewrite, not the law. A green flag means the wording changed mechanically; it does not mean the clause was classified correctly.</li>
+          <li>Defined terms are matched by exact wording and common inflections. A term the tool did not read is a term it did not protect.</li>
+          <li>Every red sentence needs a qualified lawyer before it leaves the building.</li>
+        </ul>
+      </section>
+    </div>
   </div>
 
-  ${warnings}
-
-  <h2>Source and rewrite, side by side</h2>
-  <table>
-    <thead><tr><th>#</th><th>Clause</th><th>Type</th><th>Flag</th><th>Confidence</th><th>Source</th><th>Rewrite</th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table>
-
-  <h2>Why each sentence carries that flag</h2>
-  <table>
-    <thead><tr><th>Sentence</th><th>Flag</th><th>Confidence</th><th>Reasons</th></tr></thead>
-    <tbody>${reasons}</tbody>
-  </table>
-
-  ${rejected}
-
-  ${definitions}
-  ${gateBlock}
-  ${method}
-
-  <h2>Limitations</h2>
-  <ul class="fine-print">
-    <li>This is a draft simplification, not legal advice, and not a certification that the source text is current or in force.</li>
-    <li>Flags describe the rewrite, not the law. A green flag means the wording changed mechanically; it does not mean the clause was classified correctly.</li>
-    <li>Defined terms are matched by exact wording and common inflections. A term the tool did not read is a term it did not protect.</li>
-    <li>Every red sentence needs a qualified lawyer before it leaves the building.</li>
-  </ul>
+${gazetteFoot({ right: 'Draft simplification · not legal advice' })}
 </main>
 </body>
 </html>`;

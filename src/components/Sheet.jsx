@@ -96,6 +96,20 @@ export default function Sheet({
       </div>
       {copied && <p className="sheet-note meta">{copied}</p>}
 
+      {/* The printed sheet carries its own imprint, so a clerk can see where
+          it came from and a citizen can file it. On screen the masthead is
+          not there; the title below does the work. */}
+      <div className="print-masthead">
+        <p className="print-imprint">
+          <span>The Humble Sapien · a sheet to carry</span>
+          <span>{scheme.name}</span>
+        </p>
+        <p className="print-title">
+          {scheme.name}: {situation.label}
+        </p>
+        <p className="print-where">{describePlace(place) || 'No place picked for this sheet.'}</p>
+      </div>
+
       <h3 className="sheet-title">
         {scheme.name}: {situation.label}
       </h3>
@@ -122,58 +136,62 @@ export default function Sheet({
         </p>
       )}
 
-      {rung && (
-        <section className="sheet-block">
-          <h4>Where to go</h4>
-          <p className="sheet-office">
-            <strong>{rung.office}</strong>
-            <span className="meta">: {rung.post}</span>
-          </p>
-          <p className="sheet-line">{rung.decides}</p>
-          <dl className="sheet-facts">
-            <div>
-              <dt>Where</dt>
-              <dd>{rung.where}</dd>
-            </div>
-            <div>
-              <dt>Carry</dt>
-              <dd>{rung.carry}</dd>
-            </div>
-          </dl>
-          <p className="meta sheet-source">Source: {rung.source}</p>
-        </section>
-      )}
+      {/* On paper these three are the sheet's front page: two columns of
+          guidance above the letter, which stays full width to be signed. */}
+      <div className="sheet-brief">
+        {rung && (
+          <section className="sheet-block">
+            <h4>Where to go</h4>
+            <p className="sheet-office">
+              <strong>{rung.office}</strong>
+              <span className="meta">: {rung.post}</span>
+            </p>
+            <p className="sheet-line">{rung.decides}</p>
+            <dl className="sheet-facts">
+              <div>
+                <dt>Where</dt>
+                <dd>{rung.where}</dd>
+              </div>
+              <div>
+                <dt>Carry</dt>
+                <dd>{rung.carry}</dd>
+              </div>
+            </dl>
+            <p className="meta sheet-source">Source: {rung.source}</p>
+          </section>
+        )}
 
-      {above.length > 0 && (
-        <section className="sheet-block">
-          <h4>If that office does not answer</h4>
-          <ol className="sheet-above">
-            {above.map((r) => (
-              <li key={r.level}>
-                <strong>{r.office}</strong>
-                <span className="meta">: {r.post}</span>
-                <br />
-                {r.where}
-              </li>
-            ))}
-          </ol>
-        </section>
-      )}
+        {above.length > 0 && (
+          <section className="sheet-block">
+            <h4>If that office does not answer</h4>
+            <ol className="sheet-above">
+              {above.map((r) => (
+                <li key={r.level}>
+                  <strong>{r.office}</strong>
+                  <span className="meta">: {r.post}</span>
+                  <br />
+                  {r.where}
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
 
-      {lines.length > 0 && (
-        <section className="sheet-block">
-          <h4>Dates</h4>
-          <ul className="sheet-dates">
-            {lines.map((l) => (
-              <li key={`${l.anchor}-${l.what}`}>
-                {l.what}. Due on {l.due}
-                {l.passed && l.then ? `. ${l.then}` : ''}
-                <span className="meta"> {l.source}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+        {lines.length > 0 && (
+          <section className="sheet-block">
+            <h4>Dates</h4>
+            <ul className="sheet-dates">
+              {lines.map((l) => (
+                <li key={`${l.anchor}-${l.what}`}>
+                  {l.what}. Due on {l.due}
+                  {l.passed && l.then ? `. ${l.then}` : ''}
+                  <span className="meta"> {l.source}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+      </div>
 
       <section className="sheet-block">
         <div className="sheet-letter-head">
@@ -241,7 +259,7 @@ export default function Sheet({
           registered post and keep the receipt.
         </p>
 
-        <pre className="sheet-letter">{letter}</pre>
+        <pre className="sheet-letter" lang={effectiveLang === 'hi' ? 'hi' : undefined}>{letter}</pre>
       </section>
     </div>
   );

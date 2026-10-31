@@ -18,6 +18,7 @@ import {
   COVERAGE_NOTE,
   COVERAGE_SCOPE,
 } from '../src/data/languageCoverage.js';
+import { MOTTOS, SPEECH_TAGS } from '../src/data/mottos.js';
 import { INSTRUMENTS } from '../src/data/stateOutputInstruments.js';
 import { KINDS } from '../src/data/stateOutput.js';
 import { buildStacks, dotAt } from '../src/lib/outputChart.js';
@@ -54,6 +55,36 @@ check(
 check(
   'the lookup map covers the list',
   LANGUAGES.every((entry) => LANGUAGE_BY_CODE[entry.code] === entry),
+);
+
+// ------------------------------------------------------------- the motto deck
+console.log('\nthe motto deck');
+check(
+  'every scheduled language has a motto',
+  LANGUAGES.every((entry) => typeof MOTTOS[entry.code]?.text === 'string' && MOTTOS[entry.code].text.trim()),
+);
+check(
+  'every motto opens with the house mark',
+  LANGUAGES.every((entry) => MOTTOS[entry.code].text.startsWith('THS - ')),
+);
+check(
+  'every motto is set in a non-Latin script',
+  LANGUAGES.every((entry) => /[^\u0000-\u007F]/.test(MOTTOS[entry.code].text)),
+);
+check(
+  'the motto direction follows the script used in this set',
+  LANGUAGES.every(
+    (entry) =>
+      MOTTOS[entry.code].dir === (entry.code === 'ks' || entry.code === 'ur' ? 'rtl' : 'ltr'),
+  ),
+);
+check(
+  'no two languages share a motto',
+  new Set(LANGUAGES.map((entry) => MOTTOS[entry.code].text)).size === LANGUAGES.length,
+);
+check(
+  'every language has a region-tagged speech voice',
+  LANGUAGES.every((entry) => SPEECH_TAGS[entry.code] === `${entry.code}-IN`),
 );
 
 // ------------------------------------------------------------- the ledger

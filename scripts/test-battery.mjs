@@ -406,6 +406,10 @@ ok('parseNumber empty flagged', parseNumber('').empty);
   ok('Report HTML carries the module-rendered results',
     report.html.includes('Expected value at the root') && !report.html.includes('undefined</h2>') && !report.html.includes('\n  undefined\n'),
     'results section rendered from the module');
+  ok('Report HTML is set as a gazette',
+    report.html.includes('<main class="gz">') && report.html.includes('class="gz-head"')
+      && report.html.includes('class="gz-columns"') && report.html.includes('class="gz-foot"'));
+  ok('Report gazette gives the tables a full-width band', report.html.includes('<section class="gz-wide">'));
   ok('Report JSON has the manifest', report.json.manifest.outputHash === report.manifest.outputHash);
   ok('checkPit reports completeness', checkPit({ whoBenefits: 'x', whoPays: 'y', whoMissing: 'z' }).complete);
 }

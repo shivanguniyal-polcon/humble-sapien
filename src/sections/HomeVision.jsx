@@ -1,14 +1,20 @@
 // The frontispiece: the claim the rest of the page argues for, set beside the
-// one list that makes it concrete. The catalogue below is the evidence; this
-// section is the sentence it supports.
+// one drawing that makes it concrete. The catalogue below is the evidence;
+// this section is the sentence it supports.
 //
-// The matrix is a specimen, not a language menu. The Eighth Schedule names 22
-// languages; each is printed in its own script so the page begins with the
-// Republic's own languages rather than with a claim about the site. Whether the
-// law is actually readable in them is the question the timeline asks next.
+// The plate is a section through the fifth pillar. Four institutions carry
+// separate pieces of the record; the public, the fifth, carries the record
+// itself — the data, the information, and the methods to use them. The
+// languages live in the ribbon above, once, where they can be heard.
 
 import { TOOLS } from '../data/tools';
-import { LANGUAGES } from '../data/languages';
+
+const FOUR = [
+  { numeral: 'I', name: 'Legislature', act: 'forms the rules.', x: 44, beam: 38 },
+  { numeral: 'II', name: 'Executive', act: 'implements them.', x: 118, beam: 112 },
+  { numeral: 'III', name: 'Judiciary', act: 'delivers justice and fairness.', x: 192, beam: 186 },
+  { numeral: 'IV', name: 'Media', act: 'reports it.', x: 266, beam: 260 },
+];
 
 // The heading is the anchor the frontispiece's second door points at. Move
 // focus with the scroll so a keyboard reader lands where the page does.
@@ -33,10 +39,9 @@ export default function HomeVision({ onNavigate }) {
           </h1>
 
           <p className="home-vision-lede">
-            Not a fifth institution added to four. The legislature makes the
-            law; the executive writes beneath it; the judiciary reads it; the
-            press reports it. Each holds a piece of the record and speaks to
-            the others. The public is spoken about.
+            Not a fifth institution added to four. Each of the first four holds
+            a piece of the record and speaks to the others; the public is
+            spoken about.
           </p>
           <p className="home-vision-body">
             The fifth pillar is a new role, not another seat: the public holding
@@ -60,39 +65,150 @@ export default function HomeVision({ onNavigate }) {
           </p>
         </div>
 
-        <aside className="schedule-panel" aria-labelledby="schedule-title">
-          <div className="schedule-head">
-            <h2 id="schedule-title" className="schedule-title">
-              The Eighth Schedule
-            </h2>
-            <span className="schedule-ordinal" aria-hidden="true">
-              VIII
+        <aside className="pillar-plate" aria-labelledby="pillar-plate-title">
+          <div className="pillar-plate-head">
+            <div>
+              <span className="pillar-plate-kicker">The fifth pillar</span>
+              <h2 id="pillar-plate-title" className="pillar-plate-title">
+                Where THS sits
+              </h2>
+            </div>
+            <span className="pillar-plate-fig" aria-hidden="true">
+              Fig. V
             </span>
           </div>
 
-          <ul className="schedule-grid">
-            {LANGUAGES.map(({ name, endonym, code }) => (
-              <li className="schedule-cell" key={code}>
-                <span className="schedule-name" lang={code}>
-                  {endonym}
-                </span>
-                <span className="schedule-meta">
-                  {name}
-                  <span className="schedule-code" aria-hidden="true">
-                    {code}
-                  </span>
-                </span>
-              </li>
-            ))}
-            <li className="schedule-cell schedule-mark" aria-hidden="true">
-              <span className="schedule-mark-num">22</span>
-              <span className="schedule-mark-word">languages</span>
-            </li>
-          </ul>
+          <figure className="pillar-figure">
+            <svg
+              className="pillar-drawing"
+              viewBox="0 0 420 206"
+              role="img"
+              aria-labelledby="pillar-drawing-title"
+            >
+              <title id="pillar-drawing-title">
+                Four institutions carry separate pieces of the record. A fifth,
+                taller pillar marked THS carries the whole record.
+              </title>
 
-          <p className="schedule-note">
-            The 22 languages the Constitution names, each set in its own script.
-            A list, not a claim that the law is published in them.
+              <path className="pillar-ground" d="M16 178H404" />
+
+              {FOUR.map(({ numeral, x, beam }) => (
+                <g className="pillar-four" key={numeral}>
+                  <rect
+                    className="pillar-piece"
+                    x={beam}
+                    y="72"
+                    width="56"
+                    height="8"
+                  />
+                  <rect
+                    className="pillar-four-cap"
+                    x={x - 4}
+                    y="86"
+                    width="42"
+                    height="6"
+                  />
+                  <rect
+                    className="pillar-four-body"
+                    x={x}
+                    y="92"
+                    width="34"
+                    height="84"
+                  />
+                  <rect
+                    className="pillar-four-base"
+                    x={x - 4}
+                    y="176"
+                    width="42"
+                    height="4"
+                  />
+                  <path
+                    className="pillar-flute"
+                    d={`M${x + 11} 98V170M${x + 23} 98V170`}
+                  />
+                  <text x={x + 17} y="198" textAnchor="middle">
+                    {numeral}
+                  </text>
+                </g>
+              ))}
+
+              <g className="pillar-fifth">
+                <rect
+                  className="pillar-tablet"
+                  x="340"
+                  y="26"
+                  width="64"
+                  height="22"
+                />
+                <text
+                  className="pillar-tablet-word"
+                  x="372"
+                  y="41"
+                  textAnchor="middle"
+                >
+                  THS
+                </text>
+                <rect
+                  className="pillar-fifth-cap"
+                  x="348"
+                  y="54"
+                  width="48"
+                  height="6"
+                />
+                <rect
+                  className="pillar-fifth-body"
+                  x="352"
+                  y="60"
+                  width="40"
+                  height="116"
+                />
+                <rect
+                  className="pillar-fifth-base"
+                  x="344"
+                  y="176"
+                  width="56"
+                  height="4"
+                />
+                <text
+                  className="pillar-fifth-num"
+                  x="372"
+                  y="198"
+                  textAnchor="middle"
+                >
+                  V
+                </text>
+              </g>
+            </svg>
+
+            <figcaption className="pillar-caption">
+              <ol className="pillar-legend">
+                {FOUR.map(({ numeral, name, act }) => (
+                  <li key={numeral}>
+                    <span className="pillar-legend-num" aria-hidden="true">
+                      {numeral}
+                    </span>
+                    <span>
+                      <strong>{name}</strong> {act}
+                    </span>
+                  </li>
+                ))}
+                <li className="is-fifth">
+                  <span className="pillar-legend-num" aria-hidden="true">
+                    V
+                  </span>
+                  <span>
+                    <strong>The public</strong> holds the record: the data, the
+                    information, and the methods to exercise power.
+                  </span>
+                </li>
+              </ol>
+            </figcaption>
+          </figure>
+
+          <p className="pillar-plate-note">
+            The first four hold a piece each and speak to one another. None
+            hands the record to the public. THS is the fifth: the public holding
+            the same record, with the tools and the receipts.
           </p>
         </aside>
       </div>

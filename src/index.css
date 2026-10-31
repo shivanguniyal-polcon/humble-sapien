@@ -130,6 +130,114 @@
   --duration-state: 150ms;
 }
 
+/* ---------- language typography ----------
+   The site sets 22 languages in their own scripts, and Latin type rules do
+   not carry across: tracking that flatters a Latin word pulls an Indic
+   cluster apart, synthetic bold slurs a face with no bold cut, and leading
+   tuned for Public Sans clips a Bengali matra. So each script names the
+   reader's best face first — Kohinoor and Sangam on macOS, Nirmala UI on
+   Windows, Noto on Android and Linux — then the script's own Noto face, then
+   the generic. Only Ol Chiki and Meetei Mayek are fetched as webfonts, because
+   no common desktop stack carries them; the rest are already on the device,
+   and pulling twenty Indic families in to print their own names would cost
+   more than it buys.
+
+   Two custom properties carry the stack and the leading, and any element that
+   declares a lang attribute inherits them: the ribbon, the motto deck, the
+   script specimens, the timeline's language lens, the Hindi passbook and a
+   Hindi letter all share one typographic decision. */
+:lang(en) {
+  --font-lang: var(--font-body);
+  --lang-leading: 1.6;
+}
+
+/* Devanagari: Hindi, Marathi, Nepali, Sanskrit, Konkani, Dogri, Maithili, Bodo. */
+:lang(hi),
+:lang(mr),
+:lang(ne),
+:lang(sa),
+:lang(kok),
+:lang(doi),
+:lang(mai),
+:lang(brx) {
+  --font-lang: 'Kohinoor Devanagari', 'Devanagari Sangam MN', 'Nirmala UI', 'Noto Sans Devanagari', 'Mangal', sans-serif;
+  --lang-leading: 1.62;
+}
+
+/* Bengali script: Bengali and Assamese. */
+:lang(bn),
+:lang(as) {
+  --font-lang: 'Kohinoor Bangla', 'Bangla Sangam MN', 'Nirmala UI', 'Noto Sans Bengali', 'Vrinda', sans-serif;
+  --lang-leading: 1.68;
+}
+
+:lang(pa) {
+  --font-lang: 'Gurmukhi MN', 'Gurmukhi Sangam MN', 'Nirmala UI', 'Noto Sans Gurmukhi', 'Raavi', sans-serif;
+  --lang-leading: 1.6;
+}
+
+:lang(gu) {
+  --font-lang: 'Gujarati Sangam MN', 'Gujarati MT', 'Nirmala UI', 'Noto Sans Gujarati', 'Shruti', sans-serif;
+  --lang-leading: 1.62;
+}
+
+/* Odia ships under both spellings of its name, depending on the platform. */
+:lang(or) {
+  --font-lang: 'Nirmala UI', 'Noto Sans Oriya', 'Noto Sans Odia', 'Kalinga', 'Oriya Sangam MN', sans-serif;
+  --lang-leading: 1.68;
+}
+
+:lang(ta) {
+  --font-lang: 'Kohinoor Tamil', 'Tamil Sangam MN', 'Nirmala UI', 'Noto Sans Tamil', 'Latha', sans-serif;
+  --lang-leading: 1.68;
+}
+
+:lang(te) {
+  --font-lang: 'Kohinoor Telugu', 'Telugu Sangam MN', 'Nirmala UI', 'Noto Sans Telugu', 'Gautami', sans-serif;
+  --lang-leading: 1.7;
+}
+
+:lang(kn) {
+  --font-lang: 'Kohinoor Kannada', 'Kannada Sangam MN', 'Nirmala UI', 'Noto Sans Kannada', 'Tunga', sans-serif;
+  --lang-leading: 1.7;
+}
+
+:lang(ml) {
+  --font-lang: 'Malayalam Sangam MN', 'Nirmala UI', 'Noto Sans Malayalam', 'Kartika', sans-serif;
+  --lang-leading: 1.7;
+}
+
+:lang(sat) {
+  --font-lang: 'Noto Sans Ol Chiki', 'Noto Sans', sans-serif;
+  --lang-leading: 1.55;
+}
+
+:lang(mni) {
+  --font-lang: 'Noto Sans Meetei Mayek', 'Noto Sans', sans-serif;
+  --lang-leading: 1.65;
+}
+
+/* Perso-Arabic: Kashmiri, Sindhi and Urdu. Nastaliq needs the leading of a
+   written hand, not of a text face; Naskh fallbacks are shorter but never
+   cramped. */
+:lang(ks),
+:lang(sd),
+:lang(ur) {
+  --font-lang: 'Noto Nastaliq Urdu', 'Geeza Pro', 'Nirmala UI', 'Noto Naskh Arabic', 'Segoe UI', Tahoma, sans-serif;
+  --lang-leading: 1.95;
+}
+
+/* One rule, so no surface has to remember the script. The html element is
+   excluded: it declares the document's language, not a run of another one. */
+[lang]:not(html) {
+  font-family: var(--font-lang, inherit);
+  line-height: var(--lang-leading, inherit);
+  font-synthesis: none;
+  letter-spacing: normal;
+  text-transform: none;
+  unicode-bidi: isolate;
+}
+
 /* ---------- base ---------- */
 * {
   box-sizing: border-box;
@@ -4703,9 +4811,340 @@ input[type='range'] {
 /* ---------- the frontispiece ----------
    The page opens on the claim, not on the counter. The vision used to sit at
    the bottom of the column, where a reader met it only after drawing forty
-   thousand squares; here it is the first thing read, with the Eighth Schedule
-   beside it. The matrix is a specimen: hairlines, one language to a cell, and
-   no control that pretends the site is translated into all 22. */
+   thousand squares; here it is the first thing read, with the fifth pillar
+   drawn beside it. The ribbon above carries the languages once; the plate
+   beside the claim carries the argument about where THS sits. */
+
+/* The ribbon is the page's opening mark, borrowed from the language panel on
+   a banknote: one engraved band, every scheduled language in its own script.
+   Each name is a button: it opens the motto in that language, written and
+   spoken, as a paper deck unfolding under the band. */
+.schedule-ribbon {
+  position: relative;
+  overflow: hidden;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 6px,
+      rgb(255 255 255 / 0.022) 6px 7px
+    ),
+    var(--clay-800);
+  color: var(--paper-50);
+  border-block: 1px solid var(--clay-900);
+}
+
+.schedule-ribbon::before {
+  content: '';
+  position: absolute;
+  inset: 4px 0;
+  border-block: 1px solid color-mix(in srgb, var(--paper-50) 22%, transparent);
+  pointer-events: none;
+}
+
+.schedule-ribbon-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: 0.6rem var(--space-5);
+}
+
+.schedule-ribbon-seal {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  padding-right: 0.85rem;
+  border-right: 1px solid color-mix(in srgb, var(--paper-50) 26%, transparent);
+}
+
+.schedule-ribbon-ordinal {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.schedule-ribbon-label {
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  line-height: 1.15;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--clay-200);
+}
+
+.schedule-ribbon-list {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.18rem 0.75rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The names are the control. A banknote band does not grow a toolbar, so the
+   affordance is a hairline under the word and a paper deck when it opens. */
+.schedule-ribbon-button {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.28rem;
+  min-height: 1.75rem;
+  padding: 0.2rem 0.15rem;
+  appearance: none;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 150ms var(--ease-out),
+    background-color 150ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .schedule-ribbon-button:hover {
+    border-bottom-color: color-mix(in srgb, var(--paper-50) 55%, transparent);
+  }
+}
+
+.schedule-ribbon-button[aria-expanded='true'] {
+  border-bottom-color: var(--paper-50);
+  background: color-mix(in srgb, var(--paper-50) 8%, transparent);
+}
+
+.schedule-ribbon-button:focus-visible {
+  outline: 2px solid var(--paper-50);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* The paper deck under the band. It is the page's own plate, set inside the
+   ribbon so the motto arrives where the hand is. */
+.schedule-motto {
+  position: relative;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-top: 1px solid color-mix(in srgb, var(--paper-50) 30%, transparent);
+  animation: motto-in 220ms var(--ease-out) both;
+}
+
+.schedule-motto-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-2) var(--space-5);
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: var(--space-4) var(--space-5);
+}
+
+.schedule-motto-copy {
+  min-width: 0;
+}
+
+.schedule-motto-kicker {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-accent-text);
+}
+
+.schedule-motto-text {
+  max-width: 46ch;
+  margin: 0;
+  font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  text-wrap: balance;
+}
+
+.schedule-motto-gloss {
+  display: block;
+  margin-top: 0.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.schedule-motto-actions {
+  display: flex;
+  align-items: start;
+  gap: var(--space-3);
+  padding-top: 0.1rem;
+}
+
+.schedule-motto-action {
+  appearance: none;
+  min-height: 2.25rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+@media (hover: hover) {
+  .schedule-motto-action:hover {
+    background: var(--color-surface-sunken);
+  }
+}
+
+.schedule-motto-action:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.schedule-motto-action.is-quiet {
+  border-color: transparent;
+  background: none;
+  color: var(--color-text-secondary);
+}
+
+.schedule-motto-note {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+@keyframes motto-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .schedule-motto {
+    animation: none;
+  }
+
+  .schedule-ribbon-button {
+    transition: none;
+  }
+}
+
+@media (max-width: 48rem) {
+  .schedule-motto-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4) var(--space-4);
+  }
+
+  .schedule-motto-text {
+    font-size: 1.35rem;
+  }
+
+  .schedule-motto-actions {
+    gap: var(--space-2);
+  }
+}
+
+/* The face and leading come from the language rule; this only sets the
+   optical size of the band. */
+.schedule-ribbon-name {
+  font-size: 0.78rem;
+  letter-spacing: 0;
+}
+
+/* These two endonyms run longer than the rest in the same band. */
+.schedule-ribbon-name:lang(mni),
+.schedule-ribbon-name:lang(sat) {
+  font-size: 0.9em;
+}
+
+.schedule-ribbon-code {
+  font-family: var(--font-mono);
+  font-size: 0.44rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--clay-300);
+}
+
+.schedule-ribbon-count {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  padding-left: 0.85rem;
+  border-left: 1px solid color-mix(in srgb, var(--paper-50) 26%, transparent);
+  text-align: right;
+}
+
+.schedule-ribbon-count strong {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: 0;
+}
+
+.schedule-ribbon-count span {
+  font-family: var(--font-mono);
+  font-size: 0.44rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--clay-200);
+}
+
+@media (max-width: 48rem) {
+  .schedule-ribbon-inner {
+    gap: 0.65rem;
+    padding-block: 0.5rem;
+  }
+
+  .schedule-ribbon-button {
+    min-height: 2.75rem;
+  }
+
+  .schedule-ribbon-label,
+  .schedule-ribbon-count {
+    display: none;
+  }
+
+  .schedule-ribbon-seal {
+    padding-right: 0.65rem;
+  }
+
+  /* A ribbon is a long object. On a phone it slides rather than folding into
+     six lines; every script is still there, one swipe away. */
+  .schedule-ribbon-list {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .schedule-ribbon-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .schedule-ribbon-code {
+    display: none;
+  }
+
+  .schedule-ribbon-name {
+    font-size: 0.82rem;
+  }
+}
 
 .home-vision {
   padding-block: clamp(2.5rem, 6vh, 4.5rem);
@@ -4714,7 +5153,9 @@ input[type='range'] {
 .home-vision-inner {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(2rem, 5vw, 4rem);
+  /* The site's two-column gap, not a special one. The frontispiece used to
+     stand 64px apart while every other pair ran 24–32px. */
+  gap: var(--space-6);
   align-items: start;
 }
 
@@ -4761,25 +5202,35 @@ input[type='range'] {
   font-size: 0.875rem;
 }
 
-/* The schedule panel is printed like a table in a gazette: one rule, one cell,
-   nothing raised. Its background is the surface token, mixed so the paper and
-   the page's own ground stay the same material. */
-.schedule-panel {
+/* The plate is a gazette figure, not a card: one rule, one drawing, one list.
+   Its background is the surface token, mixed so the paper and the page's own
+   ground stay the same material. */
+.pillar-plate {
   min-width: 0;
   border: 1px solid var(--color-border);
   background: color-mix(in srgb, var(--color-surface) 75%, transparent);
 }
 
-.schedule-head {
+.pillar-plate-head {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-3);
   padding: 0.7rem 0.8rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.schedule-title {
+.pillar-plate-kicker {
+  display: block;
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.pillar-plate-title {
   margin: 0;
   font-family: var(--font-mono);
   font-size: 0.625rem;
@@ -4790,93 +5241,142 @@ input[type='range'] {
   color: var(--color-accent-text);
 }
 
-.schedule-ordinal {
+.pillar-plate-fig {
   font-family: var(--font-mono);
   font-size: 0.625rem;
   letter-spacing: 0.09em;
   color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
-.schedule-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1px;
+.pillar-figure {
   margin: 0;
-  padding: 0;
-  list-style: none;
-  background: var(--color-border);
+  padding: 0.7rem 0.9rem 0.4rem;
 }
 
-.schedule-cell {
-  min-width: 0;
-  min-height: 3.75rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.3rem;
-  padding: 0.55rem 0.6rem 0.5rem;
-  background: var(--color-surface);
+.pillar-drawing {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
 }
 
-/* The two families below carry the scripts the common desktop stacks do not:
-   Ol Chiki and Meetei Mayek. Everything else falls through Newsreader to the
-   reader's own Indic faces, so no script is asked to render in another's. */
-.schedule-name {
-  font-family: 'Noto Sans Ol Chiki', 'Noto Sans Meetei Mayek', var(--font-display);
-  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
-  line-height: 1.45;
-  letter-spacing: 0;
+.pillar-ground {
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
 }
 
-/* These two words run longer than a Latin endonym in the same cell. */
-.schedule-name:lang(mni),
-.schedule-name:lang(sat) {
-  font-size: 0.88em;
+.pillar-piece {
+  fill: var(--paper-200);
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
 }
 
-.schedule-meta {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-2);
+.pillar-four-body {
+  fill: var(--color-surface-sunken);
+  stroke: var(--color-border-strong);
+  stroke-width: 1;
+}
+
+.pillar-four-cap,
+.pillar-four-base {
+  fill: var(--paper-300);
+}
+
+.pillar-flute {
+  fill: none;
+  stroke: var(--paper-300);
+  stroke-width: 1;
+}
+
+.pillar-four text {
+  fill: var(--color-text-muted);
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  line-height: 1.2;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+  font-size: 9px;
+  letter-spacing: 0.06em;
 }
 
-.schedule-code {
-  letter-spacing: 0.02em;
+/* The fifth is not a copy of the four: it is taller, it carries the seal, and
+   it is the only thing on the plate in the house ink. */
+.pillar-tablet {
+  fill: var(--color-accent-solid);
+}
+
+.pillar-tablet-word {
+  fill: var(--paper-50);
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+}
+
+.pillar-fifth-cap,
+.pillar-fifth-base {
+  fill: var(--color-accent-solid);
+}
+
+.pillar-fifth-body {
+  fill: var(--color-accent-soft);
+  stroke: var(--color-accent-solid);
+  stroke-width: 1.5;
+}
+
+.pillar-fifth-num {
+  fill: var(--color-accent-text);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+.pillar-caption {
+  margin: 0;
+}
+
+.pillar-legend {
+  margin: 0;
+  padding: 0.15rem 0 0.2rem;
+  list-style: none;
+}
+
+.pillar-legend li {
+  display: grid;
+  grid-template-columns: 1.4rem minmax(0, 1fr);
+  gap: 0.45rem;
+  padding-top: 0.45rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.78rem;
+  line-height: 1.45;
   color: var(--color-text-secondary);
 }
 
-.schedule-mark {
-  grid-column: span 2;
-  justify-content: center;
-  background: var(--color-accent-soft);
+.pillar-legend li:first-child {
+  padding-top: 0;
+  border-top: 0;
 }
 
-.schedule-mark-num {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.02em;
-  color: var(--color-accent-text);
-}
-
-.schedule-mark-word {
-  margin-top: 0.2rem;
+.pillar-legend-num {
   font-family: var(--font-mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
+  font-size: 0.625rem;
+  line-height: 1.65;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+}
+
+.pillar-legend strong {
+  color: var(--color-text);
+  font-weight: 650;
+}
+
+.pillar-legend .is-fifth {
+  color: var(--color-text);
+}
+
+.pillar-legend .is-fifth .pillar-legend-num,
+.pillar-legend .is-fifth strong {
   color: var(--color-accent-text);
 }
 
-.schedule-note {
+.pillar-plate-note {
   margin: 0;
   padding: 0.7rem 0.8rem 0.8rem;
   border-top: 1px solid var(--color-border);
@@ -4896,7 +5396,7 @@ input[type='range'] {
     max-width: 16ch;
   }
 
-  .schedule-panel {
+  .pillar-plate {
     max-width: 36rem;
   }
 }
@@ -4915,29 +5415,11 @@ input[type='range'] {
     font-size: 1.0625rem;
   }
 
-  .schedule-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-
-  .schedule-cell {
-    min-height: 3.5rem;
-    padding: 0.5rem 0.5rem 0.45rem;
-  }
-
-  .schedule-name {
-    font-size: 0.95rem;
+  .pillar-legend li {
+    font-size: 0.76rem;
   }
 }
 
-@media (max-width: 24rem) {
-  .schedule-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .schedule-meta {
-    font-size: 0.5rem;
-  }
-}
 
 /* ---------- the timeline spread ---------- */
 
@@ -5661,6 +6143,9 @@ input[type='range'] {
 }
 
 .timeline-lens-title {
+  /* A frontispiece cell lands here; keep the heading clear of the floating
+     mark when it takes focus and the window scrolls. */
+  scroll-margin-top: 5.5rem;
   margin: var(--space-1) 0 var(--space-2);
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 2vw, 1.6rem);
@@ -8594,8 +9079,20 @@ input[type='range'] {
 }
 
 /* ---------- printing the sheet ---------- */
-/* The sheet is the one thing on this page that goes on paper. Everything
-   else is navigation, and a printed page of navigation is waste. */
+/* On paper the sheet is a gazette page: an imprint, a rule, the guidance in
+   two columns, and the letter full width below, because a letter is read,
+   signed and handed over as one block. The passbook prints under the same
+   masthead, so two pieces of paper from this site look like they came from
+   one press. */
+@page {
+  size: A4;
+  margin: 16mm 15mm 18mm;
+}
+
+.print-masthead {
+  display: none;
+}
+
 @media print {
   body {
     background: #fff;
@@ -8622,19 +9119,129 @@ input[type='range'] {
     padding-block: 0;
   }
 
+  /* The masthead: an imprint line over a rule, the document's own name in
+     the display face, and a dateline closed by a double rule. */
+  .print-masthead {
+    display: block;
+    margin: 0 0 var(--space-5);
+  }
+
+  .print-imprint {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0.2rem 1rem;
+    margin: 0;
+    padding-top: 3px;
+    border-top: 3px solid var(--color-text);
+    font-family: var(--font-data);
+    font-size: 7pt;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent-text);
+  }
+
+  .print-imprint span + span {
+    color: var(--color-text-muted);
+    letter-spacing: 0.09em;
+  }
+
+  /* A masthead with no title closes on its own rule: the passbook has the
+     record below it, so the imprint is the whole head. */
+  .print-imprint:last-child {
+    padding-bottom: var(--space-2);
+    border-bottom: 3px double var(--color-text);
+  }
+
+  .print-title {
+    margin: var(--space-2) 0 0;
+    font-family: var(--font-display);
+    font-size: 22pt;
+    font-weight: 700;
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    color: var(--color-text);
+  }
+
+  .print-where {
+    margin: var(--space-1) 0 0;
+    padding-bottom: var(--space-2);
+    border-bottom: 3px double var(--color-text);
+    font-family: var(--font-display);
+    font-size: 10.5pt;
+    font-style: italic;
+    color: var(--color-text-secondary);
+  }
+
   .sheet {
     border: none;
     padding: 0;
+  }
+
+  /* The on-screen title and place are in the masthead now. Repeating them
+     would be the same sentence twice on one page. */
+  .sheet-title,
+  .sheet-where,
+  .sheet-address {
+    display: none;
+  }
+
+  .sheet-brief {
+    columns: 2;
+    column-gap: 8mm;
+    column-rule: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+  }
+
+  .sheet-brief > .sheet-block {
+    margin-top: 0;
+    break-inside: avoid;
+  }
+
+  .sheet-brief > .sheet-block + .sheet-block {
+    margin-top: var(--space-4);
   }
 
   .sheet-block {
     break-inside: avoid;
   }
 
+  .sheet-block h4 {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-data);
+    font-size: 7.5pt;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  .sheet-escalated {
+    border-left: 2px solid var(--color-text);
+    background: none;
+  }
+
+  .sheet-applicant,
+  .sheet-applicant-note,
+  .sheet-lang,
+  .sheet-lang-note {
+    display: none;
+  }
+
+  .sheet-receipt {
+    border: 1px solid var(--color-border-strong);
+    background: none;
+    font-size: 9pt;
+  }
+
+  /* A letter is read as prose, not as code. The mono stays on screen, where
+     it separates the template from the page around it. */
   .sheet-letter {
     background: none;
     padding: 0;
-    font-size: 10pt;
+    font-family: var(--font-body);
+    font-size: 9.8pt;
+    line-height: 1.5;
   }
 }
 
@@ -10130,11 +10737,27 @@ input[type='range'] {
   .pit-fab,
   .tool-panel > .linklike,
   .khata-language,
+  .passbook > .page-head,
+  .khata-picker,
+  .khata-map,
+  .passbook-banner,
   .passbook-gps,
   .passbook-actions,
   .passbook-question-actions,
   .passbook-details summary {
     display: none !important;
+  }
+
+  /* The record, not the app: no picker, no toolbar, the numbers in the
+     display face and the tables on the page. */
+  .passbook-id {
+    border: none;
+    padding: 0;
+    margin-bottom: var(--space-4);
+  }
+
+  .passbook-section h3 {
+    font-family: var(--font-display);
   }
 
   .passbook-section {

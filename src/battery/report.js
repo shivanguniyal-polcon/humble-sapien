@@ -7,6 +7,7 @@
 import { buildManifest } from './manifest.js';
 import { VERIFICATION_LABELS, formatINRCompact } from './params.js';
 import { escapeHtml } from './modules/decisionTree.js';
+import { GAZETTE_CSS, gazetteHead, gazetteFoot } from '../lib/print/gazette.js';
 
 export const PIT_QUESTIONS = [
   { key: 'whoBenefits', label: 'Who benefits?' },
@@ -114,68 +115,86 @@ export async function buildReport({ module, input, params, results, pit, source,
 <title>${escapeHtml(input.title || 'Battery report')} (THS Policy Battery)</title>
 <style>
   body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1b1815; background: #fff; margin: 0; padding: 2.5rem 1.5rem; line-height: 1.55; }
-  main { max-width: 46rem; margin: 0 auto; }
-  h1 { font-size: 1.9rem; line-height: 1.15; margin: 0.25rem 0 0.5rem; }
-  h2 { font-size: 1.25rem; margin-top: 2.25rem; border-bottom: 1.5px solid #e0ddd8; padding-bottom: 0.35rem; }
-  h3 { font-size: 1.05rem; margin-top: 1.5rem; }
-  .kicker { font-family: 'Courier New', monospace; font-size: 0.72rem; letter-spacing: 0.02em; color: #7a1f2b; }
-  .fine-print { font-size: 0.85rem; color: #4b4640; }
-  .report-headline { font-size: 1.15rem; background: #fff; border: 1px solid #eceae6; border-left: 3px solid #7a1f2b; padding: 0.9rem 1.1rem; }
+  ${GAZETTE_CSS}
+  .report-headline { font-size: 1.05rem; background: #fff; border: 1px solid #eceae6; border-left: 3px solid #7a1f2b; padding: 0.9rem 1.1rem; break-inside: avoid; }
   .report-warning { color: #7a1f2b; font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-block: 0.75rem; }
-  th, td { text-align: left; padding: 0.45rem 0.6rem 0.45rem 0; border-bottom: 1px solid #eceae6; vertical-align: top; }
-  thead th { font-family: 'Courier New', monospace; font-size: 0.68rem; letter-spacing: 0.02em; color: #4b4640; border-bottom: 1.5px solid #c7c2bb; }
   .data-num { font-variant-numeric: tabular-nums; text-align: right; }
-  .pit-block { background: #fff; border: 1px solid #eceae6; border-top: 3px solid #7a1f2b; padding: 1rem 1.25rem; }
-  .stamp { font-family: 'Courier New', monospace; font-size: 0.72rem; word-break: break-all; color: #4b4640; }
+  .pit-block { background: #fff; border: 1px solid #eceae6; border-top: 3px solid #7a1f2b; padding: 1rem 1.25rem; break-inside: avoid; }
   ul.report-warnings { font-size: 0.85rem; color: #4b4640; }
   @media print {
     body { background: #fff; padding: 0; }
-    h2 { break-after: avoid; }
-    table, .pit-block, .report-headline { break-inside: avoid; }
-    .kicker { color: #000; }
   }
 </style>
 </head>
 <body>
-<main>
-  <p class="kicker">THS Policy Battery · ${escapeHtml(module.label)} · ${escapeHtml(manifest.engine)}</p>
-  <h1>${escapeHtml(input.title || 'Policy analysis run')}</h1>
-  <p class="fine-print">Run ${escapeHtml(manifest.createdAt)}. All figures in rupees unless stated. This report is reproducible: the audit manifest at the end re-derives every number from the inputs and parameters printed here.</p>
+<main class="gz">
+${gazetteHead({
+  imprint: 'The Humble Sapien · policy battery',
+  edition: `${module.label} · ${manifest.engine}`,
+  title: input.title || 'Policy analysis run',
+  standfirst: 'All figures in rupees unless stated. This report is reproducible: the audit manifest at the end re-derives every number from the inputs and parameters printed here.',
+  meta: [
+    ['Run', manifest.createdAt],
+    ['Module', `${module.label} (${module.id})`],
+    ['Engine', manifest.engine],
+  ],
+})}
 
-  <h2>The question</h2>
-  <p>${escapeHtml(module.question)}</p>
+  <div class="gz-body">
+    <div class="gz-columns">
+      <section>
+        <h2>The question</h2>
+        <p>${escapeHtml(module.question)}</p>
+      </section>
 
-  <h2>Data receipt</h2>
-  ${validationSummary}
-  ${source ? `<p class="fine-print">Source: ${escapeHtml(source)}</p>` : ''}
-  ${Array.isArray(coverage) && coverage.length > 0 ? `<h3>Who is missing from the data (computed)</h3><ul class="fine-print">${coverage.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ul>` : '<p class="fine-print">No computed coverage receipt was available for this run. The public interest check below answers by hand.</p>'}
+      <section>
+        <h2>Data receipt</h2>
+        ${validationSummary}
+        ${source ? `<p class="fine-print">Source: ${escapeHtml(source)}</p>` : ''}
+        ${Array.isArray(coverage) && coverage.length > 0 ? `<h3>Who is missing from the data (computed)</h3><ul class="fine-print">${coverage.map((c) => `<li>${escapeHtml(c)}</li>`).join('')}</ul>` : '<p class="fine-print">No computed coverage receipt was available for this run. The public interest check below answers by hand.</p>'}
+      </section>
+    </div>
 
-  <h2>Parameters</h2>
-  <table><thead><tr><th>Parameter</th><th class="data-num">Value</th><th>Provenance</th><th>Verification</th></tr></thead><tbody>${paramRows || '<tr><td colspan="4">No parameters bound.</td></tr>'}</tbody></table>
+    <section class="gz-wide">
+      <h2>Parameters</h2>
+      <table><thead><tr><th>Parameter</th><th class="data-num">Value</th><th>Provenance</th><th>Verification</th></tr></thead><tbody>${paramRows || '<tr><td colspan="4">No parameters bound.</td></tr>'}</tbody></table>
+    </section>
 
-  <h2>Results</h2>
-  ${resultsBody}
+    <section class="gz-wide">
+      <h2>Results</h2>
+      ${resultsBody}
+    </section>
 
-  <h2>Public interest check</h2>
-  <div class="pit-block">
-    ${PIT_QUESTIONS.map((q) => {
-      const answer = String((pit && pit[q.key]) || '').trim();
-      return `<p><strong>${q.label}</strong> ${answer ? escapeHtml(answer) : '<em>[not answered]</em>'}</p>`;
-    }).join('')}
-    <p><strong>Distributional columns</strong> ${escapeHtml(formatDistributional(distributionalReceipt(results)))}</p>
+    <section class="gz-wide">
+      <h2>Public interest check</h2>
+      <div class="pit-block">
+        ${PIT_QUESTIONS.map((q) => {
+          const answer = String((pit && pit[q.key]) || '').trim();
+          return `<p><strong>${q.label}</strong> ${answer ? escapeHtml(answer) : '<em>[not answered]</em>'}</p>`;
+        }).join('')}
+        <p><strong>Distributional columns</strong> ${escapeHtml(formatDistributional(distributionalReceipt(results)))}</p>
+      </div>
+    </section>
+
+    <div class="gz-columns">
+      <section>
+        <h2>Limitations</h2>
+        <ul>
+          <li>Estimates are only as good as the inputs and the parameter provenance printed above.</li>
+          <li>Sensitivity runs test the parameters moved here, not the structure of the model.</li>
+          <li>This report is an input to a public decision, not a substitute for consultation with the people it describes.</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Audit manifest</h2>
+        <p class="stamp">engine ${escapeHtml(manifest.engine)} · module ${escapeHtml(manifest.module)}\ninput ${escapeHtml(manifest.inputHash)}\nparams ${escapeHtml(manifest.paramHash)}\noutput ${escapeHtml(manifest.outputHash)}</p>
+        <p class="fine-print">Re-run the same input and parameters through the same engine version and these three hashes match exactly.${results.npv != null || results.rootEV != null ? ` Total value reference: ${escapeHtml(formatINRCompact(results.npv != null ? results.npv : results.rootEV))}.` : ''}</p>
+      </section>
+    </div>
   </div>
 
-  <h2>Limitations</h2>
-  <ul>
-    <li>Estimates are only as good as the inputs and the parameter provenance printed above.</li>
-    <li>Sensitivity runs test the parameters moved here, not the structure of the model.</li>
-    <li>This report is an input to a public decision, not a substitute for consultation with the people it describes.</li>
-  </ul>
-
-  <h2>Audit manifest</h2>
-  <p class="stamp">engine ${escapeHtml(manifest.engine)} · module ${escapeHtml(manifest.module)}<br>input ${escapeHtml(manifest.inputHash)}<br>params ${escapeHtml(manifest.paramHash)}<br>output ${escapeHtml(manifest.outputHash)}</p>
-  <p class="fine-print">Re-run the same input and parameters through the same engine version and these three hashes match exactly.${results.npv != null || results.rootEV != null ? ` Total value reference: ${escapeHtml(formatINRCompact(results.npv != null ? results.npv : results.rootEV))}.` : ''}</p>
+${gazetteFoot({ right: `${module.id} · ${manifest.engine}` })}
 </main>
 </body>
 </html>`;

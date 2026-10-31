@@ -537,6 +537,15 @@ function PassbookRecord({ doc, lang }) {
 
   return (
     <>
+      {/* Paper only. The banner below carries the same facts on screen; on a
+          printed page the record needs an imprint at the top, not a toolbar. */}
+      <div className="print-masthead">
+        <p className="print-imprint">
+          <span>{t.printImprint}</span>
+          <span>{doc.year} · {dateLabel(doc.generatedAt.slice(0, 10))}</span>
+        </p>
+      </div>
+
       <div className="passbook-banner">
         <span className="passbook-kicker">{t.capturedRecord}</span>
         <span>

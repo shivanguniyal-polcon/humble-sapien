@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import OutputTimeline from '../components/OutputTimeline';
+import ScheduleRibbon from '../components/ScheduleRibbon';
 import HomeClose from './HomeClose';
 import HomeVision from './HomeVision';
 import { takeRouteFocus } from '../lib/routeFocus';
@@ -20,6 +21,12 @@ export default function Home({ onNavigate }) {
 
   return (
     <section className="home-flow">
+      {/* The ribbon is the page's first mark: the Republic's languages in their
+          own scripts, before the claim. Each name is a door: it opens the house
+          motto in that language, written and spoken. The frontispiece below
+          carries the argument the languages belong to. */}
+      <ScheduleRibbon />
+
       {/* The frontispiece carries the h1; the timeline answers it. Route focus
           lands on the frontispiece so a keyboard reader starts at the claim. */}
       <div id="page-title" tabIndex={-1} ref={titleRef}>

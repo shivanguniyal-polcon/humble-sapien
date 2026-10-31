@@ -48,6 +48,7 @@ const en = {
   linkCopied: 'Link copied. Send it to the Sarpanch, the ward member, or the next Gram Sabha.',
   copyThis: (url) => `Copy this address: ${url}`,
   print: 'Print this page',
+  printImprint: 'The Humble Sapien · Khata',
   whatsapp: 'Send on WhatsApp',
   moneyHeading: 'The money, in one place',
   moneyStrap: (year) =>
@@ -208,6 +209,7 @@ const hi = {
   linkCopied: 'लिंक कॉपी हो गया। इसे सरपंच, वार्ड सदस्य या अगली ग्राम सभा तक भेजें।',
   copyThis: (url) => `यह पता कॉपी करें: ${url}`,
   print: 'पेज प्रिंट करें',
+  printImprint: 'The Humble Sapien · खाता',
   whatsapp: 'WhatsApp पर भेजें',
   moneyHeading: 'पैसा, एक जगह',
   moneyStrap: (year) =>

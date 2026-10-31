@@ -18,6 +18,7 @@ import {
   exportedRows, rejectedRows, normaliseReview, emptyReview, REVIEW_FILE_SCHEMA,
 } from '../src/lib/legal/review.js';
 import { buildManifest, buildBundle, buildMarkdown, buildHtml, buildRedlineCsv } from '../src/lib/legal/exports.js';
+import { gazetteHead } from '../src/lib/print/gazette.js';
 import { buildDocx } from '../src/lib/legal/docx.js';
 import { buildClientBriefText, buildClientBriefHtml } from '../src/lib/legal/clientBrief.js';
 import { parseSourceDate, currencyCheck, DEFAULT_STALE_DAYS } from '../src/lib/legal/currency.js';
@@ -514,6 +515,9 @@ const manifest = await buildManifest(result, { gate: GATE, review });
   ok('the html lists the rejected sentences', html.includes('Sentences rejected in review'));
   ok('the html carries the rejection reason', html.includes('Proviso not carried across.'));
   ok('the html carries the method card', html.includes('METHODOLOGY CARD'));
+  ok('the redline pack is set as a gazette',
+    html.includes('<main class="gz">') && html.includes('class="gz-head"')
+      && html.includes('class="gz-columns"') && html.includes('class="gz-foot"'));
 }
 
 {
@@ -537,6 +541,24 @@ const manifest = await buildManifest(result, { gate: GATE, review });
   const briefHtml = buildClientBriefHtml(result, { gate: GATE, manifest, matter: { client: 'Acme', matterRef: 'MAT-1', reviewer: 'A. Reviewer' }, review });
   ok('the brief html carries the client', briefHtml.includes('Acme'));
   ok('the brief html has no flags', !briefHtml.includes('flag-chip'));
+  ok('the brief is set as a gazette',
+    briefHtml.includes('<main class="gz">') && briefHtml.includes('class="gz-head"')
+      && briefHtml.includes('class="gz-columns"') && briefHtml.includes('class="gz-foot"'));
+}
+
+{
+  // The masthead is the one thing every printed artefact shares, so it is
+  // escaped once, here, rather than trusted at each call site.
+  const head = gazetteHead({
+    imprint: 'A & B',
+    edition: 'Edition',
+    title: '<Act>',
+    meta: [['Client', 'Acme & Sons'], ['Empty', '   ']],
+  });
+  ok('the gazette escapes the imprint', head.includes('A &amp; B') && !head.includes('A & B'));
+  ok('the gazette escapes the title', head.includes('&lt;Act&gt;'));
+  ok('the gazette drops a meta row with no value', !head.includes('<dt>Empty</dt>'));
+  ok('the gazette keeps a filled meta row', head.includes('<dd>Acme &amp; Sons</dd>'));
 }
 
 {

@@ -14,6 +14,7 @@
 // produced it.
 
 import { escapeHtml } from '../legal/exports.js';
+import { GAZETTE_CSS, gazetteHead, gazetteFoot } from '../print/gazette.js';
 import { getClauseType } from './clauses.js';
 import { FLAG_LABELS } from './risk.js';
 import { exportedRows, rejectedRows } from './review.js';
@@ -197,7 +198,7 @@ export const buildClientBriefHtml = (result, { gate = null, manifest = null, mat
       .join('');
     const more =
       rows.length > 4 ? `<p class="more">and ${rows.length - 4} more of this kind in the full review.</p>` : '';
-    return `<section class="block"><h2>${escapeHtml(section.label)} <span class="count">${rows.length}</span></h2><ul>${items}</ul>${more}</section>`;
+    return `<section class="block"><h3>${escapeHtml(section.label)} <span class="count">${rows.length}</span></h3><ul>${items}</ul>${more}</section>`;
   }).join('');
 
   const needsLawyer = `
@@ -251,50 +252,55 @@ export const buildClientBriefHtml = (result, { gate = null, manifest = null, mat
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Plain-language brief — ${escapeHtml(s.title || 'instrument')}</title>
 <style>
-  @page { size: A4; margin: 16mm 15mm; }
   body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #1b1815; background: #fff; margin: 0; padding: 2rem 1.5rem; line-height: 1.45; }
-  main { max-width: 46rem; margin: 0 auto; }
-  .kicker { font-family: 'Courier New', monospace; font-size: 0.7rem; letter-spacing: 0.06em; text-transform: uppercase; color: #7a1f2b; margin: 0; }
-  h1 { font-size: 1.6rem; line-height: 1.15; margin: 0.2rem 0 0.9rem; }
-  h2 { font-size: 0.95rem; margin: 0 0 0.35rem; letter-spacing: 0.01em; }
-  .count { font-family: 'Courier New', monospace; font-size: 0.72rem; color: #6f6a63; font-weight: normal; }
-  dl { display: grid; grid-template-columns: 8rem 1fr; gap: 0.15rem 0.75rem; margin: 0 0 1.25rem; font-size: 0.82rem; }
-  dt { color: #6f6a63; }
-  dd { margin: 0; }
-  .block { border-top: 1px solid #e0ddd8; padding-top: 0.7rem; margin-top: 0.9rem; }
-  .block p { font-size: 0.86rem; margin: 0.25rem 0; }
-  ul { margin: 0.25rem 0 0; padding-left: 1.1rem; font-size: 0.86rem; }
-  li { margin-bottom: 0.2rem; }
+  ${GAZETTE_CSS}
+  .gz h3 { margin-top: 0; }
+  .count { font-family: 'IBM Plex Mono', ui-monospace, 'Courier New', monospace; font-size: 0.66rem; color: #6f6a63; font-weight: normal; }
+  .block { margin: 0 0 0.8rem; }
+  .block p, .block ul { font-size: 0.86rem; }
   .more { color: #6f6a63; font-size: 0.8rem; }
-  .stamp { font-family: 'Courier New', monospace; font-size: 0.68rem; color: #4b4640; background: #f6f5f3; border: 1px solid #eceae6; padding: 0.5rem 0.6rem; }
-  .signoff-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-  .signoff-table th { text-align: left; font-weight: normal; color: #6f6a63; width: 14rem; vertical-align: top; padding: 0.15rem 0.6rem 0.15rem 0; border-bottom: 1px solid #f0eeea; }
-  .signoff-table td { padding: 0.15rem 0; border-bottom: 1px solid #f0eeea; }
+  .signoff-table th { width: 14rem; }
   .disclaimer { font-size: 0.76rem; color: #4b4640; border-top: 1px solid #e0ddd8; padding-top: 0.5rem; margin-top: 0.8rem; }
-  @media print { body { padding: 0; font-size: 10.5pt; } .block { break-inside: avoid; } }
+  @media print {
+    body { padding: 0; font-size: 9.6pt; }
+    /* The sign-off is the page's receipt. It moves whole to the next page
+       rather than leaving its heading behind on the one before. */
+    .signoff, .signoff-table tr { break-inside: avoid; }
+  }
 </style>
 </head>
 <body>
-<main>
-  <p class="kicker">Plain-language brief</p>
-  <h1>${escapeHtml(s.title || 'Instrument')}</h1>
-  <dl>
-    ${head.map(([k, v]) => `<dt>${escapeHtml(k)}</dt><dd>${escapeHtml(v)}</dd>`).join('\n    ')}
-  </dl>
+<main class="gz">
+${gazetteHead({
+  imprint: 'Plain-language brief',
+  edition: m.matterRef ? `Matter ${m.matterRef}` : 'Prepared for review',
+  title: s.title || 'Instrument',
+  standfirst: 'What the instrument does, what still needs a lawyer, and how this reading was produced. A draft, not legal advice.',
+  meta: head,
+})}
 
-  <section class="block">
-    <h2>What this document is</h2>
-    <p>A plain-language reading of the instrument named above, prepared from the source text and reviewed against it sentence by sentence. It is a draft. It is not legal advice, and it does not replace the instrument itself.</p>
-  </section>
+  <div class="gz-body">
+    <div class="gz-columns">
+      <section class="block">
+        <h2>What this document is</h2>
+        <p>A plain-language reading of the instrument named above, prepared from the source text and reviewed against it sentence by sentence. It is a draft. It is not legal advice, and it does not replace the instrument itself.</p>
+      </section>
 
-  <section class="block">
-    <h2>What the text does</h2>
-    ${sections}
-  </section>
+      <section class="block">
+        <h2>What the text does</h2>
+        ${sections}
+      </section>
 
-  ${needsLawyer}
-  ${method}
-  ${signOff}
+      ${needsLawyer}
+      ${method}
+    </div>
+
+    <div class="gz-wide">
+      ${signOff}
+    </div>
+  </div>
+
+${gazetteFoot({ right: 'Draft simplification · not legal advice' })}
 </main>
 </body>
 </html>`;

@@ -86,7 +86,14 @@ const ToolView = ({ id, onNavigate, onTool, query, onQueryChange }) => {
       );
       break;
     case 'stakeholders':
-      view = <Stakeholders onNavigate={onNavigate} onTool={onTool} />;
+      view = (
+        <Stakeholders
+          onNavigate={onNavigate}
+          onTool={onTool}
+          query={query}
+          onQueryChange={onQueryChange}
+        />
+      );
       break;
     case 'solutions':
       view = <Solutions />;

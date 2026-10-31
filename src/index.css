@@ -1213,6 +1213,11 @@ main {
   }
 }
 
+.chip-add {
+  border-style: dashed;
+  background: transparent;
+}
+
 .chip-tag {
   cursor: default;
   background: var(--color-accent-soft);
@@ -3612,6 +3617,12 @@ input[type='range'] {
   line-height: 1.1;
 }
 
+.stat-note {
+  font-family: var(--font-data);
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
+}
+
 .ledger {
   display: grid;
   gap: var(--space-4);
@@ -3672,6 +3683,82 @@ input[type='range'] {
   font-size: 0.88rem;
 }
 
+.policy-editor-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-3);
+}
+
+.policy-editor-head h3 {
+  margin: 0;
+}
+
+.policy-editor {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.policy-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 8rem;
+  gap: var(--space-3);
+}
+
+.policy-editor label {
+  margin-bottom: 0;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+}
+
+.policy-editor input,
+.policy-editor textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+}
+
+.policy-editor textarea {
+  min-height: 4.75rem;
+  resize: vertical;
+}
+
+.share-link {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.share-link label {
+  margin-bottom: 0;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+}
+
+.share-link input {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  margin-top: 0.25rem;
+  font-family: var(--font-data);
+  font-size: 0.78rem;
+}
+
+.ledger-empty {
+  margin: var(--space-4) 0 0;
+  padding: var(--space-4) var(--space-5);
+  border: 1px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+}
+
 .ledger-add {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -3722,12 +3809,103 @@ input[type='range'] {
   .ledger-add-fields .btn {
     width: 100%;
   }
+
+  .policy-editor-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 .ledger-note {
   font-size: 0.88rem;
   color: var(--color-text-secondary);
   margin-bottom: 0.45rem;
+}
+
+.ledger-added {
+  display: inline-block;
+  margin-left: var(--space-2);
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-family: var(--font-data);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  vertical-align: middle;
+}
+
+.ledger-notes-edit {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.ledger-notes-edit label {
+  margin-bottom: 0;
+  font-family: var(--font-data);
+  font-size: 0.68rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+}
+
+.ledger-notes-edit textarea {
+  display: block;
+  width: 100%;
+  margin-top: 0.25rem;
+  resize: vertical;
+}
+
+.matrix-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 0.78rem;
+  color: var(--color-text-secondary);
+}
+
+.matrix-legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.matrix-swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+}
+
+.matrix-swatch.is-benefits {
+  background: var(--color-series-2);
+  border-color: var(--color-series-2);
+}
+
+.matrix-swatch.is-mixed {
+  background: linear-gradient(
+    to bottom,
+    var(--color-series-2) 50%,
+    var(--color-accent) 50%
+  );
+  border-color: var(--color-text-muted);
+  border-style: dashed;
+}
+
+.matrix-swatch.is-restricted {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.matrix-swatch.is-neutral {
+  background: var(--color-border-strong);
+  border-color: var(--color-border-strong);
 }
 
 @media (max-width: 52rem) {

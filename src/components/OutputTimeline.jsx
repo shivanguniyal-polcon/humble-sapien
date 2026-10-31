@@ -56,6 +56,14 @@ import {
   YEAR_MAX,
 } from '../lib/outputChart.js';
 import { useReducedMotion } from '../lib/useReducedMotion.js';
+import { LANGUAGES, LANGUAGE_BY_CODE } from '../data/languages.js';
+import {
+  COVERAGE_CHECKED,
+  COVERAGE_NOTE,
+  COVERAGE_SCOPE,
+  COVERAGE_SOURCE_URL,
+} from '../data/languageCoverage.js';
+import { coverageKey, resolveCoverage } from '../lib/languageCoverage.js';
 
 const ALL_KIND_IDS = KINDS.map((kind) => kind.id);
 const KIND_BY_ID = Object.fromEntries(KINDS.map((kind) => [kind.id, kind]));
@@ -72,6 +80,14 @@ const REBUILT = new Intl.DateTimeFormat('en-IN', {
   timeZone: 'Asia/Kolkata',
   timeZoneName: 'short',
 }).format(new Date(SNAPSHOT.generatedAt));
+
+// The ledger's checked date, written as a day rather than an ISO string.
+const CHECKED = new Intl.DateTimeFormat('en-IN', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(new Date(`${COVERAGE_CHECKED}T00:00:00Z`));
 
 // How much page the column is given. At 1× a pixel of catalogue costs a pixel
 // of scroll, which walks the whole archive past in under two screens; the
@@ -180,6 +196,10 @@ const shadeHex = (root) => {
   for (const kind of KINDS) {
     out[kind.id] = styles.getPropertyValue(`--${kind.shade}`).trim() || '#7a1f2b';
   }
+  // The two lens inks. The raster and the hover chip resolve them from the
+  // same tokens, so the square and the chip cannot disagree.
+  out.covered = styles.getPropertyValue('--clay-600').trim() || '#7a1f2b';
+  out.uncovered = styles.getPropertyValue('--paper-300').trim() || '#e0ddd8';
   return out;
 };
 
@@ -364,6 +384,8 @@ export default function OutputTimeline({ onNavigate }) {
   const [enabled, setEnabled] = useState(() => new Set(ALL_KIND_IDS));
   const [showRti, setShowRti] = useState(false);
   const [showOpenData, setShowOpenData] = useState(false);
+  // The scheduled-language lens: null is the ordinary kind-coloured column.
+  const [language, setLanguage] = useState(null);
   // A pill in hand: which kind, and where the hand is.
   const [drag, setDrag] = useState(null);
   const [dropZone, setDropZone] = useState(null);
@@ -432,9 +454,18 @@ export default function OutputTimeline({ onNavigate }) {
     return [...rows, ...amendmentTuples(AMENDMENTS)];
   }, [rows]);
 
+  // The ledger is resolved once per catalogue chunk, not per pointer move. A
+  // strict miss is an error in the test, not a silently unlit square.
+  const coverage = useMemo(() => (tuples ? resolveCoverage(tuples) : null), [tuples]);
+
+  const lens = useMemo(
+    () => (language && coverage ? { language, coverage: coverage.byRow } : null),
+    [language, coverage],
+  );
+
   const stacks = useMemo(
-    () => (tuples ? buildStacks(tuples, enabled, order) : null),
-    [tuples, enabled, order],
+    () => (tuples ? buildStacks(tuples, enabled, order, lens) : null),
+    [tuples, enabled, order, lens],
   );
 
   const layout = width ? columnLayout(width) : null;
@@ -454,6 +485,40 @@ export default function OutputTimeline({ onNavigate }) {
       return sum;
     });
   }, [stacks]);
+
+  // Counts for the language strip and the one-language readout. `counts` is
+  // ledger-wide; `inColumn` respects the jurisdiction and the kinds the reader
+  // has left in the column, so the sentence and the drawing agree.
+  const lensLedger = useMemo(() => {
+    const blank = () => Object.fromEntries(LANGUAGES.map((entry) => [entry.code, 0]));
+    const counts = blank();
+    const inColumn = [blank(), blank()];
+    const byLanguage = new Map(LANGUAGES.map((entry) => [entry.code, []]));
+
+    if (!coverage) {
+      return { counts, inColumn, records: 0, onlyConstitution: 0 };
+    }
+
+    for (const { row, record } of coverage.list) {
+      for (const code of record.languages) {
+        counts[code] += 1;
+        if (enabled.has(KINDS[row[1]].id)) inColumn[row[2]][code] += 1;
+        byLanguage.get(code).push(record);
+      }
+    }
+
+    const onlyConstitution = LANGUAGES.filter((entry) => {
+      const records = byLanguage.get(entry.code);
+      return records.length === 1 && records[0].title === 'The Constitution of India';
+    }).length;
+
+    return { counts, inColumn, records: coverage.list.length, onlyConstitution };
+  }, [coverage, enabled]);
+
+  const selected = language ? LANGUAGE_BY_CODE[language] : null;
+  const selectedHere = language ? lensLedger.inColumn[juris][language] || 0 : 0;
+  const selectedOther = language ? lensLedger.inColumn[1 - juris][language] || 0 : 0;
+  const lensOn = Boolean(language && coverage);
 
   // The head carries the catalogue's whole count, not the drawn subset: it is
   // the dated snapshot, rebuilt from the same rows by
@@ -583,8 +648,12 @@ export default function OutputTimeline({ onNavigate }) {
     const size = Math.max(unit - 0.6, 1);
 
     // One rect list per kind, filled as a single path below. The lists hold
-    // flat x/y/w/h quadruples in the same order the squares paint in.
+    // flat x/y/w/h quadruples in the same order the squares paint in. With the
+    // lens on, the same squares go into two lists instead: verified and
+    // unrecorded, still one path each.
     const paths = KINDS.map(() => []);
+    const lensBase = [];
+    const lensCovered = [];
 
     // Each band: its rule, its year, then its squares.
     let lastLabel = -Infinity;
@@ -608,10 +677,17 @@ export default function OutputTimeline({ onNavigate }) {
       if (!segments) continue;
       let line = 0;
       for (const segment of segments) {
-        const list = paths[segment.kindIndex];
+        const list = lensOn ? null : paths[segment.kindIndex];
         for (let i = 0; i < segment.count; i += 1) {
           const row = line + Math.floor(i / perRow);
-          list.push(axis + (i % perRow) * unit, band.top + row * unit, size, size);
+          const x = axis + (i % perRow) * unit;
+          const y = band.top + row * unit;
+          if (lensOn) {
+            const target = segment.covered?.[i] ? lensCovered : lensBase;
+            target.push(x, y, size, size);
+          } else {
+            list.push(x, y, size, size);
+          }
         }
         line += Math.ceil(segment.count / perRow);
       }
@@ -620,16 +696,33 @@ export default function OutputTimeline({ onNavigate }) {
     // Five fills stand in for forty thousand fillRect calls. The rects are
     // exactly the squares the per-call painter would have drawn — including
     // the hairline of air between them, which a merged run would have filled
-    // over and turned the strata into solid strips.
-    for (let kindIndex = 0; kindIndex < KINDS.length; kindIndex += 1) {
-      const list = paths[kindIndex];
-      if (list.length === 0) continue;
-      ctx.fillStyle = colors[KINDS[kindIndex].id];
-      ctx.beginPath();
-      for (let i = 0; i < list.length; i += 4) {
-        ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 3]);
+    // over and turned the strata into solid strips. Under the lens, two fills
+    // carry the whole column: verified clay, and the quiet paper of records
+    // with no verified text.
+    if (lensOn) {
+      for (const [list, fill] of [
+        [lensBase, colors.uncovered],
+        [lensCovered, colors.covered],
+      ]) {
+        if (list.length === 0) continue;
+        ctx.fillStyle = fill;
+        ctx.beginPath();
+        for (let i = 0; i < list.length; i += 4) {
+          ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 3]);
+        }
+        ctx.fill();
       }
-      ctx.fill();
+    } else {
+      for (let kindIndex = 0; kindIndex < KINDS.length; kindIndex += 1) {
+        const list = paths[kindIndex];
+        if (list.length === 0) continue;
+        ctx.fillStyle = colors[KINDS[kindIndex].id];
+        ctx.beginPath();
+        for (let i = 0; i < list.length; i += 4) {
+          ctx.rect(list[i], list[i + 1], list[i + 2], list[i + 3]);
+        }
+        ctx.fill();
+      }
     }
 
     // Cumulative rail: the climb, read as position rather than a curve.
@@ -680,7 +773,7 @@ export default function OutputTimeline({ onNavigate }) {
     return () => {
       live = false;
     };
-  }, [column, layout, stacks, juris, tokenTick, fontsReady]);
+  }, [column, layout, stacks, juris, tokenTick, fontsReady, lensOn]);
 
   // ---- the scrub ---------------------------------------------------------
   const applyProgress = useCallback(() => {
@@ -917,8 +1010,15 @@ export default function OutputTimeline({ onNavigate }) {
     // fill had to move away from; when nothing had to move, they match.
     const win = windowRef.current.getBoundingClientRect();
     if (!shadeCache.current) shadeCache.current = shadeHex(document.documentElement);
-    const truth = shadeCache.current[KINDS[hit.kindIndex].id];
-    const key = `${hit.kindIndex}|${band.year}|${hit.name}`;
+    const record =
+      language && coverage
+        ? coverage.byKey.get(coverageKey(band.year, hit.kindIndex, meta.juris, hit.name))
+        : null;
+    const covered = Boolean(record && record.languages.includes(language));
+    const truth = language
+      ? shadeCache.current[covered ? 'covered' : 'uncovered']
+      : shadeCache.current[KINDS[hit.kindIndex].id];
+    const key = `${language || 'all'}|${hit.kindIndex}|${band.year}|${hit.name}`;
     const moved = lastHitRef.current !== key;
     lastHitRef.current = key;
     // The place is written, not rendered: the node is positioned whether or
@@ -935,6 +1035,13 @@ export default function OutputTimeline({ onNavigate }) {
       where: `${JURIS[meta.juris].label} · ${band.year}`,
       fill: tooltipFill(truth),
       truth,
+      lang: language
+        ? {
+            name: LANGUAGE_BY_CODE[language].name,
+            covered,
+            source: covered ? record?.source || null : null,
+          }
+        : null,
     });
   };
 
@@ -1110,6 +1217,14 @@ export default function OutputTimeline({ onNavigate }) {
     toggle(kind.id);
   };
 
+  // A chip that survives a lens change would describe a square in the old
+  // colour. The lens is chosen by a click, so the same click clears the chip.
+  const pickLanguage = (code) => {
+    setLanguage(code);
+    lastHitRef.current = null;
+    setTooltip(null);
+  };
+
   const yearAt = (clientX) => {
     const rail = railRef.current;
     if (!rail) return YEAR_MIN;
@@ -1184,6 +1299,12 @@ export default function OutputTimeline({ onNavigate }) {
     marker?.kind === 'year'
       ? MILESTONE_YEARS.find(([year]) => year === marker.year)?.[1]
       : null;
+
+  const canvasLabel = column
+    ? language && selected
+      ? `Vertical unit chart of ${column.total.toLocaleString('en-IN')} ${JURIS[juris].label} instruments catalogued by India Code, ${YEAR_MIN} to ${YEAR_MAX}, one square per instrument. Language lens: ${selected.name}. ${selectedHere.toLocaleString('en-IN')} of these records have a verified ${selected.name} text; the rest have no verified text in this ledger. Colour shows language coverage, not instrument kind. The full record is in the instruments CSV below.`
+      : `Vertical unit chart of ${column.total.toLocaleString('en-IN')} ${JURIS[juris].label} instruments catalogued by India Code, ${YEAR_MIN} to ${YEAR_MAX}, one square per instrument. Every year is a band; band depth is that year's output. The full record is in the instruments CSV below.`
+    : 'Vertical unit chart of the India Code catalogue.';
 
   return (
     <section
@@ -1291,6 +1412,129 @@ export default function OutputTimeline({ onNavigate }) {
           Open data resources
         </button>
       </div>
+
+      {rows && coverage && (
+        <section
+          className="timeline-lens"
+          aria-labelledby="timeline-lens-title"
+          data-active={language ? 'true' : undefined}
+        >
+          <div className="timeline-lens-head">
+            <div className="timeline-lens-copy">
+              <p className="overline">Language lens</p>
+              <h3 id="timeline-lens-title" className="timeline-lens-title">
+                Can you read the record in your language?
+              </h3>
+              <p className="timeline-lens-intro">
+                Pick a scheduled language. Clay marks a catalogue record with a
+                verified official text in it; a faint square has no verified
+                text in this ledger.
+              </p>
+            </div>
+            {language && (
+              <button
+                type="button"
+                className="linklike timeline-lens-clear"
+                onClick={() => pickLanguage(null)}
+              >
+                Clear the lens
+              </button>
+            )}
+          </div>
+
+          <div
+            className="timeline-languages"
+            role="group"
+            aria-label="Scheduled languages with verified official texts"
+          >
+            {LANGUAGES.map((entry) => {
+              const count = lensLedger.counts[entry.code] || 0;
+              const on = language === entry.code;
+              return (
+                <button
+                  key={entry.code}
+                  type="button"
+                  className="timeline-language"
+                  aria-pressed={on}
+                  aria-label={`${entry.name}: ${count} verified ${count === 1 ? 'record' : 'records'}${on ? ', selected' : ''}`}
+                  onClick={() => pickLanguage(on ? null : entry.code)}
+                >
+                  <span
+                    className="timeline-language-name"
+                    lang={entry.code}
+                    dir={entry.rtl ? 'rtl' : 'auto'}
+                  >
+                    {entry.endonym}
+                  </span>
+                  <span className="timeline-language-en">{entry.name}</span>
+                  <span className="timeline-language-count data-num">{count}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          <p className="timeline-lens-readout" aria-live="polite">
+            {language && selected ? (
+              <>
+                <strong>{selectedHere.toLocaleString('en-IN')}</strong> of{' '}
+                <strong>{(column?.total ?? 0).toLocaleString('en-IN')}</strong> records in this
+                column {selectedHere === 1 ? 'has' : 'have'} a verified {selected.name} text.
+                {selectedOther > 0 && (
+                  <>
+                    {' '}
+                    Another {selectedOther.toLocaleString('en-IN')}{' '}
+                    {selectedOther === 1 ? 'is' : 'are'} in the {JURIS[1 - juris].label}{' '}
+                    column.
+                    {selectedHere === 0 && (
+                      <>
+                        {' '}
+                        <button
+                          type="button"
+                          className="linklike"
+                          onClick={() => setJuris(1 - juris)}
+                        >
+                          Show it
+                        </button>
+                      </>
+                    )}
+                  </>
+                )}
+                {selectedOther === 0 && selectedHere === 0 && (
+                  <> No verified record in this column; try the other jurisdiction or restore the Act kind.</>
+                )}
+              </>
+            ) : (
+              <>
+                In this ledger, <strong>{lensLedger.records}</strong> catalogue records carry a
+                verified text in at least one scheduled language. Every language has at least
+                one; <strong>{lensLedger.onlyConstitution}</strong> of the 22 languages have
+                only the Constitution.
+              </>
+            )}
+          </p>
+
+          {language && (
+            <div className="timeline-lens-key">
+              <span className="timeline-lens-key-item">
+                <span className="timeline-lens-swatch timeline-lens-swatch-on" aria-hidden="true" />
+                verified text
+              </span>
+              <span className="timeline-lens-key-item">
+                <span className="timeline-lens-swatch timeline-lens-swatch-off" aria-hidden="true" />
+                no language record
+              </span>
+            </div>
+          )}
+
+          <p className="timeline-lens-note">
+            {COVERAGE_NOTE} {COVERAGE_SCOPE}{' '}
+            <a href={COVERAGE_SOURCE_URL} target="_blank" rel="noreferrer">
+              Legislative Department
+            </a>
+            . Checked {CHECKED}.
+          </p>
+        </section>
+      )}
       </div>
 
       <div
@@ -1387,13 +1631,16 @@ export default function OutputTimeline({ onNavigate }) {
             </div>
             <p className="timeline-readout" aria-live="off">
               <span className="meta">Reading</span>{' '}
+              {language && selected && (
+                <span className="timeline-lens-badge">{selected.name} lens</span>
+              )}
               <strong ref={readoutRef} className="data-num">
                 {YEAR_MIN}
               </strong>
             </p>
           </div>
 
-          <div className="timeline-controls">
+          <div className="timeline-controls" data-lens={language ? 'true' : undefined}>
             <div
               className="timeline-tray"
               ref={trayInRef}
@@ -1475,7 +1722,7 @@ export default function OutputTimeline({ onNavigate }) {
                   ref={canvasRef}
                   className="timeline-canvas"
                   role="img"
-                  aria-label={`Vertical unit chart of ${column.total.toLocaleString('en-IN')} ${JURIS[juris].label} instruments catalogued by India Code, ${YEAR_MIN} to ${YEAR_MAX}, one square per instrument. Every year is a band; band depth is that year's output. The full record is in the instruments CSV below.`}
+                  aria-label={canvasLabel}
                   onPointerMove={onPointerMove}
                   onPointerDown={onPointerMove}
                   onPointerLeave={clearTooltip}
@@ -1588,6 +1835,18 @@ export default function OutputTimeline({ onNavigate }) {
                 <span className="timeline-tooltip-kind">{tooltip.kindLabel}</span>
                 <strong>{tooltip.name}</strong>
                 <span className="meta">{tooltip.where}</span>
+                {tooltip.lang && (
+                  <span
+                    className={`timeline-tooltip-lang${tooltip.lang.covered ? ' is-covered' : ''}`}
+                  >
+                    {tooltip.lang.covered
+                      ? `${tooltip.lang.name} text verified`
+                      : `No ${tooltip.lang.name} record`}
+                  </span>
+                )}
+                {tooltip.lang?.source && (
+                  <span className="timeline-tooltip-source">{tooltip.lang.source}</span>
+                )}
               </div>
             )}
 

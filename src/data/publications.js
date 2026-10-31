@@ -130,7 +130,7 @@ export const publications = [
         name: 'ths_state_output_instruments.csv',
         kind: 'csv',
         href: '/research/ths_state_output_instruments.csv',
-        note: 'One row per instrument — the dots behind the timeline — with its catalogue title.',
+        note: 'One row per instrument — the dots behind the timeline — with its catalogue title and, where verified, the scheduled languages with an official text plus the source link.',
       },
       {
         name: 'ths_state_output_sources.txt',

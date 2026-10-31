@@ -5588,6 +5588,25 @@ input[type='range'] {
   border-top: 1px solid rgb(255 255 255 / 0.32);
 }
 
+.timeline-tooltip-lang {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: inherit;
+}
+
+.timeline-tooltip-lang.is-covered {
+  font-weight: 600;
+}
+
+.timeline-tooltip-source {
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  line-height: 1.35;
+  color: rgb(255 255 255 / 0.78);
+}
+
 /* reduced motion: no pin, no scrub — the column simply sits in the page */
 /* Reduced motion: nothing pins. The frame becomes the chart's own box —
    relative, so the absolute overlay still anchors to it — and the controls
@@ -5614,6 +5633,217 @@ input[type='range'] {
   margin-top: var(--space-4);
   padding-top: var(--space-3);
   border-top: 1px solid var(--color-border);
+}
+
+/* ---------- the language lens ------------------------------------------
+   A strip of the 22 scheduled languages above the column. The ledger only
+   records verified official texts, so the strip is a coverage score, not a
+   translation claim: the count on each chip is how many catalogue records
+   this ledger can prove, and the faint squares in the column are the rest. */
+
+.timeline-lens {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.timeline-lens-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.timeline-lens-copy {
+  max-width: 62ch;
+}
+
+.timeline-lens-title {
+  margin: var(--space-1) 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.timeline-lens-intro {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+.timeline-lens-clear {
+  flex: none;
+  white-space: nowrap;
+}
+
+.timeline-languages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.timeline-language {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.5rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  cursor: pointer;
+  text-align: left;
+  transition:
+    border-color 140ms var(--ease-out),
+    background-color 140ms var(--ease-out),
+    color 140ms var(--ease-out);
+}
+
+@media (hover: hover) {
+  .timeline-language:hover {
+    border-color: var(--color-text);
+  }
+}
+
+.timeline-language:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.timeline-language[aria-pressed='true'] {
+  color: var(--color-surface);
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.timeline-language-name {
+  font-family: var(--font-display);
+  font-size: 0.9375rem;
+  line-height: 1.15;
+}
+
+.timeline-language-en {
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.timeline-language[aria-pressed='true'] .timeline-language-en {
+  color: var(--paper-300);
+}
+
+.timeline-language-count {
+  min-width: 1.1em;
+  padding-left: 5px;
+  font-size: 0.5625rem;
+  text-align: right;
+  color: var(--color-text-muted);
+  border-left: 1px solid var(--color-border-strong);
+}
+
+.timeline-language[aria-pressed='true'] .timeline-language-count {
+  color: var(--paper-200);
+  border-left-color: var(--paper-500);
+}
+
+.timeline-lens-readout {
+  margin: 0;
+  max-width: 72ch;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.timeline-lens-readout strong {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+.timeline-lens-key {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+}
+
+.timeline-lens-key-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timeline-lens-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border: 1px solid var(--color-border-strong);
+}
+
+.timeline-lens-swatch-on {
+  background: var(--clay-600);
+  border-color: var(--clay-600);
+}
+
+.timeline-lens-swatch-off {
+  background: var(--paper-300);
+}
+
+.timeline-lens-note {
+  margin: 0;
+  max-width: 72ch;
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+}
+
+.timeline-lens-note a {
+  color: var(--color-accent-text);
+}
+
+.timeline-lens-badge {
+  padding: 1px 5px;
+  font-family: var(--font-mono);
+  font-size: 0.5625rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--clay-800);
+  background: var(--clay-50);
+  border: 1px solid var(--clay-200);
+}
+
+/* The kind swatches describe a colour scheme the lens has put aside; the
+   pills remain as filters, so their text stays and their colour step goes. */
+.timeline-controls[data-lens='true'] .timeline-pill .toggle-swatch {
+  opacity: 0;
+}
+
+@media (max-width: 48rem) {
+  .timeline-lens-head {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .timeline-languages {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+  }
+
+  .timeline-language {
+    flex: 0 0 auto;
+  }
 }
 
 .toggle-chip {

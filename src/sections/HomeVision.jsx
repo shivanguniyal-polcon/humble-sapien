@@ -8,31 +8,7 @@
 // law is actually readable in them is the question the timeline asks next.
 
 import { TOOLS } from '../data/tools';
-
-const EIGHTH_SCHEDULE = [
-  { name: 'Assamese', endonym: 'অসমীয়া', code: 'as' },
-  { name: 'Bengali', endonym: 'বাংলা', code: 'bn' },
-  { name: 'Bodo', endonym: "बर'", code: 'brx' },
-  { name: 'Dogri', endonym: 'डोगरी', code: 'doi' },
-  { name: 'Gujarati', endonym: 'ગુજરાતી', code: 'gu' },
-  { name: 'Hindi', endonym: 'हिन्दी', code: 'hi' },
-  { name: 'Kannada', endonym: 'ಕನ್ನಡ', code: 'kn' },
-  { name: 'Kashmiri', endonym: 'کٲشُر', code: 'ks' },
-  { name: 'Konkani', endonym: 'कोंकणी', code: 'kok' },
-  { name: 'Maithili', endonym: 'मैथिली', code: 'mai' },
-  { name: 'Malayalam', endonym: 'മലയാളം', code: 'ml' },
-  { name: 'Manipuri', endonym: 'ꯃꯤꯇꯩꯂꯣꯟ', code: 'mni' },
-  { name: 'Marathi', endonym: 'मराठी', code: 'mr' },
-  { name: 'Nepali', endonym: 'नेपाली', code: 'ne' },
-  { name: 'Odia', endonym: 'ଓଡ଼ିଆ', code: 'or' },
-  { name: 'Punjabi', endonym: 'ਪੰਜਾਬੀ', code: 'pa' },
-  { name: 'Sanskrit', endonym: 'संस्कृतम्', code: 'sa' },
-  { name: 'Santali', endonym: 'ᱥᱟᱱᱛᱟᱲᱤ', code: 'sat' },
-  { name: 'Sindhi', endonym: 'سنڌي', code: 'sd' },
-  { name: 'Tamil', endonym: 'தமிழ்', code: 'ta' },
-  { name: 'Telugu', endonym: 'తెలుగు', code: 'te' },
-  { name: 'Urdu', endonym: 'اردو', code: 'ur' },
-];
+import { LANGUAGES } from '../data/languages';
 
 // The heading is the anchor the frontispiece's second door points at. Move
 // focus with the scroll so a keyboard reader lands where the page does.
@@ -95,7 +71,7 @@ export default function HomeVision({ onNavigate }) {
           </div>
 
           <ul className="schedule-grid">
-            {EIGHTH_SCHEDULE.map(({ name, endonym, code }) => (
+            {LANGUAGES.map(({ name, endonym, code }) => (
               <li className="schedule-cell" key={code}>
                 <span className="schedule-name" lang={code}>
                   {endonym}

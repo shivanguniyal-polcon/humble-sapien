@@ -24,6 +24,8 @@ import {
   CATALOGUE_NOTE,
 } from '../src/data/stateOutput.js';
 import { INSTRUMENTS } from '../src/data/stateOutputInstruments.js';
+import { COVERAGE, COVERAGE_CHECKED, COVERAGE_NOTE } from '../src/data/languageCoverage.js';
+import { LANGUAGES, LANGUAGE_BY_CODE } from '../src/data/languages.js';
 import {
   buildStacks,
   dotAt,
@@ -308,8 +310,70 @@ console.log('shipped files');
 {
   const text = readText(path.join(RESEARCH, 'ths_state_output_instruments.csv'));
   const lines = text.trim().split('\n');
-  check('the instruments CSV has the documented header', lines[0] === 'year,jurisdiction,kind,name', lines[0]);
+  const header = [
+    'year',
+    'jurisdiction',
+    'kind',
+    'name',
+    'verified_languages',
+    'language_source',
+    'language_source_url',
+  ].join(',');
+  check('the instruments CSV has the documented header', lines[0] === header, lines[0]);
   check('the instruments CSV carries every record', lines.length === INSTRUMENTS.length + 1, `${lines.length} lines`);
+
+  const rows = lines.slice(1).map(parseCsvLine);
+  check('every instrument row has seven columns', rows.every((row) => row.length === 7));
+  check(
+    'uncovered rows carry no language claim',
+    rows.filter((row) => !row[4]).every((row) => !row[5] && !row[6]),
+  );
+
+  const covered = rows.filter((row) => row[4]);
+  check(
+    'the CSV marks exactly the records in the language ledger',
+    covered.length === COVERAGE.length,
+    `${covered.length} rows, ${COVERAGE.length} ledger records`,
+  );
+
+  // The three language columns must be the ledger's own fields, not a second
+  // transcription: a changed title, source or URL in one file must fail here.
+  const ledger = new Map(
+    COVERAGE.map((record) => [
+      `${record.year}|${record.juris === 0 ? 'central' : 'state'}|${KINDS[record.kind].id}|${record.title}`,
+      record,
+    ]),
+  );
+  let aligned = true;
+  for (const row of covered) {
+    const record = ledger.get(`${row[0]}|${row[1]}|${row[2]}|${row[3]}`);
+    const names = record
+      ? record.languages.map((code) => LANGUAGE_BY_CODE[code].name).join('; ')
+      : null;
+    if (!record || row[4] !== names || row[5] !== record.source || row[6] !== record.url) {
+      aligned = false;
+      break;
+    }
+  }
+  check('the CSV language cells agree with the ledger', aligned);
+
+  const constitution = COVERAGE.find((record) => record.title === 'The Constitution of India');
+  const constitutionRow = constitution
+    ? rows.find(
+        (row) =>
+          row[0] === String(constitution.year) &&
+          row[1] === (constitution.juris === 0 ? 'central' : 'state') &&
+          row[2] === KINDS[constitution.kind].id &&
+          row[3] === constitution.title,
+      )
+    : null;
+  check(
+    'the Constitution row names every scheduled language',
+    Boolean(constitutionRow) &&
+      constitutionRow[4].split('; ').length === LANGUAGES.length &&
+      constitutionRow[6] === constitution.url,
+    constitutionRow?.[4],
+  );
 }
 
 {
@@ -318,6 +382,17 @@ console.log('shipped files');
   check('the source list names the RTI source family', /Central Information Commission|CIC/i.test(text));
   check('the source list carries the MeitY annual reports', text.includes('MeitY'));
   check('the source list admits the missing Gazette total', /no (national|official)/i.test(text) && /gazette/i.test(text));
+  check(
+    'the source list documents the language columns',
+    text.includes('Language coverage') &&
+      text.includes('verified_languages') &&
+      text.includes('language_source_url'),
+  );
+  check('the source list dates the language check', text.includes(COVERAGE_CHECKED));
+  check(
+    'the source list keeps absence from becoming a finding',
+    text.includes(COVERAGE_NOTE) && /not a finding/i.test(text),
+  );
 }
 
 // ------------------------------------------------------- catalogue snapshot

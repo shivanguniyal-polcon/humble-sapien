@@ -5,6 +5,16 @@ One row per instrument in ths_state_output_instruments.csv; per-year
 aggregates in ths_state_output_series.csv. The timeline plots every
 instrument as one dot.
 
+Language coverage
+-----------------
+The instrument CSV's verified_languages column names the Eighth Schedule
+languages with an official text for that instrument, separated by
+semicolons; language_source and language_source_url carry the receipt.
+The ledger holds 23 verified catalogue records, checked
+2026-10-31. Verified against the Legislative Department's published official texts. India Code's catalogue records no language field, so a square without a verified text is unrecorded here — not a finding that no translation exists.
+
+Central Acts and the Constitution. State legislation is outside this ledger.
+
 Catalogue note
 --------------
 The instrument counts come from the India Code catalogue (indiacode.gov.in), crawled in October 2026 and deduplicated by Act number, rule or notification id, or normalised title. They measure the paper India has digitised, not the state’s true output. For many years the catalogue holds fewer Central Acts than that year’s highest Act number proves were enacted; state coverage varies by year; 2026 is partial and marked provisional. And the annual count of Gazette notifications — central or state — exists nowhere at all: that gap is part of the finding, not a missing row.

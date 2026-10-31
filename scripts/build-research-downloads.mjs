@@ -35,6 +35,14 @@ import {
   CATALOGUE_NOTE,
 } from '../src/data/stateOutput.js';
 import { INSTRUMENTS } from '../src/data/stateOutputInstruments.js';
+import {
+  COVERAGE,
+  COVERAGE_CHECKED,
+  COVERAGE_NOTE,
+  COVERAGE_SCOPE,
+} from '../src/data/languageCoverage.js';
+import { LANGUAGES, LANGUAGE_BY_CODE } from '../src/data/languages.js';
+import { resolveCoverage } from '../src/lib/languageCoverage.js';
 import { csvCell } from '../src/lib/csv.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -159,13 +167,46 @@ const sourceText = (id, title) => {
     'ths_state_output_series.csv',
     csv(['year', 'series', 'value', 'scope', 'source', 'date', 'provisional'], rows),
   );
+  // The language columns come from the same ledger the timeline's lens reads.
+  // A blank is the ledger's silence, not a claim that no translation exists;
+  // the source list spells that out beside the column names.
+  const languageCoverage = resolveCoverage(INSTRUMENTS);
+  if (languageCoverage.errors.length > 0) {
+    throw new Error(
+      `language ledger does not resolve: ${languageCoverage.errors
+        .map((error) => `${error.record.title}: ${error.reason}`)
+        .join('; ')}`,
+    );
+  }
+
   write(
     'ths_state_output_instruments.csv',
     csv(
-      ['year', 'jurisdiction', 'kind', 'name'],
-      INSTRUMENTS.map(([year, kind, juris, name]) => [year, JURIS[juris].id, KINDS[kind].id, name]),
+      [
+        'year',
+        'jurisdiction',
+        'kind',
+        'name',
+        'verified_languages',
+        'language_source',
+        'language_source_url',
+      ],
+      INSTRUMENTS.map((row) => {
+        const [year, kind, juris, name] = row;
+        const record = languageCoverage.byRow.get(row);
+        return [
+          year,
+          JURIS[juris].id,
+          KINDS[kind].id,
+          name,
+          record ? record.languages.map((code) => LANGUAGE_BY_CODE[code].name).join('; ') : '',
+          record?.source ?? '',
+          record?.url ?? '',
+        ];
+      }),
     ),
   );
+  console.log(`  language coverage: ${COVERAGE.length} records, ${LANGUAGES.length} languages`);
 }
 
 // ---------------------------------------------------------------- Atlas
@@ -261,6 +302,16 @@ const sourceText = (id, title) => {
       'One row per instrument in ths_state_output_instruments.csv; per-year',
       'aggregates in ths_state_output_series.csv. The timeline plots every',
       'instrument as one dot.',
+      '',
+      'Language coverage',
+      '-----------------',
+      `The instrument CSV's verified_languages column names the Eighth Schedule`,
+      'languages with an official text for that instrument, separated by',
+      'semicolons; language_source and language_source_url carry the receipt.',
+      `The ledger holds ${COVERAGE.length} verified catalogue records, checked`,
+      `${COVERAGE_CHECKED}. ${COVERAGE_NOTE}`,
+      '',
+      `${COVERAGE_SCOPE}`,
       '',
       'Catalogue note',
       '--------------',

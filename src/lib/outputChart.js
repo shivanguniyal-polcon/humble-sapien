@@ -89,12 +89,17 @@ const KIND_INDEX = Object.fromEntries(KINDS.map((kind, index) => [kind.id, index
 // enabled: Set of kind ids to include.
 // order: kind ids, top of the band first. KINDS order by default; the
 // reader's order, when they set one, is what puts the strata in place.
+// lens: optional { language, coverage } — the selected scheduled-language
+// code and a Map from row object to its coverage record. When present, each
+// segment carries a parallel `covered` array so the raster can paint verified
+// rows without re-running the lookup per square.
 // Returns { 0: Map<year, segments>, 1: Map<year, segments> } where each
-// segment is { kindIndex, count, names } and names sit in draw order.
+// segment is { kindIndex, count, names, covered } and names sit in draw order.
 export const buildStacks = (
   instruments,
   enabled,
   order = KINDS.map((kind) => kind.id),
+  lens = null,
 ) => {
   // Resolved once, not per comparison: a reorder re-runs this over 40k rows.
   const rank = new Map();
@@ -107,7 +112,8 @@ export const buildStacks = (
   const rankOf = (kindIndex) => rank.get(kindIndex) ?? 1000 + kindIndex;
 
   const buckets = new Map();
-  for (const [year, kindIndex, jurisIndex, name] of instruments) {
+  for (const row of instruments) {
+    const [year, kindIndex, jurisIndex, name] = row;
     if (!enabled.has(KINDS[kindIndex].id)) continue;
     const key = `${jurisIndex}|${year}`;
     let segments = buckets.get(key);
@@ -117,11 +123,17 @@ export const buildStacks = (
     }
     let segment = segments.get(kindIndex);
     if (!segment) {
-      segment = { kindIndex, count: 0, names: [] };
+      segment = { kindIndex, count: 0, names: [], covered: lens ? [] : null };
       segments.set(kindIndex, segment);
     }
     segment.count += 1;
     segment.names.push(name);
+    if (lens) {
+      const record = lens.coverage?.get(row);
+      segment.covered.push(
+        Boolean(record && lens.language && record.languages.includes(lens.language)),
+      );
+    }
   }
 
   const out = { 0: new Map(), 1: new Map() };
@@ -147,7 +159,11 @@ export const dotAt = (segments, perRow, row, col) => {
     if (row < rowsBefore + rows) {
       const index = (row - rowsBefore) * perRow + col;
       return index < segment.count
-        ? { kindIndex: segment.kindIndex, name: segment.names[index] }
+        ? {
+            kindIndex: segment.kindIndex,
+            name: segment.names[index],
+            covered: segment.covered ? Boolean(segment.covered[index]) : false,
+          }
         : null;
     }
     rowsBefore += rows;

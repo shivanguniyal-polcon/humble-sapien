@@ -132,6 +132,39 @@ ok('parseNumber empty flagged', parseNumber('').empty);
   approx('CBA IRR exact 10%', r.irr, 0.1, 1e-9);
   ok('CBA payback year 1', r.paybackYear === 1, String(r.paybackYear));
 }
+{
+  // Stage 2 binds the horizon. A shorter horizon must clip the run, not just
+  // change the sentence printed beside it.
+  const input = {
+    title: 't', baseYear: 2026, horizonYears: 2,
+    lines: [
+      { id: 'c', label: 'cost', kind: 'cost', priced: true, schedule: [{ year: 0, value: 100 }] },
+      { id: 'b', label: 'benefit', kind: 'benefit', priced: true, schedule: [{ year: 1, value: 60 }, { year: 2, value: 60 }] },
+    ],
+  };
+  const clipped = cba.run(input, { discountRate: 0.1, horizonYears: 1 });
+  ok('CBA bound horizon governs the run', clipped.horizonYears === 1, String(clipped.horizonYears));
+  approx('CBA bound horizon clips later cash flows', clipped.pvBenefit, 60 / 1.1);
+  ok('CBA bound horizon moves payback past the run', clipped.discountedPaybackYear === null);
+}
+{
+  // Two sign changes: -100, +230, -132 has roots at 10% and 20%. A single
+  // bisection bracket reports neither when both endpoints share a sign.
+  const input = {
+    title: 't', baseYear: 2026, horizonYears: 2,
+    lines: [
+      { id: 'c', label: 'cost', kind: 'cost', priced: true, schedule: [{ year: 0, value: 100 }, { year: 2, value: 132 }] },
+      { id: 'b', label: 'benefit', kind: 'benefit', priced: true, schedule: [{ year: 1, value: 230 }] },
+    ],
+  };
+  const r = cba.run(input, { discountRate: 0.18 });
+  ok('CBA finds both IRR roots', r.irrRoots.length === 2 &&
+    Math.abs(r.irrRoots[0] - 0.1) < 1e-6 && Math.abs(r.irrRoots[1] - 0.2) < 1e-6,
+  r.irrRoots.map((x) => x.toFixed(4)).join(', '));
+  ok('CBA reports the root nearest the discount rate', Math.abs(r.irr - 0.2) < 1e-6, String(r.irr));
+  ok('CBA has no single break-even rate with multiple roots', r.breakEvenDiscount === null);
+  ok('CBA results name every root', /2 roots/.test(cba.renderResults(r, {})), cba.renderResults(r, {}));
+}
 
 // 6. Manifest determinism and verification.
 {
@@ -783,14 +816,16 @@ ok('parseNumber empty flagged', parseNumber('').empty);
   const reseeded = monteCarlo.run({ ...input, seed: 8 });
   ok('Monte Carlo seed change gives different output', canonicalJSON(reseeded) !== canonicalJSON(r));
   const beta = monteCarlo.run({
-    title: 't', runs: 10000, seed: 11,
+    title: 't', runs: 50000, seed: 11,
     variables: [
       { id: 'b', label: 'Beta draw', kind: 'benefit', dist: { dist: 'beta', alpha: 2, beta: 5 }, scale: 240000 },
     ],
     pit: { group: 'g', effect: 'mixed' },
   });
-  // Beta(2, 5) has mean 2/7; scaled by 240,000 that is about 68,571.
-  approx('Monte Carlo beta mean matches theory', beta.variables[0].mean, (2 / 7) * 240000, 3000);
+  // Beta(2, 5) has mean 2/7; scaled by 240,000 that is about 68,571. The
+  // tolerance is tight enough to catch the old coupled acceptance draw, which
+  // pulled the mean down by about 1,000 at this seed and sample size.
+  approx('Monte Carlo beta mean matches theory', beta.variables[0].mean, (2 / 7) * 240000, 500);
   ok('Monte Carlo beta draws stay inside 0 to scale', beta.variables[0].p95 < 240000 && beta.variables[0].p5 > 0);
   const tri = monteCarlo.run({
     title: 't', runs: 5000, seed: 5,

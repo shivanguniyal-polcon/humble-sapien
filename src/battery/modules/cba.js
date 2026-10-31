@@ -4,6 +4,7 @@
 // same table as the priced ones and can never be silently dropped.
 
 import { escapeHtml } from './decisionTree.js';
+import { irrRoots } from '../project/finance.js';
 
 const SHOCK = 0.2;
 
@@ -20,22 +21,6 @@ function expandSchedule(line, horizonYears) {
 
 function pvAt(rate, yearly) {
   return yearly.reduce((a, v, t) => a + v / Math.pow(1 + rate, t), 0);
-}
-
-// Deterministic IRR by bisection on the NPV function.
-function irr(yearly) {
-  const npv = (r) => pvAt(r, yearly);
-  let lo = -0.95;
-  let hi = 10;
-  if (npv(lo) * npv(hi) > 0) return null;
-  for (let i = 0; i < 200; i += 1) {
-    const mid = (lo + hi) / 2;
-    const v = npv(mid);
-    if (Math.abs(v) < 1e-9) return mid;
-    if (npv(lo) * v <= 0) hi = mid;
-    else lo = mid;
-  }
-  return (lo + hi) / 2;
 }
 
 function paybackYear(cumulative) {
@@ -85,7 +70,13 @@ export const cba = {
   },
 
   run(input, params) {
-    const horizon = input.horizonYears;
+    // Stage 2 binds the horizon with its own provenance. When it is present
+    // it governs the run, the manifest and the report; the horizon inside the
+    // structured input is the fallback for direct module calls.
+    const horizon =
+      Number.isInteger(params?.horizonYears) && params.horizonYears >= 1
+        ? params.horizonYears
+        : input.horizonYears;
     const rate = params.discountRate;
     const priced = input.lines.filter((l) => l.priced !== false);
     const pricedRows = priced.map((l) => {
@@ -115,7 +106,15 @@ export const cba = {
     const pvBenefit = pvAt(rate, benefitYearly);
     const npv = pvBenefit - pvCost;
     const bcr = pvCost > 0 ? pvBenefit / pvCost : null;
-    const irrValue = irr(netYearly);
+    // irrRoots discounts from period 1, while this schedule starts at year 0.
+    // The leading zero aligns the two without changing the roots, and the scan
+    // finds every crossing instead of assuming a single bracket.
+    const roots = irrRoots([0, ...netYearly]);
+    const irrValue = roots.length
+      ? roots.reduce((best, root) => (
+        Math.abs(root - rate) < Math.abs(best - rate) ? root : best
+      ))
+      : null;
 
     const cumNominal = [];
     const cumDiscounted = [];
@@ -164,9 +163,10 @@ export const cba = {
       npv,
       bcr,
       irr: irrValue,
+      irrRoots: roots,
       paybackYear: paybackYear(cumNominal),
       discountedPaybackYear: paybackYear(cumDiscounted),
-      breakEvenDiscount: irrValue,
+      breakEvenDiscount: roots.length === 1 ? roots[0] : null,
       scenarios,
       unpriced: input.lines
         .filter((l) => l.priced === false)
@@ -176,6 +176,12 @@ export const cba = {
 
   renderResults(r, params) {
     const fmt = (v, d = 0) => (v == null ? 'n/a' : Number(v).toLocaleString('en-IN', { maximumFractionDigits: d, minimumFractionDigits: d }));
+    const roots = Array.isArray(r.irrRoots) ? r.irrRoots : r.irr == null ? [] : [r.irr];
+    const irrText = roots.length === 0
+      ? 'no IRR in the tested range'
+      : roots.length === 1
+        ? `${(roots[0] * 100).toFixed(1)}%`
+        : `${(r.irr * 100).toFixed(1)}% as the root nearest the discount rate; ${roots.length} roots in the tested range (${roots.map((x) => `${(x * 100).toFixed(1)}%`).join(', ')}), because the flows change sign more than once`;
     const lineRows = r.lines
       .map(
         (l) => `<tr><th scope="row">${escapeHtml(l.label)}</th><td>${l.kind}</td><td class="data-num">${fmt(l.nominal)}</td><td class="data-num">${fmt(l.pv)}</td></tr>`,
@@ -197,7 +203,7 @@ export const cba = {
       <table class="result-table"><thead><tr><th>Line</th><th>Kind</th><th class="data-num">Nominal (₹)</th><th class="data-num">Present value (₹)</th></tr></thead><tbody>${lineRows}</tbody></table>
       <h3>Sensitivity</h3>
       <table class="result-table"><thead><tr><th>Scenario</th><th class="data-num">NPV (₹)</th><th class="data-num">BCR</th></tr></thead><tbody>${scenRows}</tbody></table>
-      <p class="fine-print">Internal rate of return: ${r.irr == null ? 'no sign change in the flows, IRR undefined' : `${(r.irr * 100).toFixed(1)}%`}. Discounted payback: ${r.discountedPaybackYear == null ? `beyond the ${r.horizonYears}-year horizon` : `year ${r.discountedPaybackYear}`}. Break-even discount rate equals the IRR.</p>
+      <p class="fine-print">Internal rate of return: ${irrText}. Discounted payback: ${r.discountedPaybackYear == null ? `beyond the ${r.horizonYears}-year horizon` : `year ${r.discountedPaybackYear}`}. ${roots.length <= 1 ? 'Break-even discount rate equals the IRR.' : 'With more than one sign change there is no single break-even discount rate.'}</p>
       <h3>Unpriced ledger</h3>
       <p class="fine-print">Effects that resist monetisation are listed here in their own units. They are part of the decision, not a footnote to it.</p>
       ${unpricedRows ? `<table class="result-table"><thead><tr><th>Effect</th><th>Direction and size</th><th>Unit</th><th>Who</th></tr></thead><tbody>${unpricedRows}</tbody></table>` : '<p class="report-warning">No unpriced effects recorded. The public interest check must state why.</p>'}

@@ -47,9 +47,12 @@ function drawFrom(dist, rand, scale) {
             const u2 = rand();
             const z = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
             const v = Math.pow(1 + c * z, 3);
-            if (v > 0 && u2 > 0) {
-              if (Math.log(u2) < 0.5 * z * z + d * (1 - v + Math.log(v))) return d * v;
-            }
+            if (v <= 0) continue;
+            // Marsaglia-Tsang needs its own uniform for the acceptance test.
+            // Reusing u2 would couple the test to the normal draw's angle and
+            // bias every beta sample toward the centre.
+            const u3 = rand();
+            if (Math.log(u3) < 0.5 * z * z + d * (1 - v + Math.log(v))) return d * v;
           }
         };
         const x = gamma(dist.alpha);

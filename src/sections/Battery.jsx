@@ -190,6 +190,7 @@ export default function Battery({ onNavigate }) {
   const [provenance, setProvenance] = useState(DISCOUNT_PRESETS[0].provenance);
 
   const [results, setResults] = useState(null);
+  const [runParams, setRunParams] = useState(null);
   const [manifest, setManifest] = useState(null);
   const [runError, setRunError] = useState('');
   const [pit, setPit] = useState({ whoBenefits: '', whoPays: '', whoMissing: '' });
@@ -366,10 +367,57 @@ export default function Battery({ onNavigate }) {
         setRunError('Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before running.');
         return;
       }
-      const params =
-        moduleId === 'cba'
-          ? { discountRate: discountPct / 100, sensitivityLo: sensitivity[0] / 100, sensitivityHi: sensitivity[1] / 100 }
-          : {};
+      // One parameter object feeds the run, the manifest and the report. The
+      // numeric fields bind the engine; values and meta are the receipt the
+      // report prints, kept here so the run hash and the report hash agree.
+      const displayParams = moduleId === 'cba'
+        ? {
+            values: {
+              discountRate: `${discountPct}%`,
+              horizonYears: horizon,
+              ...(briefParams?.values ?? {}),
+            },
+            meta: {
+              discountRate: {
+                label: 'Discount rate',
+                provenance,
+                status: (DISCOUNT_PRESETS.find((p) => p.id === presetId) || {}).status || 'custom',
+              },
+              horizonYears: { label: 'Horizon (years)', provenance: 'Declared by the analyst.', status: 'custom' },
+              ...(briefParams?.meta ?? {}),
+            },
+          }
+        : moduleId === 'scenario'
+          ? {
+              values: { referenceCase: 'PM-JAY calibrated' },
+              meta: {
+                referenceCase: {
+                  label: 'Reference model',
+                  provenance: PMJAY_REFERENCE.provenance,
+                  status: PMJAY_REFERENCE.status,
+                },
+              },
+            }
+          : {
+              values: { parameters: 'Declared in the structured input' },
+              meta: {
+                parameters: {
+                  label: 'Module parameters',
+                  provenance: 'Declared in the structured input; the input hash in the audit manifest pins them.',
+                  status: 'custom',
+                },
+              },
+            };
+      const params = moduleId === 'cba'
+        ? {
+            discountRate: discountPct / 100,
+            sensitivityLo: sensitivity[0] / 100,
+            sensitivityHi: sensitivity[1] / 100,
+            horizonYears: horizon,
+            ...displayParams,
+          }
+        : displayParams;
+      setRunParams(params);
       const out = moduleChoice.mod.run(input, params);
       const man = await buildManifest({ module: moduleChoice.id, input, params, results: out });
       setResults(out);
@@ -388,50 +436,16 @@ export default function Battery({ onNavigate }) {
         setRunError('Enter a discount rate between 0 and 100, with the sensitivity range running low to high, before building the report.');
         return;
       }
+      if (!runParams) {
+        setRunError('Run the module before building the report.');
+        return;
+      }
       const input = JSON.parse(inputText);
-      const params =
-        moduleId === 'cba'
-          ? {
-              values: { discountRate: `${discountPct}%`, horizonYears: horizon },
-              meta: {
-                discountRate: {
-                  label: 'Discount rate',
-                  provenance,
-                  status: (DISCOUNT_PRESETS.find((p) => p.id === presetId) || {}).status || 'custom',
-                },
-                horizonYears: { label: 'Horizon (years)', provenance: 'Declared by the analyst.', status: 'custom' },
-              },
-            }
-          : moduleId === 'scenario'
-            ? {
-                values: { referenceCase: 'PM-JAY calibrated' },
-                meta: {
-                  referenceCase: {
-                    label: 'Reference model',
-                    provenance: PMJAY_REFERENCE.provenance,
-                    status: PMJAY_REFERENCE.status,
-                  },
-                },
-              }
-            : {
-                values: { parameters: 'Declared in the structured input' },
-                meta: {
-                  parameters: {
-                    label: 'Module parameters',
-                    provenance: 'Declared in the structured input; the input hash in the audit manifest pins them.',
-                    status: 'custom',
-                  },
-                },
-              };
+      const params = runParams;
       const out = await buildReport({
         module: moduleChoice.mod,
         input,
-        params: briefParams && moduleId === 'cba'
-          ? {
-              values: { ...params.values, ...briefParams.values },
-              meta: { ...params.meta, ...briefParams.meta },
-            }
-          : params,
+        params,
         results,
         pit,
         source: 'THS Policy Battery sample or user-supplied data; see the validation report.',
@@ -491,12 +505,10 @@ export default function Battery({ onNavigate }) {
         question="Can your analysis run again tomorrow and give the same answer?"
       >
         The same input and parameters produce the same output today and in ten
-        years, and the report carries the proof. Four stages, four modules: a
-        decision tree, a full cost-benefit analysis, multi-criteria ranking, and
-        scenario runs against the calibrated PM-JAY reference model. Start with
-        your own data or a worked example, answer the module’s questions, and
-        read the manifest before you export; the report will not leave the page
-        until the public interest check is answered.
+        years, and the report carries the proof. Four stages, eleven modules,
+        one audit trail. Start with your own data or a worked example, answer the
+        module’s questions, and read the manifest before you export; the report
+        will not leave the page until the public interest check is answered.
       </PageHead>
 
       <div className="battery-steps" role="group" aria-label="Battery stages">

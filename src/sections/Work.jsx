@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { TOOLS } from '../data/tools';
 import PageHead from '../components/PageHead';
+import ScriptSpecimen from '../components/ScriptSpecimen';
 
 // One chunk per instrument. The tools index loads on its own; the engine
 // behind a tool arrives only when that tool is opened, so the landing page
@@ -48,10 +49,28 @@ const SHELVES = [
 const SHELF_IDS = new Set(SHELVES.flatMap((shelf) => shelf.ids));
 const OTHER_TOOLS = TOOLS.filter((tool) => !SHELF_IDS.has(tool.id));
 
+// The index keeps the specimen quiet: four scripts that span the country's
+// writing systems, with the other four waiting in a second strip. The lead
+// four are put first so the closed card keeps that spread; the rest keep the
+// order the page head uses.
+const CARD_SCRIPTS = ['hi', 'bn', 'ta', 'ur'];
+const cardScripts = (tool) => {
+  const all = tool.scripts ?? [];
+  const lead = CARD_SCRIPTS.map((lang) => all.find(([code]) => code === lang)).filter(Boolean);
+  const rest = all.filter(([lang]) => !CARD_SCRIPTS.includes(lang));
+  return [...lead, ...rest];
+};
+
 const ToolCard = ({ tool, onToolChange }) => (
   <article className="tool-card">
     <span className="tool-card-label">{tool.label}</span>
     <h3>{tool.name}</h3>
+    <ScriptSpecimen
+      className="tool-scripts"
+      scripts={cardScripts(tool)}
+      collapsedCount={CARD_SCRIPTS.length}
+      label={`${tool.name} in Indian scripts`}
+    />
     <p className="tool-question">{tool.question}</p>
     <p className="fine-print">{tool.blurb}</p>
     {tool.how && <p className="fine-print tool-how">{tool.how}</p>}

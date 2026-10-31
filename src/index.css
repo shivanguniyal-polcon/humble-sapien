@@ -1306,6 +1306,31 @@ table + .fine-print {
   outline-offset: 4px;
 }
 
+/* A tool's name set in Indian scripts. It is not a language menu and not a
+   translation claim: each word is set in its own script and the punctuation
+   stays with the word before it, so a wrapped line never opens with a
+   separator. The page head and the tool card share the strip and differ only
+   in size. */
+.script-specimen {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.script-specimen-sep {
+  margin-inline: 0.45rem;
+  color: var(--color-border-strong);
+}
+
+.page-scripts {
+  margin: 0 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-text-secondary);
+}
+
 .page-head .page-head-question {
   font-family: var(--font-display);
   font-style: italic;
@@ -4007,6 +4032,94 @@ input[type='range'] {
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-accent-text);
+}
+
+/* Four scripts, not the page head's eight: the card is an index entry, and the
+   specimen is there to be noticed, not read across. The other four sit in a
+   second strip, absolutely placed so revealing them cannot reflow the grid. */
+.tool-scripts {
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+}
+
+/* A small folio toggle: it says four scripts are folded away, and pins the
+   second strip open until it is pressed again. The button stays in the line
+   so revealing the strip cannot reflow the card. */
+.script-specimen-more {
+  position: relative;
+  appearance: none;
+  margin-left: 0.5rem;
+  padding: 0 0 0 0.45rem;
+  border: 0;
+  border-left: 1px solid var(--color-border-strong);
+  border-radius: 0;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 120ms var(--ease-out), border-color 120ms var(--ease-out);
+}
+
+/* The mark stays small, but its tap target reaches the 24px minimum without
+   changing the line box. */
+.script-specimen-more::after {
+  content: '';
+  position: absolute;
+  inset: -0.375rem 0 -0.375rem -0.25rem;
+}
+
+.script-specimen-more:hover,
+.script-specimen-more[aria-expanded='true'] {
+  color: var(--color-accent-text);
+  border-left-color: var(--color-accent-soft-border);
+}
+
+.script-specimen-more:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.script-specimen-extra {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  max-width: 100%;
+  padding: 0.35rem 0.55rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-raised);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms var(--ease-out);
+}
+
+.script-specimen.is-open .script-specimen-extra {
+  opacity: 1;
+}
+
+/* Hover and focus remain transient previews. They stand down while the toggle
+   itself is focused, so pressing it can actually dismiss the strip. */
+@media (hover: hover) {
+  .tool-scripts:hover:not(:has(.script-specimen-more:focus)) .script-specimen-extra {
+    opacity: 1;
+  }
+}
+
+.tool-card:focus-within:not(:has(.script-specimen-more:focus)) .script-specimen-extra {
+  opacity: 1;
 }
 
 .tool-question {

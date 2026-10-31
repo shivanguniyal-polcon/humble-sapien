@@ -5,6 +5,12 @@
 // order: the name, the question it answers, and what it does plus how to use
 // it. `label` is the plain-English category, kept visible so a first-time
 // reader is not asked to guess what a Sanskrit name does.
+//
+// `scripts` is the name carried into eight Indian scripts, in this order:
+// Devanagari, Bengali, Gujarati, Tamil, Telugu, Kannada, Malayalam, Urdu. It
+// is a specimen, not a translation claim: where a language has its own word
+// for the idea (Tamil கணக்கு, Malayalam കണക്ക്), that word is used; otherwise
+// the name is transliterated.
 
 export const TOOLS = [
   {
@@ -14,6 +20,16 @@ export const TOOLS = [
     question: 'Can your analysis run again tomorrow and give the same answer?',
     blurb: 'Unorganised data in, auditable analysis out: ingestion with a loud validation report, parameters with provenance, deterministic execution with an audit manifest, and a report that cannot be exported until the public interest check is answered.',
     how: 'Start with your own data or a worked example, answer the module’s questions, and read the manifest before you export.',
+    scripts: [
+      ['hi', 'मंथन'],
+      ['bn', 'মন্থন'],
+      ['gu', 'મંથન'],
+      ['ta', 'மந்தன்'],
+      ['te', 'మంథన'],
+      ['kn', 'ಮಂಥನ'],
+      ['ml', 'മന്ഥന'],
+      ['ur', 'منتھن'],
+    ],
   },
   {
     id: 'project',
@@ -22,6 +38,16 @@ export const TOOLS = [
     question: 'Does the project cover its debt?',
     blurb: 'A half-yearly project-finance screening case with contractual DSCR, a DSRA liquidity comparison, switching values and a memo. Solar and HAM road cases run entirely in your browser.',
     how: 'Open the solar or HAM road case, change one assumption at a time, and watch the covenant tests and the memo move with it.',
+    scripts: [
+      ['hi', 'निर्माण'],
+      ['bn', 'নির্মাণ'],
+      ['gu', 'નિર્માણ'],
+      ['ta', 'நிர்மாணம்'],
+      ['te', 'నిర్మాణం'],
+      ['kn', 'ನಿರ್ಮಾಣ'],
+      ['ml', 'നിർമ്മാണം'],
+      ['ur', 'تعمیر'],
+    ],
   },
   {
     id: 'lab',
@@ -30,6 +56,16 @@ export const TOOLS = [
     question: 'Does the policy actually change the outcome?',
     blurb: 'Run difference-in-differences, regression discontinuity, synthetic control and matching live, on complete census and health-survey coverage.',
     how: 'Pick a method, set the design and the sample, then read the estimate beside its standard errors and the assumptions it cannot escape.',
+    scripts: [
+      ['hi', 'मूल्यांकन'],
+      ['bn', 'মূল্যায়ন'],
+      ['gu', 'મૂલ્યાંકન'],
+      ['ta', 'மதிப்பீடு'],
+      ['te', 'మూల్యాంకనం'],
+      ['kn', 'ಮೌಲ್ಯಮಾಪನ'],
+      ['ml', 'മൂല്യനിർണ്ണയം'],
+      ['ur', 'جانچ'],
+    ],
   },
   {
     id: 'stakeholders',
@@ -38,6 +74,16 @@ export const TOOLS = [
     question: 'Who gains, who is restricted, and who decided?',
     blurb: 'A distributional ledger for any policy: direction, magnitude and power per party, with the verdict read back to you.',
     how: 'Add each party, set the direction and size of the effect, record who held the decision, and read the verdict back before a policy is announced.',
+    scripts: [
+      ['hi', 'सूत्र'],
+      ['bn', 'সূত্র'],
+      ['gu', 'સૂત્ર'],
+      ['ta', 'சூத்திரம்'],
+      ['te', 'సూత్రం'],
+      ['kn', 'ಸೂತ್ರ'],
+      ['ml', 'സൂത്രം'],
+      ['ur', 'سوترا'],
+    ],
   },
   {
     id: 'touchpoints',
@@ -46,6 +92,16 @@ export const TOOLS = [
     question: 'Which office owes you the answer?',
     blurb: 'Follow a scheme from eligibility to grievance redressal, with the escalation route at every step.',
     how: 'Walk down the map to your village for the office that owes you an answer, or start from the scheme and follow delivery step by step.',
+    scripts: [
+      ['hi', 'संपर्क'],
+      ['bn', 'সম্পর্ক'],
+      ['gu', 'સંપર્ક'],
+      ['ta', 'தொடர்பு'],
+      ['te', 'సంపర్కం'],
+      ['kn', 'ಸಂಪರ್ಕ'],
+      ['ml', 'സമ്പർക്കം'],
+      ['ur', 'رابطہ'],
+    ],
   },
   {
     id: 'simplifier',
@@ -54,6 +110,16 @@ export const TOOLS = [
     question: 'What does this notification actually say?',
     blurb: 'Plain-language rewriting of policy text, with readability scoring you can check.',
     how: 'Paste the notification, read it sentence by sentence with the flags that need a lawyer, and export the review file with the source text attached.',
+    scripts: [
+      ['hi', 'सरल'],
+      ['bn', 'সরল'],
+      ['gu', 'સરળ'],
+      ['ta', 'எளிய'],
+      ['te', 'సరళం'],
+      ['kn', 'ಸರಳ'],
+      ['ml', 'ലളിതം'],
+      ['ur', 'آسان'],
+    ],
   },
   {
     id: 'passbook',
@@ -62,6 +128,16 @@ export const TOOLS = [
     question: 'Where did the village’s money go?',
     blurb: 'A Gram Panchayat’s own record, read like a household passbook: what came in, what went out, the 15th Finance Commission balance, the completed works on the GP’s register, and the questions a Gram Sabha can put to it. Built from public eGramSwaraj returns, with every source hashed.',
     how: 'Choose your State, district and village. The page then reads that Gram Panchayat’s record and hands you the questions to carry into the next Gram Sabha.',
+    scripts: [
+      ['hi', 'खाता'],
+      ['bn', 'খাতা'],
+      ['gu', 'ખાતું'],
+      ['ta', 'கணக்கு'],
+      ['te', 'ఖాతా'],
+      ['kn', 'ಖಾತೆ'],
+      ['ml', 'കണക്ക്'],
+      ['ur', 'کھاتہ'],
+    ],
   },
   {
     id: 'monitor',
@@ -70,6 +146,16 @@ export const TOOLS = [
     question: 'What changed, and does it bind us?',
     blurb: 'Fifty RBI instruments read as obligations, plus a live library that checks for new circulars twice a day: who must act, what changed since the previous circular, whether it binds your entity profile, and a board pack with the reviewer trail and a manifest.',
     how: 'Set your entity profile, open a circular to read its duties, then compare it with the version before it and export the board pack with the reviewer trail.',
+    scripts: [
+      ['hi', 'प्रहरी'],
+      ['bn', 'প্রহরী'],
+      ['gu', 'પ્રહરી'],
+      ['ta', 'காவலர்'],
+      ['te', 'ప్రహరి'],
+      ['kn', 'ಪ್ರಹರಿ'],
+      ['ml', 'പ്രഹരി'],
+      ['ur', 'پہریدار'],
+    ],
   },
   {
     id: 'scorecards',
@@ -78,6 +164,16 @@ export const TOOLS = [
     question: 'What was promised, what is the record?',
     blurb: 'Manifesto promises against delivered evidence, four years on.',
     how: 'Pick a promise, read the evidence beside the promise, and use the scorecard in a campaign, a classroom or a newsroom.',
+    scripts: [
+      ['hi', 'संकल्प'],
+      ['bn', 'সংকল্প'],
+      ['gu', 'સંકલ્પ'],
+      ['ta', 'சங்கல்பம்'],
+      ['te', 'సంకల్పం'],
+      ['kn', 'ಸಂಕಲ್ಪ'],
+      ['ml', 'സങ്കൽപ്പം'],
+      ['ur', 'عزم'],
+    ],
   },
   {
     id: 'gender-index',
@@ -86,6 +182,16 @@ export const TOOLS = [
     question: 'Where do women actually stand, state by state?',
     blurb: 'A composite over five public indicators — women’s schooling, institutional births, anaemia, sex ratio and female literacy — with the weights in your hands and the method printed underneath.',
     how: 'Move the weights and watch the state ranking move with them; the method and every source sit underneath the ranking.',
+    scripts: [
+      ['hi', 'भागीदारी'],
+      ['bn', 'ভাগীদারি'],
+      ['gu', 'ભાગીદારી'],
+      ['ta', 'பங்கேற்பு'],
+      ['te', 'భాగస్వామ్యం'],
+      ['kn', 'ಭಾಗೀದಾರಿ'],
+      ['ml', 'പങ്കാളിത്തം'],
+      ['ur', 'شراکت'],
+    ],
   },
   {
     id: 'solutions',
@@ -94,6 +200,16 @@ export const TOOLS = [
     question: 'Who already solved this somewhere?',
     blurb: 'A knowledge base of grassroots solutions, documented with their conditions.',
     how: 'Search by the problem, not the project name, and read what the fix needs before you copy it.',
+    scripts: [
+      ['hi', 'अंकुर'],
+      ['bn', 'অঙ্কুর'],
+      ['gu', 'અંકુર'],
+      ['ta', 'முளை'],
+      ['te', 'అంకురం'],
+      ['kn', 'ಅಂಕುರ'],
+      ['ml', 'അങ്കുരം'],
+      ['ur', 'انکر'],
+    ],
   },
   {
     id: 'notes',
@@ -102,6 +218,16 @@ export const TOOLS = [
     question: 'What did the work teach?',
     blurb: 'The thinking behind the instruments: methods, failures and corrections.',
     how: 'Read these before trusting any instrument on the floor; each note says what broke and what changed after it.',
+    scripts: [
+      ['hi', 'फ़ील्ड नोट्स'],
+      ['bn', 'ফিল্ড নোট'],
+      ['gu', 'ફીલ્ડ નોટ્સ'],
+      ['ta', 'களக் குறிப்புகள்'],
+      ['te', 'ఫీల్డ్ నోట్స్'],
+      ['kn', 'ಫೀಲ್ಡ್ ನೋಟ್ಸ್'],
+      ['ml', 'ഫീൽഡ് നോട്ട്സ്'],
+      ['ur', 'فیلڈ نوٹس'],
+    ],
   },
   {
     id: 'arcade',
@@ -110,7 +236,21 @@ export const TOOLS = [
     question: 'Can policy literacy be a game?',
     blurb: 'The playground corner of the tools floor. Sixty seconds, falling entitlements.',
     how: 'Arrow keys or pointer, sixty seconds on the clock. It is a break, not an argument.',
+    scripts: [
+      ['hi', 'पॉलिसी आर्केड'],
+      ['bn', 'পলিসি আর্কেড'],
+      ['gu', 'પોલિસી આર્કેડ'],
+      ['ta', 'பாலிசி ஆர்கேட்'],
+      ['te', 'పాలసీ ఆర్కేడ్'],
+      ['kn', 'ಪಾಲಿಸಿ ಆರ್ಕೇಡ್'],
+      ['ml', 'പോളിസി ആർക്കേഡ്'],
+      ['ur', 'پالیسی آرکیڈ'],
+    ],
   },
 ];
 
 export const toolById = (id) => TOOLS.find((tool) => tool.id === id);
+
+// The page head knows a tool by its title, not its id, so the header can carry
+// the script specimen without every tool component passing it through.
+export const toolByName = (name) => TOOLS.find((tool) => tool.name === name);

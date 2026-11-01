@@ -96,6 +96,9 @@ const CHECKED = new Intl.DateTimeFormat('en-IN', {
 // column reads as the depth it is. Position is still the only input, so this
 // changes pacing and nothing else.
 const RUN = 4;
+// A phone gets a shorter stage: the five stations still hold more than a
+// screen each, but the chart no longer costs fourteen screens of thumb.
+const PHONE_RUN = 2.5;
 
 // The raster runs once per layout, and a layout only exists at a width. Steps
 // of this many pixels mean a dragged window edge re-rasters a handful of times
@@ -1310,9 +1313,10 @@ export default function OutputTimeline({ onNavigate }) {
     : 'Vertical unit chart of the India Code catalogue.';
 
   const stageBands = column ?? reservedColumn;
+  const stageRun = layout?.compact ? PHONE_RUN : RUN;
   const stageHeight =
     stageBands && !reduce
-      ? `calc(${stageBands.height * RUN}px + 100dvh)`
+      ? `calc(${stageBands.height * stageRun}px + 100dvh)`
       : undefined;
 
   return (

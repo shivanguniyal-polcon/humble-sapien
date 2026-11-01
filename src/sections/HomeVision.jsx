@@ -7,6 +7,7 @@
 // itself — the data, the information, and the methods to use them. The
 // languages live in the ribbon above, once, where they can be heard.
 
+import ArrivalBand from '../components/ArrivalBand';
 import { TOOLS } from '../data/tools';
 
 const FOUR = [
@@ -38,11 +39,17 @@ export default function HomeVision({ onNavigate }) {
             THS is the fifth pillar of democracy.
           </h1>
 
+          {/* The phone gets the two doors immediately under the claim: four
+              tasks it can act on, not thirteen names it has to parse. The
+              band is hidden above 48rem, where the full index stands. */}
+          <ArrivalBand onNavigate={onNavigate} />
+
           <p className="home-vision-lede">
             Not a fifth institution added to four. Each of the first four holds
             a piece of the record and speaks to the others; the public is
             spoken about.
           </p>
+
           <p className="home-vision-body">
             The fifth pillar is a new role, not another seat: the public holding
             the same record, with tools and receipts. That is the contribution
@@ -54,7 +61,7 @@ export default function HomeVision({ onNavigate }) {
           <p className="home-vision-actions">
             <button
               type="button"
-              className="btn btn-secondary"
+              className="btn btn-secondary home-vision-explore"
               onClick={() => onNavigate?.('work')}
             >
               Explore the {TOOLS.length} instruments

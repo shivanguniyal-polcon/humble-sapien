@@ -30,7 +30,7 @@ const Licensing = lazy(() => import('./sections/Licensing'));
 // One fallback for every route: the shell stays on screen, the page body
 // arrives a moment later.
 const RouteFallback = () => (
-  <div className="shell" role="status">
+  <div className="shell route-fallback" role="status">
     <p style={{ padding: '3rem 0', textAlign: 'center' }}>Loading…</p>
   </div>
 );

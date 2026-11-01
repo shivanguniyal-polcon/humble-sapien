@@ -150,6 +150,55 @@
     unicode-range: U+AAE0-AAF6, U+ABC0-ABFF, U+200C-200D;
     src: url('/fonts/mobile/noto-sans-meetei-mayek.woff2') format('woff2');
   }
+
+  /* Fallback faces carry the webfont's width and vertical metrics, so the
+     swap changes glyph shapes but not line breaks or block heights. Values
+     are measured against Arial and Georgia at 100px; see the comment above. */
+  @font-face {
+    font-family: 'Public Sans Fallback';
+    font-style: normal;
+    font-weight: 300 800;
+    src: local('Arial'), local('Helvetica'), local('Roboto'), local('Noto Sans');
+    size-adjust: 104.24%;
+    ascent-override: 91.14%;
+    descent-override: 22.06%;
+    line-gap-override: 0%;
+  }
+
+  @font-face {
+    font-family: 'Public Sans Fallback';
+    font-style: italic;
+    font-weight: 300 800;
+    src: local('Arial Italic'), local('Arial'), local('Helvetica Oblique'), local('Helvetica'),
+      local('Roboto Italic'), local('Roboto'), local('Noto Sans Italic'), local('Noto Sans');
+    size-adjust: 104.24%;
+    ascent-override: 91.14%;
+    descent-override: 22.06%;
+    line-gap-override: 0%;
+  }
+
+  @font-face {
+    font-family: 'Newsreader Fallback';
+    font-style: normal;
+    font-weight: 400 700;
+    src: local('Georgia'), local('Noto Serif'), local('Times New Roman');
+    size-adjust: 93.64%;
+    ascent-override: 79.02%;
+    descent-override: 27.77%;
+    line-gap-override: 0%;
+  }
+
+  @font-face {
+    font-family: 'Newsreader Fallback';
+    font-style: italic;
+    font-weight: 400 700;
+    src: local('Georgia Italic'), local('Georgia'), local('Noto Serif Italic'), local('Noto Serif'),
+      local('Times New Roman Italic'), local('Times New Roman');
+    size-adjust: 93.64%;
+    ascent-override: 79.02%;
+    descent-override: 27.77%;
+    line-gap-override: 0%;
+  }
 }
 
 /* ---------- primitives: ramps ---------- */
@@ -237,8 +286,8 @@
      The display face is a serif: the site is a reading surface before it is
      a dashboard, and the README promised a serif/sans pairing. Body and data
      stay grotesque and mono, because those are the surfaces you operate. */
-  --font-display: 'Newsreader', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
-  --font-body: 'Public Sans', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Newsreader', 'Newsreader Fallback', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-body: 'Public Sans', 'Public Sans Fallback', -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-data: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
   /* legacy alias: a few rules ask for the mono by this name */
   --font-mono: var(--font-data);
@@ -451,6 +500,14 @@ strong { font-weight: 650; }
   max-width: 68rem;
   margin-inline: auto;
   padding-inline: var(--space-5);
+}
+
+/* A route chunk arrives after the shell. Reserve the screen while it loads,
+   otherwise the footer sits in view and jumps down when the page lands; that
+   jump, not the font swap, was the measured layout shift on Data and Archive. */
+.route-fallback {
+  min-height: 100vh;
+  min-height: 100svh;
 }
 
 /* The ambient survey field is painted above the paper and below everything

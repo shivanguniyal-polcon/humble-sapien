@@ -108,10 +108,23 @@ export default function MatrixField() {
 
     const draw = () => {
       const ribbon = document.querySelector('.schedule-ribbon');
-      const timeline = document.querySelector('.timeline');
+      const chart = document.querySelector('.timeline');
+      const coda = document.querySelector('.timeline-coda');
       const ribbonBottom = ribbon?.getBoundingClientRect().bottom;
       const start = Math.max(0, Math.min(ribbonBottom ?? 0, height));
-      const band = timeline?.getBoundingClientRect();
+      // Cut out the chart's own box, not the whole timeline section: the coda
+      // below it is prose, so the rain resumes at "The problem" rather than
+      // waiting until the page has closed.
+      const chartBox = chart?.getBoundingClientRect();
+      const band = chartBox
+        ? {
+            top: chartBox.top,
+            bottom: Math.min(
+              chartBox.bottom,
+              coda?.getBoundingClientRect().top ?? chartBox.bottom,
+            ),
+          }
+        : null;
       const inBand = (y) =>
         Boolean(band) && band.bottom > 0 && band.top < height && y >= band.top && y <= band.bottom;
 

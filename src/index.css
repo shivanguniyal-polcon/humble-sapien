@@ -5135,7 +5135,7 @@ input[type='range'] {
 .home-vision {
   /* Fixed spacing, not viewport units: the section does not grow or shrink
      with the window, so the claim and the plate keep their measured air. */
-  padding-block: 3rem 6rem;
+  padding-block: 96px 144px;
 }
 
 .home-vision-inner {
@@ -5400,7 +5400,7 @@ input[type='range'] {
 
 @media (max-width: 48rem) {
   .home-vision {
-    padding-block: var(--space-6);
+    padding-block: 56px 80px;
   }
 
   .home-vision-title {
@@ -5425,7 +5425,7 @@ input[type='range'] {
      not set in the reading column; every line of text inside it opts back
      into .shell. */
   padding-block: 4rem 0;
-  border-top: 2px solid var(--color-text);
+  border-top: 1px solid var(--color-border);
 }
 
 /* The page's second movement. It sets its own size rather than taking the
@@ -6584,7 +6584,7 @@ input[type='range'] {
 
 .timeline-coda {
   margin-top: var(--space-7);
-  border-top: 2px solid var(--color-text);
+  border-top: 1px solid var(--color-border);
 }
 
 .coda-beat {
@@ -6634,7 +6634,7 @@ input[type='range'] {
   margin: var(--space-6) 0 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-text);
+  border-top: 1px solid var(--color-border);
 }
 
 .coda-tools li {
@@ -7171,52 +7171,18 @@ input[type='range'] {
   }
 }
 
-/* ---------- the close: the answer, the one ask ----------
-   Still inside the timeline's flow. The problem and the mission stand in the
-   timeline's own coda, where the chart is still in view; the close begins at
-   what the engine does about it, and the page ends on a single filled control,
-   in the dark, because that is the one thing left to ask. The stat rule below
-   is shared with the coda's problem movement. */
+/* ---------- the close: one ask ----------
+   The problem and the mission stand in the timeline's own coda, where the
+   chart is still in view. The answer beat that followed repeated them, so it
+   is gone; what remains is the page's single filled control, in the dark,
+   because that is the one thing left to ask. */
 
-.home-close {
-  padding-top: var(--space-6);
-  border-top: 2px solid var(--color-text);
-}
-
-.close-beat {
-  padding-block: var(--space-7);
-}
-
-.close-beat + .close-beat {
-  border-top: 1px solid var(--color-border);
-}
-
-.close-title {
-  margin: var(--space-2) 0 var(--space-3);
-  max-width: 26ch;
-  font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4.4vw, 3rem);
-  font-weight: 700;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  text-wrap: balance;
-}
-
-.close-lede {
-  margin: 0;
-  max-width: 64ch;
-  font-size: 1.125rem;
-  text-wrap: pretty;
-}
-
-/* The numbers are the argument, so they are set as a rule of type rather than
-   three boxes: one line across, each with its scope under it. */
 .close-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-5);
   margin: var(--space-6) 0;
-  border-top: 1px solid var(--color-text);
+  border-top: 1px solid var(--color-border);
 }
 
 .close-stat {
@@ -7248,7 +7214,7 @@ input[type='range'] {
   max-width: 78ch;
 }
 
-/* One secondary door out of the answer: the index, named in the copy before
+/* One secondary door out of the mission: the index, named in the copy before
    the reader has to guess that it exists. */
 .close-next {
   display: flex;
@@ -7263,50 +7229,14 @@ input[type='range'] {
   max-width: 34ch;
 }
 
-.close-beat-answer {
-  padding-bottom: var(--space-8);
-}
-
-/* The four designs, as a numbered register rather than four cards. */
-.close-methods {
-  margin: var(--space-6) 0 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--space-5);
-}
-
-.close-methods li {
-  padding-top: var(--space-3);
-  border-top: 2px solid var(--color-text);
-}
-
-.close-method-num {
-  font-family: var(--font-mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  color: var(--color-text-muted);
-}
-
-.close-methods h3 {
-  margin: var(--space-1) 0 var(--space-1);
-  font-family: var(--font-display);
-  font-size: 1.0625rem;
-  letter-spacing: -0.01em;
-}
-
-.close-methods p {
-  margin: 0;
-  font-size: 0.9375rem;
-  color: var(--color-text-secondary);
-  text-wrap: pretty;
+.coda-next .meta {
+  max-width: 46ch;
 }
 
 .close-ask {
   /* Runs to the footer: the page ends on the band, not on a strip of paper
      under it. main's own bottom padding is cancelled here and nowhere else. */
-  margin-top: var(--space-6);
+  margin-top: 0;
   margin-bottom: calc(-1 * var(--space-8));
   padding-block: var(--space-8);
   background: var(--paper-900);
@@ -7347,8 +7277,7 @@ input[type='range'] {
 }
 
 @media (max-width: 52rem) {
-  .close-stats,
-  .close-methods {
+  .close-stats {
     grid-template-columns: 1fr;
   }
 }

@@ -2081,6 +2081,23 @@ export default function OutputTimeline({ onNavigate }) {
               on it. That is what a fifth pillar does &mdash; not more
               information, but the means to answer with it.
             </p>
+
+            {/* The index is the set of all the doors. It closes the mission
+                rather than a separate movement: a reader sold on the argument
+                should be able to see, in one place, everything it opens. */}
+            <p className="close-next coda-next">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={() => onNavigate?.('index')}
+              >
+                Take me to the index
+              </button>
+              <span className="meta">
+                Read more about these tools, and explore the rest: every tool,
+                publication and sector page, listed in one place.
+              </span>
+            </p>
           </div>
         </section>
       </div>

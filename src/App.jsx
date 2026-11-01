@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import Home from './sections/Home';
 import PitAssistant from './components/PitAssistant';
 import AmbientField from './components/AmbientField';
+import MatrixField from './components/MatrixField';
 import Logo from './components/Logo';
 import { PUB_TYPES } from './data/publications';
 import { requestRouteFocus } from './lib/routeFocus';
@@ -57,8 +58,8 @@ const TABS = [
   { id: 'support', label: 'Support' },
 ];
 
-// The V panel prints TABS in that order. Sub-routes stay out: they belong to
-// the page that owns them.
+// The open nav row prints TABS in that order. Sub-routes stay out: they belong
+// to the page that owns them.
 const MENU_TABS = TABS;
 
 // Hash routes give every surface a stable URL: #/tools/lab, #/research/pmjay-model.
@@ -105,7 +106,6 @@ const pageKey = (r) => `${r.tab}/${r.sub || ''}`;
 export default function App() {
   const [route, setRoute] = useState(parseHash);
   const prevPage = useRef(pageKey(route));
-  const menuRef = useRef(null);
 
   // The research library filters by publication type. The filter rides in the
   // URL, so the nav dropdown and the chips on the page are one control.
@@ -145,110 +145,64 @@ export default function App() {
     }
   };
 
-  // The phone menu is a disclosure, not a separate route state. Close it
-  // whenever navigation lands anywhere, including a browser Back.
-  useEffect(() => {
-    if (menuRef.current) menuRef.current.open = false;
-  }, [route.tab, route.sub]);
-
-  const closeMenu = () => {
-    if (menuRef.current) menuRef.current.open = false;
-  };
-
-  // The V panel has no scrim and pushes nothing, so a click on the page behind
-  // it must dismiss it whenever the click lands outside .site-float.
-  useEffect(() => {
-    const onPointerDown = (e) => {
-      if (menuRef.current?.open && !menuRef.current.contains(e.target)) {
-        menuRef.current.open = false;
-      }
-    };
-    document.addEventListener('pointerdown', onPointerDown);
-    return () => document.removeEventListener('pointerdown', onPointerDown);
-  }, []);
-
   return (
     <div className="app" data-field="true">
-      {/* The paper gets a field of its own behind every route. On Home it waits
-          for the timeline to be behind the reader, arriving with the close;
-          the timeline is already an instrument, and two animated surfaces
-          would compete for the same attention. Archive, Research and the Home
-          close get the slower, quieter current because the reading is long. */}
-      <AmbientField
-        key={route.tab}
-        quiet={
-          route.tab === 'archive' || route.tab === 'research' || route.tab === 'home'
-        }
-        gate={route.tab === 'home' ? '.home-close, .site-footer' : null}
-      />
+      {/* Home keeps one ground, not two: the script rain falls from the
+          ribbon down, cuts out the timeline, and resumes below it. Every other
+          route keeps the quieter survey field; Archive and Research get it at
+          a lower voice because the reading is long. */}
+      {route.tab === 'home' ? (
+        <MatrixField />
+      ) : (
+        <AmbientField
+          key={route.tab}
+          quiet={route.tab === 'archive' || route.tab === 'research'}
+        />
+      )}
 
-      {/* No header bar. The mark floats at the top left and the whole site
-          sits behind one V at the top right. The tagline says fifth pillar:
-          not another institution beside the legislature, the executive, the
-          judiciary and the press, but the public holding the same record. */}
-      <div className="site-float">
+      {/* A masthead, not a bar: the mark, its name and its tagline sit on the
+          page's own background, and the doors stand open beside them. Nothing
+          is folded away — not the tagline, not the destinations — because the
+          fifth pillar's identity and its rooms are the same argument. The
+          tagline says fifth pillar: not another institution beside the
+          legislature, the executive, the judiciary and the press, but the
+          public holding the same record. */}
+      <header className="site-head">
         <button
           type="button"
-          className="brand-float"
+          className="site-brand"
           aria-label="THS: The Humble Sapien — home"
-          onClick={() => {
-            closeMenu();
-            go('home');
-          }}
+          onClick={() => go('home')}
         >
           <Logo markOnly />
-          <span className="brand-float-word" aria-hidden="true">
-            <span className="brand-float-name">The Humble Sapien</span>
-            <span className="brand-float-tagline">The fifth pillar of democracy</span>
+          <span className="site-brand-word" aria-hidden="true">
+            <span className="site-brand-name">The Humble Sapien</span>
+            <span className="site-brand-tagline">The fifth pillar of democracy</span>
           </span>
         </button>
 
-        <details
-          className="pillar-menu"
-          ref={menuRef}
-          onKeyDown={(event) => {
-            if (event.key === 'Escape' && menuRef.current?.open) {
-              event.preventDefault();
-              closeMenu();
-              // Escape is a keyboard exit: return focus to the toggle so the
-              // next Tab continues from the control, not the document top.
-              menuRef.current?.querySelector('summary')?.focus();
-            }
-          }}
-        >
-          <summary
-            className="pillar-menu-toggle"
-            aria-label="Menu — the fifth pillar of democracy"
-          >
-            <span className="pillar-menu-mark" aria-hidden="true">V</span>
-            <span className="pillar-menu-word" aria-hidden="true">Menu</span>
-          </summary>
-
-          {/* One list, one level. The menu is a set of doors, not a
-              directory: the forty-odd tool, publication and sector pages
-              belong to the pages that own them, and a popover that scrolls
-              for two thousand pixels is not a menu. */}
-          <nav className="pillar-menu-panel" aria-label="Primary">
-            <ul className="pillar-list">
-              {MENU_TABS.map((tab) => (
-                <li key={tab.id}>
-                  <button
-                    type="button"
-                    className={`pillar-item${route.tab === tab.id ? ' pillar-item-active' : ''}`}
-                    aria-current={route.tab === tab.id ? 'page' : undefined}
-                    onClick={() => {
-                      go(tab.id);
-                      closeMenu();
-                    }}
-                  >
-                    {tab.label}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </details>
-      </div>
+        {/* One list, one level, no bundle. The menu is a set of doors, not a
+            directory: the forty-odd tool, publication and sector pages belong
+            to the pages that own them. It stands on the background with the
+            mark, in the page's flow, so it leaves with the page rather than
+            hovering over the reading. */}
+        <nav className="site-nav" aria-label="Primary">
+          <ul className="site-nav-list">
+            {MENU_TABS.map((tab) => (
+              <li key={tab.id}>
+                <button
+                  type="button"
+                  className={`site-nav-link${route.tab === tab.id ? ' site-nav-link-active' : ''}`}
+                  aria-current={route.tab === tab.id ? 'page' : undefined}
+                  onClick={() => go(tab.id)}
+                >
+                  {tab.label}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
 
       <main>
         {/* Home is deliberately outside .shell: the timeline is the page and

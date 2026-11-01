@@ -876,9 +876,9 @@ export default function OutputTimeline({ onNavigate }) {
     };
   }, [applyProgress, column, reduce]);
 
-  // Measure the window and the floating chrome it must clear. There is no
-  // header bar any more: the mark's plate is the only thing at the top of the
-  // window, and its box — padding included — is what the frame pins below.
+  // Measure the window and the masthead it must clear. While the head is on
+  // screen the frame pins below it; once it scrolls away the frame pins to the
+  // window itself, so the value never goes negative.
   useEffect(() => {
     const win = windowRef.current;
     if (!win) return undefined;
@@ -894,16 +894,19 @@ export default function OutputTimeline({ onNavigate }) {
       });
       setFrameH(win.closest('.timeline-frame')?.clientHeight ?? 0);
       setStickTop(
-        Math.round(
-          document.querySelector('.site-float')?.getBoundingClientRect().bottom ?? 0,
+        Math.max(
+          0,
+          Math.round(
+            document.querySelector('.site-head')?.getBoundingClientRect().bottom ?? 0,
+          ),
         ),
       );
     };
     read();
     const observer = new ResizeObserver(read);
     observer.observe(win);
-    const float = document.querySelector('.site-float');
-    if (float) observer.observe(float);
+    const head = document.querySelector('.site-head');
+    if (head) observer.observe(head);
     return () => observer.disconnect();
   }, [seen]);
 

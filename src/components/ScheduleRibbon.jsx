@@ -159,39 +159,63 @@ export default function ScheduleRibbon() {
           </span>
         </span>
 
-        <div
-          className="schedule-ribbon-list"
-          role="toolbar"
-          aria-label="The 22 scheduled languages: open the motto in each"
-        >
-          {LANGUAGES.map(({ code, endonym, name, rtl }, index) => (
-            <button
-              key={code}
-              type="button"
-              className="schedule-ribbon-button"
-              ref={(node) => {
-                buttonsRef.current[index] = node;
-              }}
-              tabIndex={index === focusIndex ? 0 : -1}
-              aria-expanded={active === code}
-              aria-label={`${name}: ${active === code ? 'hide' : 'open'} the motto in ${name}`}
-              onClick={() => {
-                setFocusIndex(index);
-                choose(code);
-              }}
-              onFocus={() => setFocusIndex(index)}
-              onKeyDown={onKeyDown}
-            >
-              <span
-                className="schedule-ribbon-name"
-                lang={code}
-                dir={rtl ? 'rtl' : 'auto'}
+        {/* The band drifts like a ticker between its two borders. The first
+            pass is the live toolbar; the second is the same names again, only
+            so the loop has no seam, and is hidden from the reader and the
+            keyboard because every door is already in the first pass. */}
+        <div className="schedule-ribbon-track">
+          <div
+            className="schedule-ribbon-list"
+            role="toolbar"
+            aria-label="The 22 scheduled languages: open the motto in each"
+          >
+            {LANGUAGES.map(({ code, endonym, name, rtl }, index) => (
+              <button
+                key={code}
+                type="button"
+                className="schedule-ribbon-button"
+                ref={(node) => {
+                  buttonsRef.current[index] = node;
+                }}
+                tabIndex={index === focusIndex ? 0 : -1}
+                aria-expanded={active === code}
+                aria-label={`${name}: ${active === code ? 'hide' : 'open'} the motto in ${name}`}
+                onClick={() => {
+                  setFocusIndex(index);
+                  choose(code);
+                }}
+                onFocus={() => setFocusIndex(index)}
+                onKeyDown={onKeyDown}
               >
-                {endonym}
+                <span
+                  className="schedule-ribbon-name"
+                  lang={code}
+                  dir={rtl ? 'rtl' : 'auto'}
+                >
+                  {endonym}
+                </span>
+                <span className="schedule-ribbon-code">{code}</span>
+              </button>
+            ))}
+          </div>
+
+          <div
+            className="schedule-ribbon-list schedule-ribbon-list-clone"
+            aria-hidden="true"
+          >
+            {LANGUAGES.map(({ code, endonym, rtl }) => (
+              <span className="schedule-ribbon-chip" key={code}>
+                <span
+                  className="schedule-ribbon-name"
+                  lang={code}
+                  dir={rtl ? 'rtl' : 'auto'}
+                >
+                  {endonym}
+                </span>
+                <span className="schedule-ribbon-code">{code}</span>
               </span>
-              <span className="schedule-ribbon-code">{code}</span>
-            </button>
-          ))}
+            ))}
+          </div>
         </div>
 
         <span className="schedule-ribbon-count" aria-hidden="true">

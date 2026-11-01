@@ -18,7 +18,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { INSTRUMENTS } from '../src/data/stateOutputInstruments.js';
-import { AMENDMENTS } from '../src/data/stateOutput.js';
+import { AMENDMENTS, KINDS } from '../src/data/stateOutput.js';
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const OUT = path.join(HERE, '..', 'src', 'data', 'catalogueSnapshot.json');
@@ -29,6 +29,22 @@ const stateRows = INSTRUMENTS.filter(([, , juris]) => juris === 1).length;
 // The amendments are central instruments and are not part of the crawl rows.
 const central = centralRows + AMENDMENTS.length;
 const state = stateRows;
+
+// A year-by-kind tally, not the names. The timeline can lay out its bands
+// from this before the 40k-row catalogue loads, so the pinned stage has its
+// final height on the first paint instead of growing under the reader.
+const byYear = { central: {}, state: {} };
+const amendmentKind = KINDS.findIndex((kind) => kind.id === 'constitutional-amendment');
+const addCount = ([year, kindIndex, juris]) => {
+  const key = juris === 0 ? 'central' : 'state';
+  const counts = byYear[key][year] ?? Array(KINDS.length).fill(0);
+  counts[kindIndex] += 1;
+  byYear[key][year] = counts;
+};
+for (const row of INSTRUMENTS) addCount(row);
+for (const [, date] of AMENDMENTS) {
+  addCount([Number(date.slice(0, 4)), amendmentKind, 0]);
+}
 
 const snapshot = {
   generatedAt: new Date().toISOString(),
@@ -42,6 +58,7 @@ const snapshot = {
     instruments: INSTRUMENTS.length,
     amendments: AMENDMENTS.length,
   },
+  byYear,
 };
 
 fs.writeFileSync(OUT, `${JSON.stringify(snapshot, null, 2)}\n`);

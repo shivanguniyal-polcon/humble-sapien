@@ -1,14 +1,16 @@
 // The script rain behind Home: columns of letters from the scheduled
 // languages, digits and marks falling from the ribbon to the foot of the page.
-// It is a ground, not a spectacle — glyphs stay at a tenth of full ink, the
+// It is a ground, not a spectacle — glyphs stay under a third of full ink, the
 // frame runs at half speed, and the timeline's band is cut out of the canvas so
 // the chart keeps its own paper.
 //
 // The columns are fixed to the window; the ribbon's bottom and the timeline's
 // box are read every frame, so the rain starts under the band and resumes once
-// the chart has passed. Reduced motion draws one still field.
+// the chart has passed. Columns are seeded inside the window on the first
+// layout, so the rain is already falling when the page arrives. Reduced motion
+// draws one still field.
 
-import { useEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import { themeColors, withAlpha } from '../lib/theme';
 import { useReducedMotion } from '../lib/useReducedMotion.js';
 
@@ -54,19 +56,20 @@ const GLYPHS = [
 
 const FONT =
   '500 12px "Public Sans", "Noto Sans Devanagari", "Noto Sans Bengali", "Noto Sans Tamil", sans-serif';
-const COLUMN = 30;
-const TRAIL = 11;
+const COLUMN = 26;
+const TRAIL = 12;
 const LINE = 15;
-const MAX_ALPHA = 0.2;
+const MAX_ALPHA = 0.28;
 
 const pick = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
 
 export default function MatrixField() {
   const canvasRef = useRef(null);
   const reduce = useReducedMotion();
-  const [active, setActive] = useState(false);
 
-  useEffect(() => {
+  // Layout effect, not effect: the first paint should already carry the rain.
+  // Seeding in an effect left the opening frame bare, then filled it in.
+  useLayoutEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
     if (!canvas || !ctx) return undefined;
@@ -81,10 +84,10 @@ export default function MatrixField() {
     let last = 0;
     let acc = 0;
 
-    const makeColumn = (x) => ({
+    const makeColumn = (x, seed) => ({
       x,
-      y: -Math.random() * window.innerHeight,
-      speed: 26 + Math.random() * 46,
+      y: seed,
+      speed: 30 + Math.random() * 48,
       glyphs: Array.from({ length: TRAIL }, pick),
       warm: Math.random() < 0.3,
     });
@@ -100,9 +103,19 @@ export default function MatrixField() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.font = FONT;
       ctx.textBaseline = 'middle';
+      // Seed the first field inside the window, below the ribbon: started
+      // above the fold, every column spent its first seconds falling into
+      // view, and the page opened on bare paper. The trail above each seed is
+      // clipped by the ribbon, so the rain still reads as falling from it.
+      const ribbonBottom =
+        document.querySelector('.schedule-ribbon')?.getBoundingClientRect().bottom ?? 0;
+      const seedFrom = Math.max(0, Math.min(ribbonBottom, height));
       const count = Math.max(10, Math.ceil(width / COLUMN));
       columns = Array.from({ length: count }, (_, i) =>
-        makeColumn(i * COLUMN + COLUMN / 2),
+        makeColumn(
+          i * COLUMN + COLUMN / 2,
+          seedFrom + Math.random() * Math.max(1, height - seedFrom),
+        ),
       );
     };
 
@@ -164,8 +177,10 @@ export default function MatrixField() {
       for (const column of columns) {
         column.y += column.speed * delta;
         if (column.y - TRAIL * LINE > height) {
-          column.y = -Math.random() * height * 0.4;
-          column.speed = 26 + Math.random() * 46;
+          // A short run back from above the top: a long one left the column
+          // empty for seconds at a time, which is what read as lag.
+          column.y = -Math.random() * height * 0.15;
+          column.speed = 30 + Math.random() * 48;
           column.glyphs = Array.from({ length: TRAIL }, pick);
           column.warm = Math.random() < 0.3;
         } else if (Math.random() < 0.08) {
@@ -178,10 +193,9 @@ export default function MatrixField() {
     };
 
     resize();
-    setActive(true);
+    draw();
 
     if (reduce) {
-      draw();
       const onStill = () => draw();
       const onResize = () => {
         resize();
@@ -204,11 +218,6 @@ export default function MatrixField() {
   }, [reduce]);
 
   return (
-    <canvas
-      className="matrix-field"
-      ref={canvasRef}
-      data-active={active ? 'true' : 'false'}
-      aria-hidden="true"
-    />
+    <canvas className="matrix-field" ref={canvasRef} aria-hidden="true" />
   );
 }

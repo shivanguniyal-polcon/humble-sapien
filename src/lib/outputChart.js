@@ -147,6 +147,26 @@ export const buildStacks = (
   return out;
 };
 
+// The counts-only twin of buildStacks: same segments, no names. The timeline
+// lays out its bands from this before the named catalogue arrives, so the
+// stage can reserve its final height on the first paint. Kind order does not
+// affect a band's depth, so the counts can stay in kind-index order.
+export const stacksFromCounts = (byYear, enabled) => {
+  const out = { 0: new Map(), 1: new Map() };
+  for (const [key, years] of Object.entries(byYear ?? {})) {
+    const juris = key === 'central' ? 0 : 1;
+    for (const [year, counts] of Object.entries(years ?? {})) {
+      const segments = [];
+      counts.forEach((count, kindIndex) => {
+        if (!count || !KINDS[kindIndex] || !enabled.has(KINDS[kindIndex].id)) return;
+        segments.push({ kindIndex, count, names: [], covered: null });
+      });
+      if (segments.length > 0) out[juris].set(Number(year), segments);
+    }
+  }
+  return out;
+};
+
 // Within one year column the dots fill segment by segment (bottom of the
 // stack upward), each segment row-major from the bottom-left. row and col
 // are counted from the bottom-left of the whole column. Returns the

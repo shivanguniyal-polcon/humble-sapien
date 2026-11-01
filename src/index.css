@@ -331,24 +331,14 @@ strong { font-weight: 650; }
 }
 
 /* Home's ground: falling names and marks. It sits with the survey field,
-   behind every line of text, and fades in once the columns are seeded. */
+   behind every line of text. The canvas is transparent until its first draw,
+   so it can stand at full opacity without a fade covering the opening. */
 .matrix-field {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 1200ms var(--ease-out);
-}
-
-.matrix-field[data-active='true'] {
   opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .matrix-field {
-    transition: none;
-  }
 }
 
 .app[data-field='true'] main,
@@ -435,6 +425,11 @@ main {
   outline-offset: 3px;
 }
 
+/* The phone's one control. Hidden where the doors already stand open. */
+.site-menu-toggle {
+  display: none;
+}
+
 /* The doors, unreeled: no plate, no border, no shadow. The links sit directly
    on the page's background and grow into it; the rule under the current page
    is the only chrome they carry. */
@@ -497,6 +492,7 @@ main {
 
 @media (max-width: 48rem) {
   .site-head {
+    position: relative;
     gap: var(--space-2) var(--space-4);
     padding: var(--space-3) var(--space-4) var(--space-2);
   }
@@ -505,9 +501,80 @@ main {
     height: 2.25rem;
   }
 
+  /* The masthead stays one compact row: mark on the left, one control on the
+     right. Every door still exists; it opens below. */
+  .site-menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 44px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    cursor: pointer;
+  }
+
+  .site-menu-toggle-mark {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  .site-menu-toggle:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 40;
+    max-height: calc(100dvh - 4.5rem);
+    overflow-y: auto;
+    padding: 0 var(--space-4) var(--space-3);
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: 0 18px 32px rgb(27 24 21 / 0.09);
+  }
+
+  .site-nav[data-open='true'] {
+    display: block;
+  }
+
+  .site-nav-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .site-nav-list li + li {
+    border-top: 1px solid var(--color-border);
+  }
+
   .site-nav-link {
-    padding: 0.3rem 0.1rem;
-    font-size: 0.8125rem;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 0.25rem;
+    font-size: 1rem;
+    border-bottom: 0;
+  }
+
+  .site-nav-link-active {
+    padding-left: 0.75rem;
+    border-bottom: 0;
+    box-shadow: inset 2px 0 var(--color-accent-solid);
   }
 }
 
@@ -5572,9 +5639,9 @@ input[type='range'] {
 /* ---------- the vertical column, scrubbed by scroll ----------
    A tall stage with a pinned frame. Progress is a readout of how far the
    stage has been scrolled, so the reveal runs backwards as cleanly as it runs
-   forwards. The frame clears the floating mark by the mark's own box,
-   measured at runtime into --timeline-stick: there is no header bar above
-   the page, only a plate, and the chart starts at the plate's bottom edge. */
+   forwards. The masthead is in the page flow, so it has already left by the
+   time the stage reaches the top: the frame pins to the window itself, not
+   below a header. */
 
 .timeline-stage {
   position: relative;
@@ -5587,10 +5654,10 @@ input[type='range'] {
    rule, above. */
 .timeline-frame {
   position: sticky;
-  top: var(--timeline-stick, 0px);
+  top: 0;
   z-index: 2;
-  height: calc(100vh - var(--timeline-stick, 0px));
-  height: calc(100dvh - var(--timeline-stick, 0px));
+  height: 100vh;
+  height: 100dvh;
   overflow: hidden;
 }
 
@@ -5708,6 +5775,13 @@ input[type='range'] {
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--color-text);
+}
+
+/* The kind wells are always open on a desktop. On a phone they fold behind
+   this one control, so the overlay does not spend a third of the window on
+   filters the reader has not asked for yet. */
+.timeline-filters-toggle {
+  display: none;
 }
 
 /* ---- the span: two handles on a rail, and what the period carried --------
@@ -6463,10 +6537,13 @@ input[type='range'] {
   padding: clamp(3rem, 9vh, 6rem) clamp(2rem, 6vw, 9rem)
     calc(var(--space-8) + 4rem) var(--space-5);
   opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 460ms var(--ease-out),
-    visibility 460ms;
+  /* Every station stays in the accessibility tree, in reading order. Hiding
+     the inactive ones with visibility took all five headings out of it: a
+     screen reader met a chart with no argument. The layer takes no pointer,
+     and only the live station's words do, so nothing transparent is in the
+     way of the page. */
+  pointer-events: none;
+  transition: opacity 460ms var(--ease-out);
 }
 
 /* A ground for the type, not a panel. It sits at the right, under the words,
@@ -6494,7 +6571,6 @@ input[type='range'] {
    pointer, so they can still be selected. */
 .timeline-station[data-on='true'] {
   opacity: 1;
-  visibility: visible;
 }
 
 .timeline-station[data-on='true'] > * {
@@ -6804,6 +6880,51 @@ input[type='range'] {
     grid-column: 2;
     grid-row: 1 / span 2;
     align-self: center;
+  }
+
+  /* The filters fold into one 44px control in the bar. Closed, the overlay
+     is the toolbar and the canvas; opened, the two wells appear above it and
+     scroll inside their own bound. */
+  .timeline-filters-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 44px;
+    padding: 0 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-text);
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    cursor: pointer;
+  }
+
+  .timeline-filters-toggle[aria-expanded='true'] {
+    color: var(--color-surface);
+    background: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .timeline-filters-toggle:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  .timeline-filters-count {
+    font-size: 0.5625rem;
+    opacity: 0.72;
+  }
+
+  .timeline-controls {
+    display: none;
+  }
+
+  .timeline-controls[data-open='true'] {
+    display: flex;
+    max-height: 32dvh;
+    overflow-y: auto;
   }
 
   /* One row per well on a phone: the overlay is the bottom fifth of the

@@ -105,7 +105,23 @@ const pageKey = (r) => `${r.tab}/${r.sub || ''}`;
 
 export default function App() {
   const [route, setRoute] = useState(parseHash);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuButtonRef = useRef(null);
   const prevPage = useRef(pageKey(route));
+
+  // The phone masthead folds the doors behind one control. Escape closes it
+  // and returns the keyboard to the toggle; a route change is closed by the
+  // navigation handlers themselves, so no effect has to chase the route.
+  useEffect(() => {
+    if (!menuOpen) return undefined;
+    const onKey = (event) => {
+      if (event.key !== 'Escape') return;
+      setMenuOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [menuOpen]);
 
   // The research library filters by publication type. The filter rides in the
   // URL, so the nav dropdown and the chips on the page are one control.
@@ -122,6 +138,7 @@ export default function App() {
       if (pageKey(next) !== prevPage.current) {
         // The new page's heading takes focus, so the next Tab starts inside
         // the page rather than wherever the old page left the keyboard.
+        setMenuOpen(false);
         requestRouteFocus();
         window.scrollTo({ top: 0, behavior: 'instant' });
       }
@@ -133,6 +150,7 @@ export default function App() {
   }, []);
 
   const go = (tab, sub, query) => {
+    setMenuOpen(false);
     // Callers sometimes carry a URL head rather than a tab id — the newsletter
     // links are written as #/tools/<id>, for one. Accept either spelling so a
     // stored link cannot quietly fall back to Home.
@@ -181,12 +199,34 @@ export default function App() {
           </span>
         </button>
 
+        {/* The phone masthead is a mark and one control; the desktop keeps
+            every door open beside it. The toggle is hidden above 48rem. */}
+        <button
+          type="button"
+          className="site-menu-toggle"
+          ref={menuButtonRef}
+          aria-expanded={menuOpen}
+          aria-controls="site-menu"
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          <span>{menuOpen ? 'Close' : 'Menu'}</span>
+          <span className="site-menu-toggle-mark" aria-hidden="true">
+            {menuOpen ? '\u00d7' : '\u2630'}
+          </span>
+        </button>
+
         {/* One list, one level, no bundle. The menu is a set of doors, not a
             directory: the forty-odd tool, publication and sector pages belong
             to the pages that own them. It stands on the background with the
             mark, in the page's flow, so it leaves with the page rather than
-            hovering over the reading. */}
-        <nav className="site-nav" aria-label="Primary">
+            hovering over the reading. On a phone it opens as a full-width
+            panel under the mark, one door per 44px row. */}
+        <nav
+          className="site-nav"
+          id="site-menu"
+          aria-label="Primary"
+          data-open={menuOpen ? 'true' : undefined}
+        >
           <ul className="site-nav-list">
             {MENU_TABS.map((tab) => (
               <li key={tab.id}>

@@ -45,6 +45,7 @@ import {
 import SNAPSHOT from '../data/catalogueSnapshot.json';
 import {
   buildStacks,
+  stacksFromCounts,
   dotAt,
   amendmentTuples,
   columnLayout,
@@ -405,9 +406,8 @@ export default function OutputTimeline({ onNavigate }) {
   const marker = hovered || pinned;
 
   const [width, setWidth] = useState(0);
-  const [frameH, setFrameH] = useState(0);
-  const [stickTop, setStickTop] = useState(0);
   const [fontsReady, setFontsReady] = useState(false);
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const stageRef = useRef(null);
   const frameRef = useRef(null);
@@ -473,6 +473,17 @@ export default function OutputTimeline({ onNavigate }) {
   const column = useMemo(
     () => (stacks && layout ? yearBands(stacks, juris, layout.perRow, layout.unit) : null),
     [stacks, layout, juris],
+  );
+
+  // The same bands from the year-by-kind snapshot, before the named rows load.
+  // This is what gives the stage its final height on the first paint.
+  const countStacks = useMemo(
+    () => stacksFromCounts(SNAPSHOT.byYear, enabled),
+    [enabled],
+  );
+  const reservedColumn = useMemo(
+    () => (layout ? yearBands(countStacks, juris, layout.perRow, layout.unit) : null),
+    [countStacks, layout, juris],
   );
 
   const jurisTotals = useMemo(() => {
@@ -788,7 +799,7 @@ export default function OutputTimeline({ onNavigate }) {
     if (!reduce) {
       const rect = stage.getBoundingClientRect();
       const travel = Math.max(1, rect.height - win.clientHeight);
-      const scrolled = Math.min(Math.max(stickTop - rect.top, 0), travel);
+      const scrolled = Math.min(Math.max(-rect.top, 0), travel);
       // The first screen is drawn before the reader touches anything: a
       // screenful of blank paper above a chart is not an opening image. The
       // rest of the column is still scrubbed over the same travel, so this
@@ -851,7 +862,7 @@ export default function OutputTimeline({ onNavigate }) {
     };
     speak(beatRefs);
     speak(haloRefs);
-  }, [column, reduce, stickTop, beats]);
+  }, [column, reduce, beats]);
 
   useEffect(() => {
     if (!column || reduce) {
@@ -876,10 +887,10 @@ export default function OutputTimeline({ onNavigate }) {
     };
   }, [applyProgress, column, reduce]);
 
-  // Measure the window and the masthead it must clear. While the head is on
-  // screen the frame pins below it; once it scrolls away the frame pins to the
-  // window itself, so the value never goes negative.
-  useEffect(() => {
+  // Measure the pinned window. The masthead is in the page flow, so by the
+  // time the stage reaches the top the head is gone: the frame pins to the
+  // window, not below a header. Only the width changes the column's layout.
+  useLayoutEffect(() => {
     const win = windowRef.current;
     if (!win) return undefined;
     const read = () => {
@@ -892,23 +903,12 @@ export default function OutputTimeline({ onNavigate }) {
         const next = Math.max(W_STEP, Math.floor(win.clientWidth / W_STEP) * W_STEP);
         return prev === next ? prev : next;
       });
-      setFrameH(win.closest('.timeline-frame')?.clientHeight ?? 0);
-      setStickTop(
-        Math.max(
-          0,
-          Math.round(
-            document.querySelector('.site-head')?.getBoundingClientRect().bottom ?? 0,
-          ),
-        ),
-      );
     };
     read();
     const observer = new ResizeObserver(read);
     observer.observe(win);
-    const head = document.querySelector('.site-head');
-    if (head) observer.observe(head);
     return () => observer.disconnect();
-  }, [seen]);
+  }, []);
 
   // The pointer needs the current geometry without re-rendering on scroll.
   useLayoutEffect(() => {
@@ -1309,13 +1309,18 @@ export default function OutputTimeline({ onNavigate }) {
       : `Vertical unit chart of ${column.total.toLocaleString('en-IN')} ${JURIS[juris].label} instruments catalogued by India Code, ${YEAR_MIN} to ${YEAR_MAX}, one square per instrument. Every year is a band; band depth is that year's output. The full record is in the instruments CSV below.`
     : 'Vertical unit chart of the India Code catalogue.';
 
+  const stageBands = column ?? reservedColumn;
+  const stageHeight =
+    stageBands && !reduce
+      ? `calc(${stageBands.height * RUN}px + 100dvh)`
+      : undefined;
+
   return (
     <section
       className="timeline"
       ref={rootRef}
       aria-labelledby="timeline-title"
       data-motion={reduce ? 'static' : 'scrub'}
-      style={{ '--timeline-stick': `${stickTop}px` }}
     >
       {/* The section runs edge to edge; every line of text keeps the site's
           reading measure inside it. */}
@@ -1543,7 +1548,7 @@ export default function OutputTimeline({ onNavigate }) {
       <div
         className="timeline-stage"
         ref={stageRef}
-        style={column && !reduce ? { height: column.height * RUN + frameH } : undefined}
+        style={stageHeight ? { height: stageHeight } : undefined}
       >
         <div className="timeline-frame" ref={frameRef}>
           <div className="timeline-overlay">
@@ -1641,9 +1646,27 @@ export default function OutputTimeline({ onNavigate }) {
                 {YEAR_MIN}
               </strong>
             </p>
+            <button
+              type="button"
+              className="timeline-filters-toggle"
+              aria-expanded={filtersOpen}
+              aria-controls="timeline-filters"
+              aria-label={`${filtersOpen ? 'Hide' : 'Show'} the kind filters: ${enabled.size} of ${KINDS.length} kinds in the column`}
+              onClick={() => setFiltersOpen((open) => !open)}
+            >
+              Filters
+              <span className="timeline-filters-count" aria-hidden="true">
+                {enabled.size}/{KINDS.length}
+              </span>
+            </button>
           </div>
 
-          <div className="timeline-controls" data-lens={language ? 'true' : undefined}>
+          <div
+            className="timeline-controls"
+            id="timeline-filters"
+            data-open={filtersOpen ? 'true' : undefined}
+            data-lens={language ? 'true' : undefined}
+          >
             <div
               className="timeline-tray"
               ref={trayInRef}

@@ -28,6 +28,7 @@ import { COVERAGE, COVERAGE_CHECKED, COVERAGE_NOTE } from '../src/data/languageC
 import { LANGUAGES, LANGUAGE_BY_CODE } from '../src/data/languages.js';
 import {
   buildStacks,
+  stacksFromCounts,
   dotAt,
   ordinal,
   amendmentTuples,
@@ -431,6 +432,44 @@ console.log('catalogue snapshot');
       snapshot.records.amendments === AMENDMENTS.length,
   );
   check('the snapshot names its source', /India Code/.test(snapshot.source));
+
+  // The stage reserves its height from byYear before the named rows arrive.
+  // If the two disagree by one row, the page jumps on load — the defect this
+  // snapshot exists to prevent — so hold them equal here, and hold the bands
+  // that the two paths lay out equal as well.
+  const rows = [...INSTRUMENTS, ...amendmentTuples(AMENDMENTS)];
+  const byYear = { central: {}, state: {} };
+  for (const [year, kind, juris] of rows) {
+    const bucket = juris === 0 ? byYear.central : byYear.state;
+    if (!bucket[year]) bucket[year] = Array(KINDS.length).fill(0);
+    bucket[year][kind] += 1;
+  }
+  const sameCounts =
+    Object.keys(byYear).every((juris) => {
+      const a = byYear[juris];
+      const b = snapshot.byYear?.[juris] ?? {};
+      const years = new Set([...Object.keys(a), ...Object.keys(b)]);
+      return [...years].every((year) =>
+        (a[year] ?? []).every((count, index) => count === (b[year] ?? [])[index]) &&
+        (a[year] ?? []).length === (b[year] ?? []).length,
+      );
+    });
+  check('the snapshot per-year counts match the source rows', sameCounts);
+
+  const all = new Set(KINDS.map((kind) => kind.id));
+  const layout = columnLayout(1280);
+  const named = yearBands(buildStacks(rows, all), 0, layout.perRow, layout.unit);
+  const reserved = yearBands(
+    stacksFromCounts(snapshot.byYear, all),
+    0,
+    layout.perRow,
+    layout.unit,
+  );
+  check(
+    'the reserved stage height is the height of the drawn column',
+    reserved.height === named.height && reserved.total === named.total,
+    `${reserved.height} vs ${named.height}px, ${reserved.total} vs ${named.total} rows`,
+  );
 }
 
 // -------------------------------------------------------------- hover chip

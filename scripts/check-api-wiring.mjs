@@ -127,9 +127,9 @@ const connectSources = (policy) => {
 const headersPolicy = (read('public/_headers').match(/^Content-Security-Policy:\s*(.+)$/m) || [])[1] || '';
 const vercelJson = JSON.parse(read('vercel.json'));
 const vercelPolicy =
-  ((vercelJson.headers || [])[0]?.headers || []).find(
-    (h) => h.key.toLowerCase() === 'content-security-policy',
-  )?.value || '';
+  (vercelJson.headers || [])
+    .flatMap((rule) => rule.headers || [])
+    .find((h) => h.key.toLowerCase() === 'content-security-policy')?.value || '';
 
 // ---- the VITE_* variables the source expects at build time ---------------
 

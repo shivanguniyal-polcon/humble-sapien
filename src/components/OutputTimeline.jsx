@@ -1380,7 +1380,7 @@ export default function OutputTimeline({ onNavigate }) {
         <StepStrip
           title="RTI applications with the central government"
           points={rtiPoints}
-          unitNote="own scale · 2015-16 to 2024-25 · gaps are unverified years"
+          unitNote="own scale · 2015-16 to 2024-25 · 2023-24 is a reported count"
         />
       )}
       {showOpenData && (
@@ -1993,14 +1993,16 @@ export default function OutputTimeline({ onNavigate }) {
             <dl className="close-stats">
               <div className="close-stat">
                 <dt className="data-num">
-                  <CountUp value={1638784} reduce={reduce} />
-                  <span className="visually-hidden">16,38,784</span>
+                  <CountUp value={1750863} reduce={reduce} />
+                  <span className="visually-hidden">17,50,863</span>
                 </dt>
                 <dd>
                   Right to Information requests filed with the central government
-                  in 2022-23 alone &mdash; and 52,662 rejected. Each one is a
-                  citizen asking the state to explain what it already wrote down.
-                  It is the largest readability complaint in the world.
+                  in 2023-24 alone &mdash; a reported count from a Rajya Sabha
+                  reply, not an audited total &mdash; and 67,615 rejected. Each
+                  one is a citizen asking the state to explain what it already
+                  wrote down. It is the largest readability complaint in the
+                  world.
                 </dd>
               </div>
               <div className="close-stat close-stat-danger">
@@ -2029,10 +2031,10 @@ export default function OutputTimeline({ onNavigate }) {
             </dl>
 
             <p className="meta close-source">
-              Sources: Lok Sabha RTI statistics 2022-23; Law Ministry reported
-              count, May 2025; the timeline&rsquo;s own catalogue note on the
-              missing Gazette total. Numbers carry their dates because policies
-              move.
+              Sources: Rajya Sabha RTI reply, December 2025 (reported count);
+              Law Ministry reported count, May 2025; the timeline&rsquo;s own
+              catalogue note on the missing Gazette total. Numbers carry their
+              dates because policies move.
             </p>
           </div>
         </section>

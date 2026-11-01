@@ -122,14 +122,24 @@ check(
 );
 const fy2223 = RTI.find((r) => r.fy === '2022-23');
 check('the RTI series carries the published 2022-23 figure', fy2223?.received === 1638784, String(fy2223?.received));
+const fy2324 = RTI.find((r) => r.fy === '2023-24');
+check(
+  'the RTI series carries the 2023-24 Rajya Sabha figure',
+  fy2324?.received === 1750863 && fy2324?.rejected === 67615,
+  `${fy2324?.received}/${fy2324?.rejected}`,
+);
+check(
+  'the 2023-24 row is labelled a reported count, not an audited total',
+  Boolean(fy2324 && /reported count/i.test(fy2324.scope) && /reported count/i.test(fy2324.source)),
+);
 const fy2425 = RTI.find((r) => r.fy === '2024-25');
 check(
   'the 2024-25 row says it counts replies, not receipts',
   Boolean(fy2425 && /repl/i.test(fy2425.scope + fy2425.measure)),
 );
 check(
-  'RTI rows in the gap years are absent, not zero',
-  !RTI.some((r) => r.fy === '2023-24') && !RTI.some((r) => r.fy === '2005-06'),
+  'RTI rows outside the compiled span are absent, not zero',
+  !RTI.some((r) => r.fy === '2005-06'),
 );
 
 // ------------------------------------------------------- steps and milestones

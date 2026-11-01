@@ -88,8 +88,11 @@ RTI rows
       scope: About 14.21 lakh including UTs (12.86 lakh excluding). The CIC report states 53,733 rejections in one table and 55,124 in another; CHRI takes 55,124 as correct.
       source: CHRI analysis of the CIC Annual Report 2021-22 — https://www.humanrightsinitiative.org/blog/rtis-to-goi-rose-by-655-during-the-2nd-year-of-the-pandemic-but-how-reliable-is-the-data-published-in-the-cics-202122-annual-report.html
   2022-23 — received: 1638784, rejected 52662
-      scope: RTI applications filed with the central government; the rejection count is exact. The largest year on record.
+      scope: RTI applications filed with the central government; the rejection count is exact.
       source: Lok Sabha RTI statistics, 2022-23 (published with THS, “The rules exist. The reading does not.”)
+  2023-24 — received: 1750863, rejected 67615
+      scope: RTI applications filed with the central government; a reported count from a ministerial reply, not an audited total. 14,30,031 were answered.
+      source: Rajya Sabha written reply, 4 December 2025 (reported count)
   2024-25 — replied: 1380509, rejected 58501
       scope: This figure counts replies by central public authorities, not receipts — a different measure from the rows above. The report elsewhere totals 57,985 exemption-wise rejections.
       source: Parliamentary answer, 2024-25 (published with THS, “Government output at both levels”)
@@ -125,7 +128,7 @@ Known gaps
 ----------
 No national total of Gazette notifications published per year exists,
 central or state. The timeline shows that gap instead of a number.
-The 2023-24 RTI figure has not been extracted from the CIC report and
-is absent, not zero. Central Act counts per year are catalogue
+The 2023-24 RTI row is a reported count from a ministerial reply, not
+an audited total. Central Act counts per year are catalogue
 holdings and undercount the Act numbers of their years. 2026 is a
 partial year and every 2026 row is marked provisional.

@@ -174,10 +174,10 @@ export const AMENDMENTS = [
 
 // RTI applications with the central government, by financial year. There is
 // no single published series: these rows are compiled from CIC annual-report
-// analyses (CHRI), press reports of CIC data, and two parliamentary figures
-// the site already publishes. Rounded rows say so; years nobody has verified
-// are absent, not zero. 2023-24 has a CIC report that this compilation has
-// not extracted — the gap is real and stays visible.
+// analyses (CHRI), press reports of CIC data, and parliamentary figures the
+// site already publishes. Rounded rows say so; years nobody has verified are
+// absent, not zero. Ministerial replies are reported counts, not audited
+// totals, and each row says which it is.
 export const RTI = [
   {
     fy: '2015-16',
@@ -247,8 +247,17 @@ export const RTI = [
     measure: 'received',
     received: 1638784,
     rejected: 52662,
-    scope: 'RTI applications filed with the central government; the rejection count is exact. The largest year on record.',
+    scope: 'RTI applications filed with the central government; the rejection count is exact.',
     source: 'Lok Sabha RTI statistics, 2022-23 (published with THS, “The rules exist. The reading does not.”)',
+    url: null,
+  },
+  {
+    fy: '2023-24',
+    measure: 'received',
+    received: 1750863,
+    rejected: 67615,
+    scope: 'RTI applications filed with the central government; a reported count from a ministerial reply, not an audited total. 14,30,031 were answered.',
+    source: 'Rajya Sabha written reply, 4 December 2025 (reported count)',
     url: null,
   },
   {

@@ -106,7 +106,7 @@ export const publications = [
       'PIB (29 May 2025). Schemes due for re-appraisal by 31 March 2026.',
       'MoSPI, presentation to the 28th COCSSO (August 2024). Open data resources and Chief Data Officers.',
       'Legislative Department, Annual Report 2023-24. Acts authenticated in regional languages.',
-      'Lok Sabha RTI statistics, 2022-23: 16,38,784 applications filed; 52,662 rejected.',
+      'Rajya Sabha written reply, 4 December 2025 (reported count): 17,50,863 RTI applications filed in 2023-24; 67,615 rejected.',
     ],
     pit: {
       benefits: 'Readers who already hold a degree, a connection and the time to read 890 Acts. Policy the public cannot parse transfers power to those who can.',

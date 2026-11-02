@@ -69,6 +69,8 @@ FETCH_HEADERS = {
     "Accept-Language": "en-IN,en;q=0.9",
 }
 HTTP_TIMEOUT = 20
+LLM_TIMEOUT = 60
+LLM_RETRIES = 3
 PRS_CRAWL_DELAY = 10.0  # PRS robots.txt asks for a 10s delay between hits.
 
 # Provider defaults move. Override with GROQ_MODEL / GOOGLE_MODEL when a
@@ -446,11 +448,12 @@ def load_key() -> tuple[str | None, str | None]:
     return None, None
 
 
-def _post_json(url: str, payload: dict, headers: dict) -> dict:
+def _post_json(url: str, payload: dict, headers: dict,
+               timeout: int = HTTP_TIMEOUT) -> dict:
     body = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=body, headers=headers, method="POST")
     try:
-        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
             return json.loads(resp.read().decode("utf-8"))
     except urllib.error.HTTPError as error:
         # urllib drops the response body, which is where Groq explains a 403
@@ -478,6 +481,7 @@ def call_llm(provider: str, key: str, prompt: str) -> str:
                 "response_format": {"type": "json_object"},
             },
             {"Authorization": f"Bearer {key}", "Content-Type": "application/json"},
+            timeout=LLM_TIMEOUT,
         )
         return data["choices"][0]["message"]["content"]
 
@@ -492,6 +496,7 @@ def call_llm(provider: str, key: str, prompt: str) -> str:
             "generationConfig": {"temperature": 0.2, "maxOutputTokens": 700},
         },
         {"Content-Type": "application/json"},
+        timeout=LLM_TIMEOUT,
     )
     parts = data.get("content", {}).get("parts", [])
     return "".join(p.get("text", "") for p in parts)
@@ -531,6 +536,16 @@ Summary: {summary}
 """
 
 
+RETRYABLE_HTTP = {429, 500, 502, 503, 504}
+
+
+def _retryable(error: Exception) -> bool:
+    if isinstance(error, (TimeoutError, ConnectionError, urllib.error.URLError)):
+        return True
+    match = re.match(r"HTTP (\d{3}):", str(error))
+    return bool(match and int(match.group(1)) in RETRYABLE_HTTP)
+
+
 def analyse(item: dict, provider: str, key: str) -> dict | None:
     """Ask the LLM for a PIT read. Returns the parsed object or None."""
     prompt = PIT_PROMPT.format(
@@ -540,10 +555,21 @@ def analyse(item: dict, provider: str, key: str) -> dict | None:
         published=item.get("published") or "unknown",
         summary=item.get("summary") or "(no summary provided)",
     )
-    try:
-        raw = call_llm(provider, key, prompt)
-    except Exception as e:  # network / quota / auth — report, keep going
-        log(f"LLM call failed for {item['url'][:60]}: {type(e).__name__} {e}")
+    raw = None
+    for attempt in range(LLM_RETRIES):
+        try:
+            raw = call_llm(provider, key, prompt)
+            break
+        except Exception as e:  # network / quota / auth — retry the transient ones
+            if attempt == LLM_RETRIES - 1 or not _retryable(e):
+                log(f"LLM call failed for {item['url'][:60]} "
+                    f"after {attempt + 1} attempt(s): {type(e).__name__} {e}")
+                return None
+            delay = (2, 8)[attempt]
+            log(f"LLM call failed for {item['url'][:60]}; retrying in {delay}s "
+                f"({attempt + 1}/{LLM_RETRIES}): {type(e).__name__} {e}")
+            time.sleep(delay)
+    if raw is None:
         return None
 
     # Tolerate fenced JSON.
@@ -729,7 +755,8 @@ def main() -> int:
         })
         added += 1
         # Be a good citizen across providers too, not just PRS.
-        time.sleep(1.0)
+        # Gemini's free tier rate-limits bursts; Groq is more forgiving.
+        time.sleep(4.0 if provider == "google" else 1.0)
 
     if added == 0:
         log("no new items analysed; pit-desk.json left untouched (no empty redeploy)")

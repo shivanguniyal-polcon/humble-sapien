@@ -51,7 +51,9 @@ jobs:
           GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python3 scripts/pit_pipeline.py --limit 12
+        # Four runs a day at four analyses each leaves headroom in Gemini's
+        # free daily quota for retries; raise this on a paid tier.
+        run: python3 scripts/pit_pipeline.py --limit 4
 
       - name: Refuse a stale desk
         run: |

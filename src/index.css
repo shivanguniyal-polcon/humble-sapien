@@ -753,6 +753,45 @@ main {
   }
 }
 
+/* On a wide screen the masthead is a centred two-row lockup: the identity
+   sits on the page's centre line, the doors sit under it on the same line,
+   and the page reader stays at the far right as a utility. The phone keeps
+   its compact row because the wordmark and two controls will not share a
+   centred line at that width. */
+@media (min-width: 48.01rem) {
+  .site-head {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-areas:
+      '. brand actions'
+      'nav nav nav';
+    justify-content: normal;
+  }
+
+  .site-brand {
+    grid-area: brand;
+    justify-self: center;
+  }
+
+  .site-head-end {
+    display: contents;
+  }
+
+  .site-nav {
+    grid-area: nav;
+    width: 100%;
+  }
+
+  .site-nav-list {
+    justify-content: center;
+  }
+
+  .site-head-actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+}
+
 @media (max-width: 48rem) {
   .site-head {
     position: relative;

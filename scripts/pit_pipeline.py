@@ -71,6 +71,13 @@ FETCH_HEADERS = {
 HTTP_TIMEOUT = 20
 PRS_CRAWL_DELAY = 10.0  # PRS robots.txt asks for a 10s delay between hits.
 
+# Provider defaults move. Override with GROQ_MODEL / GOOGLE_MODEL when a
+# provider retires one; Groq retired llama-3.3-70b-versatile for free and
+# developer tiers on 16 August 2026 (enterprise committed-spend is exempt),
+# and Google shut down gemini-2.0-flash on 1 June 2026.
+DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
+DEFAULT_GOOGLE_MODEL = "gemini-3.8-flash"
+
 # --------------------------------------------------------------------------
 # Sources. Keep each tagged by kind so items carry provenance to the site.
 # --------------------------------------------------------------------------
@@ -452,7 +459,7 @@ def call_llm(provider: str, key: str, prompt: str) -> str:
         data = _post_json(
             "https://api.groq.com/openai/v1/chat/completions",
             {
-                "model": os.environ.get("GROQ_MODEL", "llama-3.3-70b-versatile"),
+                "model": os.environ.get("GROQ_MODEL", DEFAULT_GROQ_MODEL),
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": 0.2,
                 "max_tokens": 700,
@@ -463,7 +470,7 @@ def call_llm(provider: str, key: str, prompt: str) -> str:
         return data["choices"][0]["message"]["content"]
 
     # Google AI Studio (Gemini)
-    model = os.environ.get("GOOGLE_MODEL", "gemini-2.0-flash")
+    model = os.environ.get("GOOGLE_MODEL", DEFAULT_GOOGLE_MODEL)
     url = (f"https://generativelanguage.googleapis.com/v1beta/models/"
            f"{model}:generateContent?key={urllib.parse.quote(key)}")
     data = _post_json(
@@ -677,10 +684,16 @@ def main() -> int:
         return 2
 
     log(f"using {provider} for LLM analysis (key loaded, not logged)")
+    model = (os.environ.get("GROQ_MODEL", DEFAULT_GROQ_MODEL)
+             if provider == "groq"
+             else os.environ.get("GOOGLE_MODEL", DEFAULT_GOOGLE_MODEL))
+    log(f"model: {model}")
 
     today = dt.date.today().isoformat()
     added = 0
+    attempted = 0
     for it in fresh[:limit]:
+        attempted += 1
         log(f"analysing ({added+1}/{min(limit,len(fresh))}) {it['title'][:60]}")
         pit = analyse(it, provider, key)
         if not pit:
@@ -708,6 +721,9 @@ def main() -> int:
 
     if added == 0:
         log("no new items analysed; pit-desk.json left untouched (no empty redeploy)")
+        if attempted:
+            log(f"analysis failed for all {attempted} item(s); check the model and key")
+            return 1
         return 0
 
     # Newest first, then by fetched date, for a stable, readable file.

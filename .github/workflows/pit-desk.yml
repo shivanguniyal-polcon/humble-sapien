@@ -41,7 +41,7 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           if [ -z "$GROQ_API_KEY" ] && [ -z "$GOOGLE_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
-            echo "::error title=PIT Desk key missing::Add GROQ_API_KEY or GOOGLE_API_KEY as a repository secret; the PIT Desk cannot refresh without one."
+            echo "::error title=PIT Desk key missing::Add GROQ_API_KEY, GOOGLE_API_KEY or GEMINI_API_KEY as a repository secret; the PIT Desk cannot refresh without one."
             exit 1
           fi
           echo "PIT analysis key is configured."

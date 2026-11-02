@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import Home from './sections/Home';
 import PitAssistant from './components/PitAssistant';
+import PageVoice from './components/PageVoice';
 import AmbientField from './components/AmbientField';
 import MatrixField from './components/MatrixField';
 import Logo from './components/Logo';
@@ -199,49 +200,56 @@ export default function App() {
           </span>
         </button>
 
-        {/* The phone masthead is a mark and one control; the desktop keeps
-            every door open beside it. The toggle is hidden above 48rem. */}
-        <button
-          type="button"
-          className="site-menu-toggle"
-          ref={menuButtonRef}
-          aria-expanded={menuOpen}
-          aria-controls="site-menu"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span>{menuOpen ? 'Close' : 'Menu'}</span>
-          <span className="site-menu-toggle-mark" aria-hidden="true">
-            {menuOpen ? '\u00d7' : '\u2630'}
-          </span>
-        </button>
+        {/* The phone masthead is a mark and two controls; the desktop keeps
+            every door open beside it. The menu toggle is hidden above 48rem,
+            while the page reader follows every route. */}
+        <div className="site-head-end">
+          {/* One list, one level, no bundle. The menu is a set of doors, not a
+              directory: the forty-odd tool, publication and sector pages belong
+              to the pages that own them. It stands on the background with the
+              mark, in the page's flow, so it leaves with the page rather than
+              hovering over the reading. On a phone it opens as a full-width
+              panel under the mark, one door per 44px row. */}
+          <nav
+            className="site-nav"
+            id="site-menu"
+            aria-label="Primary"
+            data-open={menuOpen ? 'true' : undefined}
+          >
+            <ul className="site-nav-list">
+              {MENU_TABS.map((tab) => (
+                <li key={tab.id}>
+                  <button
+                    type="button"
+                    className={`site-nav-link${route.tab === tab.id ? ' site-nav-link-active' : ''}`}
+                    aria-current={route.tab === tab.id ? 'page' : undefined}
+                    onClick={() => go(tab.id)}
+                  >
+                    {tab.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        {/* One list, one level, no bundle. The menu is a set of doors, not a
-            directory: the forty-odd tool, publication and sector pages belong
-            to the pages that own them. It stands on the background with the
-            mark, in the page's flow, so it leaves with the page rather than
-            hovering over the reading. On a phone it opens as a full-width
-            panel under the mark, one door per 44px row. */}
-        <nav
-          className="site-nav"
-          id="site-menu"
-          aria-label="Primary"
-          data-open={menuOpen ? 'true' : undefined}
-        >
-          <ul className="site-nav-list">
-            {MENU_TABS.map((tab) => (
-              <li key={tab.id}>
-                <button
-                  type="button"
-                  className={`site-nav-link${route.tab === tab.id ? ' site-nav-link-active' : ''}`}
-                  aria-current={route.tab === tab.id ? 'page' : undefined}
-                  onClick={() => go(tab.id)}
-                >
-                  {tab.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <div className="site-head-actions">
+            {/* A route is a different page; remounting cancels the old read. */}
+            <PageVoice key={`${pageKey(route)}|${route.query}`} />
+            <button
+              type="button"
+              className="site-menu-toggle"
+              ref={menuButtonRef}
+              aria-expanded={menuOpen}
+              aria-controls="site-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              <span>{menuOpen ? 'Close' : 'Menu'}</span>
+              <span className="site-menu-toggle-mark" aria-hidden="true">
+                {menuOpen ? '\u00d7' : '\u2630'}
+              </span>
+            </button>
+          </div>
+        </div>
       </header>
 
       <main>

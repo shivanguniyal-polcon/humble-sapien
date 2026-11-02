@@ -622,9 +622,75 @@ main {
   outline-offset: 3px;
 }
 
-/* The phone's one control. Hidden where the doors already stand open. */
+/* The phone menu control. Hidden where the doors already stand open. */
 .site-menu-toggle {
   display: none;
+}
+
+/* The doors and the page reader share one end of the masthead. The reader is
+   a reading control, not a floating player: it sits with the page's own type. */
+.site-head-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-width: 0;
+  margin-left: auto;
+}
+
+.site-head-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.site-listen {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.1rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+  transition-property: color, border-color;
+  transition-duration: var(--duration-state);
+  transition-timing-function: var(--ease-out);
+}
+
+.site-listen-mark {
+  color: var(--color-accent-text);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.site-listen[aria-pressed='true'] {
+  color: var(--color-accent-text);
+  border-bottom-color: currentColor;
+}
+
+@media (hover: hover) {
+  .site-listen:hover {
+    color: var(--color-accent-text);
+    border-bottom-color: currentColor;
+  }
+}
+
+.site-listen:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-listen {
+    transition: none;
+  }
 }
 
 /* The doors, unreeled: no plate, no border, no shadow. The links sit directly
@@ -698,8 +764,22 @@ main {
     height: 2.25rem;
   }
 
-  /* The masthead stays one compact row: mark on the left, one control on the
-     right. Every door still exists; it opens below. */
+  /* The tagline is the page's h1 too; the masthead gives its width to the two
+     reading controls on a phone. */
+  .site-brand-tagline {
+    display: none;
+  }
+
+  .site-head-end {
+    gap: var(--space-2);
+  }
+
+  .site-head-actions {
+    gap: var(--space-2);
+  }
+
+  /* The masthead stays one compact row: mark on the left, two controls on
+     the right. Every door still exists; it opens below. */
   .site-menu-toggle {
     display: inline-flex;
     align-items: center;
@@ -707,7 +787,7 @@ main {
     gap: 0.5rem;
     min-width: 44px;
     min-height: 44px;
-    margin-left: auto;
+    margin-left: 0;
     padding: 0 0.7rem;
     font-family: var(--font-mono);
     font-size: 0.6875rem;
@@ -727,6 +807,27 @@ main {
   .site-menu-toggle:focus-visible {
     outline: 2px solid var(--color-focus);
     outline-offset: 2px;
+  }
+
+  .site-listen {
+    justify-content: center;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0 0.55rem;
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text);
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .site-listen-mark {
+    font-size: 0.95rem;
+  }
+
+  .site-listen-text {
+    display: none;
   }
 
   .site-nav {
@@ -772,6 +873,14 @@ main {
     padding-left: 0.75rem;
     border-bottom: 0;
     box-shadow: inset 2px 0 var(--color-accent-solid);
+  }
+}
+
+/* At the narrowest phones even the wordmark cannot share the row with Listen
+   and Menu. The mark keeps the identity; the button keeps its accessible name. */
+@media (max-width: 22rem) {
+  .site-brand-word {
+    display: none;
   }
 }
 

@@ -12,6 +12,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { LANGUAGES, LANGUAGE_BY_CODE } from '../data/languages';
 import { MOTTOS, SPEECH_TAGS } from '../data/mottos';
+import { findVoiceForLanguage, waitForVoices } from '../lib/speechVoice';
 
 const hasSpeech = () =>
   typeof window !== 'undefined' && 'speechSynthesis' in window;
@@ -58,7 +59,18 @@ export default function ScheduleRibbon() {
     [],
   );
 
-  const speak = (code) => {
+  // Ask for the voices once on mount so the list is usually warm before the
+  // first click. The listener also covers browsers that fill it in late.
+  useEffect(() => {
+    if (!hasSpeech()) return undefined;
+    const synth = window.speechSynthesis;
+    const loadVoices = () => synth.getVoices();
+    loadVoices();
+    synth.addEventListener?.('voiceschanged', loadVoices);
+    return () => synth.removeEventListener?.('voiceschanged', loadVoices);
+  }, []);
+
+  const speak = async (code) => {
     const text = MOTTOS[code]?.text;
     const language = LANGUAGE_BY_CODE[code];
     if (!text || !language) return;
@@ -72,20 +84,21 @@ export default function ScheduleRibbon() {
 
     const synth = window.speechSynthesis;
     synth.cancel();
+    setSpeaking(false);
     const seq = speechSeq.current + 1;
     speechSeq.current = seq;
 
     const tag = SPEECH_TAGS[code] || code;
-    const normalise = (voice) => voice.lang.replace('_', '-').toLowerCase();
-    const voices = synth.getVoices();
-    const exact = tag.replace('_', '-').toLowerCase();
-    const match =
-      voices.find((voice) => normalise(voice) === exact) ||
-      voices.find((voice) => normalise(voice).startsWith(`${code.toLowerCase()}-`));
+    const voices = await waitForVoices(synth);
+    // A newer click, Close, or unmount has already taken over.
+    if (speechSeq.current !== seq) return;
+
+    const match = findVoiceForLanguage(voices, code, tag);
 
     // A device can have a speech engine and still no voice for this language.
     // Saying the words in the wrong voice is worse than saying nothing, so the
-    // deck keeps the text and explains the silence.
+    // deck keeps the text and explains the silence. Empty means the engine never
+    // answered the list; in that case let it try with the language tag alone.
     if (voices.length > 0 && !match) {
       setSpeaking(false);
       setVoiceNote(

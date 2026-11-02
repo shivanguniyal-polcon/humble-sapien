@@ -1,0 +1,94 @@
+name: Refresh the PIT Desk
+
+# The PIT Desk is a live read of policy releases, bills and public-interest
+# news, but its pipeline is only useful if it runs on a clock. Four runs a day
+# keep a week of releases from becoming a wall of work on Monday.
+#
+# A missing model key or a stale output is a failure, not a warning: the page
+# tells a reader it is refreshed, and a commercial reader relies on that. The
+# dry run comes before the key check, so a missing secret cannot hide a broken
+# scraper; the job still fails loudly either way.
+
+on:
+  schedule:
+    - cron: '47 */6 * * *' # 00:47, 06:47, 12:47, 18:47 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pit-desk-collector
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      # Pinned to a commit, not a moving major tag. The same checkout the RARA
+      # collector uses; a scheduled writer needs a known action.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Test the feeds without the model
+        run: python3 scripts/pit_pipeline.py --dry-run --limit 5
+
+      - name: Check the analysis key
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ -z "$GROQ_API_KEY" ] && [ -z "$GOOGLE_API_KEY" ] && [ -z "$GEMINI_API_KEY" ]; then
+            echo "::error title=PIT Desk key missing::Add GROQ_API_KEY or GOOGLE_API_KEY as a repository secret; the PIT Desk cannot refresh without one."
+            exit 1
+          fi
+          echo "PIT analysis key is configured."
+
+      - name: Analyse new items
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: python3 scripts/pit_pipeline.py --limit 12
+
+      - name: Refuse a stale desk
+        run: |
+          python3 - <<'PY'
+          import datetime as dt
+          import json
+          import sys
+
+          with open("pit-desk.json", encoding="utf-8") as fh:
+              desk = json.load(fh)
+
+          items = desk.get("items") or []
+          generated = desk.get("generated")
+          if not generated:
+              print("::error title=PIT Desk has no date::pit-desk.json carries no generated date.")
+              sys.exit(1)
+          if not items:
+              print("::error title=PIT Desk is empty::pit-desk.json carries no items.")
+              sys.exit(1)
+
+          age = (dt.date.today() - dt.date.fromisoformat(generated)).days
+          print(f"PIT Desk generated {generated} ({age} days ago), {len(items)} items.")
+          if age > 7:
+              print(
+                  f"::error title=PIT Desk is stale::Last successful refresh was {age} days ago; the limit is 7."
+              )
+              sys.exit(1)
+          PY
+
+      - name: Commit the refreshed desk
+        run: |
+          if git diff --quiet -- pit-desk.json; then
+            echo "No new items in this window."
+            exit 0
+          fi
+          git config user.name "pit-desk-collector"
+          git config user.email "actions@users.noreply.github.com"
+          git add pit-desk.json
+          git commit -m "Refresh the PIT Desk"
+          git push

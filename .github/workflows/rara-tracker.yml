@@ -1,6 +1,11 @@
 name: Collect AI developments
 
-# The tracker promises a six-hourly collection, so the schedule is the promise.
+# The tracker promises a six-hourly collection, so the trigger is the promise.
+# The clock is the Cloudflare Cron Trigger in workers/rara.wrangler.toml: it
+# dispatches this workflow every six hours, and GitHub runs a dispatch promptly.
+# There is intentionally no `schedule` trigger here: GitHub's scheduler can run
+# hours late, and a second clock would only produce duplicate collections.
+#
 # One run fetches the primary feeds, checks the tracker's rules, commits the
 # snapshot the site ships, and — when the Worker is configured — pushes the
 # same payload into D1 for the live read. A missing ingest URL is a warning,
@@ -8,8 +13,6 @@ name: Collect AI developments
 # did not happen.
 
 on:
-  schedule:
-    - cron: '20 */6 * * *' # 00:20, 06:20, 12:20, 18:20 UTC
   workflow_dispatch:
 
 permissions:

@@ -16,6 +16,72 @@
 import { bearerMatches } from './lib/auth.js';
 import { failure, failureFor, headers, json, withOrigin } from './lib/http.js';
 
+// Cloudflare's Cron Trigger is the reliable clock. It does not collect the
+// feeds itself: it dispatches the existing GitHub workflow, so parsing, tests,
+// the snapshot commit and the D1 ingest stay in one place. GitHub's scheduler
+// has been removed; this is the only clock. It cannot make the collector run
+// faster, only start it on time.
+const COLLECTION_CRON = '20 */6 * * *';
+const DEFAULT_REPO = 'shivanguniyal-polcon/humble-sapien';
+const DEFAULT_WORKFLOW = 'rara-tracker.yml';
+const DEFAULT_REF = 'main';
+const GITHUB_API = 'https://api.github.com';
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+// A failed dispatch is cheap to retry here and expensive to discover six hours
+// later. 429 and 5xx are retried; 401/403 are configuration errors and are
+// returned immediately rather than spending the cron invocation on them.
+export const dispatchCollection = async (
+  env,
+  { fetchImpl = (...args) => fetch(...args), wait = sleep } = {},
+) => {
+  const token = String(env.GITHUB_DISPATCH_TOKEN || '').trim();
+  if (!token) {
+    console.warn('rara-scheduler: GITHUB_DISPATCH_TOKEN is not set; no collection dispatched.');
+    return { dispatched: false, reason: 'not-configured' };
+  }
+
+  const repo = String(env.GITHUB_REPO || DEFAULT_REPO).trim();
+  if (!/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(repo)) {
+    throw new Error('GITHUB_REPO must be owner/repository.');
+  }
+  const workflow = String(env.GITHUB_WORKFLOW || DEFAULT_WORKFLOW).trim();
+  const ref = String(env.GITHUB_REF || DEFAULT_REF).trim();
+  const endpoint = `${GITHUB_API}/repos/${repo}/actions/workflows/${encodeURIComponent(workflow)}/dispatches`;
+
+  let lastError;
+  for (let attempt = 0; attempt < 3; attempt += 1) {
+    let response;
+    try {
+      response = await fetchImpl(endpoint, {
+        method: 'POST',
+        headers: {
+          accept: 'application/vnd.github+json',
+          authorization: `Bearer ${token}`,
+          'content-type': 'application/json',
+          'user-agent': 'ths-rara-scheduler',
+          'x-github-api-version': '2022-11-28',
+        },
+        body: JSON.stringify({ ref }),
+      });
+    } catch (error) {
+      lastError = error;
+      if (attempt < 2) await wait(1000 * 2 ** attempt);
+      continue;
+    }
+
+    if (response.ok) return { dispatched: true, status: response.status };
+
+    const detail = String(await response.text().catch(() => '')).slice(0, 200);
+    lastError = new Error(`GitHub dispatch failed: HTTP ${response.status}${detail ? ` — ${detail}` : ''}`);
+    if (response.status !== 429 && response.status < 500) throw lastError;
+    if (attempt < 2) await wait(1000 * 2 ** attempt);
+  }
+
+  throw lastError;
+};
+
 const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS developments (
     id TEXT PRIMARY KEY,
@@ -270,6 +336,10 @@ export default {
           version: 'rara-1',
           routes: ['GET /developments?limit=&tier=', 'POST /ingest'],
           ingestConfigured: Boolean(env.ADMIN_TOKEN),
+          scheduler: {
+            cron: COLLECTION_CRON,
+            dispatchConfigured: Boolean(String(env.GITHUB_DISPATCH_TOKEN || '').trim()),
+          },
         }, 200, env);
       }
 
@@ -291,5 +361,13 @@ export default {
       console.error('rara-worker', error?.stack || error);
       return failureFor(error, env);
     }
+  },
+
+  async scheduled(_event, env, ctx) {
+    ctx.waitUntil(
+      dispatchCollection(env).catch((error) => {
+        console.error('rara-scheduler', error?.stack || error);
+      }),
+    );
   },
 };

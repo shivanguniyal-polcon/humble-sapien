@@ -810,9 +810,14 @@ main {
   white-space: nowrap;
 }
 
-/* The same lockup at size on About, scrubbed by scroll position. */
+/* The same lockup at size on About, scrubbed by scroll position. The width is
+   the old height-derived width (viewBox 280x64), capped by the reading column,
+   so the lockup shrinks on a phone instead of widening the page. */
 .brand-lockup-scroll {
-  height: clamp(6rem, 16vw, 11rem);
+  width: clamp(26.25rem, 70vw, 48.125rem);
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 280 / 64;
   margin-block: var(--space-6);
   margin-inline: auto;
 }
@@ -1254,7 +1259,7 @@ main {
 /* ---------- policy atlas cards ---------- */
 .policy-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(19rem, 100%), 1fr));
   gap: var(--space-4);
   margin-top: var(--space-2);
 }
@@ -2049,6 +2054,19 @@ select:focus-visible {
 
 .rule-card-list .obligation-text {
   line-height: 1.5;
+}
+
+/* At the narrowest phones the type badge is wider than the column left for
+   the sentence. Put the badge above the text instead of forcing the row past
+   the reading column. */
+@media (max-width: 22rem) {
+  .obligation-list li {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .obligation-flag {
+    grid-column: 1;
+  }
 }
 
 /* The proposition comparison: the canonical frame set beside today's
@@ -3110,7 +3128,7 @@ select:focus-visible {
 
 .pub-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(20rem, 100%), 1fr));
   gap: var(--space-4);
   margin-top: var(--space-5);
 }
@@ -3363,7 +3381,7 @@ select:focus-visible {
    detail panel below with facts and a working tool link */
 .dt-rail {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 0;
 }
 
@@ -3525,7 +3543,7 @@ select:focus-visible {
 
 @media (max-width: 52rem) {
   .dt-rail {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .dt-panel {
@@ -11157,6 +11175,7 @@ input[type='range'] {
 
 .archive {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--space-4);
 }
 

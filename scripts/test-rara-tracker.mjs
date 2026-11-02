@@ -14,10 +14,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import {
+  PAGE_SIZE,
   buildTracker,
   formatDay,
+  inferImplication,
   inferTopics,
   matchProvision,
+  pageWindow,
+  paginate,
   summarizePlaces,
 } from '../src/lib/rara/tracker.js';
 
@@ -229,6 +233,26 @@ check('development ids are unique',
   new Set(DEVELOPMENTS.items.map((item) => item.id)).size === DEVELOPMENTS.items.length);
 check('the source health counts add up to the snapshot',
   DEVELOPMENTS.sources.reduce((sum, source) => sum + source.count, 0) >= DEVELOPMENTS.items.length);
+check('the snapshot includes Hugging Face model and GitHub repository sources',
+  ['huggingface-models', 'github-repos'].every((id) =>
+    DEVELOPMENTS.sources.some((source) => source.id === id)));
+check('repository sources are primary code sources',
+  DEVELOPMENTS.sources
+    .filter((source) => ['huggingface-models', 'github-repos'].includes(source.id))
+    .every((source) => source.tier === 'primary' && source.type === 'code'));
+check('repository items are present in the snapshot',
+  DEVELOPMENTS.items.some((item) => item.sourceId === 'huggingface-models') &&
+  DEVELOPMENTS.items.some((item) => item.sourceId === 'github-repos'));
+check('the model feed excludes adult and uncensored derivatives',
+  !DEVELOPMENTS.items.some((item) =>
+    item.sourceId === 'huggingface-models' &&
+    /nsfw|explicit|uncensored|obliterat|roleplay|adult/i.test(`${item.title} ${item.summary}`)));
+check('the verified tech-media and newsletter sources are present',
+  ['google-ai-blog', 'techcrunch-ai', 'import-ai', 'rundown-ai', 'semianalysis'].every((id) =>
+    DEVELOPMENTS.sources.some((source) => source.id === id)));
+check('newsletters and tech media stay secondary',
+  ['techcrunch-ai', 'import-ai', 'rundown-ai', 'semianalysis'].every((id) =>
+    DEVELOPMENTS.sources.find((source) => source.id === id)?.tier === 'secondary'));
 
 // ------------------------------------------------------------------ matcher
 console.log('matcher');
@@ -241,6 +265,23 @@ console.log('matcher');
     !inferTopics('A security audit of the codebase.').includes('personal-data'));
   check('a dark-pattern note is tagged consumer',
     inferTopics('A checkout dark pattern').includes('consumer'));
+  check('a generic AI release is tagged general AI',
+    inferTopics('A text-generation model release').includes('general-ai'));
+}
+
+{
+  const election = inferImplication(
+    { title: 'A deepfake video of a candidate', topics: ['elections'] },
+    {},
+  );
+  check('an election deepfake gets the election PIT route',
+    election.topic === 'elections' && /election/i.test(election.legalRoute));
+  const general = inferImplication({ title: 'A new text-generation model', sourceType: 'code' });
+  check('a generic model gets a general-ai PIT read',
+    general.topic === 'general-ai' && /repository metadata/i.test(general.basis));
+  const untagged = inferImplication({ title: 'A new optimization method' }, {});
+  check('an untagged item names the reading gap',
+    /no stable subject/i.test(untagged.basis) && Boolean(untagged.missing));
 }
 
 {
@@ -338,6 +379,33 @@ console.log('tracker');
     tracker.items.every((item) => item.matches.length <= 3));
   check('the tracker never returns more than two nearest provisions',
     tracker.items.every((item) => item.nearest.length <= 2));
+  check('every development carries a PIT read',
+    tracker.items.every((item) =>
+      item.implication?.benefits && item.implication?.pays && item.implication?.missing));
+  check('a development with no legal hook still carries a PIT read',
+    tracker.items.some((item) => item.coverage === 'silent' && item.implication?.benefits));
+  check('the PIT read is marked as inference, not a legal match',
+    tracker.items.every((item) => /not from a legal match/i.test(item.implication.basis)));
+}
+
+console.log('pagination');
+{
+  const items = Array.from({ length: 25 }, (_, index) => index + 1);
+  const first = paginate(items, 1);
+  check('page one carries exactly ten items',
+    first.items.length === PAGE_SIZE && first.start === 1 && first.end === 10);
+  const last = paginate(items, 3);
+  check('the last page carries only the remainder',
+    last.items.length === 5 && last.start === 21 && last.end === 25);
+  const clamped = paginate(items, 99);
+  check('a page past the end clamps to the last page',
+    clamped.page === 3 && clamped.items.length === 5);
+  const window = pageWindow(15, 30);
+  check('the page window keeps the current page and both ends',
+    window.includes(1) && window.includes(15) && window.includes(30));
+  check('the page window marks a gap with null', window.includes(null));
+  check('a short run has one page and no gap',
+    paginate([1, 2], 1).pages === 1 && pageWindow(1, 1).length === 1);
 }
 
 check('formatDay reads an ISO date', /2026|2025/.test(formatDay('2026-10-29T00:00:00Z')));

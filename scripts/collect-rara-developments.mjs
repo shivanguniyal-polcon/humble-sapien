@@ -74,6 +74,31 @@ const SOURCES = [
     place: { city: 'Paris', country: 'France', iso: 'FR' },
     note: 'Model releases and engineering notes.',
   },
+  // ------------------------------------------------ primary: code repositories
+  {
+    id: 'huggingface-models',
+    label: 'Hugging Face models',
+    url: 'https://huggingface.co/api/models?sort=trendingScore&direction=-1&limit=20&filter=text-generation',
+    type: 'code',
+    tier: 'primary',
+    place: null,
+    cap: 10,
+    format: 'json',
+    parser: 'huggingface-models',
+    note: 'Trending text-generation model repositories from the Hugging Face Hub. This is repository metadata, not a release note.',
+  },
+  {
+    id: 'github-repos',
+    label: 'GitHub repositories',
+    url: 'https://api.github.com/search/repositories?q=topic%3Aartificial-intelligence+stars%3A%3E100&sort=updated&order=desc&per_page=10',
+    type: 'code',
+    tier: 'primary',
+    place: null,
+    cap: 10,
+    format: 'json',
+    parser: 'github-repos',
+    note: 'Recently updated public AI repositories from GitHub. This is repository metadata, not a release note.',
+  },
   // ------------------------------------------------------ primary: research
   {
     id: 'microsoft-research',
@@ -92,6 +117,15 @@ const SOURCES = [
     tier: 'primary',
     place: { city: 'Mountain View', country: 'United States', iso: 'US' },
     note: 'Research blog.',
+  },
+  {
+    id: 'google-ai-blog',
+    label: 'Google AI Blog',
+    url: 'https://blog.google/technology/ai/rss/',
+    type: 'research',
+    tier: 'primary',
+    place: { city: 'Mountain View', country: 'United States', iso: 'US' },
+    note: 'Official Google AI research and product posts.',
   },
   {
     id: 'nvidia',
@@ -170,6 +204,42 @@ const SOURCES = [
     filter: /\b(artificial intelligence|machine learning|algorithmic|deepfake|ai model|generative ai)\b/i,
   },
   // ------------------------------------------- secondary: reported coverage
+  {
+    id: 'techcrunch-ai',
+    label: 'TechCrunch · AI',
+    url: 'https://techcrunch.com/category/artificial-intelligence/feed/',
+    type: 'news',
+    tier: 'secondary',
+    place: { city: 'San Francisco', country: 'United States', iso: 'US' },
+    note: 'AI startup, funding and product coverage. Discovery only; never a legal citation.',
+  },
+  {
+    id: 'import-ai',
+    label: 'Import AI',
+    url: 'https://importai.substack.com/feed',
+    type: 'news',
+    tier: 'secondary',
+    place: null,
+    note: 'Jack Clark’s weekly AI policy and research newsletter. Analysis, not a primary source.',
+  },
+  {
+    id: 'rundown-ai',
+    label: 'The Rundown AI',
+    url: 'https://www.therundown.ai/feed',
+    type: 'news',
+    tier: 'secondary',
+    place: null,
+    note: 'Daily AI news digest. Discovery only; the linked source is opened before anything is cited.',
+  },
+  {
+    id: 'semianalysis',
+    label: 'SemiAnalysis',
+    url: 'https://semianalysis.com/feed/',
+    type: 'news',
+    tier: 'secondary',
+    place: null,
+    note: 'Compute, data-centre and model-economics analysis. Analysis, not a primary source.',
+  },
   {
     id: 'medianama-ai',
     label: 'Medianama · AI',
@@ -289,7 +359,7 @@ const stableId = (value) =>
 const fetcher = createFetcher({
   headers: {
     'user-agent': 'RARA/0.2 (+https://humble-sapien.vercel.app)',
-    accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+    accept: 'application/rss+xml, application/atom+xml, application/xml, text/xml, application/json, */*',
   },
 });
 const fetchText = fetcher.text;
@@ -331,6 +401,88 @@ const parseFeed = (xml, source) => {
     .filter((item) => item && item.title && item.url && item.publishedAt);
 };
 
+const parseDate = (value) => {
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? null : date.toISOString();
+};
+
+const parseHuggingFaceModels = (payload, source) =>
+  (Array.isArray(payload) ? payload : [])
+    .map((model) => {
+      const id = String(model?.id || model?.modelId || '').trim();
+      const publishedAt = parseDate(model?.lastModified || model?.createdAt);
+      if (!id || !publishedAt) return null;
+      const tags = Array.isArray(model.tags)
+        ? model.tags.filter((tag) => typeof tag === 'string' && !tag.startsWith('region:'))
+        : [];
+      // A legal tracker should not put adult or uncensored derivatives beside
+      // statutes just because the Hub ranked them. The tag is the source's own
+      // signal; filtering it here keeps the feed's editorial floor visible.
+      if (/nsfw|explicit|uncensored|obliterat|roleplay|adult/i.test(`${id} ${tags.join(' ')}`)) {
+        return null;
+      }
+      if (!model.downloads && !model.likes) return null;
+      const details = [
+        model.pipeline_tag ? `Pipeline: ${model.pipeline_tag}.` : '',
+        model.library_name ? `Library: ${model.library_name}.` : '',
+        Number.isFinite(model.downloads) ? `${model.downloads.toLocaleString('en-US')} downloads.` : '',
+        Number.isFinite(model.likes) ? `${model.likes.toLocaleString('en-US')} likes.` : '',
+        tags.length ? `Tags: ${tags.slice(0, 5).join(', ')}.` : '',
+      ].filter(Boolean);
+      return {
+        title: id,
+        summary: details.join(' ').slice(0, 700) || 'Hugging Face model repository.',
+        url: `https://huggingface.co/${id}`,
+        publishedAt,
+        sourceId: source.id,
+        sourceLabel: source.label,
+        sourceType: source.type,
+        tier: source.tier,
+        place: source.place || null,
+        publisher: null,
+        categories: tags.slice(0, 6),
+      };
+    })
+    .filter(Boolean);
+
+const parseGitHubRepos = (payload, source) => {
+  const repos = Array.isArray(payload?.items) ? payload.items : [];
+  return repos
+    .map((repo) => {
+      const publishedAt = parseDate(repo?.pushed_at || repo?.updated_at || repo?.created_at);
+      if (!repo?.html_url || !repo?.full_name || !publishedAt) return null;
+      const description = String(repo.description || '').trim();
+      const details = [
+        description,
+        repo.language ? `Language: ${repo.language}.` : '',
+        Number.isFinite(repo.stargazers_count)
+          ? `${repo.stargazers_count.toLocaleString('en-US')} stars.`
+          : '',
+      ].filter(Boolean);
+      return {
+        title: repo.full_name,
+        summary: details.join(' ').slice(0, 700) || 'GitHub repository.',
+        url: repo.html_url,
+        publishedAt,
+        sourceId: source.id,
+        sourceLabel: source.label,
+        sourceType: source.type,
+        tier: source.tier,
+        place: source.place || null,
+        publisher: repo.owner?.login || null,
+        categories: Array.isArray(repo.topics)
+          ? repo.topics.filter((topic) => typeof topic === 'string').slice(0, 6)
+          : [],
+      };
+    })
+    .filter(Boolean);
+};
+
+const JSON_PARSERS = {
+  'huggingface-models': parseHuggingFaceModels,
+  'github-repos': parseGitHubRepos,
+};
+
 const startedAt = new Date();
 const since = new Date(startedAt.getTime() - days * 24 * 60 * 60 * 1000);
 const collected = [];
@@ -353,17 +505,20 @@ for (const source of pushOnly ? [] : SOURCES.filter((entry) => !only || entry.id
   // visible rather than indistinguishable from a quiet week.
   const queries = source.queries || [{ id: source.id, url: source.url }];
   const xmls = [];
+  const payloads = [];
   const partial = [];
   for (const query of queries) {
     try {
-      xmls.push(await fetchText(query.url));
+      const body = await fetchText(query.url);
+      if (source.format === 'json') payloads.push(JSON.parse(body));
+      else xmls.push(body);
     } catch (error) {
       partial.push({ id: query.id, error: String(error?.message || error).slice(0, 120) });
       console.error(`FAIL ${source.label} · ${query.id}: ${error?.message || error}`);
     }
   }
 
-  if (!xmls.length) {
+  if (!xmls.length && !payloads.length) {
     health.push({
       ...meta,
       ok: false,
@@ -376,8 +531,10 @@ for (const source of pushOnly ? [] : SOURCES.filter((entry) => !only || entry.id
   // Papers are the spine of the feed, so they get a larger share; a lab blog
   // does not need to out-shout them.
   const cap = source.cap ?? (source.type === 'lab' || source.type === 'research' ? 6 : limit);
-  const items = xmls
-    .flatMap((xml) => parseFeed(xml, source))
+  const parsed = source.format === 'json'
+    ? payloads.flatMap((payload) => (JSON_PARSERS[source.parser]?.(payload, source) || []))
+    : xmls.flatMap((xml) => parseFeed(xml, source));
+  const items = parsed
     .filter((item) => new Date(item.publishedAt) >= since)
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .slice(0, cap)

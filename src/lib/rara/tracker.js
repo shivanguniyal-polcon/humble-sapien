@@ -106,6 +106,16 @@ export const TOPICS = [
     label: 'Labour',
     terms: ['worker', 'employment', 'hiring', 'job', 'labour'],
   },
+  {
+    id: 'general-ai',
+    label: 'General AI',
+    terms: [
+      'artificial intelligence', 'ai model', 'ai system', 'ai tool',
+      'language model', 'large language model', 'llm', 'foundation model',
+      'text-generation', 'text generation', 'machine learning', 'neural network',
+      'generative ai',
+    ],
+  },
 ];
 
 // A control marker is a word that carries a duty, a prohibition, a penalty or
@@ -240,6 +250,150 @@ export const STATUS_NOTE = {
   silent: 'No shared term in this excerpt. That is not proof that no law applies; it is proof that this corpus does not name it.',
 };
 
+// The PIT read is deliberately topic-level. It answers the project's public
+// interest test even where the lexical reader finds no shared word: who could
+// benefit, who could pay, and who may be missing. It is not a legal finding and
+// it never upgrades a silent match. The wording is cautious because a paper,
+// model card or repository is not evidence that a deployment exists in India.
+const PIT_READINGS = {
+  identity: {
+    pathway: 'remote identity checks, impersonation and the evidence needed to challenge a false match',
+    benefits: 'People who need to prove identity remotely, and services that can verify them without an in-person visit.',
+    pays: 'People whose face, voice or documents are copied, and the platforms that must review and remove impersonation.',
+    missing: 'People without a reliable ID, a smartphone, or the time and language to contest a false match.',
+    legalRoute: 'identity, impersonation, speech and data-protection provisions',
+  },
+  'synthetic-media': {
+    pathway: 'content provenance, defamation and the cost of removing synthetic images, audio or video',
+    benefits: 'Creators and publishers who can label and authenticate their work; platforms that can route trusted content.',
+    pays: 'People whose likeness is used, and the moderators, courts and platforms that absorb takedown and defamation costs.',
+    missing: 'People without the money, language or documentation to prove that a synthetic record is false.',
+    legalRoute: 'IT Rules synthetic-media duties, defamation, personality rights and election directions',
+  },
+  'personal-data': {
+    pathway: 'consent, purpose limitation, breach exposure and redress over personal data',
+    benefits: 'People who get faster services, and firms that can personalise without handling cash.',
+    pays: 'Data principals whose information is reused or breached, and public systems that carry the harm.',
+    missing: 'People who cannot read the notice, refuse consent, or reach a grievance channel in their language.',
+    legalRoute: 'DPDP Act and Rules, IT Act and sectoral data rules',
+  },
+  children: {
+    pathway: 'age assurance, parental consent, school use and child-safety moderation',
+    benefits: 'Children who get safer accounts and age-appropriate services; parents who can exercise consent.',
+    pays: 'Children exposed to profiling or harmful content, and schools or families without the documents to verify age.',
+    missing: 'Children without a birth certificate, a guardian who can consent, or a device in their own name.',
+    legalRoute: 'DPDP children’s provisions and consumer-protection duties',
+  },
+  finance: {
+    pathway: 'credit scoring, insurance pricing, payment fraud and automated eligibility',
+    benefits: 'Borrowers and policyholders who get faster decisions or access they lacked.',
+    pays: 'People charged more, refused cover, or wrongly flagged, and the public institutions that absorb exclusion.',
+    missing: 'People outside formal credit, without a digital trail, or unable to contest an automated refusal.',
+    legalRoute: 'RBI technology and fair-practice directions, SEBI CSCRF, consumer protection and DPDP',
+  },
+  autonomy: {
+    pathway: 'automated decisions, physical safety and liability when an agent or robot acts',
+    benefits: 'Firms and users who get cheaper, faster or safer operations; workers who move to higher-value tasks.',
+    pays: 'Workers whose tasks are automated, and people injured or stranded by an automated decision.',
+    missing: 'Informal workers, people with disabilities, and users outside the operator’s language or map.',
+    legalRoute: 'consumer safety, tort and criminal liability, telecom and sectoral safety rules',
+  },
+  ip: {
+    pathway: 'training-data licensing, authorship, likeness and the market for creative work',
+    benefits: 'Rights holders who can license, and users who get new tools built on lawful inputs.',
+    pays: 'Creators whose work is copied without payment, and smaller studios without litigation capacity.',
+    missing: 'Unregistered creators, folk and language communities, and workers whose contribution is not credited.',
+    legalRoute: 'Copyright Act, Patents Act, personality rights and contract',
+  },
+  competition: {
+    pathway: 'market concentration, compute access, pricing and algorithmic coordination',
+    benefits: 'Consumers who see lower prices or new entrants; firms that can buy cheaper compute.',
+    pays: 'Users and suppliers when a dominant platform raises prices or restricts access.',
+    missing: 'Small firms, local-language users, and markets too thin to attract a competitor.',
+    legalRoute: 'Competition Act, sectoral pricing rules and public-procurement transparency',
+  },
+  consumer: {
+    pathway: 'dark patterns, misleading claims, subscriptions and access to redress',
+    benefits: 'Consumers who get convenience, lower prices or better disclosure.',
+    pays: 'People who pay for unwanted subscriptions, are misled, or cannot find a human to cancel.',
+    missing: 'Low-digital-literacy users, people without a card, and those who cannot read the terms.',
+    legalRoute: 'Consumer Protection Act, e-commerce rules and advertising standards',
+  },
+  security: {
+    pathway: 'breach exposure, incident response, critical-infrastructure risk and security costs',
+    benefits: 'Users and firms that face fewer successful attacks; vendors that can prove security.',
+    pays: 'Victims of breaches, small firms without a security team, and public services that must recover.',
+    missing: 'Users who never learn their data was taken, and small vendors outside the audit chain.',
+    legalRoute: 'CERT-In directions, IT Act, telecom cyber-security rules and sectoral frameworks',
+  },
+  health: {
+    pathway: 'clinical safety, access, health-data privacy and the cost of automated triage',
+    benefits: 'Patients who get earlier or cheaper care; clinicians who can triage at scale.',
+    pays: 'Patients harmed by a wrong recommendation, and public hospitals that carry the follow-up cost.',
+    missing: 'Rural patients, people without a digital record, and languages absent from the training data.',
+    legalRoute: 'health-sector regulation, medical-device rules, DPDP and consumer protection',
+  },
+  elections: {
+    pathway: 'synthetic campaign content, voter deception and the speed of takedown',
+    benefits: 'Voters who get faster fact-checks; parties and platforms that can label authentic material.',
+    pays: 'Voters exposed to a deepfake, and election officials who must correct the record under time pressure.',
+    missing: 'First-time voters, linguistic minorities, and people who see the video after the correction.',
+    legalRoute: 'Article 324 ECI election directions, IT Rules synthetic-media duties and speech law',
+  },
+  labour: {
+    pathway: 'hiring, task automation, worker surveillance and the terms of new AI work',
+    benefits: 'Workers who get new tools, higher productivity or access to remote work.',
+    pays: 'Workers whose tasks are automated or monitored, and households that absorb the transition.',
+    missing: 'Informal workers, gig workers, and people whose jobs are not in the training data.',
+    legalRoute: 'labour law, occupational safety, social-security and anti-discrimination guarantees',
+  },
+  'general-ai': {
+    pathway: 'information quality, labour, access to compute and the accountability of AI-mediated decisions',
+    benefits: 'People who get cheaper or faster services; firms and researchers who can build on the model.',
+    pays: 'Workers and users exposed to errors, and the public institutions that must correct them.',
+    missing: 'People without digital access, local-language representation, or the ability to contest an automated outcome.',
+    legalRoute: 'the AI-relevant stack: IT Rules, DPDP, consumer, competition, labour and sectoral rules',
+  },
+};
+
+// The development's own topics choose the PIT reading. If the text yields no
+// topic, the fallback still says that it is a reading gap rather than claiming
+// an effect. The lexical match, when one exists, is reported separately.
+export const inferImplication = (development, { matches = [], nearest = [], topics } = {}) => {
+  const text = `${development?.title || ''} ${development?.summary || ''}`;
+  const itemTopics = topics?.length
+    ? topics
+    : development?.topics?.length
+      ? development.topics
+      : inferTopics(text);
+  const primaryId = itemTopics.find((id) => id !== 'general-ai') || itemTopics[0] || 'general-ai';
+  const reading = PIT_READINGS[primaryId] || PIT_READINGS['general-ai'];
+  const labels = itemTopics.map(topicLabel).filter(Boolean);
+  const firstMatch = matches[0]?.provision;
+  const firstNearest = nearest[0]?.provision;
+  const cite = (provision) =>
+    `${provision.instrumentShort || provision.instrument || 'provision'} ${provision.pinCite || ''}`.trim();
+  const legal = firstMatch
+    ? `Lexical hook found in ${cite(firstMatch)}.`
+    : firstNearest
+      ? `Closest legal vocabulary: ${cite(firstNearest)}; no shared word.`
+      : 'No provision in this corpus shares the development’s subject; that is a vocabulary gap, not a clearance.';
+  const sourceNote = development?.sourceType === 'code'
+    ? ' This is repository metadata; deployment in India is not established.'
+    : '';
+
+  return {
+    topic: primaryId,
+    pathway: reading.pathway,
+    benefits: reading.benefits,
+    pays: reading.pays,
+    missing: reading.missing,
+    legalRoute: reading.legalRoute,
+    legal,
+    basis: `India PIT read inferred from the item’s subject (${labels.join(', ') || 'no stable subject'}), not from a legal match.${sourceNote}`,
+  };
+};
+
 export const buildTracker = (developments, legalTexts, { limit = 3 } = {}) => {
   const items = (developments || []).map((development) => {
     const candidates = (legalTexts || []).map((provision) =>
@@ -256,12 +410,18 @@ export const buildTracker = (developments, legalTexts, { limit = 3 } = {}) => {
 
     const explicit = matches.filter((match) => match.status === 'explicit').length;
     const mentions = matches.filter((match) => match.status === 'mentions').length;
+    const coverage = explicit ? 'explicit' : mentions ? 'mentions' : 'silent';
 
     return {
       ...development,
       matches,
       nearest,
-      coverage: explicit ? 'explicit' : mentions ? 'mentions' : 'silent',
+      coverage,
+      implication: inferImplication(development, {
+        matches,
+        nearest,
+        topics: development.topics,
+      }),
     };
   });
 
@@ -327,5 +487,48 @@ export const formatDay = (value) => {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
+  });
+};
+
+// A page is a reading unit, not a data limit: the tracker still builds every
+// item and the map still sees the filtered set. Ten is enough for one sitting
+// without turning the list into an endless scroll.
+export const PAGE_SIZE = 10;
+
+export const paginate = (items, page = 1, pageSize = PAGE_SIZE) => {
+  const list = Array.isArray(items) ? items : [];
+  const size = Math.max(1, Math.floor(Number(pageSize) || PAGE_SIZE));
+  const pages = Math.max(1, Math.ceil(list.length / size));
+  const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), pages);
+  const offset = (current - 1) * size;
+
+  return {
+    items: list.slice(offset, offset + size),
+    page: current,
+    pages,
+    pageSize: size,
+    start: list.length ? offset + 1 : 0,
+    end: Math.min(offset + size, list.length),
+    total: list.length,
+  };
+};
+
+// Keep the first and last page visible while limiting the middle to the pages
+// around the current one. `null` is a visual gap, not a page number.
+export const pageWindow = (page, pages, span = 2) => {
+  const total = Math.max(1, Math.floor(Number(pages) || 1));
+  const current = Math.min(Math.max(1, Math.floor(Number(page) || 1)), total);
+  if (total <= 7) return Array.from({ length: total }, (_, index) => index + 1);
+
+  const values = new Set([1, total]);
+  for (let offset = -span; offset <= span; offset += 1) {
+    const value = current + offset;
+    if (value >= 1 && value <= total) values.add(value);
+  }
+
+  const sorted = [...values].sort((a, b) => a - b);
+  return sorted.flatMap((value, index) => {
+    if (index === 0) return [value];
+    return value - sorted[index - 1] > 1 ? [null, value] : [value];
   });
 };

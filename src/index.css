@@ -12373,6 +12373,75 @@ input[type='range'] {
   margin: var(--space-3) 0 0;
 }
 
+.rara-tracker-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.rara-tracker-page-status {
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.rara-tracker-page-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.rara-tracker-page {
+  min-width: 2.15rem;
+  min-height: 2.15rem;
+  padding: 0 0.55rem;
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+}
+
+.rara-tracker-page:hover:not(:disabled) {
+  color: var(--color-accent-text);
+  border-color: var(--color-accent-text);
+}
+
+.rara-tracker-page:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rara-tracker-page[aria-current='page'] {
+  color: var(--color-surface);
+  background: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.rara-tracker-page:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.rara-tracker-page-gap {
+  min-width: 1.2rem;
+  text-align: center;
+  color: var(--color-text-muted);
+}
+
 .rara-tracker-list {
   margin: var(--space-4) 0 0;
   padding: 0;
@@ -12497,6 +12566,104 @@ input[type='range'] {
   color: var(--color-text-muted);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
+}
+
+.rara-tracker-implication {
+  margin: 0 0 var(--space-3);
+  background: var(--color-surface-sunken);
+  border: 1px solid var(--color-border);
+  border-left: 2px dashed var(--color-border-strong);
+  border-radius: var(--radius-md);
+}
+
+.rara-tracker-implication summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  list-style: none;
+}
+
+.rara-tracker-implication summary::-webkit-details-marker {
+  display: none;
+}
+
+.rara-tracker-implication summary::before {
+  content: '+';
+  flex: none;
+  width: 1rem;
+  color: var(--color-accent-text);
+}
+
+.rara-tracker-implication[open] summary::before {
+  content: '−';
+}
+
+.rara-tracker-implication summary:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rara-tracker-implication summary .meta {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--color-text-muted);
+}
+
+.rara-tracker-implication-body {
+  padding: 0 var(--space-3) var(--space-3);
+}
+
+.rara-tracker-pit {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.rara-tracker-pit div {
+  display: grid;
+  grid-template-columns: 9rem minmax(0, 1fr);
+  gap: var(--space-3);
+}
+
+.rara-tracker-pit dt {
+  font-family: var(--font-data);
+  font-size: 0.625rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.rara-tracker-pit dd {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.rara-tracker-implication-legal,
+.rara-tracker-implication-basis {
+  margin: var(--space-2) 0 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
+.rara-tracker-implication-basis {
+  color: var(--color-text-muted);
 }
 
 .rara-tracker-matches,
@@ -12743,6 +12910,24 @@ input[type='range'] {
 
   .rara-tracker-date time {
     font-size: 0.6875rem;
+  }
+
+  .rara-tracker-pit div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+
+  .rara-tracker-pager {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .rara-tracker-page-tabs {
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
   .rara-tracker-source-list li {

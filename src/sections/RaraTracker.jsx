@@ -9,7 +9,7 @@
 // statute, and the nearest provision is shown beside them so the reader can see
 // the vocabulary gap rather than an empty card.
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import DevelopmentMap from '../components/DevelopmentMap';
 import PageHead from '../components/PageHead';
 import DEVELOPMENTS from '../data/rara/developments.json';
@@ -22,12 +22,15 @@ import {
   STATUS_NOTE,
   buildTracker,
   formatDay,
+  pageWindow,
+  paginate,
   topicLabel,
 } from '../lib/rara/tracker';
 
 const SOURCE_TYPE = {
   lab: 'Lab',
   research: 'Research',
+  code: 'Code',
   news: 'News',
   policy: 'Policy',
   regulator: 'Regulator',
@@ -137,6 +140,35 @@ const Nearest = ({ match }) => (
   </article>
 );
 
+const Implication = ({ implication }) => (
+  <details className="rara-tracker-implication">
+    <summary>
+      <span>PIT read · India</span>
+      <span className="meta">{implication.pathway}</span>
+    </summary>
+    <div className="rara-tracker-implication-body">
+      <dl className="rara-tracker-pit">
+        <div>
+          <dt>Who could benefit</dt>
+          <dd>{implication.benefits}</dd>
+        </div>
+        <div>
+          <dt>Who could pay</dt>
+          <dd>{implication.pays}</dd>
+        </div>
+        <div>
+          <dt>Who may be missing</dt>
+          <dd>{implication.missing}</dd>
+        </div>
+      </dl>
+      <p className="rara-tracker-implication-legal">
+        <strong>Legal route to check:</strong> {implication.legalRoute}. {implication.legal}
+      </p>
+      <p className="rara-tracker-implication-basis">{implication.basis}</p>
+    </div>
+  </details>
+);
+
 const Development = ({ item }) => (
   <li className="rara-tracker-item">
     <div className="rara-tracker-date">
@@ -161,6 +193,8 @@ const Development = ({ item }) => (
           ))}
         </ul>
       ) : null}
+
+      {item.implication ? <Implication implication={item.implication} /> : null}
 
       {item.matches.length ? (
         <div className="rara-tracker-matches">
@@ -218,6 +252,8 @@ export default function RaraTracker() {
   const [coverage, setCoverage] = useState('all');
   const [tier, setTier] = useState('primary');
   const [order, setOrder] = useState('newest');
+  const [page, setPage] = useState(1);
+  const listRef = useRef(null);
 
   // The source picker follows the feed picker: offering a news feed while the
   // page is set to primary sources only would be a filter that cannot return
@@ -250,6 +286,12 @@ export default function RaraTracker() {
     );
   }, [tracker.items, query, source, coverage, tier, order]);
 
+  const paged = useMemo(() => paginate(visible, page), [visible, page]);
+  const pageLinks = useMemo(
+    () => pageWindow(paged.page, paged.pages),
+    [paged.page, paged.pages],
+  );
+
   const nearestCount = tracker.items.filter((item) => !item.matches.length && item.nearest.length).length;
   const instrumentRows = useMemo(
     () => INSTRUMENTS.instruments.map((entry) => ({
@@ -267,6 +309,19 @@ export default function RaraTracker() {
   const caseCount = CASES.cases.length;
   const primaryCount = tracker.items.filter((item) => item.tier === 'primary').length;
 
+  const goToPage = (next) => {
+    const target = Math.min(Math.max(1, next), paged.pages);
+    setPage(target);
+    window.requestAnimationFrame(() => {
+      listRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  const changeFilter = (setter) => (event) => {
+    setter(event.target.value);
+    setPage(1);
+  };
+
   return (
     <section className="rara-tracker">
       <PageHead
@@ -274,11 +329,13 @@ export default function RaraTracker() {
         title="What changed, and what the law names"
         question="Which AI developments have an explicit hook in Indian law — and which are met with silence, or a different word?"
       >
-        A dated feed built from primary sources — arXiv preprints, lab
-        releases, regulator notices — read against a corpus of exact legal
-        excerpts. The check is lexical: it reports shared words and control
-        markers, not whether a provision applies. A silent result is a
-        vocabulary gap, not a clearance.
+        A dated feed built from primary sources — arXiv preprints, model and
+        code repositories, lab releases, newsletters, regulator notices — read
+        against a corpus of exact legal excerpts. The check is lexical: it
+        reports shared words and control markers, not whether a provision
+        applies. A silent result is a vocabulary gap, not a clearance. Each row
+        also carries a PIT read — an inference about who could benefit, pay or
+        be missing in India — which is not a legal hook.
       </PageHead>
 
       <div className="rara-tracker-callout">
@@ -327,13 +384,13 @@ export default function RaraTracker() {
           <input
             type="search"
             value={query}
-            onChange={(event) => setQuery(event.target.value)}
+            onChange={changeFilter(setQuery)}
             placeholder="voice, deepfake, training, data…"
           />
         </label>
         <label>
           <span>Source</span>
-          <select value={source} onChange={(event) => setSource(event.target.value)}>
+          <select value={source} onChange={changeFilter(setSource)}>
             <option value="all">All sources</option>
             {sources.map((entry) => (
               <option value={entry.id} key={entry.id}>
@@ -344,7 +401,7 @@ export default function RaraTracker() {
         </label>
         <label>
           <span>Law match</span>
-          <select value={coverage} onChange={(event) => setCoverage(event.target.value)}>
+          <select value={coverage} onChange={changeFilter(setCoverage)}>
             <option value="all">All developments</option>
             <option value="explicit">Explicit hook</option>
             <option value="mentions">Names only</option>
@@ -353,14 +410,14 @@ export default function RaraTracker() {
         </label>
         <label>
           <span>Feed</span>
-          <select value={tier} onChange={(event) => setTier(event.target.value)}>
+          <select value={tier} onChange={changeFilter(setTier)}>
             <option value="primary">Primary sources</option>
             <option value="all">All sources</option>
           </select>
         </label>
         <label>
           <span>Order</span>
-          <select value={order} onChange={(event) => setOrder(event.target.value)}>
+          <select value={order} onChange={changeFilter(setOrder)}>
             <option value="newest">Newest first</option>
             <option value="oldest">Oldest first</option>
           </select>
@@ -368,15 +425,17 @@ export default function RaraTracker() {
       </div>
 
       <p className="meta rara-tracker-count" role="status" aria-live="polite">
-        Showing {visible.length} of {tracker.total}. An explicit hook means the provision uses the
-        same word and carries a control marker; it is not a legal conclusion.
+        Showing {paged.total ? `${paged.start}–${paged.end}` : '0'} of {paged.total}
+        {paged.total === tracker.total ? '' : ` filtered from ${tracker.total}`}. An explicit
+        hook means the provision uses the same word and carries a control marker; it is not a
+        legal conclusion.
       </p>
 
       <DevelopmentMap items={visible} />
 
-      {visible.length ? (
-        <ol className="rara-tracker-list">
-          {visible.map((item) => (
+      {paged.total ? (
+        <ol className="rara-tracker-list" ref={listRef}>
+          {paged.items.map((item) => (
             <Development item={item} key={item.id} />
           ))}
         </ol>
@@ -385,6 +444,50 @@ export default function RaraTracker() {
           Nothing in this snapshot matches that filter. Clear the search or choose another source.
         </p>
       )}
+
+      {paged.pages > 1 ? (
+        <nav className="rara-tracker-pager" aria-label="Development pages">
+          <span className="rara-tracker-page-status">
+            Page {paged.page} of {paged.pages}
+          </span>
+          <div className="rara-tracker-page-tabs" role="group" aria-label="Page numbers">
+            <button
+              type="button"
+              className="rara-tracker-page"
+              onClick={() => goToPage(paged.page - 1)}
+              disabled={paged.page === 1}
+            >
+              Previous
+            </button>
+            {pageLinks.map((entry, index) =>
+              entry === null ? (
+                <span className="rara-tracker-page-gap" aria-hidden="true" key={`gap-${index}`}>
+                  …
+                </span>
+              ) : (
+                <button
+                  type="button"
+                  className="rara-tracker-page"
+                  key={entry}
+                  aria-current={entry === paged.page ? 'page' : undefined}
+                  aria-label={`Page ${entry}`}
+                  onClick={() => goToPage(entry)}
+                >
+                  {entry}
+                </button>
+              ),
+            )}
+            <button
+              type="button"
+              className="rara-tracker-page"
+              onClick={() => goToPage(paged.page + 1)}
+              disabled={paged.page === paged.pages}
+            >
+              Next
+            </button>
+          </div>
+        </nav>
+      ) : null}
 
       <section className="rara-tracker-legal" aria-labelledby="rara-tracker-legal-title">
         <h2 id="rara-tracker-legal-title">The exact text it read</h2>
@@ -555,7 +658,8 @@ export default function RaraTracker() {
       <section className="rara-tracker-sources" aria-labelledby="rara-tracker-sources-title">
         <h2 id="rara-tracker-sources-title">Sources in this snapshot</h2>
         <p className="section-strap">
-          Primary release pages first. News feeds are discovery only and are labelled as such.
+          Primary artifacts first — papers, model and code repositories, release pages. News
+          feeds and newsletters are discovery only and are labelled as such.
         </p>
         <ul className="rara-tracker-source-list">
           {(feed.sources || []).map((entry) => (
@@ -585,8 +689,11 @@ export default function RaraTracker() {
         {bindingInstruments.length} binding instruments; one enacted e-commerce amendment
         is not yet in force. Every instrument in scope is accounted for in the ledger
         above. Silence here means the corpus did not use the development's words,
-        not that no law applies. The policy documents and cases are recorded
-        separately and are never counted as binding provisions.
+        not that no law applies. Every item also carries a PIT read inferred
+        from its subject. That read is a starting frame for who may benefit,
+        pay or be missing; it is not a legal conclusion and does not upgrade a
+        silent match. The policy documents and cases are recorded separately
+        and are never counted as binding provisions.
       </p>
     </section>
   );

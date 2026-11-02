@@ -77,8 +77,13 @@ PRS_CRAWL_DELAY = 10.0  # PRS robots.txt asks for a 10s delay between hits.
 # provider retires one; Groq retired llama-3.3-70b-versatile for free and
 # developer tiers on 16 August 2026 (enterprise committed-spend is exempt),
 # and Google shut down gemini-2.0-flash on 1 June 2026.
+#
+# Gemini 3.8 Flash is free but capped at 20 requests/day, which four runs of
+# four analyses exhaust before any retry. Flash-Lite carries a much larger
+# free daily allowance and is enough for this structured extraction; set
+# GOOGLE_MODEL=gemini-3.8-flash to trade quota for the larger model.
 DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
-DEFAULT_GOOGLE_MODEL = "gemini-3.8-flash"
+DEFAULT_GOOGLE_MODEL = "gemini-3.5-flash-lite"
 
 # --------------------------------------------------------------------------
 # Sources. Keep each tagged by kind so items carry provenance to the site.
@@ -539,7 +544,22 @@ Summary: {summary}
 RETRYABLE_HTTP = {429, 500, 502, 503, 504}
 
 
+class QuotaExhausted(RuntimeError):
+    """The provider's daily allowance is spent; retrying cannot succeed."""
+
+
+def _daily_quota(error: Exception) -> bool:
+    """True for a 429 that names a per-day limit, not a per-minute burst."""
+    text = str(error).lower()
+    if not re.match(r"http 429:", text):
+        return False
+    return any(marker in text for marker in
+               ("per day", "requests per day", "daily limit", "rpd"))
+
+
 def _retryable(error: Exception) -> bool:
+    if _daily_quota(error):
+        return False
     if isinstance(error, (TimeoutError, ConnectionError, urllib.error.URLError)):
         return True
     match = re.match(r"HTTP (\d{3}):", str(error))
@@ -561,6 +581,10 @@ def analyse(item: dict, provider: str, key: str) -> dict | None:
             raw = call_llm(provider, key, prompt)
             break
         except Exception as e:  # network / quota / auth — retry the transient ones
+            if _daily_quota(e):
+                log(f"daily quota exhausted for {item['url'][:60]}: "
+                    f"{str(e)[:240]}")
+                raise QuotaExhausted(str(e)) from e
             if attempt == LLM_RETRIES - 1 or not _retryable(e):
                 log(f"LLM call failed for {item['url'][:60]} "
                     f"after {attempt + 1} attempt(s): {type(e).__name__} {e}")
@@ -730,10 +754,16 @@ def main() -> int:
     today = dt.date.today().isoformat()
     added = 0
     attempted = 0
+    quota_stopped = False
     for it in fresh[:limit]:
         attempted += 1
         log(f"analysing ({added+1}/{min(limit,len(fresh))}) {it['title'][:60]}")
-        pit = analyse(it, provider, key)
+        try:
+            pit = analyse(it, provider, key)
+        except QuotaExhausted as e:
+            log(f"stopping this run: {str(e)[:240]}")
+            quota_stopped = True
+            break
         if not pit:
             continue
         existing["items"].append({
@@ -760,6 +790,9 @@ def main() -> int:
 
     if added == 0:
         log("no new items analysed; pit-desk.json left untouched (no empty redeploy)")
+        if quota_stopped:
+            log("the provider's daily quota is spent; retry after the reset")
+            return 1
         if attempted:
             log(f"analysis failed for all {attempted} item(s); check the model and key")
             return 1

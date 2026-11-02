@@ -1,6 +1,6 @@
 {
-  "version": "2026-10-29",
-  "note": "Exact excerpts, not summaries. Each quote is a contiguous span from the official text named in sourceUrl. A fragment is marked excerpt: true. The tracker compares development language with these words; it does not decide that a provision applies.",
+  "version": "2026-11-02",
+  "note": "Exact excerpts, not summaries. Each quote is a contiguous span from the official text named in sourceUrl. A fragment is marked excerpt: true. The corpus covers the central AI-relevant stack, not every state rule; guidance, draft, process and forthcoming instruments are named in legal-instruments.json, and only binding entries are counted as law. The tracker compares development language with these words; it does not decide that a provision applies.",
   "texts": [
     {
       "id": "IT-ACT-2000-S66C",
@@ -409,6 +409,762 @@
       "topics": [
         "ip"
       ]
+    },
+    {
+      "id": "IT-RULES-2026-SGI-DEF",
+      "instrument": "Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (as amended in 2026)",
+      "instrumentShort": "IT Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY",
+      "pinCite": "r. 2(1)(wa)",
+      "title": "Synthetically generated information: definition",
+      "quote": "‘synthetically generated information’ means audio, visual or audio-visual information which is artificially or algorithmically created, generated, modified or altered using a computer resource, in a manner that such information appears to be real, authentic or true and depicts or portrays any individual or event in a manner that is, or is likely to be perceived as indistinguishable from a natural person or real-world event.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf",
+      "sourceTitle": "The Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (updated as on 10.02.2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "IT-RULES-2026-SGI-LABEL",
+      "instrument": "Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (as amended in 2026)",
+      "instrumentShort": "IT Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY",
+      "pinCite": "r. 3(1)(a)(ii)",
+      "title": "Labelling and provenance for synthetically generated information",
+      "quote": "every such information not covered under sub-clause (i) of clause (a) is prominently labelled in a manner that ensures prominent visibility in the visual display that is easily noticeable and adequately perceivable, or, in the case of audio content, through a prominently prefixed audio disclosure, that can be used to immediately identify that such information is synthetically generated information which has been created, generated, modified or altered using a computer resource and such information shall be embedded with a permanent metadata or other appropriate technical provenance mechanisms, to the extent technically feasible, including a unique identifier, to identify the computer resource of the intermediary used to create, generate, modify or alter such information.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf",
+      "sourceTitle": "The Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (updated as on 10.02.2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "IT-RULES-2026-SGI-TAKEDOWN",
+      "instrument": "Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (as amended in 2026)",
+      "instrumentShort": "IT Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY",
+      "pinCite": "r. 3(1)(b)",
+      "title": "Three-hour removal of unlawful information, including synthetically generated information",
+      "quote": "remove or disable access to such information within 1[three hours] of the receipt of such actual knowledge",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf",
+      "sourceTitle": "The Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (updated as on 10.02.2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "elections",
+        "security"
+      ],
+      "excerpt": true,
+      "quoteNote": "The bracketed 1 marks the 2026 amendment footnote in the official consolidation."
+    },
+    {
+      "id": "DPDP-RULES-2025-R6",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "instrumentShort": "DPDP Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "r. 6(1)",
+      "title": "Reasonable security safeguards",
+      "quote": "A Data Fiduciary shall protect personal data in its possession or under its control, including in respect of any processing undertaken by it or on its behalf by a Data Processor, by taking reasonable security safeguards to prevent personal data breach.",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "sourceTitle": "Digital Personal Data Protection Rules, 2025 — MeitY",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-RULES-2025-R7-1",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "instrumentShort": "DPDP Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "r. 7(1)",
+      "title": "Intimation of a personal data breach to the Data Principal",
+      "quote": "On becoming aware of any personal data breach, the Data Fiduciary shall, to the best of its knowledge, intimate to each affected Data Principal, in a concise, clear and plain manner and without delay, through her user account or any mode of communication registered by her with the Data Fiduciary, —",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "sourceTitle": "Digital Personal Data Protection Rules, 2025 — MeitY",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-RULES-2025-R7-2",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "instrumentShort": "DPDP Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "r. 7(2)",
+      "title": "Intimation of a personal data breach to the Board",
+      "quote": "On becoming aware of any personal data breach, the Data Fiduciary shall intimate to the Board, — (a) without delay, a description of the breach, including its nature, extent, timing and location of occurrence and the likely impact; (b) within seventy-two hours of becoming aware of the breach, or within such longer period as the Board may allow on a request made in writing in this behalf, —",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "sourceTitle": "Digital Personal Data Protection Rules, 2025 — MeitY",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-RULES-2025-R13",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "instrumentShort": "DPDP Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "r. 13(1)",
+      "title": "Significant Data Fiduciary: annual DPIA and audit",
+      "quote": "A Significant Data Fiduciary shall, once in every period of twelve months from the date on which it is notified as such or is included in the class of Data Fiduciaries notified as such, undertake a Data Protection Impact Assessment and an audit to ensure effective observance of the provisions of this Act and the rules made thereunder.",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "sourceTitle": "Digital Personal Data Protection Rules, 2025 — MeitY",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CERT-IN-2022-II",
+      "instrument": "CERT-In Directions under s. 70B of the IT Act, 2000 (2022)",
+      "instrumentShort": "CERT-In Directions",
+      "instrumentType": "Directions",
+      "regulator": "CERT-In / MeitY",
+      "pinCite": "Direction (ii)",
+      "title": "Six-hour cyber incident reporting",
+      "quote": "Any service provider, intermediary, data centre, body corporate and Government organisation shall mandatorily report cyber incidents as mentioned in Annexure I to CERT-In within 6 hours of noticing such incidents or being brought to notice about such incidents.",
+      "sourceUrl": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "sourceTitle": "CERT-In Directions under sub-section (6) of section 70B of the IT Act, 2000 (28 April 2022)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CERT-IN-2022-IV",
+      "instrument": "CERT-In Directions under s. 70B of the IT Act, 2000 (2022)",
+      "instrumentShort": "CERT-In Directions",
+      "instrumentType": "Directions",
+      "regulator": "CERT-In / MeitY",
+      "pinCite": "Direction (iv)",
+      "title": "180-day log retention inside Indian jurisdiction",
+      "quote": "All service providers, intermediaries, data centres, body corporate and Government organisations shall mandatorily enable logs of all their ICT systems and maintain them securely for a rolling period of 180 days and the same shall be maintained within the Indian jurisdiction.",
+      "sourceUrl": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf",
+      "sourceTitle": "CERT-In Directions under sub-section (6) of section 70B of the IT Act, 2000 (28 April 2022)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CPA-2019-S2-28",
+      "instrument": "Consumer Protection Act, 2019",
+      "instrumentShort": "Consumer Protection Act",
+      "instrumentType": "Act",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "pinCite": "s. 2(28)",
+      "title": "Misleading advertisement: definition",
+      "quote": "“misleading advertisement” in relation to any product or service, means an advertisement, which— (i) falsely describes such product or service; or (ii) gives a false guarantee to, or is likely to mislead the consumers as to the nature, substance, quantity or quality of such product or service; or (iii) conveys an express or implied representation which, if made by the manufacturer or seller or service provider thereof, would constitute an unfair trade practice; or (iv) deliberately conceals important information.",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/CP%20Act%202019_1732700731.pdf",
+      "sourceTitle": "The Consumer Protection Act, 2019 (No. 35 of 2019)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CPA-2019-S2-47",
+      "instrument": "Consumer Protection Act, 2019",
+      "instrumentShort": "Consumer Protection Act",
+      "instrumentType": "Act",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "pinCite": "s. 2(47)",
+      "title": "Unfair trade practice: definition",
+      "quote": "“unfair trade practice” means a trade practice which, for the purpose of promoting the sale, use or supply of any goods or for the provision of any service, adopts any unfair method or unfair or deceptive practice including any of the following practices, namely:— (i) making any statement, whether orally or in writing or by visible representation including by means of electronic record, which— (a) falsely represents that the goods are of a particular standard, quality, quantity, grade, composition, style or model;",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/CP%20Act%202019_1732700731.pdf",
+      "sourceTitle": "The Consumer Protection Act, 2019 (No. 35 of 2019)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "BNS-2023-S356",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "instrumentShort": "BNS",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 356(1)",
+      "title": "Defamation",
+      "quote": "Whoever, by words either spoken or intended to be read, or by signs or by visible representations, makes or publishes in any manner, any imputation concerning any person intending to harm, or knowing or having reason to believe that such imputation will harm, the reputation of such person, is said, except in the cases hereinafter excepted, to defame that person.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf",
+      "sourceTitle": "The Bharatiya Nyaya Sanhita, 2023 (No. 45 of 2023)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "BNS-2023-S336",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "instrumentShort": "BNS",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 336(1)",
+      "title": "Forgery, including false electronic records",
+      "quote": "Whoever makes any false document or false electronic record or part of a document or electronic record, with intent to cause damage or injury, to the public or to any person, or to support any claim or title, or to cause any person to part with property, or to enter into any express or implied contract, or with intent to commit fraud or that fraud may be committed, commits forgery.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf",
+      "sourceTitle": "The Bharatiya Nyaya Sanhita, 2023 (No. 45 of 2023)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "BSA-2023-S63",
+      "instrument": "Bharatiya Sakshya Adhiniyam, 2023",
+      "instrumentShort": "BSA",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 63(1)",
+      "title": "Admissibility of electronic records",
+      "quote": "Notwithstanding anything contained in this Adhiniyam, any information contained in an electronic record which is printed on paper, stored, recorded or copied in optical or magnetic media or semiconductor memory which is produced by a computer or any communication device or otherwise stored, recorded or copied in any electronic form (hereinafter referred to as the computer output) shall be deemed to be also a document, if the conditions mentioned in this section are satisfied in relation to the information and computer in question and shall be admissible in any proceedings, without further proof or production of the original, as evidence or any contents of the original or of any fact stated therein of which direct evidence would be admissible.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BSA2023.pdf",
+      "sourceTitle": "The Bharatiya Sakshya Adhiniyam, 2023 (No. 47 of 2023)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CONSTITUTION-ART-21",
+      "instrument": "Constitution of India",
+      "instrumentShort": "Constitution",
+      "instrumentType": "Constitution",
+      "regulator": "Union of India",
+      "pinCite": "Art. 21",
+      "title": "Protection of life and personal liberty",
+      "quote": "No person shall be deprived of his life or personal liberty except according to procedure established by law.",
+      "sourceUrl": "https://www.legislative.gov.in/static/uploads/2025/07/c9fe9c9b6840524844316f74bb1c556c.pdf",
+      "sourceTitle": "The Constitution of India (as on 1 May 2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security",
+        "health"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "CONSTITUTION-ART-14",
+      "instrument": "Constitution of India",
+      "instrumentShort": "Constitution",
+      "instrumentType": "Constitution",
+      "regulator": "Union of India",
+      "pinCite": "Art. 14",
+      "title": "Equality before the law",
+      "quote": "The State shall not deny to any person equality before the law or the equal protection of the laws within the territory of India.",
+      "sourceUrl": "https://www.legislative.gov.in/static/uploads/2025/07/c9fe9c9b6840524844316f74bb1c556c.pdf",
+      "sourceTitle": "The Constitution of India (as on 1 May 2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "identity"
+      ],
+      "excerpt": false
+    },
+    {
+      "id": "CONSTITUTION-ART-19-1-A",
+      "instrument": "Constitution of India",
+      "instrumentShort": "Constitution",
+      "instrumentType": "Constitution",
+      "regulator": "Union of India",
+      "pinCite": "Art. 19(1)(a)",
+      "title": "Freedom of speech and expression",
+      "quote": "All citizens shall have the right— (a) to freedom of speech and expression;",
+      "sourceUrl": "https://www.legislative.gov.in/static/uploads/2025/07/c9fe9c9b6840524844316f74bb1c556c.pdf",
+      "sourceTitle": "The Constitution of India (as on 1 May 2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "elections",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "IT-ACT-2000-S69A",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 69A(1)",
+      "title": "Blocking public access to information",
+      "quote": "Where the Central Government or any of its officers specially authorised by it in this behalf is satisfied that it is necessary or expedient so to do, in the interest of sovereignty and integrity of India, defence of India, security of the State, friendly relations with foreign States or public order or for preventing incitement to the commission of any cognizable offence relating to above, it may subject to the provisions of sub-section (2), for reasons to be recorded in writing, by order, direct any agency of the Government or intermediary to block for access by the public or cause to be blocked for access by the public any information generated, transmitted, received, stored or hosted in any computer resource.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "security",
+        "elections"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "IT-ACT-2000-S79",
+      "instrument": "Information Technology Act, 2000",
+      "instrumentShort": "IT Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY",
+      "pinCite": "s. 79(1)",
+      "title": "Intermediary safe harbour",
+      "quote": "Notwithstanding anything contained in any law for the time being in force but subject to the provisions of sub-sections (2) and (3), an intermediary shall not be liable for any third party information, data, or communication link made available or hosted by him.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf",
+      "sourceTitle": "The Information Technology Act, 2000 (updated)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "security",
+        "competition"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "IT-RULES-2026-SGI-PREVENT",
+      "instrument": "Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (as amended in 2026)",
+      "instrumentShort": "IT Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY",
+      "pinCite": "r. 3(3)(a)(i)",
+      "title": "Automated measures against unlawful synthetically generated information",
+      "quote": "it deploys reasonable and appropriate technical measures, including automated tools or other suitable mechanisms, to not allow any user to create, generate, modify, alter, publish, transmit, share, or disseminate, as the case may be, any such synthetically generated information that violates any law for the time being in force, including the Act, Bharatiya Nyaya Sanhita, 2023 (45 of 2023), Protection of Children from Sexual Offences Act, 2012 (32 of 2012), Explosive Substances Act, 1908 (6 of 1908), and includes any such synthetically generated information that,—",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf",
+      "sourceTitle": "The Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (updated as on 10.02.2026)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "synthetic-media",
+        "children",
+        "security",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-2023-S10",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 10(2)",
+      "title": "Additional obligations of a Significant Data Fiduciary",
+      "quote": "The Significant Data Fiduciary shall— (a) appoint a Data Protection Officer who shall— (i) represent the Significant Data Fiduciary under the provisions of this Act; (ii) be based in India; (iii) be an individual responsible to the Board of Directors or similar governing body of the Significant Data Fiduciary; and (iv) be the point of contact for the grievance redressal mechanism under the provisions of this Act; (b) appoint an independent data auditor to carry out data audit, who shall evaluate the compliance of the Significant Data Fiduciary in accordance with the provisions of this Act; and (c) undertake the following other measures, namely:— (i) periodic Data Protection Impact Assessment, which shall be a process comprising a description of the rights of Data Principals and the purpose of processing of their personal data, assessment and management of the risk to the rights of the Data Principals, and such other matters regarding such process as may be prescribed; (ii) periodic audit; and (iii) such other measures, consistent with the provisions of this Act, as may be prescribed.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-2023-S33",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "instrumentShort": "DPDP Act",
+      "instrumentType": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "s. 33(1)",
+      "title": "Monetary penalty for a significant breach",
+      "quote": "impose such monetary penalty specified in the Schedule.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf",
+      "sourceTitle": "The Digital Personal Data Protection Act, 2023",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "security",
+        "finance"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "DPDP-RULES-2025-R10",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "instrumentShort": "DPDP Rules",
+      "instrumentType": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "pinCite": "r. 10(1)",
+      "title": "Verifiable parental consent before processing a child's data",
+      "quote": "A Data Fiduciary shall adopt appropriate technical and organisational measures to ensure that verifiable consent of the parent is obtained before the processing of any personal data of a child and shall observe due diligence, for checking that the individual identifying herself as the parent is an adult who is identifiable if required in connection with compliance with any law for the time being in force in India, by reference to— (a) reliable details of identity and age of the individual available with the Data Fiduciary; or (b) details of identity and age, voluntarily provided— (i) by the individual; or (ii) through a virtual token mapped to such details, which is issued by an authorised entity.",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa",
+      "sourceTitle": "Digital Personal Data Protection Rules, 2025 — MeitY",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "children",
+        "personal-data",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "BNS-2023-S77",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "instrumentShort": "BNS",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 77",
+      "title": "Voyeurism and non-consensual dissemination of a private image",
+      "quote": "Whoever watches, or captures the image of a woman engaging in a private act in circumstances where she would usually have the expectation of not being observed either by the perpetrator or by any other person at the behest of the perpetrator or disseminates such image shall be punished on first conviction with imprisonment of either description for a term which shall not be less than one year, but which may extend to three years, and shall also be liable to fine, and be punished on a second or subsequent conviction, with imprisonment of either description for a term which shall not be less than three years, but which may extend to seven years, and shall also be liable to fine.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf",
+      "sourceTitle": "The Bharatiya Nyaya Sanhita, 2023 (No. 45 of 2023)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "synthetic-media",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "CPA-2019-S89",
+      "instrument": "Consumer Protection Act, 2019",
+      "instrumentShort": "Consumer Protection Act",
+      "instrumentType": "Act",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "pinCite": "s. 89",
+      "title": "Punishment for a false or misleading advertisement",
+      "quote": "Any manufacturer or service provider who causes a false or misleading advertisement to be made which is prejudicial to the interest of consumers shall be punished with imprisonment for a term which may extend to two years and with fine which may extend to ten lakh rupees; and for every subsequent offence, be punished with imprisonment for a term which may extend to five years and with fine which may extend to fifty lakh rupees.",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/CP%20Act%202019_1732700731.pdf",
+      "sourceTitle": "The Consumer Protection Act, 2019 (No. 35 of 2019)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "competition",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "BSA-2023-S63-4",
+      "instrument": "Bharatiya Sakshya Adhiniyam, 2023",
+      "instrumentShort": "BSA",
+      "instrumentType": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "pinCite": "s. 63(4)",
+      "title": "Certificate required with an electronic record",
+      "quote": "things shall be submitted along with the electronic record at each instance where it is being submitted for admission, namely:— (a) identifying the electronic record containing the statement and describing the manner in which it was produced; (b) giving such particulars of any device involved in the production of that electronic record as may be appropriate for the purpose of showing that the electronic record was produced by a computer or a communication device referred to in clauses (a) to (e) of sub-section (3); (c) dealing with any of the matters to which the conditions mentioned in sub-section (2) relate, and purporting to be signed by a person in charge of the computer or communication device or the management of the relevant activities (whichever is appropriate) and an expert shall be evidence of any matter stated in the certificate; and for the purposes of this sub-section it shall be sufficient for a matter to be stated to the best of the knowledge and belief of the person stating it in the certificate specified in the Schedule.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BSA2023.pdf",
+      "sourceTitle": "The Bharatiya Sakshya Adhiniyam, 2023 (No. 47 of 2023)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "AADHAAR-2016-S29-1",
+      "instrument": "Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016",
+      "instrumentShort": "Aadhaar Act",
+      "instrumentType": "Act",
+      "regulator": "Unique Identification Authority of India (UIDAI) / MeitY",
+      "pinCite": "s. 29(1)",
+      "title": "Core biometric information cannot be shared or used beyond Aadhaar",
+      "quote": "No core biometric information, collected or created under this Act, shall be— (a) shared with anyone for any reason whatsoever; or (b) used for any purpose other than generation of Aadhaar numbers and authentication under this Act.",
+      "sourceUrl": "https://uidai.gov.in/images/Aadhaar_Act_2016_as_amended.pdf",
+      "sourceTitle": "The Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016 (as amended)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "identity",
+        "personal-data"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "AADHAAR-2016-S29-3",
+      "instrument": "Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016",
+      "instrumentShort": "Aadhaar Act",
+      "instrumentType": "Act",
+      "regulator": "Unique Identification Authority of India (UIDAI) / MeitY",
+      "pinCite": "s. 29(3)",
+      "title": "Purpose limitation on identity information",
+      "quote": "No identity information available with a requesting entity or offline verification-seeking entity shall be— (a) used for any purpose, other than the purposes informed in writing to the individual at the time of submitting any information for authentication or offline verification; or (b) disclosed for any purpose, other than purposes informed in writing to the individual at the time of submitting any information for authentication or offline verification: Provided that the purposes under clauses (a) and (b) shall be in clear and precise language understandable to the individual.",
+      "quoteNote": "Sub-section (3) was substituted by Act 14 of 2019, s. 13, with effect from 25 July 2019.",
+      "sourceUrl": "https://uidai.gov.in/images/Aadhaar_Act_2016_as_amended.pdf",
+      "sourceTitle": "The Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016 (as amended)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "personal-data",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "TELECOM-CYBER-2024-R3-4-A",
+      "instrument": "Telecommunications (Telecom Cyber Security) Rules, 2024",
+      "instrumentShort": "Telecom Cyber Security Rules",
+      "instrumentType": "Rules",
+      "regulator": "Department of Telecommunications",
+      "pinCite": "r. 3(4)(a)",
+      "title": "Telecom cyber-security policy",
+      "quote": "Every telecommunication entity shall implement the following measures to ensure telecom cyber security, namely:— (a) adopt a telecom cyber security policy, which shall include— (i) security safeguards, risk management approaches, actions, training, best practices and technologies, to enhance telecom cyber security; (ii) telecommunication network testing including hardening, vulnerability assessment and penetration testing; (iii) risk assessment, identification and prevention of security incidents; (iv) rapid action system to deal with security incidents including mitigation measures to limit the impact of such incidents; and (v) forensic analysis of security incidents to ensure learnings from such incidents and further strengthening telecom cyber security.",
+      "sourceUrl": "https://thc.nic.in/Central%20Governmental%20Rules/Telecommunications%20(Telecom%20Cyber%20Security)%20Rules,%202024.pdf",
+      "sourceTitle": "Telecommunications (Telecom Cyber Security) Rules, 2024",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "TELECOM-CYBER-2024-R7-1",
+      "instrument": "Telecommunications (Telecom Cyber Security) Rules, 2024",
+      "instrumentShort": "Telecom Cyber Security Rules",
+      "instrumentType": "Rules",
+      "regulator": "Department of Telecommunications",
+      "pinCite": "r. 7(1)",
+      "title": "Six-hour and twenty-four-hour security incident reporting",
+      "quote": "The telecommunication entity shall– (a) within six hours of becoming aware of a security incident affecting its telecommunication network or telecommunication service, report the same to the Central Government with relevant details of the affected system including the description of such incident; and (b) within twenty-four hours of becoming aware of such incident, furnish the following information, as applicable: (i) the number of users affected by the security incident; (ii) the duration of the security incident; (iii) the geographical area affected by the security incident; (iv) the extent to which the functioning of the telecommunication network or telecommunication service is affected; (v) the remedial measures taken or proposed to be taken; and (vi) any other information it considers relevant.",
+      "sourceUrl": "https://thc.nic.in/Central%20Governmental%20Rules/Telecommunications%20(Telecom%20Cyber%20Security)%20Rules,%202024.pdf",
+      "sourceTitle": "Telecommunications (Telecom Cyber Security) Rules, 2024",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "ECOM-2026-DARK-PATTERNS",
+      "instrument": "Consumer Protection (E-Commerce) (Amendment) Rules, 2026",
+      "instrumentShort": "E-Commerce Amendment Rules",
+      "instrumentType": "Rules",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "pinCite": "r. 4 (inserted sub-rule)",
+      "title": "Dark-pattern compliance and yearly self-audit",
+      "quote": "Every e-commerce entity shall comply with the Guidelines for Prevention and Regulation of Dark Patterns, 2023 and also conduct yearly self-audit to ensure that its platform is free from dark patterns and a certificate to this effect shall be displayed prominently.",
+      "quoteNote": "Inserted by the 2026 amendment; notified in September 2026 and commences on 1 January 2027.",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/E%20Commerce%20Amendment%20Rules%202026_1789127949.pdf",
+      "sourceTitle": "Consumer Protection (E-Commerce) (Amendment) Rules, 2026",
+      "retrievedAt": "2026-11-02",
+      "inForce": "commences-2027-01-01",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "consumer",
+        "competition"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "RBI-NBFC-TECH-2026-P6",
+      "instrument": "Reserve Bank of India (Non-Banking Financial Companies – Cybersecurity, Technology: Risk, Resilience and Assurance Framework) Directions, 2026",
+      "instrumentShort": "RBI NBFC Technology Directions",
+      "instrumentType": "Directions",
+      "regulator": "Reserve Bank of India",
+      "pinCite": "para. 6",
+      "title": "Board approval and annual review of technology and cyber policies",
+      "quote": "The Board of Directors (Board) shall approve the strategies and policies related to Technology and Cybersecurity frameworks which shall be reviewed at least annually by it.",
+      "sourceUrl": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13592&Mode=0",
+      "sourceTitle": "Reserve Bank of India (NBFCs – Cybersecurity, Technology: Risk, Resilience and Assurance Framework) Directions, 2026",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "finance",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "SEBI-CSCRF-2024-GOV",
+      "instrument": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities, 2024",
+      "instrumentShort": "SEBI CSCRF",
+      "instrumentType": "Circular / framework",
+      "regulator": "Securities and Exchange Board of India",
+      "pinCite": "CSCRF, Governance (b)",
+      "title": "Board-approved cybersecurity and cyber resilience policy",
+      "quote": "A comprehensive cybersecurity and cyber resilience policy shall be documented and implemented with the approval of the Board/Partners/Proprietor.",
+      "sourceUrl": "https://www.sebi.gov.in/sebi_data/attachdocs/aug-2024/1724326790365.pdf",
+      "sourceTitle": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities, 2024",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "finance",
+        "security"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "ECI-AI-2025-LABEL",
+      "instrument": "Election Commission of India Directions on Responsible Use and Disclosure of Synthetically Generated Information and AI-Generated Content during Elections, 2025",
+      "instrumentShort": "ECI deepfake directions",
+      "instrumentType": "Directions (Article 324)",
+      "regulator": "Election Commission of India",
+      "pinCite": "para. 5(a)",
+      "title": "Labelling synthetically generated election content",
+      "quote": "Any synthetically generated or AI-altered image, audio, or video used or disseminated for campaigning purposes shall bear a clear, prominent, and legible label such as \"AI-Generated\", \"Digitally Enhanced\", or \"Synthetic Content\", covering at least 10% of the visible display area (or initial 10% duration for audio content).",
+      "quoteNote": "The official PDF is scanned; this text was checked against a local OCR pass of the ECI file.",
+      "sourceUrl": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzX%2FLARKC1lI3JwqUiIIk3e%2B7gOOlUZXPW%2BNP40Y7lTYHctZoALayD8g8gQjxekHZkSIq%2Fi7zDsrcP74v%2FKr8UNw%3D%3D",
+      "sourceTitle": "ECI, Advisory on responsible use and disclosure of synthetically generated information and AI-generated content during elections (24 October 2025)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "elections",
+        "synthetic-media"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "ECI-AI-2025-TAKEDOWN",
+      "instrument": "Election Commission of India Directions on Responsible Use and Disclosure of Synthetically Generated Information and AI-Generated Content during Elections, 2025",
+      "instrumentShort": "ECI deepfake directions",
+      "instrumentType": "Directions (Article 324)",
+      "regulator": "Election Commission of India",
+      "pinCite": "para. 5(c)–(d)",
+      "title": "Misleading synthetic content and the three-hour takedown",
+      "quote": "No content shall be published or forwarded which is unlawful and misrepresents the identity, appearance, or voice of any person without his consent in a manner reasonably likely to mislead or deceive the electorate. Any instance of synthetically generated or AI-altered image, audio, or video, misinformation, or manipulated content falling within sub-para 5(c) detected on official party handles shall be taken down within 3 hours of being noticed or reported.",
+      "quoteNote": "The official PDF is scanned; this text was checked against a local OCR pass of the ECI file.",
+      "sourceUrl": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzX%2FLARKC1lI3JwqUiIIk3e%2B7gOOlUZXPW%2BNP40Y7lTYHctZoALayD8g8gQjxekHZkSIq%2Fi7zDsrcP74v%2FKr8UNw%3D%3D",
+      "sourceTitle": "ECI, Advisory on responsible use and disclosure of synthetically generated information and AI-generated content during elections (24 October 2025)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "elections",
+        "synthetic-media",
+        "identity"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "ECI-AI-2025-RECORDS",
+      "instrument": "Election Commission of India Directions on Responsible Use and Disclosure of Synthetically Generated Information and AI-Generated Content during Elections, 2025",
+      "instrumentShort": "ECI deepfake directions",
+      "instrumentType": "Directions (Article 324)",
+      "regulator": "Election Commission of India",
+      "pinCite": "para. 5(e)",
+      "title": "Internal records of AI-generated campaign material",
+      "quote": "Political parties shall maintain internal records of all AI-generated campaign materials, including creator details and timestamps, for verification when sought by the ECI.",
+      "quoteNote": "The official PDF is scanned; this text was checked against a local OCR pass of the ECI file.",
+      "sourceUrl": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzX%2FLARKC1lI3JwqUiIIk3e%2B7gOOlUZXPW%2BNP40Y7lTYHctZoALayD8g8gQjxekHZkSIq%2Fi7zDsrcP74v%2FKr8UNw%3D%3D",
+      "sourceTitle": "ECI, Advisory on responsible use and disclosure of synthetically generated information and AI-generated content during elections (24 October 2025)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "elections",
+        "synthetic-media"
+      ],
+      "excerpt": true
+    },
+    {
+      "id": "ECI-AI-2025-METADATA",
+      "instrument": "Election Commission of India Directions on Responsible Use and Disclosure of Synthetically Generated Information and AI-Generated Content during Elections, 2025",
+      "instrumentShort": "ECI deepfake directions",
+      "instrumentType": "Directions (Article 324)",
+      "regulator": "Election Commission of India",
+      "pinCite": "para. 5(b)",
+      "title": "Disclosure of the entity responsible for synthetic election content",
+      "quote": "Every such content shall prominently disclose the name of entity, responsible for its generation in the metadata or accompanying caption.",
+      "quoteNote": "The official PDF is scanned; this text was checked against a local OCR pass of the ECI file.",
+      "sourceUrl": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzX%2FLARKC1lI3JwqUiIIk3e%2B7gOOlUZXPW%2BNP40Y7lTYHctZoALayD8g8gQjxekHZkSIq%2Fi7zDsrcP74v%2FKr8UNw%3D%3D",
+      "sourceTitle": "ECI, Advisory on responsible use and disclosure of synthetically generated information and AI-generated content during elections (24 October 2025)",
+      "retrievedAt": "2026-11-02",
+      "inForce": "in-force",
+      "reviewStatus": "source-checked",
+      "topics": [
+        "elections",
+        "synthetic-media"
+      ],
+      "excerpt": true
     }
   ]
 }

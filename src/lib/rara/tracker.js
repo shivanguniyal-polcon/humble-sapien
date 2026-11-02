@@ -76,6 +76,14 @@ export const TOPICS = [
     ],
   },
   {
+    id: 'consumer',
+    label: 'Consumer',
+    terms: [
+      'consumer', 'consumers', 'e-commerce', 'ecommerce', 'dark pattern', 'dark patterns',
+      'marketplace', 'seller', 'sellers', 'checkout', 'subscription', 'advertisement',
+    ],
+  },
+  {
     id: 'security',
     label: 'Security',
     terms: [

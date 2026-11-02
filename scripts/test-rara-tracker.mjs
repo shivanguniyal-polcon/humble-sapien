@@ -28,6 +28,15 @@ const DEVELOPMENTS = JSON.parse(
 const LEGAL = JSON.parse(
   fs.readFileSync(path.join(here, '../src/data/rara/legal-texts.json'), 'utf8'),
 );
+const LEGAL_INSTRUMENTS = JSON.parse(
+  fs.readFileSync(path.join(here, '../src/data/rara/legal-instruments.json'), 'utf8'),
+);
+const DOCUMENTS = JSON.parse(
+  fs.readFileSync(path.join(here, '../src/data/rara/legal-documents.json'), 'utf8'),
+);
+const CASES = JSON.parse(
+  fs.readFileSync(path.join(here, '../src/data/rara/legal-cases.json'), 'utf8'),
+);
 
 let failures = 0;
 let checks = 0;
@@ -56,11 +65,77 @@ const read = (title, summary = '') => ({
 
 const match = (title, id, summary = '') => matchProvision(read(title, summary), provision(id));
 
+const bindingInstrumentNames = new Set(
+  LEGAL_INSTRUMENTS.instruments
+    .filter((entry) => entry.status === 'binding')
+    .map((entry) => entry.instrument),
+);
+const quotedBindingInstrumentNames = new Set(
+  LEGAL.texts
+    .filter((entry) => bindingInstrumentNames.has(entry.instrument))
+    .map((entry) => entry.instrument),
+);
+
 // ------------------------------------------------------------------- corpus
 console.log('corpus');
-check('the legal corpus is not empty', LEGAL.texts.length >= 18, String(LEGAL.texts.length));
-check('the corpus covers at least six instruments',
-  new Set(LEGAL.texts.map((entry) => entry.instrument)).size >= 6);
+check('the legal corpus carries at least 57 exact provisions',
+  LEGAL.texts.length >= 57, String(LEGAL.texts.length));
+check('the corpus covers at least seventeen binding instruments',
+  quotedBindingInstrumentNames.size >= 17, String(quotedBindingInstrumentNames.size));
+check('the 2026 synthetic-media rules are in the corpus',
+  LEGAL.texts.some((entry) => entry.id.startsWith('IT-RULES-2026-')));
+check('the equality and speech floor is in the corpus',
+  LEGAL.texts.some((entry) => entry.id === 'CONSTITUTION-ART-14') &&
+  LEGAL.texts.some((entry) => entry.id === 'CONSTITUTION-ART-19-1-A'));
+check('the SGI prevention duty is in the corpus',
+  LEGAL.texts.some((entry) => entry.id === 'IT-RULES-2026-SGI-PREVENT'));
+check('the SDF duties and penalty are in the corpus',
+  LEGAL.texts.some((entry) => entry.id === 'DPDP-2023-S10') &&
+  LEGAL.texts.some((entry) => entry.id === 'DPDP-2023-S33'));
+check('the takedown quote explains its amendment marker', (() => {
+  const entry = LEGAL.texts.find((text) => text.id === 'IT-RULES-2026-SGI-TAKEDOWN');
+  return Boolean(entry && entry.quote.includes('1[three hours]') && entry.quoteNote);
+})());
+check('the DPDP Rules 2025 are in the corpus',
+  LEGAL.texts.some((entry) => entry.instrument === 'Digital Personal Data Protection Rules, 2025'));
+check('the Aadhaar, telecom, RBI and SEBI layer is in the corpus',
+  ['AADHAAR-2016-S29-1', 'TELECOM-CYBER-2024-R7-1', 'RBI-NBFC-TECH-2026-P6', 'SEBI-CSCRF-2024-GOV']
+    .every((id) => LEGAL.texts.some((entry) => entry.id === id)));
+check('the ECI deepfake directions are in the corpus',
+  ['ECI-AI-2025-LABEL', 'ECI-AI-2025-METADATA', 'ECI-AI-2025-TAKEDOWN', 'ECI-AI-2025-RECORDS']
+    .every((id) => LEGAL.texts.some((entry) => entry.id === id)));
+check('the ECI direction carries the three-hour takedown',
+  LEGAL.texts.find((entry) => entry.id === 'ECI-AI-2025-TAKEDOWN')?.quote.includes('within 3 hours'));
+check('the e-commerce amendment is not presented as in force',
+  LEGAL.texts.find((entry) => entry.id === 'ECOM-2026-DARK-PATTERNS')?.inForce === 'commences-2027-01-01');
+check('the constitutional floor is in the corpus',
+  LEGAL.texts.some((entry) => entry.id === 'CONSTITUTION-ART-21'));
+check('no instrument repeats a pin cite',
+  new Set(LEGAL.texts.map((entry) => `${entry.instrument}|${entry.pinCite}`)).size === LEGAL.texts.length);
+{
+  const ledger = LEGAL_INSTRUMENTS.instruments;
+  const ledgerNames = new Set(ledger.map((entry) => entry.instrument));
+  const quotedNames = new Set(LEGAL.texts.map((entry) => entry.instrument));
+  const quotedFor = (entry) => LEGAL.texts.filter((text) => text.instrument === entry.instrument).length;
+  check('the ledger carries twenty-five instruments', ledger.length === 25, String(ledger.length));
+  check('every instrument in the corpus has a ledger entry',
+    [...quotedNames].every((name) => ledgerNames.has(name)));
+  check('every binding ledger entry carries exact text',
+    ledger.filter((entry) => entry.status === 'binding').every((entry) => quotedFor(entry) > 0));
+  check('guidance, draft and process instruments carry no exact text',
+    ledger.filter((entry) => ['guidance', 'draft', 'process'].includes(entry.status))
+      .every((entry) => quotedFor(entry) === 0));
+  check('every ledger entry names a type, regulator and scope',
+    ledger.every((entry) => entry.type && entry.regulator && entry.scope));
+  check('every ledger status is known',
+    ledger.every((entry) => ['binding', 'guidance', 'draft', 'process', 'forthcoming'].includes(entry.status)));
+  check('the ECI directions are binding, RBI FREE-AI is guidance and IRDAI is process',
+    ledger.find((entry) => entry.id === 'ECI-AI-2025')?.status === 'binding' &&
+    ledger.find((entry) => entry.id === 'RBI-FREE-AI-2025')?.status === 'guidance' &&
+    ledger.find((entry) => entry.id === 'IRDAI-WG-AI-2026')?.status === 'process');
+  check('every ledger source is an official host',
+    ledger.every((entry) => /(^|\.)(gov\.in|nic\.in|org\.in)$/.test(new URL(entry.sourceUrl).hostname)));
+}
 check('every provision names its instrument, type and regulator',
   LEGAL.texts.every((entry) => entry.instrument && entry.instrumentType && entry.regulator));
 check('no quote carries a doubled space from a PDF extraction',
@@ -80,6 +155,61 @@ check('every provision has a review status and in-force state',
   LEGAL.texts.every((entry) => entry.reviewStatus && entry.inForce));
 check('every provision has at least one topic',
   LEGAL.texts.every((entry) => Array.isArray(entry.topics) && entry.topics.length > 0));
+
+console.log('documents');
+check('the policy record carries at least thirteen documents',
+  DOCUMENTS.documents.length >= 13, String(DOCUMENTS.documents.length));
+check('document ids are unique',
+  new Set(DOCUMENTS.documents.map((entry) => entry.id)).size === DOCUMENTS.documents.length);
+check('every document carries a quote of useful length',
+  DOCUMENTS.documents.every((entry) => entry.quote.length > 40));
+check('no document quote carries a doubled space',
+  DOCUMENTS.documents.every((entry) => !/  /.test(entry.quote)));
+check('every document names its issuer, date, type and relevance',
+  DOCUMENTS.documents.every((entry) => entry.issuer && entry.date && entry.type && entry.relevance));
+check('every document has at least one topic',
+  DOCUMENTS.documents.every((entry) => Array.isArray(entry.topics) && entry.topics.length > 0));
+check('every document status is known and non-binding',
+  DOCUMENTS.documents.every((entry) => ['guidance', 'draft', 'consultation', 'report', 'process'].includes(entry.status)));
+check('the RBI FREE-AI report and IRDAI working-group order are in the documents layer',
+  ['RBI-FREE-AI-2025', 'IRDAI-WG-AI-2026-ORDER']
+    .every((id) => DOCUMENTS.documents.some((entry) => entry.id === id)));
+check('the IRDAI document stays a process order, not a report',
+  DOCUMENTS.documents.find((entry) => entry.id === 'IRDAI-WG-AI-2026-ORDER')?.status === 'process');
+check('every document source is https',
+  DOCUMENTS.documents.every((entry) => /^https:\/\//.test(entry.url)));
+check('every document source is public or official',
+  DOCUMENTS.documents.every((entry) => {
+    const host = new URL(entry.url).hostname;
+    return /(^|\.)(gov\.in|nic\.in|org\.in)$/.test(host) ||
+      host === 'prsindia.org' || host.endsWith('.allahabadhighcourt.in');
+  }));
+check('the NITI, DPIIT and TRAI layers are present',
+  ['NITI-NSAI-2018', 'DPIIT-GENAI-COPYRIGHT-2025', 'TRAI-AI-DRAFT-2026'].every((id) =>
+    DOCUMENTS.documents.some((entry) => entry.id === id)));
+
+console.log('cases');
+check('the case record carries at least four cases',
+  CASES.cases.length >= 4, String(CASES.cases.length));
+check('case ids are unique',
+  new Set(CASES.cases.map((entry) => entry.id)).size === CASES.cases.length);
+check('every case names its court, date, citation and holding',
+  CASES.cases.every((entry) => entry.court && entry.date && entry.citation && entry.holding));
+check('every case carries a quote of useful length',
+  CASES.cases.every((entry) => entry.quote.length > 40));
+check('no case quote carries a doubled space',
+  CASES.cases.every((entry) => !/  /.test(entry.quote)));
+check('every case has a pin cite and topics',
+  CASES.cases.every((entry) => entry.pinCite && Array.isArray(entry.topics) && entry.topics.length > 0));
+check('every case status is final or interim',
+  CASES.cases.every((entry) => ['final', 'interim'].includes(entry.status)));
+check('every case source is a court host',
+  CASES.cases.every((entry) => /(^|\.)(gov\.in|nic\.in)$/.test(new URL(entry.url).hostname)));
+check('the privacy and AI-training cases are present',
+  CASES.cases.some((entry) => entry.id === 'PUTTASWAMY-2017') &&
+  CASES.cases.some((entry) => entry.id === 'ANI-OPENAI-2026'));
+check('the training case stays an interim order',
+  CASES.cases.find((entry) => entry.id === 'ANI-OPENAI-2026')?.status === 'interim');
 
 console.log('snapshot');
 check('the development snapshot has items', DEVELOPMENTS.items.length >= 50, String(DEVELOPMENTS.items.length));
@@ -109,6 +239,8 @@ console.log('matcher');
     topics.join(', '));
   check('a code-security note is not tagged as personal data',
     !inferTopics('A security audit of the codebase.').includes('personal-data'));
+  check('a dark-pattern note is tagged consumer',
+    inferTopics('A checkout dark pattern').includes('consumer'));
 }
 
 {

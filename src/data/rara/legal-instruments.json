@@ -1,0 +1,281 @@
+{
+  "version": "2026-11-02",
+  "note": "Every instrument in the RARA legal scope is listed once. Binding instruments carry exact excerpts in legal-texts.json; guidance, draft, process and forthcoming instruments are named so they cannot be mistaken for law. State laws, municipal bylaws, tribunal orders and private standards sit outside this ledger.",
+  "instruments": [
+    {
+      "id": "CONSTITUTION-INDIA",
+      "instrument": "Constitution of India",
+      "short": "Constitution",
+      "type": "Constitution",
+      "regulator": "Union of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Articles 14, 19 and 21 set the equality, speech and privacy floor that every AI-facing rule has to survive. Articles 14, 19(1)(a) and 21 are quoted.",
+      "sourceUrl": "https://www.legislative.gov.in/static/uploads/2025/07/c9fe9c9b6840524844316f74bb1c556c.pdf"
+    },
+    {
+      "id": "IT-ACT-2000",
+      "instrument": "Information Technology Act, 2000",
+      "short": "IT Act",
+      "type": "Act",
+      "regulator": "MeitY",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Identity offences, privacy, data protection, intermediary safe harbour and blocking. Six exact provisions are quoted.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/13116/1/it_act_2000_updated.pdf"
+    },
+    {
+      "id": "IT-RULES-2021-2026",
+      "instrument": "Information Technology (Intermediary Guidelines and Digital Media Ethics Code) Rules, 2021 (as amended in 2026)",
+      "short": "IT Rules",
+      "type": "Rules",
+      "regulator": "MeitY",
+      "status": "binding",
+      "aiSpecific": true,
+      "scope": "India's first binding AI-specific regime: the definition of synthetically generated information, automated prevention and labelling duties, and the three-hour takedown route. Four exact provisions are quoted.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2026/02/550681ab908f8afb135b0ad42816a1c9.pdf"
+    },
+    {
+      "id": "DPDP-ACT-2023",
+      "instrument": "Digital Personal Data Protection Act, 2023",
+      "short": "DPDP Act",
+      "type": "Act",
+      "regulator": "MeitY / Data Protection Board of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Consent, children's data, security safeguards, breach intimation, cross-border transfer, Significant Data Fiduciary duties, penalties and the research exemption. Ten exact provisions are quoted.",
+      "sourceUrl": "https://www.meity.gov.in/static/uploads/2024/06/2bf1f0e9f04e6fb4f8fef35e82c42aa5.pdf"
+    },
+    {
+      "id": "DPDP-RULES-2025",
+      "instrument": "Digital Personal Data Protection Rules, 2025",
+      "short": "DPDP Rules",
+      "type": "Rules",
+      "regulator": "MeitY / Data Protection Board of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Security safeguards, breach intimation to the Data Principal and the Board, verifiable parental consent, and the annual DPIA and audit owed by a Significant Data Fiduciary. Five exact provisions are quoted.",
+      "sourceUrl": "https://www.meity.gov.in/documents/act-and-policies/digital-personal-data-protection-rules-2025-gDOxUjMtQWa"
+    },
+    {
+      "id": "BNS-2023",
+      "instrument": "Bharatiya Nyaya Sanhita, 2023",
+      "short": "BNS",
+      "type": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Personation, cheating, defamation, voyeurism and forgery, including false electronic records. Five exact provisions are quoted.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BNS2023.pdf"
+    },
+    {
+      "id": "BSA-2023",
+      "instrument": "Bharatiya Sakshya Adhiniyam, 2023",
+      "short": "BSA",
+      "type": "Act",
+      "regulator": "Ministry of Home Affairs",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Admissibility of electronic records, including the conditions for treating computer output as evidence and the certificate required at admission. Two exact provisions are quoted.",
+      "sourceUrl": "https://www.ncrb.mha.gov.in/uploads/SankalanPortal/DownloadPDF/BSA2023.pdf"
+    },
+    {
+      "id": "COPYRIGHT-1957",
+      "instrument": "Copyright Act, 1957",
+      "short": "Copyright Act",
+      "type": "Act",
+      "regulator": "Department for Promotion of Industry and Internal Trade",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Fair dealing, infringement and moral rights around training data and generated likeness. Two exact provisions are quoted.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/1361/1/A1957-14.pdf"
+    },
+    {
+      "id": "PATENTS-1970",
+      "instrument": "Patents Act, 1970",
+      "short": "Patents Act",
+      "type": "Act",
+      "regulator": "Department for Promotion of Industry and Internal Trade",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "The exclusion of computer programmes and algorithms from patentability, read against AI inventorship. One exact provision is quoted.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/1392/1/A1970-39.pdf"
+    },
+    {
+      "id": "COMPETITION-2002",
+      "instrument": "Competition Act, 2002",
+      "short": "Competition Act",
+      "type": "Act",
+      "regulator": "Competition Commission of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Anti-competitive agreements, price fixing and abuse of dominance, including algorithmic coordination. Three exact provisions are quoted.",
+      "sourceUrl": "https://www.indiacode.nic.in/bitstream/123456789/1996/1/A2003-12.pdf"
+    },
+    {
+      "id": "CPA-2019",
+      "instrument": "Consumer Protection Act, 2019",
+      "short": "Consumer Protection Act",
+      "type": "Act",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Misleading advertisements, unfair trade practices and the punishment for a false or misleading advertisement. Three exact provisions are quoted.",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/CP%20Act%202019_1732700731.pdf"
+    },
+    {
+      "id": "CERT-IN-2022",
+      "instrument": "CERT-In Directions under s. 70B of the IT Act, 2000 (2022)",
+      "short": "CERT-In Directions",
+      "type": "Directions",
+      "regulator": "CERT-In / MeitY",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Six-hour cyber-incident reporting and 180-day log retention inside India. Two exact provisions are quoted.",
+      "sourceUrl": "https://www.cert-in.org.in/PDF/CERT-In_Directions_70B_28.04.2022.pdf"
+    },
+    {
+      "id": "AADHAAR-2016",
+      "instrument": "Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016",
+      "short": "Aadhaar Act",
+      "type": "Act",
+      "regulator": "UIDAI / MeitY",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Core biometric information cannot be shared or used beyond Aadhaar generation and authentication; other identity information is purpose-limited. Two exact provisions are quoted.",
+      "sourceUrl": "https://uidai.gov.in/images/Aadhaar_Act_2016_as_amended.pdf"
+    },
+    {
+      "id": "TELECOM-CYBER-2024",
+      "instrument": "Telecommunications (Telecom Cyber Security) Rules, 2024",
+      "short": "Telecom Cyber Security Rules",
+      "type": "Rules",
+      "regulator": "Department of Telecommunications",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Telecom cyber-security policy, audits and six-hour incident reporting for telecom entities. Two exact provisions are quoted.",
+      "sourceUrl": "https://thc.nic.in/Central%20Governmental%20Rules/Telecommunications%20(Telecom%20Cyber%20Security)%20Rules,%202024.pdf"
+    },
+    {
+      "id": "RBI-NBFC-TECH-2026",
+      "instrument": "Reserve Bank of India (Non-Banking Financial Companies – Cybersecurity, Technology: Risk, Resilience and Assurance Framework) Directions, 2026",
+      "short": "RBI NBFC Technology Directions",
+      "type": "Directions",
+      "regulator": "Reserve Bank of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Board-approved technology and cybersecurity policies, annual review and technology-risk governance for NBFCs. One exact provision is quoted.",
+      "sourceUrl": "https://www.rbi.org.in/Scripts/NotificationUser.aspx?Id=13592&Mode=0"
+    },
+    {
+      "id": "SEBI-CSCRF-2024",
+      "instrument": "Cybersecurity and Cyber Resilience Framework (CSCRF) for SEBI Regulated Entities, 2024",
+      "short": "SEBI CSCRF",
+      "type": "Circular / framework",
+      "regulator": "Securities and Exchange Board of India",
+      "status": "binding",
+      "aiSpecific": false,
+      "scope": "Board-approved cybersecurity and cyber resilience policy, graded compliance, SOC and incident reporting for SEBI-regulated entities. One exact provision is quoted.",
+      "sourceUrl": "https://www.sebi.gov.in/sebi_data/attachdocs/aug-2024/1724326790365.pdf"
+    },
+    {
+      "id": "ECI-AI-2025",
+      "instrument": "Election Commission of India Directions on Responsible Use and Disclosure of Synthetically Generated Information and AI-Generated Content during Elections, 2025",
+      "short": "ECI deepfake directions",
+      "type": "Directions",
+      "regulator": "Election Commission of India",
+      "status": "binding",
+      "aiSpecific": true,
+      "scope": "Article 324 directions to political parties, candidates and campaign representatives: labels, metadata, a prohibition on misleading synthetic content, three-hour takedown and record-keeping. Three exact provisions are quoted.",
+      "sourceUrl": "https://www.eci.gov.in/eci-backend/public/api/download?url=LMAhAK6sOPBp%2FNFF0iRfXbEB1EVSLT41NNLRjYNJJP1KivrUxbfqkDatmHy12e%2FzX%2FLARKC1lI3JwqUiIIk3e%2B7gOOlUZXPW%2BNP40Y7lTYHctZoALayD8g8gQjxekHZkSIq%2Fi7zDsrcP74v%2FKr8UNw%3D%3D"
+    },
+    {
+      "id": "ECOM-2026",
+      "instrument": "Consumer Protection (E-Commerce) (Amendment) Rules, 2026",
+      "short": "E-Commerce Amendment Rules",
+      "type": "Rules",
+      "regulator": "Department of Consumer Affairs / CCPA",
+      "status": "forthcoming",
+      "aiSpecific": false,
+      "scope": "Dark-pattern compliance, yearly self-audit and disclosure duties for e-commerce entities. The 2026 amendment is notified but commences on 1 January 2027; one exact provision is quoted.",
+      "sourceUrl": "https://consumeraffairs.gov.in/public/upload/files/E%20Commerce%20Amendment%20Rules%202026_1789127949.pdf"
+    },
+    {
+      "id": "RBI-FREE-AI-2025",
+      "instrument": "FREE-AI Committee Report – Framework for Responsible and Ethical Enablement of Artificial Intelligence",
+      "short": "RBI FREE-AI",
+      "type": "Committee report",
+      "regulator": "Reserve Bank of India",
+      "status": "guidance",
+      "aiSpecific": true,
+      "scope": "Seven sutras and twenty-six recommendations on responsible AI in finance, including entity accountability and board oversight. A committee report with no compliance duty; one exact excerpt is in the documents layer.",
+      "sourceUrl": "https://rbi.org.in/scripts/PublicationReportDetails.aspx?ID=1306"
+    },
+    {
+      "id": "IRDAI-WG-AI-2026",
+      "instrument": "IRDAI Office Order constituting the Working Group on Artificial Intelligence (AI) Governance in the Insurance Sector",
+      "short": "IRDAI WG-AI",
+      "type": "Office order",
+      "regulator": "Insurance Regulatory and Development Authority of India",
+      "status": "process",
+      "aiSpecific": true,
+      "scope": "Constitutes a seven-member working group on AI governance for insurance, with recommendations due within three months. No report or binding AI rule had been published at retrieval; one exact excerpt is in the documents layer.",
+      "sourceUrl": "https://irdai.gov.in/document-detail?documentId=9565283"
+    },
+    {
+      "id": "INDIA-AI-GUIDELINES-2025",
+      "instrument": "India AI Governance Guidelines, 2025",
+      "short": "India AI Guidelines",
+      "type": "Guidelines",
+      "regulator": "MeitY",
+      "status": "guidance",
+      "aiSpecific": true,
+      "scope": "Seven sutras and six governance pillars. Voluntary guidance: it can shape practice but cannot close a statutory gap.",
+      "sourceUrl": "https://www.pib.gov.in/PressReleasePage.aspx?PRID=2228315"
+    },
+    {
+      "id": "NITI-RAI-2021",
+      "instrument": "NITI Aayog Approach Document for India: Responsible AI for All, 2021",
+      "short": "NITI Responsible AI",
+      "type": "Approach document",
+      "regulator": "NITI Aayog",
+      "status": "guidance",
+      "aiSpecific": true,
+      "scope": "Seven responsible-AI principles. A policy approach, not a binding instrument.",
+      "sourceUrl": "https://www.niti.gov.in/sites/default/files/2021-02/Responsible-AI-22022021.pdf"
+    },
+    {
+      "id": "RBI-MRM-DRAFT-2026",
+      "instrument": "RBI Draft Guidance on Regulatory Principles for Model Risk Management, 2026",
+      "short": "RBI draft MRM",
+      "type": "Draft guidance",
+      "regulator": "Reserve Bank of India",
+      "status": "draft",
+      "aiSpecific": true,
+      "scope": "Enterprise model governance, validation, tiering and continuous oversight for regulated entities. Still a draft; no compliance duty attaches until finalised.",
+      "sourceUrl": "https://www.rbi.org.in/Scripts/bs_viewcontent.aspx?Id=5089"
+    },
+    {
+      "id": "SEBI-AI-ADVISORY-2026",
+      "instrument": "SEBI Advisory on Emerging Advanced AI Tools for Vulnerability Detection, 2026",
+      "short": "SEBI AI advisory",
+      "type": "Advisory",
+      "regulator": "Securities and Exchange Board of India",
+      "status": "guidance",
+      "aiSpecific": true,
+      "scope": "Advisory on AI-assisted vulnerability discovery and the security posture of regulated securities entities. Advisory, not a closure instrument.",
+      "sourceUrl": "https://www.sebi.gov.in/legal/circulars/may-2026/advisory-on-emerging-advanced-artificial-intelligence-ai-tools-for-vulnerability-detection_101270.html"
+    },
+    {
+      "id": "INDIA-AI-ACT-FORTHCOMING",
+      "instrument": "Standalone AI Act for India (forthcoming)",
+      "short": "AI Act",
+      "type": "Proposed legislation",
+      "regulator": "MeitY",
+      "status": "forthcoming",
+      "aiSpecific": true,
+      "scope": "No standalone AI Act is in force. The 2025 guidelines remain voluntary; a draft Bill has not been published.",
+      "sourceUrl": "https://www.meity.gov.in/"
+    }
+  ]
+}

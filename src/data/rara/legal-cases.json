@@ -1,0 +1,64 @@
+{
+  "version": "2026-11-02",
+  "note": "Indian judgments and orders with a direct bearing on AI, privacy, personality rights and copyright. Status distinguishes a final judgment from an interim order. An interim order is not a final holding, and a judgment is not a statute.",
+  "cases": [
+    {
+      "id": "PUTTASWAMY-2017",
+      "case": "Justice K.S. Puttaswamy (Retd.) v. Union of India",
+      "court": "Supreme Court of India",
+      "date": "2017-08-24",
+      "citation": "(2017) 10 SCC 1",
+      "status": "final",
+      "url": "https://api.sci.gov.in/supremecourt/2012/35071/35071_2012_Judgement_24-Aug-2017.pdf",
+      "sourceTitle": "Supreme Court of India, Writ Petition (Civil) No. 494 of 2012, judgment dated 24 August 2017",
+      "holding": "A nine-judge Bench held that privacy is an intrinsic part of Article 21 and the freedoms in Part III. State intrusion must satisfy legality, a legitimate aim and proportionality.",
+      "quote": "The right to privacy is protected as an intrinsic part of the right to life and personal liberty under Article 21 and as a part of the freedoms guaranteed by Part III of the Constitution.",
+      "quoteNote": "The official PDF splits “intrinsic” across a line; the quotation restores the word.",
+      "pinCite": "Conclusion, ¶ 2(iii)",
+      "topics": ["personal-data", "autonomy", "identity"]
+    },
+    {
+      "id": "AMITABH-BACHCHAN-2022",
+      "case": "Amitabh Bachchan v. Rajat Nagi & Ors.",
+      "court": "Delhi High Court",
+      "date": "2022-11-25",
+      "citation": "CS(COMM) 819/2022",
+      "status": "interim",
+      "url": "https://delhihighcourt.nic.in/app/showlogo/1669383973237_80487_2022.pdf/2022",
+      "sourceTitle": "Delhi High Court, CS(COMM) 819/2022, order dated 25 November 2022",
+      "holding": "An ex parte John Doe injunction restrained known and unknown defendants from using Bachchan's celebrity status, name and image. The order treated unauthorised commercial use as a prima facie violation of publicity rights.",
+      "quote": "It cannot seriously be disputed that the plaintiff is a well-known personality and is also represented in various advertisements. The plaintiff is aggrieved by the defendants' unauthorized use of his celebrity status to promote their own goods and services, without his permission or authorization.",
+      "pinCite": "¶ 20",
+      "topics": ["identity", "synthetic-media", "competition"]
+    },
+    {
+      "id": "ANIL-KAPOOR-2023",
+      "case": "Anil Kapoor v. Simply Life India & Ors.",
+      "court": "Delhi High Court",
+      "date": "2023-09-20",
+      "citation": "CS(COMM) 652/2023",
+      "status": "interim",
+      "url": "https://delhihighcourt.nic.in/app/showlogo/100025571715184881134_27822_6522023.pdf/2024",
+      "sourceTitle": "Delhi High Court, CS(COMM) 652/2023, order dated 30 April 2024, reproducing the injunction of 20 September 2023",
+      "holding": "The Court restrained the use of Kapoor's name, likeness, image, voice and persona, expressly including AI, machine learning, deep fakes, face morphing and GIFs. The 2024 order recorded a decree against several defendants.",
+      "quote": "Defendant Nos.1 to 16 or anyone acting for or on their behalf are restrained from utilizing the Plaintiff -Anil Kapoor’s name, likeness, image, voice, personality or any other aspects of his persona to create any merchandise, ringtones, ring back tones, or in any other manner misuse the said attributes using technological tools such as Artificial Intelligence, Machine Learning, deep fakes, face morphing, GIFs either for monetary gains or otherwise to create any videos, photographs, etc., for commercial purposes, so as to result in violation of the Plaintiff’s rights.",
+      "quoteNote": "The quoted direction is the 20 September 2023 injunction, reproduced in the 30 April 2024 order.",
+      "pinCite": "¶ 48 (20.09.2023 order)",
+      "topics": ["identity", "synthetic-media", "personal-data"]
+    },
+    {
+      "id": "ANI-OPENAI-2026",
+      "case": "ANI Media Pvt. Ltd. v. OpenAI OpCo LLC",
+      "court": "Delhi High Court",
+      "date": "2026-07-24",
+      "citation": "CS(COMM) 1028/2024; 2026:DHC:5900",
+      "status": "interim",
+      "url": "https://delhihighcourt.nic.in/app/showFileJudgment/ABL24072026SC10282024_171649.pdf",
+      "sourceTitle": "Delhi High Court, CS(COMM) 1028/2024, judgment dated 24 July 2026",
+      "holding": "The Court refused an interim injunction. Storing ANI's articles to train LLMs was prima facie fair dealing under s. 52(1)(a); the output and retrieval claims were left for trial.",
+      "quote": "Hence, in my prima facie view, Open AI’s acts of storage of the literary works of ANI for the training of its LLMs would fall under Section 52(1)(a) of the Copyright Act and hence, would not amount to infringement.",
+      "pinCite": "¶ 256",
+      "topics": ["ip", "synthetic-media", "competition"]
+    }
+  ]
+}

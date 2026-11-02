@@ -12032,7 +12032,222 @@ input[type='range'] {
   border-top: 1px solid var(--color-border);
 }
 
+/* The dedication is a footnote, not a banner: a single dagger at the title
+   opens the note for the reader who notices it. */
+.rara-dagger {
+  margin-left: 0.25rem;
+  font-family: var(--font-data);
+  font-size: 0.55em;
+  font-weight: 500;
+  vertical-align: super;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.rara-dagger:hover,
+.rara-dagger:focus-visible {
+  color: var(--color-accent-text);
+}
+
+.rara-dagger:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.rara-dedication {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-5);
+  max-width: 64ch;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--color-text-muted);
+  text-wrap: pretty;
+}
+
+.rara-dedication span {
+  margin-right: 0.3rem;
+  color: var(--color-accent-text);
+}
+
+/* The ledger is the completeness argument: every instrument is either quoted,
+   guidance, draft or forthcoming, and the status is visible before the count. */
+.rara-quote-note {
+  color: var(--color-text-muted);
+  font-size: 0.8125rem;
+}
+
+.rara-tracker-ledger {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-text);
+}
+
+.rara-tracker-ledger h2 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.rara-tracker-ledger-list {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.rara-tracker-ledger-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 11rem;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rara-tracker-ledger-list h3 {
+  margin: 2px 0 var(--space-1);
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.rara-tracker-ledger-list p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.rara-tracker-ledger-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  text-align: right;
+}
+
+.rara-tracker-ledger-status {
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.rara-tracker-ledger-status[data-status='binding'] {
+  color: var(--status-delivered-ink);
+}
+
+.rara-tracker-ledger-status[data-status='guidance'] {
+  color: var(--status-partial-ink);
+}
+
+.rara-tracker-ledger-status[data-status='draft'],
+.rara-tracker-ledger-status[data-status='process'] {
+  color: var(--status-announced-ink);
+}
+
+.rara-tracker-ledger-status[data-status='forthcoming'] {
+  color: var(--color-text-muted);
+}
+
+.rara-tracker-documents,
+.rara-tracker-cases {
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 2px solid var(--color-text);
+}
+
+.rara-tracker-documents h2,
+.rara-tracker-cases h2 {
+  margin: 0 0 var(--space-2);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+}
+
+.rara-tracker-document-list,
+.rara-tracker-case-list {
+  margin: var(--space-4) 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.rara-tracker-document-list li,
+.rara-tracker-case-list li {
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.rara-tracker-document-head,
+.rara-tracker-case-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.rara-tracker-document-head h3,
+.rara-tracker-case-head h3 {
+  margin: 2px 0 0;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.rara-tracker-document-status,
+.rara-tracker-case-status {
+  flex: none;
+  font-family: var(--font-data);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--color-text-muted);
+}
+
+.rara-tracker-document-status[data-status='guidance'] {
+  color: var(--status-partial-ink);
+}
+
+.rara-tracker-document-status[data-status='draft'],
+.rara-tracker-document-status[data-status='consultation'],
+.rara-tracker-document-status[data-status='process'] {
+  color: var(--status-announced-ink);
+}
+
+.rara-tracker-document-status[data-status='report'] {
+  color: var(--color-text-secondary);
+}
+
+.rara-tracker-case-status[data-status='final'] {
+  color: var(--status-delivered-ink);
+}
+
+.rara-tracker-case-status[data-status='interim'] {
+  color: var(--status-partial-ink);
+}
+
+.rara-tracker-document-relevance,
+.rara-tracker-case-holding {
+  margin: var(--space-2) 0 0;
+  max-width: 74ch;
+  color: var(--color-text-secondary);
+  text-wrap: pretty;
+}
+
 @media (max-width: 48rem) {
+  .rara-tracker-ledger-list li {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+
+  .rara-tracker-ledger-meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .rara-tracker-document-head,
+  .rara-tracker-case-head {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
   .rara-scan {
     padding: var(--space-4);
   }

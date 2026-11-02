@@ -1,7 +1,7 @@
 // RARA's development tracker.
 //
 // The page is a reading aid over two committed snapshots: a feed of AI
-// developments and a small corpus of exact legal excerpts. It does not decide
+// developments and the exact-text corpus. It does not decide
 // that a law applies. It answers a narrower, checkable question: does the
 // provision use the same words as the development, and does it carry a control?
 //
@@ -14,6 +14,9 @@ import DevelopmentMap from '../components/DevelopmentMap';
 import PageHead from '../components/PageHead';
 import DEVELOPMENTS from '../data/rara/developments.json';
 import LEGAL from '../data/rara/legal-texts.json';
+import INSTRUMENTS from '../data/rara/legal-instruments.json';
+import DOCUMENTS from '../data/rara/legal-documents.json';
+import CASES from '../data/rara/legal-cases.json';
 import {
   STATUS_LABEL,
   STATUS_NOTE,
@@ -36,6 +39,27 @@ const COVERAGE = {
   silent: 'No shared word',
 };
 
+const INSTRUMENT_STATUS = {
+  binding: 'Binding',
+  guidance: 'Guidance',
+  draft: 'Draft',
+  process: 'Process',
+  forthcoming: 'Forthcoming',
+};
+
+const DOCUMENT_STATUS = {
+  guidance: 'Guidance',
+  draft: 'Draft',
+  consultation: 'Consultation',
+  report: 'Report',
+  process: 'Process',
+};
+
+const CASE_STATUS = {
+  final: 'Final judgment',
+  interim: 'Interim order',
+};
+
 // When the Cloudflare store is configured at build time, the page reads the
 // newest collection from D1 and falls back to the committed snapshot without
 // saying so: a tracker that breaks when an API is down is worse than a tracker
@@ -43,6 +67,7 @@ const COVERAGE = {
 const LIVE_API = import.meta.env?.VITE_RARA_API || '';
 
 const publisherOf = (item) => item.publisher || item.sourceLabel;
+const displayDate = (value) => (value.length === 10 ? formatDay(value) : value);
 
 const Status = ({ status }) => (
   <span className="rara-status" data-status={status}>
@@ -53,6 +78,9 @@ const Status = ({ status }) => (
 const Quote = ({ provision }) => (
   <blockquote className="rara-tracker-quote">
     {provision.quote}
+    {provision.quoteNote ? (
+      <span className="rara-quote-note"> · {provision.quoteNote}</span>
+    ) : null}
     {provision.excerpt ? <span className="rara-excerpt"> · excerpt</span> : null}
   </blockquote>
 );
@@ -223,7 +251,20 @@ export default function RaraTracker() {
   }, [tracker.items, query, source, coverage, tier, order]);
 
   const nearestCount = tracker.items.filter((item) => !item.matches.length && item.nearest.length).length;
-  const instruments = useMemo(() => new Set(LEGAL.texts.map((text) => text.instrument)), []);
+  const instrumentRows = useMemo(
+    () => INSTRUMENTS.instruments.map((entry) => ({
+      ...entry,
+      quoted: LEGAL.texts.filter((text) => text.instrument === entry.instrument).length,
+    })),
+    [],
+  );
+  const bindingInstruments = instrumentRows.filter((entry) => entry.status === 'binding');
+  const bindingProvisionCount = LEGAL.texts.filter((text) =>
+    bindingInstruments.some((entry) => entry.instrument === text.instrument),
+  ).length;
+  const nonBindingInstruments = instrumentRows.length - bindingInstruments.length;
+  const documentCount = DOCUMENTS.documents.length;
+  const caseCount = CASES.cases.length;
   const primaryCount = tracker.items.filter((item) => item.tier === 'primary').length;
 
   return (
@@ -245,8 +286,13 @@ export default function RaraTracker() {
           <p className="overline">Snapshot</p>
           <p>
             {tracker.total} developments, {primaryCount} of them from primary sources,
-            read against {tracker.checked} provisions from {instruments.size} instruments.
-            Last collected {formatDay(feed.generatedAt)}. A scheduled run refreshes this
+            read against {tracker.checked} exact provisions, {bindingProvisionCount} of
+            them in {bindingInstruments.length} binding instruments. One enacted
+            e-commerce amendment is not yet in force. The ledger names{' '}
+            {nonBindingInstruments} guidance, draft, process or forthcoming instruments
+            that cannot close a gap. The record also carries{' '}
+            {documentCount} policy documents and {caseCount} judgments or orders. Last
+            collected {formatDay(feed.generatedAt)}. A scheduled run refreshes this
             every six hours; the page reads the newest collection when the store is
             configured, and the committed copy otherwise.
           </p>
@@ -341,10 +387,12 @@ export default function RaraTracker() {
       )}
 
       <section className="rara-tracker-legal" aria-labelledby="rara-tracker-legal-title">
-        <h2 id="rara-tracker-legal-title">The legal text it read</h2>
+        <h2 id="rara-tracker-legal-title">The exact text it read</h2>
         <p className="section-strap">
-          Exact excerpts from {instruments.size} instruments. The quote is the
-          evidence; the tracker never paraphrases a provision into a finding.
+          {LEGAL.texts.length} exact provisions; {bindingProvisionCount} sit in{' '}
+          {bindingInstruments.length} binding instruments. The e-commerce amendment is
+          enacted but commences on 1 January 2027. The quote is the evidence; the
+          tracker never paraphrases a provision into a finding.
         </p>
         <div className="rara-tracker-legal-grid">
           {[...new Set(LEGAL.texts.map((text) => text.instrument))].map((instrument) => {
@@ -382,6 +430,128 @@ export default function RaraTracker() {
         </div>
       </section>
 
+      <section className="rara-tracker-ledger" aria-labelledby="rara-tracker-ledger-title">
+        <h2 id="rara-tracker-ledger-title">The instrument ledger</h2>
+        <p className="section-strap">
+          Every instrument in scope is accounted for once. {bindingInstruments.length}{' '}
+          binding instruments carry exact provisions; {nonBindingInstruments} guidance,
+          draft, process or forthcoming instruments are named because they shape practice
+          but cannot close a gap. State law, tribunal orders and private standards sit
+          outside this ledger.
+        </p>
+        <ul className="rara-tracker-ledger-list">
+          {instrumentRows.map((entry) => (
+            <li key={entry.id}>
+              <div>
+                <p className="meta">{entry.type} · {entry.regulator}</p>
+                <h3>{entry.instrument}</h3>
+                <p>{entry.scope}</p>
+              </div>
+              <div className="rara-tracker-ledger-meta">
+                <span className="rara-tracker-ledger-status" data-status={entry.status}>
+                  {INSTRUMENT_STATUS[entry.status] || entry.status}
+                </span>
+                <span className="meta">
+                  {entry.quoted
+                    ? `${entry.quoted} provision${entry.quoted === 1 ? '' : 's'}`
+                    : 'Not quoted'}
+                </span>
+                <a
+                  className="rara-tracker-source"
+                  href={entry.sourceUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Source
+                </a>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="rara-tracker-documents" aria-labelledby="rara-tracker-documents-title">
+        <h2 id="rara-tracker-documents-title">The documents around the law</h2>
+        <p className="section-strap">
+          Official strategies, consultations, committee reports and draft instruments
+          that shape the field but are not binding law. Status is shown before the excerpt.
+        </p>
+        <ul className="rara-tracker-document-list">
+          {DOCUMENTS.documents.map((entry) => (
+            <li key={entry.id}>
+              <div className="rara-tracker-document-head">
+                <div>
+                  <p className="meta">
+                    {entry.type} · {entry.issuer} · {displayDate(entry.date)}
+                  </p>
+                  <h3>{entry.title}</h3>
+                </div>
+                <span className="rara-tracker-document-status" data-status={entry.status}>
+                  {DOCUMENT_STATUS[entry.status] || entry.status}
+                </span>
+              </div>
+              <blockquote className="rara-tracker-quote">
+                {entry.quote}
+                {entry.quoteNote ? (
+                  <span className="rara-quote-note"> · {entry.quoteNote}</span>
+                ) : null}
+              </blockquote>
+              <p className="rara-tracker-document-relevance">{entry.relevance}</p>
+              <a
+                className="rara-tracker-source"
+                href={entry.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read the document at {new URL(entry.url).hostname}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="rara-tracker-cases" aria-labelledby="rara-tracker-cases-title">
+        <h2 id="rara-tracker-cases-title">The cases the text has met</h2>
+        <p className="section-strap">
+          Final judgments and interim orders on privacy, personality rights, deepfakes
+          and AI training. An interim order is not a final holding; a judgment is not
+          a statute.
+        </p>
+        <ul className="rara-tracker-case-list">
+          {CASES.cases.map((entry) => (
+            <li key={entry.id}>
+              <div className="rara-tracker-case-head">
+                <div>
+                  <p className="meta">
+                    {entry.court} · {displayDate(entry.date)} · {entry.citation}
+                  </p>
+                  <h3>{entry.case}</h3>
+                </div>
+                <span className="rara-tracker-case-status" data-status={entry.status}>
+                  {CASE_STATUS[entry.status] || entry.status}
+                </span>
+              </div>
+              <p className="rara-tracker-case-holding">{entry.holding}</p>
+              <blockquote className="rara-tracker-quote">
+                {entry.quote}
+                <span className="rara-quote-note"> · {entry.pinCite}</span>
+                {entry.quoteNote ? (
+                  <span className="rara-quote-note"> · {entry.quoteNote}</span>
+                ) : null}
+              </blockquote>
+              <a
+                className="rara-tracker-source"
+                href={entry.url}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Read the order at {new URL(entry.url).hostname}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
       <section className="rara-tracker-sources" aria-labelledby="rara-tracker-sources-title">
         <h2 id="rara-tracker-sources-title">Sources in this snapshot</h2>
         <p className="section-strap">
@@ -409,10 +579,14 @@ export default function RaraTracker() {
         word-boundary match against the provision's exact text, and a fixed list
         of control markers. The first topic on a provision is its gate, so a
         data-protection provision does not match a development merely because
-        both say “security”. This is a reading aid, not legal advice, and the
-        corpus is deliberately small: {LEGAL.texts.length} provisions across{' '}
-        {instruments.size} instruments. Silence here means the corpus did not use
-        the development's words, not that no law applies.
+        both say “security”. This is a reading aid, not legal advice. The corpus is the central
+        AI-relevant stack, not a claim that every state rule is included:{' '}
+        {LEGAL.texts.length} exact provisions, {bindingProvisionCount} of them in{' '}
+        {bindingInstruments.length} binding instruments; one enacted e-commerce amendment
+        is not yet in force. Every instrument in scope is accounted for in the ledger
+        above. Silence here means the corpus did not use the development's words,
+        not that no law applies. The policy documents and cases are recorded
+        separately and are never counted as binding provisions.
       </p>
     </section>
   );

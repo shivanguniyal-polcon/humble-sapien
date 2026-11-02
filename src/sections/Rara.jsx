@@ -11,6 +11,9 @@ import PageHead from '../components/PageHead';
 import RARA from '../data/rara.json';
 import DEVELOPMENTS from '../data/rara/developments.json';
 import LEGAL from '../data/rara/legal-texts.json';
+import INSTRUMENTS from '../data/rara/legal-instruments.json';
+import DOCUMENTS from '../data/rara/legal-documents.json';
+import CASES from '../data/rara/legal-cases.json';
 import { runTriage } from '../lib/rara';
 
 const STATUS_LABEL = {
@@ -41,6 +44,17 @@ const EXAMPLES = [
     text: 'A differential privacy mechanism with an explainable model card and an independent fairness audit.',
   },
 ];
+
+const BINDING_INSTRUMENTS = INSTRUMENTS.instruments.filter(
+  (entry) => entry.status === 'binding',
+);
+const BINDING_INSTRUMENT_COUNT = BINDING_INSTRUMENTS.length;
+const BINDING_PROVISION_COUNT = LEGAL.texts.filter((text) =>
+  BINDING_INSTRUMENTS.some((entry) => entry.instrument === text.instrument),
+).length;
+const NON_BINDING_INSTRUMENT_COUNT = INSTRUMENTS.instruments.length - BINDING_INSTRUMENT_COUNT;
+const DOCUMENT_COUNT = DOCUMENTS.documents.length;
+const CASE_COUNT = CASES.cases.length;
 
 export default function Rara() {
   const [text, setText] = useState('');
@@ -84,7 +98,11 @@ export default function Rara() {
           <p className="overline">The live record</p>
           <p>
             {DEVELOPMENTS.items.length} AI developments, read against{' '}
-            {LEGAL.texts.length} exact provisions across six Indian instruments.
+            {BINDING_PROVISION_COUNT} exact provisions across {BINDING_INSTRUMENT_COUNT} binding
+            Indian instruments. One enacted e-commerce amendment commences in January
+            2027. {NON_BINDING_INSTRUMENT_COUNT} guidance, draft, process or forthcoming
+            instruments are named in the ledger. The tracker also carries{' '}
+            {DOCUMENT_COUNT} policy documents and {CASE_COUNT} judgments or orders.
             Each row shows the words the law uses — or the word it does not have.
           </p>
         </div>
@@ -100,7 +118,16 @@ export default function Rara() {
       <section className="rara-framework" aria-labelledby="rara-framework-title">
         <div className="rara-framework-copy">
           <p className="overline">The framework</p>
-          <h2 id="rara-framework-title">A design thesis, with a checkable floor.</h2>
+          <h2 id="rara-framework-title">
+            A design thesis, with a checkable floor.
+            <a
+              className="rara-dagger"
+              href="#rara-dedication"
+              aria-label="Read the dedication"
+            >
+              †
+            </a>
+          </h2>
           <p>
             RARA AI is a design thesis, not a shipped product: the AI layer will
             regulate, restrict, alert and formulate for safer AI, but only over
@@ -127,6 +154,12 @@ export default function Rara() {
           </div>
         </dl>
       </section>
+
+      <p className="rara-dedication" id="rara-dedication">
+        <span aria-hidden="true">†</span> For the first reader — the one who calls
+        the gap, the mistake and the threat before the file is opened. RARA was
+        built after watching them do it.
+      </p>
 
       <form className="rara-scan" onSubmit={onSubmit}>
         <label htmlFor="rara-text">The capability</label>

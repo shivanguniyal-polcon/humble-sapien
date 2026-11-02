@@ -449,8 +449,20 @@ def load_key() -> tuple[str | None, str | None]:
 def _post_json(url: str, payload: dict, headers: dict) -> dict:
     body = json.dumps(payload).encode("utf-8")
     req = urllib.request.Request(url, data=body, headers=headers, method="POST")
-    with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
-        return json.loads(resp.read().decode("utf-8"))
+    try:
+        with urllib.request.urlopen(req, timeout=HTTP_TIMEOUT) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as error:
+        # urllib drops the response body, which is where Groq explains a 403
+        # (blocked model, project permissions) and Google explains a bad key.
+        detail = error.read().decode("utf-8", "replace").strip()
+        try:
+            parsed = json.loads(detail)
+            message = parsed.get("error", {}).get("message") or detail
+        except (json.JSONDecodeError, AttributeError):
+            message = detail
+        message = message[:600] or str(error.reason)
+        raise RuntimeError(f"HTTP {error.code}: {message}") from error
 
 
 def call_llm(provider: str, key: str, prompt: str) -> str:

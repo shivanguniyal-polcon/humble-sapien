@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-11T06:20:36.400Z",
+  "generatedAt": "2026-11-11T12:20:35.853Z",
   "windowDays": 21,
   "complete": true,
   "failedSources": [],
@@ -18,7 +18,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:36.400Z",
+      "fetchedAt": "2026-11-11T12:20:35.853Z",
       "ok": true,
       "count": 6
     },
@@ -33,7 +33,7 @@
         "country": "United Kingdom",
         "iso": "GB"
       },
-      "fetchedAt": "2026-11-11T06:20:36.694Z",
+      "fetchedAt": "2026-11-11T12:20:36.087Z",
       "ok": true,
       "count": 6
     },
@@ -48,7 +48,7 @@
         "country": "France",
         "iso": "FR"
       },
-      "fetchedAt": "2026-11-11T06:20:36.903Z",
+      "fetchedAt": "2026-11-11T12:20:36.250Z",
       "ok": true,
       "count": 6
     },
@@ -59,7 +59,7 @@
       "type": "code",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:37.037Z",
+      "fetchedAt": "2026-11-11T12:20:36.387Z",
       "ok": true,
       "count": 10
     },
@@ -70,7 +70,7 @@
       "type": "code",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:40.014Z",
+      "fetchedAt": "2026-11-11T12:20:39.335Z",
       "ok": true,
       "count": 10
     },
@@ -85,7 +85,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:40.574Z",
+      "fetchedAt": "2026-11-11T12:20:39.964Z",
       "ok": true,
       "count": 6
     },
@@ -100,7 +100,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:41.382Z",
+      "fetchedAt": "2026-11-11T12:20:40.905Z",
       "ok": true,
       "count": 6
     },
@@ -115,7 +115,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:41.910Z",
+      "fetchedAt": "2026-11-11T12:20:41.380Z",
       "ok": true,
       "count": 6
     },
@@ -130,7 +130,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:42.314Z",
+      "fetchedAt": "2026-11-11T12:20:41.632Z",
       "ok": true,
       "count": 6
     },
@@ -145,7 +145,7 @@
         "country": "Canada",
         "iso": "CA"
       },
-      "fetchedAt": "2026-11-11T06:20:42.449Z",
+      "fetchedAt": "2026-11-11T12:20:41.701Z",
       "ok": true,
       "count": 1
     },
@@ -156,7 +156,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:43.233Z",
+      "fetchedAt": "2026-11-11T12:20:42.125Z",
       "ok": true,
       "count": 45
     },
@@ -167,7 +167,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:46.320Z",
+      "fetchedAt": "2026-11-11T12:20:45.170Z",
       "ok": true,
       "count": 25
     },
@@ -182,7 +182,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-11T06:20:49.309Z",
+      "fetchedAt": "2026-11-11T12:20:48.370Z",
       "ok": true,
       "count": 1
     },
@@ -197,7 +197,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-11T06:20:49.409Z",
+      "fetchedAt": "2026-11-11T12:20:48.457Z",
       "ok": true,
       "count": 4
     },
@@ -212,7 +212,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-11T06:20:51.127Z",
+      "fetchedAt": "2026-11-11T12:20:51.430Z",
       "ok": true,
       "count": 0
     },
@@ -227,7 +227,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-11T06:20:52.881Z",
+      "fetchedAt": "2026-11-11T12:20:52.967Z",
       "ok": true,
       "count": 12
     },
@@ -238,7 +238,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:53.011Z",
+      "fetchedAt": "2026-11-11T12:20:53.054Z",
       "ok": false,
       "count": 0,
       "error": "import-ai: HTTP 403"
@@ -250,7 +250,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:53.087Z",
+      "fetchedAt": "2026-11-11T12:20:53.117Z",
       "ok": true,
       "count": 12
     },
@@ -261,7 +261,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:53.207Z",
+      "fetchedAt": "2026-11-11T12:20:53.313Z",
       "ok": true,
       "count": 0
     },
@@ -276,7 +276,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-11T06:20:53.312Z",
+      "fetchedAt": "2026-11-11T12:20:53.418Z",
       "ok": true,
       "count": 10
     },
@@ -287,7 +287,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-11T06:20:53.579Z",
+      "fetchedAt": "2026-11-11T12:21:01.663Z",
       "ok": true,
       "count": 7
     }
@@ -311,7 +311,273 @@
       "categories": [],
       "id": "dev-f28f90d2895a",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
+    },
+    {
+      "title": "ls1intum/Artemis",
+      "summary": "Artemis - Interactive Learning with Automated Feedback Language: Java. 832 stars.",
+      "url": "https://github.com/ls1intum/Artemis",
+      "publishedAt": "2026-11-11T12:20:22.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "ls1intum",
+      "categories": [
+        "apollon",
+        "artificial-intelligence",
+        "assessment",
+        "autograding",
+        "automatic-feedback",
+        "computer-science"
+      ],
+      "id": "dev-608dc8f94efc",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "frontman-ai/frontman",
+      "summary": "The AI agent that lives in your framework/browser Language: ReScript. 723 stars.",
+      "url": "https://github.com/frontman-ai/frontman",
+      "publishedAt": "2026-11-11T12:13:07.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "frontman-ai",
+      "categories": [
+        "agent",
+        "ai",
+        "ai-agent",
+        "ai-coding",
+        "artificial-intelligence",
+        "astro"
+      ],
+      "id": "dev-62b0f00d0789",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "flwrlabs/flower",
+      "summary": "Flower: A Friendly Federated AI Framework Language: Python. 7,203 stars.",
+      "url": "https://github.com/flwrlabs/flower",
+      "publishedAt": "2026-11-11T12:10:48.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "flwrlabs",
+      "categories": [
+        "ai",
+        "android",
+        "artificial-intelligence",
+        "cpp",
+        "deep-learning",
+        "federated-analytics"
+      ],
+      "id": "dev-336a16e8fb4e",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "canyongbs/advisingapp",
+      "summary": "Advising App® by Canyon GBS® is an AI-powered conversational assistant for staff, student success platform, and recruitment CRM designed specifically for colleges and universities to enhance student engagement and drive institutional success. Language: PHP. 339 stars.",
+      "url": "https://github.com/canyongbs/advisingapp",
+      "publishedAt": "2026-11-11T12:08:40.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "canyongbs",
+      "categories": [
+        "artificial-intelligence",
+        "conversational-ai",
+        "crm",
+        "edtech",
+        "higher-education",
+        "recruitment-crm"
+      ],
+      "id": "dev-1f6b850bf3a9",
+      "topics": [
+        "children"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "thedotmack/claude-mem",
+      "summary": "Persistent Context Across Sessions for Every Agent –  Captures everything your agent does during sessions, compresses it with AI, and injects relevant context back into future sessions. Works with Claude Code, OpenClaw, Codex, Gemini, Hermes, Copilot, OpenCode + More Language: TypeScript. 116,038 stars.",
+      "url": "https://github.com/thedotmack/claude-mem",
+      "publishedAt": "2026-11-11T12:07:42.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "thedotmack",
+      "categories": [
+        "ai",
+        "ai-agents",
+        "ai-memory",
+        "anthropic",
+        "artificial-intelligence",
+        "chromadb"
+      ],
+      "id": "dev-b8da10635efb",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "OpenHands/OpenHands",
+      "summary": "🙌 OpenHands: AI-Driven Development Language: TypeScript. 93,207 stars.",
+      "url": "https://github.com/OpenHands/OpenHands",
+      "publishedAt": "2026-11-11T12:04:08.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "OpenHands",
+      "categories": [
+        "agent",
+        "artificial-intelligence",
+        "chatgpt",
+        "claude-ai",
+        "cli",
+        "developer-tools"
+      ],
+      "id": "dev-a44248e361e3",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "Significant-Gravitas/AutoGPT",
+      "summary": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters. Language: Python. 187,992 stars.",
+      "url": "https://github.com/Significant-Gravitas/AutoGPT",
+      "publishedAt": "2026-11-11T11:57:49.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "Significant-Gravitas",
+      "categories": [
+        "agentic-ai",
+        "agents",
+        "ai",
+        "artificial-intelligence",
+        "autonomous-agents",
+        "claude"
+      ],
+      "id": "dev-991cb8c74834",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "SyntheticAutonomicMind/CLIO",
+      "summary": "An AI-assisted coding agent that runs in your terminal and supports many providers and models. Language: Perl. 233 stars.",
+      "url": "https://github.com/SyntheticAutonomicMind/CLIO",
+      "publishedAt": "2026-11-11T11:50:53.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "SyntheticAutonomicMind",
+      "categories": [
+        "agentic-ai-development",
+        "ai",
+        "apple",
+        "artificial-intelligence",
+        "autonomous-agents",
+        "chat"
+      ],
+      "id": "dev-6eb489d26f06",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "nautechsystems/nautilus_trader",
+      "summary": "Production-grade Rust-native trading engine with deterministic event-driven architecture Language: Rust. 31,455 stars.",
+      "url": "https://github.com/nautechsystems/nautilus_trader",
+      "publishedAt": "2026-11-11T11:50:25.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "nautechsystems",
+      "categories": [
+        "algorithmic-trading-engine",
+        "artificial-intelligence",
+        "crypto-trading",
+        "equity-trading",
+        "forex",
+        "futures-trading"
+      ],
+      "id": "dev-a45254181f19",
+      "topics": [
+        "finance"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "spiceai/spiceai",
+      "summary": "Add a real-time analytics node to your operational database. Spice is a portable, accelerated SQL query, search, and LLM-inference engine in Rust for data-grounded AI apps and agents. Language: Rust. 3,143 stars.",
+      "url": "https://github.com/spiceai/spiceai",
+      "publishedAt": "2026-11-11T11:37:25.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "spiceai",
+      "categories": [
+        "artificial-intelligence",
+        "data",
+        "data-federation",
+        "developers",
+        "full-text-search",
+        "infrastructure"
+      ],
+      "id": "dev-1000256b3205",
+      "topics": [
+        "general-ai"
+      ],
+      "fetchedAt": "2026-11-11T12:20:39.335Z"
+    },
+    {
+      "title": "Experience the art and legacy of Dr. Esther Mahlangu",
+      "summary": "A new online archive of Esther Mahlangu’s life and art is now on Google Arts & Culture.",
+      "url": "https://blog.google/company-news/outreach-and-initiatives/arts-culture/esther-mahlangu",
+      "publishedAt": "2026-11-11T09:00:00.000Z",
+      "sourceId": "google-ai-blog",
+      "sourceLabel": "Google AI Blog",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Mountain View",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Arts & Culture",
+        "Google in Africa",
+        "AI"
+      ],
+      "id": "dev-14eef01dc0f4",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "ChatGPT Plus for veterans and servicemembers",
@@ -333,247 +599,56 @@
       ],
       "id": "dev-80b38ea7da37",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
     },
     {
-      "title": "vercel/ai",
-      "summary": "The AI Toolkit for TypeScript. From the creators of Next.js, the AI SDK is a free open-source library for building AI-powered applications and agents Language: TypeScript. 27,861 stars.",
-      "url": "https://github.com/vercel/ai",
-      "publishedAt": "2026-11-11T06:19:38.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "vercel",
+      "title": "Madras High Court flags fake, AI-generated books in public libraries, orders FIR",
+      "summary": "The Madras High Court has ruled that AI-generated and plagiarised books cannot be procured for public libraries and ordered an FIR into alleged fraudulent book purchases in Tamil Nadu The post Madras High Court flags fake, AI-generated books in public libraries, orders FIR appeared first on MEDIANAMA .",
+      "url": "https://www.medianama.com/2026/11/223-madras-high-court-ai-generated-books-fir",
+      "publishedAt": "2026-11-11T07:48:12.000Z",
+      "sourceId": "medianama-ai",
+      "sourceLabel": "Medianama · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "New Delhi",
+        "country": "India",
+        "iso": "IN"
+      },
+      "publisher": null,
       "categories": [
-        "anthropic",
-        "artificial-intelligence",
-        "gemini",
-        "generative-ai",
-        "generative-ui",
-        "javascript"
+        "News",
+        "Artificial Intelligence",
+        "books",
+        "FIR",
+        "Madras High Court"
       ],
-      "id": "dev-727e8b06665b",
+      "id": "dev-0ae6b047c3e5",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
-      "title": "thedotmack/claude-mem",
-      "summary": "Persistent Context Across Sessions for Every Agent –  Captures everything your agent does during sessions, compresses it with AI, and injects relevant context back into future sessions. Works with Claude Code, OpenClaw, Codex, Gemini, Hermes, Copilot, OpenCode + More Language: TypeScript. 115,924 stars.",
-      "url": "https://github.com/thedotmack/claude-mem",
-      "publishedAt": "2026-11-11T06:13:54.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "thedotmack",
+      "title": "Nvidia’s crisis has corporate governance experts reaching for the popcorn",
+      "summary": "The governance experts we talked to say nobody has seen anything like what's unfolding right now.",
+      "url": "https://techcrunch.com/2026/11/10/nvidias-crisis-has-corporate-governance-experts-reaching-for-the-popcorn",
+      "publishedAt": "2026-11-11T07:30:51.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
       "categories": [
-        "ai",
-        "ai-agents",
-        "ai-memory",
-        "anthropic",
-        "artificial-intelligence",
-        "chromadb"
+        "AI",
+        "TC"
       ],
-      "id": "dev-b8da10635efb",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "usestrix/strix",
-      "summary": "Open-source AI penetration testing tool to find and fix your app’s vulnerabilities. Language: Python. 74,900 stars.",
-      "url": "https://github.com/usestrix/strix",
-      "publishedAt": "2026-11-11T06:06:24.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "usestrix",
-      "categories": [
-        "agents",
-        "ai-hacking",
-        "ai-penetration-testing",
-        "ai-pentesting",
-        "ai-security",
-        "artificial-intelligence"
-      ],
-      "id": "dev-9d0f79dbc945",
+      "id": "dev-e28ff692f118",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "simstudioai/sim",
-      "summary": "Sim is the collaborative workspace to build, deploy, and monitor AI agents and workflows. Used by 100,000+ builders. Language: TypeScript. 30,117 stars.",
-      "url": "https://github.com/simstudioai/sim",
-      "publishedAt": "2026-11-11T06:03:06.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "simstudioai",
-      "categories": [
-        "agent-workflow",
-        "agentic-workflow",
-        "agents",
-        "ai",
-        "aiagents",
-        "anthropic"
-      ],
-      "id": "dev-f297ee04fbdf",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "OpenHands/OpenHands",
-      "summary": "🙌 OpenHands: AI-Driven Development Language: TypeScript. 93,176 stars.",
-      "url": "https://github.com/OpenHands/OpenHands",
-      "publishedAt": "2026-11-11T05:59:54.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "OpenHands",
-      "categories": [
-        "agent",
-        "artificial-intelligence",
-        "chatgpt",
-        "claude-ai",
-        "cli",
-        "developer-tools"
-      ],
-      "id": "dev-a44248e361e3",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "0xPlaygrounds/rig",
-      "summary": "⚙️🦀 Build modular and scalable LLM Applications in Rust Language: Rust. 9,112 stars.",
-      "url": "https://github.com/0xPlaygrounds/rig",
-      "publishedAt": "2026-11-11T05:58:51.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "0xPlaygrounds",
-      "categories": [
-        "agent",
-        "ai",
-        "artificial-intelligence",
-        "automation",
-        "generative-ai",
-        "large-language-model"
-      ],
-      "id": "dev-70ed01e3236d",
-      "topics": [
-        "general-ai"
-      ],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "caipe-io/ai-platform-engineering",
-      "summary": "CAIPE is an open-source AI platform for building, governing, and operating AI agents and agentic workflows for platform engineering and beyond. Language: TypeScript. 438 stars.",
-      "url": "https://github.com/caipe-io/ai-platform-engineering",
-      "publishedAt": "2026-11-11T05:38:20.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "caipe-io",
-      "categories": [
-        "agent-orchestration",
-        "agentic-ai",
-        "agentic-workflows",
-        "agents",
-        "ai",
-        "ai-agents"
-      ],
-      "id": "dev-e70aae55906f",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "lakehq/sail",
-      "summary": "Drop-in Apache Spark replacement written in Rust, unifying batch processing, stream processing, and compute-intensive AI workloads. Language: Rust. 3,497 stars.",
-      "url": "https://github.com/lakehq/sail",
-      "publishedAt": "2026-11-11T05:26:24.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "lakehq",
-      "categories": [
-        "apache-iceberg",
-        "apache-spark",
-        "arrow",
-        "artificial-intelligence",
-        "big-data",
-        "data-engineering"
-      ],
-      "id": "dev-bc8265937364",
-      "topics": [
-        "personal-data"
-      ],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "nautechsystems/nautilus_trader",
-      "summary": "Production-grade Rust-native trading engine with deterministic event-driven architecture Language: Rust. 31,447 stars.",
-      "url": "https://github.com/nautechsystems/nautilus_trader",
-      "publishedAt": "2026-11-11T05:25:54.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "nautechsystems",
-      "categories": [
-        "algorithmic-trading-engine",
-        "artificial-intelligence",
-        "crypto-trading",
-        "equity-trading",
-        "forex",
-        "futures-trading"
-      ],
-      "id": "dev-a45254181f19",
-      "topics": [
-        "finance"
-      ],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
-    },
-    {
-      "title": "marimo-team/marimo",
-      "summary": "A reactive notebook for Python — run reproducible experiments, query with SQL, execute as a script, deploy as an app, and version with git. Stored as pure Python. All in a modern, AI-native editor. Language: Python. 23,508 stars.",
-      "url": "https://github.com/marimo-team/marimo",
-      "publishedAt": "2026-11-11T05:10:21.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "marimo-team",
-      "categories": [
-        "artificial-intelligence",
-        "dag",
-        "data-science",
-        "data-visualization",
-        "dataflow",
-        "developer-tools"
-      ],
-      "id": "dev-ecba36cd9291",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.014Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
@@ -596,7 +671,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "How AI Helps Recyclers Turn Mixed Waste Into Reusable Material",
@@ -623,7 +698,7 @@
       ],
       "id": "dev-a3f9078912ac",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "OpenAI acquires Odessia, travel startup created by Sonder founder",
@@ -647,7 +722,7 @@
       ],
       "id": "dev-571fb0494bf3",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents",
@@ -672,7 +747,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "OpenAI, Anthropic face new oversight as New York’s AI safety law takes effect",
@@ -699,7 +774,7 @@
       ],
       "id": "dev-c012fc7ecd62",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "All 7 Anthropic founders will each cash out about $250M in IPO",
@@ -725,7 +800,7 @@
       "topics": [
         "competition"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "Oura to acquire AI-native primary care startup Counsel Health for $625M",
@@ -753,7 +828,7 @@
         "finance",
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "PSI is trying to make a business out of AI-driven scientific discovery",
@@ -777,7 +852,7 @@
       ],
       "id": "dev-6fcd75d626dd",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "Gemini Intelligence: New features, on more devices",
@@ -802,7 +877,7 @@
       ],
       "id": "dev-b73105fe4ec5",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "Medical Image Segmentation: Foundation Model Adaptation versus Task-Specific Training",
@@ -821,7 +896,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Toward Foundation Detection Models via Example-Based Grounding in EM-DETR",
@@ -841,7 +916,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "AutoScaffold: AI-Guided Scaffolding for Reinforcement Learning of Language Models",
@@ -859,7 +934,7 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Contrastive Discovery: Open-Ended Scientific Discovery over Competing Explanations",
@@ -878,7 +953,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Comparative Analysis of Agent Evaluation Frameworks: Stability, Detection, and Discovery in Enterprise Analytics Agents",
@@ -897,7 +972,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "OpenAI rolls out new business profiles, making ChatGPT just a little bit more like Google",
@@ -924,7 +999,7 @@
       "topics": [
         "consumer"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "ReTrace: Distilling Tool-Using Agents into Planner-Free Workflows",
@@ -943,7 +1018,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Re-Search: Dissecting LLM Ideation Through a Two-Player Questioning Game",
@@ -961,7 +1036,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Mechanistic Interpretability Needs a Logic of Inference",
@@ -977,7 +1052,7 @@
       "categories": [],
       "id": "dev-d31a92aff370",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Pterodactyl: Pushing the Limits of Efficient Automated Translation Evaluation",
@@ -995,7 +1070,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "FERN: Cross-Benchmark Table Retrieval for Text-to-SQL with Frozen Retrievers and Learned Ranking",
@@ -1014,7 +1089,7 @@
         "synthetic-media",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "When does text encoding matter for language modeling?",
@@ -1030,7 +1105,7 @@
       "categories": [],
       "id": "dev-bdc482fa793d",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "One Policy for 100 Household Tasks: Our Solution for the 2026 BEHAVIOR Challenge",
@@ -1046,7 +1121,7 @@
       "categories": [],
       "id": "dev-128f161620ef",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Two Communities, One Problem: Branch-and-Bound vs. A* for Resource-Constrained Project Scheduling",
@@ -1064,7 +1139,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Quantifying the Sampling Frequency Invariance of Time-Series Foundation Models for Sensor Data Applications",
@@ -1080,7 +1155,7 @@
       "categories": [],
       "id": "dev-aa0ce666a081",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Earlybird: Predictive Streaming Speech Recognition in 29M Parameters",
@@ -1098,7 +1173,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Evaluating LLM-Generated World Models for Neuro-Symbolic Reasoning",
@@ -1117,7 +1192,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Precision on Demand: Escalating Weight Bits at Uncertain Decoding Steps in a Small Local Model",
@@ -1133,7 +1208,7 @@
       "categories": [],
       "id": "dev-067c3e485e0f",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Bits or permutations? Spending a fixed inference budget on weight precision or on option-order averaging in small local language models",
@@ -1149,7 +1224,7 @@
       "categories": [],
       "id": "dev-2d999d4d641a",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Causal Concept Explanations for Deep Neural Models",
@@ -1167,7 +1242,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "REAL Loss: Optimizing Real Expected Acceptance Length for Speculative Decoding",
@@ -1185,7 +1260,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Blurring the Block Boundaries: Overlapping Block Denoising for Efficient Diffusion Language Models",
@@ -1201,7 +1276,7 @@
       "categories": [],
       "id": "dev-f52ece5624c3",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "An Energy-Based Perspective on Machine Learning",
@@ -1219,7 +1294,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Cognitive Mapping of Learning by Thinking Mechanisms in Large Language Models",
@@ -1237,7 +1312,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Anthropic launches Claude Meetings to turn workplace discussions into plans and tasks",
@@ -1262,7 +1337,7 @@
       ],
       "id": "dev-af7403b45639",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "ARE-bench: Benchmarking Agents' Research Ability in Real-World Researcher Sessions and Workspaces",
@@ -1280,7 +1355,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "EngineAgent: Agentizing On-Device LLM Inference Engines with Inference Stack Hierarchy Awareness and Hardware Abilities",
@@ -1299,7 +1374,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "CLADE: Category-Level Answering from Deficient Evidence in Retrieval-Augmented Language Models",
@@ -1315,7 +1390,7 @@
       "categories": [],
       "id": "dev-43212dce7adf",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Nvidia CEO Jensen Huang’s affair with alleged Chinese spy: a timeline",
@@ -1343,7 +1418,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "AI Isn't Getting Dumber, We're Getting Pickier: Rising Standards in Human Evaluation of Large Language Models",
@@ -1359,7 +1434,7 @@
       "categories": [],
       "id": "dev-72e79421abd7",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Forward-Value Discretization: Faster Stochastic Diffusion Sampling Without High-Order Approximation",
@@ -1375,7 +1450,7 @@
       "categories": [],
       "id": "dev-55bd3a18e338",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "When Should Agents Remember? Falsification-Gated Self-Evolution for LLM Agents",
@@ -1394,7 +1469,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Point-in-Time Encoders for Earnings Calls",
@@ -1410,7 +1485,7 @@
       "categories": [],
       "id": "dev-b870f3b7c281",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Don't Just Trust Your Memory: Evidence-Linked Memory Reduces Memory-Induced Degradation in LLM Agents",
@@ -1429,7 +1504,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Multimodal Abstention That Preserves Acquired Correct Answers",
@@ -1445,7 +1520,7 @@
       "categories": [],
       "id": "dev-2573490eaab4",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "MMDM: Measuring Massive Multitask Decision Making",
@@ -1461,7 +1536,7 @@
       "categories": [],
       "id": "dev-86be80d73c67",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Can AI be a 'Researcher Without Borders'? Auditing Bias in AI-Assisted Social Science Research about China and the US",
@@ -1477,7 +1552,7 @@
       "categories": [],
       "id": "dev-472b28418087",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "LM-SimBench: A Unified Framework, Dataset, and Benchmark for Large Language Model Training Simulation",
@@ -1497,7 +1572,7 @@
         "ip",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Ninety-Six Ways to Measure a Scribe: Fragmented Evaluation of Ambient Scribes in Healthcare",
@@ -1516,7 +1591,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Achieving Robust Channel Estimation Neural Networks on Doppler effects by Designed Training Data",
@@ -1535,7 +1610,7 @@
         "personal-data",
         "ip"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Recurrent Modular Structure in Spiking Neural Network Reinforcement Learning",
@@ -1553,7 +1628,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Lilo: A Multi-Agent Conversational Sandbox for Children's Digital Communication",
@@ -1572,7 +1647,7 @@
         "children",
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "A Cross-Scenario Survey and Analysis of Self-Evolving Multimodal Agents",
@@ -1590,7 +1665,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:43.233Z"
+      "fetchedAt": "2026-11-11T12:20:42.125Z"
     },
     {
       "title": "Gemini 4 Carbon is now available",
@@ -1610,7 +1685,7 @@
       "categories": [],
       "id": "dev-fc6b6a56df7b",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "NVIDIA Expands Open Source Commitment With OpenShell Donation and New AI Infrastructure",
@@ -1637,7 +1712,7 @@
       ],
       "id": "dev-405fdcad1ce1",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "Google broadens its AI hardware portfolio with two new specialized chips",
@@ -1667,7 +1742,7 @@
         "personal-data",
         "ip"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "Meta’s AI agent Muse lands on Apple Watch and Android Wear OS",
@@ -1695,7 +1770,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "Uneven Self-Reported AI Use: An Embedded Case Study Across Eleven Teams in a Software Organization",
@@ -1711,7 +1786,7 @@
       "categories": [],
       "id": "dev-1598a9e31baa",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Adobe brings AI agents and new creative tools to Photoshop, Premiere, and Firefly",
@@ -1737,35 +1812,7 @@
       ],
       "id": "dev-f9ddc69f8317",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
-    },
-    {
-      "title": "Anthropic sets IPO price range of $70 to $78 per share to reach an implied valuation of $1.404 trillion",
-      "summary": "The company could end up being worth a hefty $1.404 trillion if its shares list at the top of the price range, on a fully diluted basis.",
-      "url": "https://techcrunch.com/2026/11/10/anthropic-sets-ipo-price-range-of-70-to-78-per-share-to-reach-an-implied-valuation-of-1-404-trillion",
-      "publishedAt": "2026-11-10T14:01:39.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Anthropic",
-        "anthropic ipo",
-        "Claude",
-        "IPO"
-      ],
-      "id": "dev-9871791e1b1f",
-      "topics": [
-        "competition"
-      ],
-      "fetchedAt": "2026-11-11T06:20:52.881Z"
+      "fetchedAt": "2026-11-11T12:20:52.967Z"
     },
     {
       "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
@@ -1792,7 +1839,7 @@
       ],
       "id": "dev-66ed14c6418f",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "Google Cloud launches Gemini for healthcare.",
@@ -1817,7 +1864,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "Specify Privacy Yourself: Assessing Inference-Time Personalized Privacy Preservation Ability of Large Vision-Language Models",
@@ -1836,7 +1883,7 @@
         "personal-data",
         "finance"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Advancing a Global Framework for AI Safety and Governance for the Well-being of Humanity",
@@ -1855,7 +1902,7 @@
         "security",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
@@ -1875,7 +1922,7 @@
       "categories": [],
       "id": "dev-f8c1a7370c13",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "Helping caregivers use AI in everyday life",
@@ -1897,7 +1944,7 @@
       ],
       "id": "dev-46ecb159c153",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
     },
     {
       "title": "Explained: Australia weighs criminal offence for AI companies that fail to prevent harm from their models",
@@ -1926,7 +1973,7 @@
         "autonomy",
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "Transparency Disclosures for Chain-of-Thought Monitorability",
@@ -1942,7 +1989,7 @@
       "categories": [],
       "id": "dev-2283ce3c1c79",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Introducing Businesses in ChatGPT",
@@ -1964,7 +2011,7 @@
       ],
       "id": "dev-5ca4dc7b6d88",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
     },
     {
       "title": "Anthropic says ‘pacing, not pausing’ with Fable 5.2",
@@ -1982,7 +2029,7 @@
       ],
       "id": "dev-c6bb84fd5747",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "Closing the AI guidance gap in education",
@@ -2004,7 +2051,27 @@
       ],
       "id": "dev-01a8528fa117",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
+    },
+    {
+      "title": "Singapore Airlines elevates travel & work with OpenAI technology",
+      "summary": "Discover how Singapore Airlines uses OpenAI models and API to enhance customer support, travel discovery, and employee productivity, doubling CSAT for its Kris chatbot.",
+      "url": "https://openai.com/index/singapore-airlines-travel-work",
+      "publishedAt": "2026-11-10T08:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [],
+      "id": "dev-4e3e5904c85a",
+      "topics": [],
+      "fetchedAt": "2026-11-11T12:20:35.853Z"
     },
     {
       "title": "Cheap AI, Costly Breaches: Cybersecurity’s New Scaling Law - varindia",
@@ -2020,29 +2087,7 @@
       "categories": [],
       "id": "dev-c3e48b78b8b9",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
-    },
-    {
-      "title": "Work at the Frontier: AI’s effect on freelance work",
-      "summary": "New research from OpenAI and Upwork finds shifting demand for freelance work, new skill combinations, and larger budgets and more hours for AI-related projects.",
-      "url": "https://openai.com/index/ai-effect-on-freelance-work",
-      "publishedAt": "2026-11-10T07:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Company"
-      ],
-      "id": "dev-3588ceed4155",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.400Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "AAP’s AI videos of Rekha Gupta still on X four days after Delhi HC ordered their removal",
@@ -2069,7 +2114,7 @@
       ],
       "id": "dev-7a3909db4649",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "Perspicacious: An Educational Intelligence Platform for Instructional Designers",
@@ -2085,7 +2130,7 @@
       "categories": [],
       "id": "dev-fa9a0141c25a",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Repertoires of Contention: Building computational tools and infrastructures for community resistance to bitcoin mining",
@@ -2101,7 +2146,7 @@
       "categories": [],
       "id": "dev-7277f0248781",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "EJAI: Judgment-Preserving Civic AI for Data Center Environmental Justice",
@@ -2119,7 +2164,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Developing an Operational Model for an Internet of Data Based Trusted Data Space for Vocational Education",
@@ -2135,7 +2180,7 @@
       "categories": [],
       "id": "dev-dea052517115",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Inherited Weights: Measuring the Tokenization Premium and the Sovereignty Cost of Language Models for the Global South",
@@ -2151,7 +2196,7 @@
       "categories": [],
       "id": "dev-1f63b62863b6",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Pay for Hugging Face Hub with your Google Cloud Account",
@@ -2171,7 +2216,7 @@
       "categories": [],
       "id": "dev-724fae925148",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "Decision Models in Hugging Face",
@@ -2191,7 +2236,7 @@
       "categories": [],
       "id": "dev-3229de0d9192",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "Mapping Instructors' Attitudes Towards Cheating with AI: An Exploratory Analysis Using Forum Analysis",
@@ -2210,7 +2255,7 @@
         "synthetic-media",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Understanding Students' Rationales for AI-Mediated Cheating: An Instructor Perspective from Online Forums Analysis",
@@ -2226,7 +2271,7 @@
       "categories": [],
       "id": "dev-3ff6257590f7",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Measuring Definition Sensitivity in LLM Annotation of Social Science Concepts",
@@ -2245,7 +2290,7 @@
         "security",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Understanding Computing Instructors' Perceptions of Student Sense of Belonging",
@@ -2263,7 +2308,7 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Reliability of Claude Code as an Agentic AI Grading System for Handwritten University Exams",
@@ -2282,7 +2327,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Exploring the world's languages with Language Explorer",
@@ -2307,7 +2352,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     },
     {
       "title": "Gemini Robotics 2.5 accelerates real-world general dexterity",
@@ -2329,7 +2374,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "Auction of Government of India Dated Security",
@@ -2353,7 +2398,7 @@
         "consumer",
         "security"
       ],
-      "fetchedAt": "2026-11-11T06:20:49.309Z"
+      "fetchedAt": "2026-11-11T12:20:48.370Z"
     },
     {
       "title": "Curbside Chatbots: Auditing the Mental Health Interventions Large Language Models Recommend to Clinicians, Caregivers, and Patients",
@@ -2371,7 +2416,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Beyond Falsehoods 2026: Global Trends in the Regulation of Misinformation and Disinformation",
@@ -2389,7 +2434,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Regulating for rogue AI - Law.asia",
@@ -2405,7 +2450,7 @@
       "categories": [],
       "id": "dev-0eb6167419f2",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "A local language model layered with rule-based and neural detectors for clinical text de-identification: an open-source toolkit and evaluation",
@@ -2425,7 +2470,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Amazon builds its home robot team",
@@ -2445,7 +2490,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "Nemotron-Personas-Finance-Japan: A Synthetic Dataset Capturing Japan's Demographics and Financial Context",
@@ -2469,7 +2514,7 @@
         "personal-data",
         "finance"
       ],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "Practice Makes Precise: At CoRL, NVIDIA and Partners Reveal How Robots Rehearse Delicate Work in Simulation",
@@ -2498,7 +2543,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "Frontier AI Safety and Governance 2026: Risk Understanding and Coordinated Governance",
@@ -2514,7 +2559,7 @@
       "categories": [],
       "id": "dev-e886abf75061",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Do Machine Learning Models Predict?",
@@ -2532,7 +2577,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Hidden Distances: How Likert-Scale Spacing Shapes Algorithmic Voting Advice",
@@ -2550,7 +2595,7 @@
       "topics": [
         "elections"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Your Experts Have Partners. There's HOPE for Keeping Them Together",
@@ -2570,7 +2615,7 @@
       "categories": [],
       "id": "dev-7b1451fc786c",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "Trust, but verify, audit and attribute: a human-in-the-loop framework for checking AI-produced research results",
@@ -2588,7 +2633,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Meta launches tool on Muse to create custom interactive experiences",
@@ -2615,7 +2660,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "FraudBench: A Legal Evaluation of AI Deception",
@@ -2633,7 +2678,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "Jensen Huang admits affair amid spy claims",
@@ -2651,7 +2696,7 @@
       ],
       "id": "dev-8e66ef1c2851",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "Perils and opportunities of AI for public climate services",
@@ -2670,7 +2715,7 @@
         "synthetic-media",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:46.320Z"
+      "fetchedAt": "2026-11-11T12:20:45.170Z"
     },
     {
       "title": "NVIDIA Announces New Planned Investments in Korean Startups at the MSIT-NVIDIA AI Startup Partnership Forum",
@@ -2697,7 +2742,7 @@
       ],
       "id": "dev-6d49d7349281",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "Korea Advances Physical AI Across Industries With NVIDIA",
@@ -2726,7 +2771,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "Korea’s AI Ecosystem Advances and Secures Agentic AI With NVIDIA",
@@ -2755,7 +2800,7 @@
         "autonomy",
         "security"
       ],
-      "fetchedAt": "2026-11-11T06:20:42.314Z"
+      "fetchedAt": "2026-11-11T12:20:41.632Z"
     },
     {
       "title": "AI Watch: Funding, power and regulation reshape the global race - CNBC TV18",
@@ -2771,7 +2816,7 @@
       "categories": [],
       "id": "dev-677eadc0377d",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "Vaishnaw says India aims to become the world’s AI application capital - Indian Television Dot Com",
@@ -2787,7 +2832,7 @@
       "categories": [],
       "id": "dev-eb56f889300e",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "AI Sextortion and Deepfake Blackmail: Are Criminal Laws Ready for Digital Abuse? - Legal Service India",
@@ -2806,11 +2851,11 @@
         "identity",
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "tencent/Qwen3.8-27B-DSpine-b16",
-      "summary": "Pipeline: text-generation. 2,627 downloads. 170 likes. Tags: safetensors, qwen3, dspine, speculative-decoding, draft-model.",
+      "summary": "Pipeline: text-generation. 3,241 downloads. 171 likes. Tags: safetensors, qwen3, dspine, speculative-decoding, draft-model.",
       "url": "https://huggingface.co/tencent/Qwen3.8-27B-DSpine-b16",
       "publishedAt": "2026-11-07T14:20:29.000Z",
       "sourceId": "huggingface-models",
@@ -2831,7 +2876,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "AI crossroads: regulation, talent and the rise of new innovation hubs - Fortune India",
@@ -2847,11 +2892,11 @@
       "categories": [],
       "id": "dev-93c8748dd092",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "NousResearch/Arete-27B",
-      "summary": "Pipeline: text-generation. 3,431 downloads. 411 likes. Tags: safetensors, qwen3_5, nous-research, arete, supervised-fine-tuning.",
+      "summary": "Pipeline: text-generation. 4,023 downloads. 418 likes. Tags: safetensors, qwen3_5, nous-research, arete, supervised-fine-tuning.",
       "url": "https://huggingface.co/NousResearch/Arete-27B",
       "publishedAt": "2026-11-06T19:31:28.000Z",
       "sourceId": "huggingface-models",
@@ -2872,7 +2917,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "Big Tech sues to save the feed",
@@ -2890,7 +2935,7 @@
       ],
       "id": "dev-535dfbdaf8c3",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "ToyBlocks: A controlled world for robot learning and evaluation",
@@ -2912,7 +2957,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:36.903Z"
+      "fetchedAt": "2026-11-11T12:20:36.250Z"
     },
     {
       "title": "An inside look at Anthropic’s AI speedup",
@@ -2932,7 +2977,7 @@
       "topics": [
         "labour"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "Lowdown: CERT-In’s AI Security Auditing Guidelines set out tiered framework, human oversight & incident reporting",
@@ -2962,7 +3007,7 @@
         "personal-data",
         "security"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
@@ -2982,7 +3027,7 @@
       "categories": [],
       "id": "dev-003a6dd08e36",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "Gemini Omni 1.2 Flash: Fast and cost-effective with longer clips",
@@ -3008,7 +3053,7 @@
       "topics": [
         "competition"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "Detecting signs of hypertension using wearable sensors",
@@ -3033,7 +3078,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     },
     {
       "title": "Formally verifying agent-written full-stack web apps with PDD Kit",
@@ -3057,7 +3102,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "Agility’s $2.5B humanoid hits Nasdaq",
@@ -3077,7 +3122,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "CERT-In flags an AI threat actor targeting BFSI payment APIs for unauthorized fund transfers",
@@ -3105,7 +3150,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "What NPCI’s new technology subsidiary is set up to do",
@@ -3132,7 +3177,7 @@
       ],
       "id": "dev-72bfe647d4eb",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "Delhi HC passes interim order protecting Kriti Sanon’s personality rights",
@@ -3161,7 +3206,7 @@
       "topics": [
         "identity"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "AI agents can now make your phone calls",
@@ -3181,7 +3226,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "CSRI-NGRI: IIIT-H Director as Guest of Honour",
@@ -3205,7 +3250,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:49.409Z"
+      "fetchedAt": "2026-11-11T12:20:48.457Z"
     },
     {
       "title": "Agile Deliberation: How AI helps humans define the gray areas",
@@ -3230,7 +3275,7 @@
       ],
       "id": "dev-d8fa341b96c3",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     },
     {
       "title": "Google lets schools switch off Gemini, but AI in Search is all or nothing",
@@ -3259,11 +3304,11 @@
       "topics": [
         "children"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "meituan-longcat/LongCat-2.5",
-      "summary": "Pipeline: image-text-to-text. 195 downloads. 84 likes. Tags: safetensors, pro_v, multimodal, image-text-to-text, text-generation.",
+      "summary": "Pipeline: image-text-to-text. 490 downloads. 84 likes. Tags: safetensors, pro_v, multimodal, image-text-to-text, text-generation.",
       "url": "https://huggingface.co/meituan-longcat/LongCat-2.5",
       "publishedAt": "2026-11-04T11:48:50.000Z",
       "sourceId": "huggingface-models",
@@ -3284,7 +3329,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "Apple cracks the door open to Siri AI",
@@ -3302,7 +3347,7 @@
       ],
       "id": "dev-eb8a7d6d6a54",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "Interview: CERT-In chief on AI agent incidents, prompt injection and who must report them",
@@ -3331,7 +3376,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.418Z"
     },
     {
       "title": "IIIT‑H Projects Selected For NeurIPS 2026",
@@ -3355,7 +3400,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:49.409Z"
+      "fetchedAt": "2026-11-11T12:20:48.457Z"
     },
     {
       "title": "Learn the rules: The hacker mindset",
@@ -3377,7 +3422,7 @@
       ],
       "id": "dev-7f05432d1620",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "Agentic cheminformatics with Google Antigravity",
@@ -3399,7 +3444,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "Apple can't build enough iPhone Duos",
@@ -3417,7 +3462,7 @@
       ],
       "id": "dev-e3d0dac0210d",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "MIT shows AI improving AI, no training required",
@@ -3435,7 +3480,7 @@
       ],
       "id": "dev-73f4bef21fd3",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "The latest AI news we announced in October 2026",
@@ -3462,7 +3507,7 @@
       ],
       "id": "dev-1802721ebc5f",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:41.380Z"
     },
     {
       "title": "Meta builds its first humanoid robot",
@@ -3482,11 +3527,11 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "ISTA-DASLab/DeepSeek-V4.1-Flash-1017-GSQ-RCO-Coder-GGUF",
-      "summary": "Pipeline: image-text-to-text. Library: gguf. 309,064 downloads. 219 likes. Tags: gguf, text-generation, image-text-to-text, vision, gsq.",
+      "summary": "Pipeline: image-text-to-text. Library: gguf. 330,601 downloads. 221 likes. Tags: gguf, text-generation, image-text-to-text, vision, gsq.",
       "url": "https://huggingface.co/ISTA-DASLab/DeepSeek-V4.1-Flash-1017-GSQ-RCO-Coder-GGUF",
       "publishedAt": "2026-11-02T13:52:10.000Z",
       "sourceId": "huggingface-models",
@@ -3507,11 +3552,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "Scantist/GLM-5.3-SLIM-GGUF",
-      "summary": "Pipeline: text-generation. 11,066 downloads. 1,303 likes. Tags: gguf, llama.cpp, glm_moe_dsa, moe, neural-architecture-search.",
+      "summary": "Pipeline: text-generation. 13,488 downloads. 1,305 likes. Tags: gguf, llama.cpp, glm_moe_dsa, moe, neural-architecture-search.",
       "url": "https://huggingface.co/Scantist/GLM-5.3-SLIM-GGUF",
       "publishedAt": "2026-11-02T13:11:14.000Z",
       "sourceId": "huggingface-models",
@@ -3532,7 +3577,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "AI backlash heads to the polls",
@@ -3550,37 +3595,11 @@
       ],
       "id": "dev-45b684017aa1",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.087Z"
-    },
-    {
-      "title": "Telcos must answer for third-party AI failures under TRAI’s draft rules, as Anthropic flags unsettled AI liability",
-      "summary": "TRAI has proposed rules holding telecom operators accountable for AI systems, including those built by vendors. The draft mandates risk assessments, human oversight, incident reporting and supplier checks. The post Telcos must answer for third-party AI failures under TRAI’s draft rules, as Anthropic flags unsettled AI liability appeared first on MEDIANAMA .",
-      "url": "https://www.medianama.com/2026/11/223-telcos-third-party-trais-anthropic",
-      "publishedAt": "2026-11-02T07:20:39.000Z",
-      "sourceId": "medianama-ai",
-      "sourceLabel": "Medianama · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "New Delhi",
-        "country": "India",
-        "iso": "IN"
-      },
-      "publisher": null,
-      "categories": [
-        "News",
-        "Anthropic",
-        "Artificial Intelligence",
-        "Telcos",
-        "TRAI"
-      ],
-      "id": "dev-99264b8c11d9",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.312Z"
+      "fetchedAt": "2026-11-11T12:20:53.117Z"
     },
     {
       "title": "moonshotai/Kimi-K3.1-Pro",
-      "summary": "Pipeline: image-text-to-text. Library: transformers. 30,721 downloads. 1,878 likes. Tags: transformers, safetensors, kimi_k31, text-generation, compressed-tensors.",
+      "summary": "Pipeline: image-text-to-text. Library: transformers. 33,617 downloads. 1,897 likes. Tags: transformers, safetensors, kimi_k31, text-generation, compressed-tensors.",
       "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro",
       "publishedAt": "2026-11-02T04:13:51.000Z",
       "sourceId": "huggingface-models",
@@ -3601,11 +3620,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "ccore/Qwen3.5-4B-GLB-3D-Coder",
-      "summary": "Pipeline: text-generation. 43,008 downloads. 307 likes. Tags: safetensors, gguf, qwen3_5, code, threejs.",
+      "summary": "Pipeline: text-generation. 46,272 downloads. 307 likes. Tags: safetensors, gguf, qwen3_5, code, threejs.",
       "url": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder",
       "publishedAt": "2026-11-01T22:30:01.000Z",
       "sourceId": "huggingface-models",
@@ -3626,11 +3645,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "deep-principle/Hydrogen-1.0",
-      "summary": "Pipeline: text-generation. 34,152 downloads. 286 likes. Tags: safetensors, glm_moe_dsa, bf16, science, text-generation.",
+      "summary": "Pipeline: text-generation. 40,528 downloads. 287 likes. Tags: safetensors, glm_moe_dsa, bf16, science, text-generation.",
       "url": "https://huggingface.co/deep-principle/Hydrogen-1.0",
       "publishedAt": "2026-10-31T15:54:37.000Z",
       "sourceId": "huggingface-models",
@@ -3651,7 +3670,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "Guest Lecture – Dr. Brijesh Singh",
@@ -3673,7 +3692,7 @@
       ],
       "id": "dev-8c656e7d6a22",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:49.409Z"
+      "fetchedAt": "2026-11-11T12:20:48.457Z"
     },
     {
       "title": "IIIT-H wins Best Paper Award at IROS 2026",
@@ -3697,7 +3716,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-11T06:20:49.409Z"
+      "fetchedAt": "2026-11-11T12:20:48.457Z"
     },
     {
       "title": "Speeding up planning decisions with AI",
@@ -3717,7 +3736,7 @@
       "categories": [],
       "id": "dev-ea66f5a34808",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:36.694Z"
+      "fetchedAt": "2026-11-11T12:20:36.087Z"
     },
     {
       "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confidence",
@@ -3741,7 +3760,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "Microsoft Research Focus – Edition #97",
@@ -3763,7 +3782,7 @@
       ],
       "id": "dev-8eef8a1c6a51",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "Getting hired in AI: Navigating Canada’s evolving AI job market",
@@ -3789,11 +3808,11 @@
         "labour",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:42.449Z"
+      "fetchedAt": "2026-11-11T12:20:41.701Z"
     },
     {
       "title": "sensenova/SenseNova-Loop-9B-Preview",
-      "summary": "Pipeline: image-text-to-text. Library: transformers. 4,008 downloads. 288 likes. Tags: transformers, safetensors, sensenova_loop, text-generation, multimodal.",
+      "summary": "Pipeline: image-text-to-text. Library: transformers. 4,152 downloads. 289 likes. Tags: transformers, safetensors, sensenova_loop, text-generation, multimodal.",
       "url": "https://huggingface.co/sensenova/SenseNova-Loop-9B-Preview",
       "publishedAt": "2026-10-28T15:34:40.000Z",
       "sourceId": "huggingface-models",
@@ -3814,7 +3833,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
@@ -3839,35 +3858,11 @@
       ],
       "id": "dev-feb4caa835f1",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
-    },
-    {
-      "title": "Our newest AI Quest: Mapping the human brain",
-      "summary": "Learn AI literacy via Google’s latest AI Quests lesson on neuroscience, “Polar Peaks.”",
-      "url": "https://blog.google/products-and-platforms/products/education/ai-quests-polar-peaks",
-      "publishedAt": "2026-10-26T16:00:00.000Z",
-      "sourceId": "google-ai-blog",
-      "sourceLabel": "Google AI Blog",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Mountain View",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Learning & Education",
-        "Google Research",
-        "AI"
-      ],
-      "id": "dev-188e9fbc4643",
-      "topics": [],
-      "fetchedAt": "2026-11-11T06:20:41.910Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     },
     {
       "title": "LiquidAI/LFM3-1.7B",
-      "summary": "Pipeline: text-generation. Library: transformers. 82,718 downloads. 1,590 likes. Tags: transformers, safetensors, lfm3, text-generation, liquid.",
+      "summary": "Pipeline: text-generation. Library: transformers. 85,615 downloads. 1,591 likes. Tags: transformers, safetensors, lfm3, text-generation, liquid.",
       "url": "https://huggingface.co/LiquidAI/LFM3-1.7B",
       "publishedAt": "2026-10-23T21:35:42.000Z",
       "sourceId": "huggingface-models",
@@ -3888,7 +3883,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:37.037Z"
+      "fetchedAt": "2026-11-11T12:20:36.387Z"
     },
     {
       "title": "Bringing foundational models to the front lines of TB screening",
@@ -3914,7 +3909,7 @@
         "synthetic-media",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     },
     {
       "title": "India plans AI law, homegrown mobile phone brands by 2028 - BusinessLine",
@@ -3930,7 +3925,7 @@
       "categories": [],
       "id": "dev-f50862f29ec9",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:53.579Z"
+      "fetchedAt": "2026-11-11T12:21:01.663Z"
     },
     {
       "title": "Flint-interactive: A language for creating interactive data visualizations",
@@ -3952,7 +3947,7 @@
       ],
       "id": "dev-d5083253508c",
       "topics": [],
-      "fetchedAt": "2026-11-11T06:20:40.574Z"
+      "fetchedAt": "2026-11-11T12:20:39.964Z"
     },
     {
       "title": "Empowering frontline maternal care with AI-assisted ultrasound",
@@ -3977,7 +3972,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-11T06:20:41.382Z"
+      "fetchedAt": "2026-11-11T12:20:40.905Z"
     }
   ]
 }

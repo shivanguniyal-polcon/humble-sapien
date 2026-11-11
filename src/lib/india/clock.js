@@ -75,7 +75,15 @@ export function formatDay(date) {
 }
 
 export function formatStamp(date, locale = undefined) {
-  return date.toLocaleString(locale, { dateStyle: 'medium', timeStyle: 'short' });
+  // 24-hour time keeps the localised date free of Latin AM/PM markers.
+  return date.toLocaleString(locale, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  });
 }
 
 // The date a deadline falls, as a citizen reads it. A day deadline is read

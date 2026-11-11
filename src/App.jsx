@@ -27,6 +27,7 @@ const PitDesk = lazy(() => import('./sections/PitDesk'));
 const About = lazy(() => import('./sections/About'));
 const Support = lazy(() => import('./sections/Support'));
 const Licensing = lazy(() => import('./sections/Licensing'));
+const SamparkCSO = lazy(() => import('./sections/SamparkCSO'));
 
 // One fallback for every route: the shell stays on screen, the page body
 // arrives a moment later.
@@ -47,6 +48,7 @@ const TABS = [
   { id: 'home', label: 'Home' },
   { id: 'index', label: 'Index' },
   { id: 'work', label: 'Tools' },
+  { id: 'sampark', label: 'Sampark CSO' },
   { id: 'research', label: 'Research' },
   { id: 'data', label: 'Data' },
   { id: 'archive', label: 'Smriti — The Archive' },
@@ -68,6 +70,7 @@ const HASH_TO_TAB = {
   home: 'home',
   index: 'index',
   tools: 'work',
+  sampark: 'sampark',
   research: 'research',
   data: 'data',
   archive: 'archive',
@@ -287,6 +290,7 @@ export default function App() {
               onQueryChange={(q) => go('work', route.sub, q)}
             />
           )}
+          {route.tab === 'sampark' && <SamparkCSO onNavigate={go} />}
           {route.tab === 'data' && <Data onNavigate={go} openSub={route.sub} />}
           {route.tab === 'archive' && (
             <Archive
@@ -339,6 +343,7 @@ export default function App() {
           <nav className="footer-nav" aria-label="Footer">
             <button type="button" onClick={() => go('index')}>Index</button>
             <button type="button" onClick={() => go('work')}>Tools</button>
+            <button type="button" onClick={() => go('sampark')}>Sampark CSO</button>
             <button type="button" onClick={() => go('research')}>Research</button>
             <button type="button" onClick={() => go('archive')}>Smriti</button>
             <button type="button" onClick={() => go('compare')}>Atlas</button>

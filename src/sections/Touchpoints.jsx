@@ -3,10 +3,21 @@ import { policies } from '../data/policies';
 import { escalation } from '../data/escalation';
 import { SCHEMES, NAME_TRAPS } from '../data/schemes';
 import TouchpointLadder from '../components/TouchpointLadder';
+import SituationIndex from '../components/SituationIndex';
+import ContactRoutes from '../components/ContactRoutes';
+import Documents from '../components/Documents';
+import CsoHelp from '../components/CsoHelp';
 import Clock from '../components/Clock';
 import Sheet from '../components/Sheet';
 import PageHead from '../components/PageHead';
+import LanguagePicker from '../components/LanguagePicker';
+import SamparkDisclosure from '../components/SamparkDisclosure';
+import { SAMPARK_LOCALES, copyFor, fill } from '../data/samparkCopy';
 import { deadlineLines } from '../lib/india/letter';
+import { contactKey } from '../data/verification';
+import { verification, verificationText } from '../lib/verification';
+import { schemeContacts } from '../lib/contacts';
+import { carryItems } from '../lib/documents';
 
 // The map data is a quarter of a megabyte of state outlines. It is only
 // needed on this page, so it is loaded when the page is opened rather than
@@ -71,6 +82,14 @@ export default function Touchpoints({ query, onQueryChange }) {
   const [addressLevel, setAddressLevel] = useState('');
   const [copied, setCopied] = useState(null);
   const [policyId, setPolicyId] = useState(policies[0].id);
+  const [locale, setLocale] = useState(() =>
+    SAMPARK_LOCALES.some((entry) => entry.code === params.lang) ? params.lang : 'en'
+  );
+  const t = copyFor(locale);
+  const levelLabel = (value) => {
+    const key = `level${String(value).charAt(0).toUpperCase()}${String(value).slice(1).toLowerCase()}`;
+    return t[key] || value;
+  };
 
   const scheme = SCHEMES.find((s) => s.id === schemeId) || SCHEMES[0];
   const situation =
@@ -78,7 +97,7 @@ export default function Touchpoints({ query, onQueryChange }) {
 
   const writeLink = (next) => {
     if (!onQueryChange) return;
-    onQueryChange(buildQuery({ s: next.s, x: next.x, p: next.p }));
+    onQueryChange(buildQuery({ s: next.s, x: next.x, p: next.p, lang: next.lang ?? locale }));
   };
 
   const pickScheme = (id) => {
@@ -95,6 +114,21 @@ export default function Touchpoints({ query, onQueryChange }) {
   const pickSituation = (id) => {
     setSituationId(id);
     writeLink({ s: schemeId, x: id, p: placeRef.current });
+  };
+
+  // The problem-first index picks the scheme and the situation together, then
+  // puts the ladder under the reader's eye. Without the move, the click
+  // changes a section that may be a screen below the chip they pressed.
+  const openSituation = (nextSchemeId, nextSituationId) => {
+    const next = SCHEMES.find((s) => s.id === nextSchemeId);
+    if (!next) return;
+    setSchemeId(next.id);
+    setSituationId(nextSituationId);
+    setAddressLevel('');
+    if (policies.some((p) => p.id === next.id)) setPolicyId(next.id);
+    writeLink({ s: next.id, x: nextSituationId, p: placeRef.current });
+    const placeStep = document.getElementById('sampark-place');
+    if (placeStep) placeStep.scrollIntoView({ block: 'start' });
   };
 
   const pickPlace = (placeString) => {
@@ -148,73 +182,155 @@ export default function Touchpoints({ query, onQueryChange }) {
     place && Array.isArray(place.path) && place.path.length
       ? place.path[place.path.length - 1]
       : '';
+  const contactRoutes = schemeContacts(scheme.id);
+  const contactCount = contactRoutes
+    ? contactRoutes.channels.length + (contactRoutes.directory ? 1 : 0)
+    : 0;
+  const documentCount = carryItems(letterRung ? letterRung.carry : '').length + 3;
+  const deadlineCount = situation.clock ? situation.clock.deadlines.length : 0;
 
   // A link a relative can open, and a volunteer at a help desk can read.
   const share = async () => {
     const url = window.location.href;
     try {
       await navigator.clipboard.writeText(url);
-      setCopied('The link is on your clipboard. Send it on WhatsApp, or read the address out.');
+      setCopied(t.shareCopied);
     } catch {
-      setCopied(`Copy this address: ${url}`);
+      setCopied(fill(t.shareFallback, { url }));
     }
   };
 
   return (
-    <section>
-      <PageHead
-        eyebrow="Touchpoint maps"
-        title="Sampark"
-        question="Which office owes you the answer?"
-      >
-        Delivery fails at touchpoints, not at launch. Start where you are: pick
-        your State, walk down to your block or village, and the ladder beside the
-        map shows the office that owes you the answer at your own level, and the
-        route above it if they do not deliver. Or start from the scheme and
-        follow delivery step by step.
-      </PageHead>
+    <section className="sampark-page" lang={locale} dir={locale === 'ur' ? 'rtl' : 'ltr'}>
+      <div className="sampark-top">
+        <PageHead
+          eyebrow={t.eyebrow}
+          title={t.title}
+          scriptsFor="Sampark"
+          scriptsLabel={t.scriptSpecimenLabel}
+          question={t.question}
+        >
+          {t.guideLead}
+        </PageHead>
 
-      <div className="filter-row" role="group" aria-label="Choose scheme">
-        {SCHEMES.map((s) => (
-          <button
-            key={s.id}
-            className={`chip ${scheme.id === s.id ? 'chip-active' : ''}`}
-            onClick={() => pickScheme(s.id)}
-          >
-            {s.name}
-          </button>
-        ))}
+        {/* The language sits in the link, so a volunteer can send a page that
+            opens in the citizen's language without re-picking it. */}
+        <LanguagePicker
+          id="sampark-lang"
+          className="sampark-language"
+          labelClassName="meta sampark-language-label"
+          noteClassName="meta sampark-language-note"
+          label={t.languageLabel}
+          note={t.note}
+          locales={SAMPARK_LOCALES}
+          locale={locale}
+          onChange={(code) => {
+            setLocale(code);
+            writeLink({ s: schemeId, x: situationId, p: placeRef.current, lang: code });
+          }}
+        />
       </div>
 
-      <div className="card scheme-card">
-        <h3>{scheme.full}</h3>
-        <p className="scheme-what">{scheme.what}</p>
-        <p className="meta">
-          {scheme.ministry} ·{' '}
-          <a href={scheme.portal} target="_blank" rel="noreferrer noopener">
-            {scheme.portal.replace(/^https?:\/\//, '')}
-          </a>
-        </p>
-        <p className="scheme-note">{scheme.note}</p>
+      <p className="meta sampark-cso-affiliation">
+        <a href="#/sampark">{t.csoAffiliation}</a>
+      </p>
+
+      {/* A citizen arrives with a problem, not a place on a map. The guide
+          names the three actions before the page asks for anything, and the
+          situation comes before the place so the first question is one the
+          citizen can answer. */}
+      <section className="sampark-guide" aria-labelledby="sampark-guide-title">
+        <span className="overline">{t.guideEyebrow}</span>
+        <h2 id="sampark-guide-title">{t.guideTitle}</h2>
+        <ol className="sampark-guide-steps">
+          <li>{t.step2}</li>
+          <li>{t.step1}</li>
+          <li>{t.step6}</li>
+        </ol>
+        <p className="meta sampark-guide-promise">{t.guidePromise}</p>
+      </section>
+
+      <div id="sampark-situation">
+        <SituationIndex onPick={openSituation} step={1} t={t} />
       </div>
 
-      <div className="locator-ladder">
+      <div className="locator-ladder locator-map-only" id="sampark-place">
         <div className="locator-pane">
-          <h3 className="pane-title">1. Where are you?</h3>
+          <h3 className="pane-title">2. {t.step1}</h3>
           <Suspense
             fallback={
-              <p className="meta">Loading the map of India…</p>
+              <p className="meta">{t.mapLoading}</p>
             }
           >
             <IndiaLocator
               onChange={setPlace}
               place={params.p || ''}
               onPlaceChange={pickPlace}
+              t={t}
             />
           </Suspense>
         </div>
+      </div>
+
+      <SamparkDisclosure
+        className="sampark-scheme-fold"
+        title={`3. ${t.step3}`}
+        hint={fill(t.foldSchemeHint, { schemes: SCHEMES.length, routes: contactCount })}
+      >
+        <p className="section-strap sampark-copy">{t.chooseScheme}</p>
+
+        <div className="filter-row" role="group" aria-label={t.schemeGroup}>
+          {SCHEMES.map((s) => (
+            <button
+              key={s.id}
+              className={`chip ${scheme.id === s.id ? 'chip-active' : ''}`}
+              onClick={() => pickScheme(s.id)}
+            >
+              {s.name}
+            </button>
+          ))}
+        </div>
+
+        <div className="sampark-step-pair">
+          <div className="card scheme-card">
+            <h3>{scheme.full}</h3>
+            <p className="scheme-what">{scheme.what}</p>
+            <p className="meta">
+              {scheme.ministry} ·{' '}
+              <a href={scheme.portal} target="_blank" rel="noreferrer noopener">
+                {scheme.portal.replace(/^https?:\/\//, '')}
+              </a>
+            </p>
+            <p className="scheme-note">{scheme.note}</p>
+          </div>
+
+          <ContactRoutes schemeId={scheme.id} step={4} t={t} />
+        </div>
+      </SamparkDisclosure>
+
+      <SamparkDisclosure
+        className="sampark-documents-fold"
+        title={`5. ${t.step5}`}
+        hint={fill(t.foldDocumentsHint, { n: documentCount })}
+      >
+        <Documents
+          key={letterRung ? letterRung.level : 'none'}
+          rung={letterRung}
+          t={t}
+          showHeading={false}
+        />
+      </SamparkDisclosure>
+
+      <SamparkDisclosure
+        className="sampark-office-fold"
+        id="sampark-ladder"
+        title={t.ladder}
+        hint={fill(t.foldOfficeHint, {
+          offices: rungs.length,
+          deadlines: deadlineCount,
+        })}
+      >
         <div className="ladder-pane">
-          <h3 className="pane-title">2. Who decides?</h3>
           {place && place.note && <p className="pane-note">{place.note}</p>}
           <TouchpointLadder
             scheme={scheme}
@@ -224,93 +340,112 @@ export default function Touchpoints({ query, onQueryChange }) {
             addressedLevel={letterRung ? letterRung.level : null}
             onAddress={place ? setAddressLevel : undefined}
             onPickSituation={pickSituation}
+            t={t}
           />
           {situation.clock ? (
-            <Clock clock={situation.clock} dates={activeDates} onDate={setDate} />
+            <Clock
+              clock={situation.clock}
+              dates={activeDates}
+              onDate={setDate}
+              locale={locale}
+              t={t}
+            />
           ) : (
             <div className="clock-empty">
               <p className="meta">
-                {situation.clockGap || 'No deadline is recorded for this situation yet.'}
+                {situation.clockGap || t.clockNoDeadline}
               </p>
               <p className="meta">
-                The letter asks for a written reply; it does not claim a date this record cannot
-                support.
+                {t.clockNoDate}
               </p>
             </div>
           )}
         </div>
-      </div>
+      </SamparkDisclosure>
 
-      <div className="section-head section-head-tight">
-        <h3>3. The sheet to carry</h3>
-        <p className="section-strap">
-          One page: the office that owes you the answer, the office above it if
-          that one does not deliver, the dates the law sets, and a letter you
-          can hand over. Print it, or copy it into WhatsApp. No account, no
-          watermark, no expiry.
-        </p>
-      </div>
+      <SamparkDisclosure
+        className="sampark-sheet-fold"
+        title={`6. ${t.step6}`}
+        hint={fill(t.foldSheetHint, { n: rungs.length })}
+      >
+        <p className="section-strap">{t.step6Body}</p>
 
-      <div className="sheet-bar">
-        <button type="button" className="btn btn-secondary" onClick={share}>
-          Copy a link to this place
-        </button>
-        {copied && <p className="sheet-note meta">{copied}</p>}
-      </div>
-
-      <Sheet
-        scheme={scheme}
-        situation={situation}
-        place={place}
-        rung={letterRung}
-        rungs={rungs}
-        homeLevel={homeLevel}
-        escalated={escalated}
-        onAddress={setAddressLevel}
-        clock={situation.clock}
-        dates={activeDates}
-      />
-
-      {NAME_TRAPS.length > 0 && (
-        <div className="card traps-card">
-          <h4>Before you go</h4>
-          <p className="meta">
-            Names that get people sent to the wrong office, or to a scheme that
-            is not the one they mean.
-          </p>
-          <dl className="traps">
-            {NAME_TRAPS.map((t) => (
-              <div key={t.confusion} className="trap">
-                <dt>{t.confusion}</dt>
-                <dd>{t.truth}</dd>
-              </div>
-            ))}
-          </dl>
+        <div className="sheet-bar">
+          <button type="button" className="btn btn-secondary" onClick={share}>
+            {t.shareLink}
+          </button>
+          {copied && <p className="sheet-note meta">{copied}</p>}
         </div>
-      )}
+
+        <Sheet
+          scheme={scheme}
+          situation={situation}
+          place={place}
+          rung={letterRung}
+          rungs={rungs}
+          homeLevel={homeLevel}
+          escalated={escalated}
+          onAddress={setAddressLevel}
+          clock={situation.clock}
+          dates={activeDates}
+          locale={locale}
+          t={t}
+        />
+      </SamparkDisclosure>
+
+      <div className="sampark-tail-grid">
+        <SamparkDisclosure
+          className="sampark-help-fold"
+          title={`7. ${t.step7}`}
+          hint={fill(t.foldHelpHint, { n: 3 })}
+        >
+          <CsoHelp
+            scheme={scheme}
+            situation={situation}
+            place={place}
+            rung={letterRung}
+            clock={situation.clock}
+            dates={activeDates}
+            t={t}
+            showHeading={false}
+          />
+        </SamparkDisclosure>
+
+        {NAME_TRAPS.length > 0 && (
+          <SamparkDisclosure
+            className="sampark-traps-fold"
+            title={t.trapsTitle}
+            hint={fill(t.foldTrapsHint, { n: NAME_TRAPS.length })}
+          >
+            <div className="traps-card">
+              <p className="meta">{t.trapsLead}</p>
+              <p className="meta traps-note">{t.trapsNote}</p>
+              <dl className="traps">
+                {NAME_TRAPS.map((trap) => (
+                  <div key={trap.confusion} className="trap">
+                    <dt>{trap.confusion}</dt>
+                    <dd>{trap.truth}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          </SamparkDisclosure>
+        )}
+      </div>
 
       {/* The policy half of the page is a researcher's map. A citizen on a
           phone needs the ladder and the sheet first, so the maps wait behind
           one tap. */}
-      <details className="delivery-maps">
-        <summary>
-          <span className="delivery-maps-title">Delivery maps</span>
-          <span className="meta">Where policy delivery fails, and who to reach</span>
-        </summary>
+      <SamparkDisclosure
+        className="delivery-maps"
+        title={t.deliveryTitle}
+        hint={fill(t.foldDeliveryHint, { n: policies.length })}
+      >
 
-        <p className="section-strap">
-          For each policy, the steps delivery actually has, what to measure at
-          each one, the evidence so far, and when a step fails, exactly which
-          office to reach. The maps cover PM-JAY and Swachh Bharat Mission;
-          choosing PM-JAY above selects its map here, while SBM is reached from
-          the chips below.
-        </p>
-        <p className="meta delivery-maps-note">
-          State-specific numbers appear only for the State you picked. The
-          national route is shown for every State.
-        </p>
+        <p className="section-strap">{t.deliveryLead}</p>
+        <p className="meta delivery-maps-note">{t.deliveryNote}</p>
 
-        <div className="filter-row" role="group" aria-label="Choose policy">
+        <div className="filter-row" role="group" aria-label={t.policyGroup}>
           {policies.map((p) => (
             <button
               key={p.id}
@@ -336,37 +471,42 @@ export default function Touchpoints({ query, onQueryChange }) {
               <article key={policy.id} className="touchpoint-card">
                 <h3>{policy.name}</h3>
                 <p className="touchpoint-line">
-                  <strong>What to measure:</strong> {policy.strap}
+                  <strong>{t.measureLabel}</strong> {policy.strap}
                 </p>
-                {policy.touchpoints.map((t) => {
-                  const stepNo = t.name.split('.')[0];
+                {policy.touchpoints.map((touchpoint) => {
+                  const stepNo = touchpoint.name.split('.')[0];
                   const esc = dir.find((d) => d.touchpoint.split('.')[0] === stepNo);
+                  const dirIndex = dir.indexOf(esc);
                   return (
-                    <div key={t.name} className="touchpoint-step">
-                      <h4>{t.name}</h4>
+                    <div key={touchpoint.name} className="touchpoint-step">
+                      <h4>{touchpoint.name}</h4>
                       <p className="touchpoint-line">
-                        <strong>What to measure:</strong> {t.what}
+                        <strong>{t.measureLabel}</strong> {touchpoint.what}
                       </p>
                       <p className="evidence">
-                        <strong>Evidence:</strong> {t.evidence}
+                        <strong>{t.evidenceLabel}</strong> {touchpoint.evidence}
                       </p>
 
                       {esc && (
                         <div className="escalation">
-                          <h5>If it fails: who to reach</h5>
+                          <h5>{t.failureLabel}</h5>
                           {esc.steps.map((s, i) => {
                             const example = exampleFor(s);
+                            const check = verification(
+                              'contacts',
+                              contactKey(policy.id, dirIndex, i)
+                            );
                             return (
                               <div key={i} className="escalation-step">
                                 <div className="escalation-top">
-                                  <span className="chip chip-tag">{s.level}</span>
+                                  <span className="chip chip-tag">{levelLabel(s.level)}</span>
                                   <span
                                     className={`chip chip-tag ${s.verified ? '' : 'chip-locked'}`}
                                     title={s.source}
                                   >
                                     {s.verified
-                                      ? 'Verified on official page'
-                                      : 'Verify before relying'}
+                                      ? t.verifiedLabel
+                                      : t.verifyLabel}
                                   </span>
                                 </div>
                                 <p className="escalation-office">
@@ -380,7 +520,12 @@ export default function Touchpoints({ query, onQueryChange }) {
                                   </p>
                                 )}
                                 <p className="meta escalation-note">{s.note}</p>
-                                <p className="meta escalation-source">Source: {s.source}</p>
+                                <p className="meta escalation-source">
+                                  {t.sourceLabel} {s.source}
+                                </p>
+                                <p className={`meta escalation-verified verification verification-${check.state}`}>
+                                  {verificationText(t, check)}
+                                </p>
                               </div>
                             );
                           })}
@@ -393,7 +538,7 @@ export default function Touchpoints({ query, onQueryChange }) {
             );
           })()}
         </div>
-      </details>
+      </SamparkDisclosure>
     </section>
   );
 }

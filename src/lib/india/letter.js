@@ -36,7 +36,7 @@ const longDateHi = (iso) => {
 };
 
 // The deadline lines, with the date each one falls.
-export function deadlineLines(clock, dates, now = new Date()) {
+export function deadlineLines(clock, dates, now = new Date(), locale = undefined) {
   if (!clock || !clock.deadlines) return [];
   const out = [];
   for (const d of clock.deadlines) {
@@ -55,7 +55,7 @@ export function deadlineLines(clock, dates, now = new Date()) {
       unmet: d.unmet,
       clause: d.clause,
       doc: d.doc,
-      due: formatDue(due, d),
+      due: formatDue(due, d, locale),
       dueHi:
         d.hours && !d.days
           ? `${due.toLocaleDateString('hi-IN', {

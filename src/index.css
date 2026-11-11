@@ -1814,6 +1814,23 @@ table + .fine-print {
   font-size: 0.9rem;
 }
 
+/* The dated check behind a rung or a contact. A claim with no recorded date
+   says so plainly, because an undated claim is not a verified one. */
+.verification {
+  margin: 0.2rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.verification-due {
+  color: var(--color-accent-text);
+}
+
+.verification-stale {
+  color: var(--color-accent-text);
+  font-weight: 600;
+}
+
 .evidence {
   color: var(--color-text-secondary);
   border-inline-start: 3px solid var(--clay-200);
@@ -1971,6 +1988,467 @@ table + .fine-print {
 .solution-search input[type='search']:focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 1px;
+}
+
+/* The problem-first index: a citizen arrives with what happened, not with
+   the scheme's name, so the search sits above the scheme chips. */
+.situation-index {
+  margin-block: var(--space-4) var(--space-5);
+}
+
+/* The first-screen promise. It names the three actions and the two things a
+   nervous reader needs to know: help is allowed, and stopping is allowed. */
+.sampark-guide {
+  display: grid;
+  gap: var(--space-3);
+  margin-block: var(--space-5) var(--space-6);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+}
+
+.sampark-guide h2 {
+  max-width: 26ch;
+  margin: 0;
+  font-size: clamp(1.45rem, 2.6vw, 2.1rem);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.sampark-guide-steps {
+  counter-reset: sampark-guide;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(13rem, 100%), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sampark-guide-steps li {
+  counter-increment: sampark-guide;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-2);
+  align-items: baseline;
+  padding-block-start: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  font-weight: 600;
+}
+
+.sampark-guide-steps li::before {
+  content: counter(sampark-guide);
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--color-text-secondary);
+}
+
+.sampark-guide-promise {
+  max-width: 80ch;
+  margin: 0;
+  line-height: 1.6;
+}
+
+.sampark-page:not(:lang(en)) .sampark-guide h2,
+.sampark-page:not(:lang(en)) .sampark-guide-steps li,
+.sampark-page:not(:lang(en)) .sampark-guide-promise {
+  line-height: 1.65;
+}
+
+.sampark-page:lang(ur) .sampark-guide,
+.sampark-page:lang(ur) .sampark-guide h2,
+.sampark-page:lang(ur) .sampark-guide-steps,
+.sampark-page:lang(ur) .sampark-guide-promise {
+  direction: rtl;
+  text-align: right;
+}
+
+/* On a phone the guide must stay a signpost, not become a second page. Two
+   columns keep the three actions visible in two short rows; the prose drops
+   one step in size rather than pushing the actual problem index below the
+   fold. */
+@media (max-width: 560px) {
+  .sampark-guide {
+    gap: var(--space-2);
+    margin-block: var(--space-4) var(--space-5);
+    padding: var(--space-4);
+  }
+
+  .sampark-guide h2 {
+    font-size: 1.35rem;
+    line-height: 1.2;
+  }
+
+  .sampark-guide-steps {
+    grid-template-columns: repeat(auto-fit, minmax(min(8.5rem, 100%), 1fr));
+    gap: var(--space-2);
+  }
+
+  .sampark-guide-steps li {
+    padding-block-start: var(--space-2);
+    font-size: 0.95rem;
+  }
+
+  .sampark-guide-steps li::before {
+    font-size: 1.05rem;
+  }
+
+  .sampark-guide-promise {
+    font-size: 0.82rem;
+    line-height: 1.5;
+  }
+}
+
+.sampark-language {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin-block: 0 var(--space-5);
+}
+
+.sampark-language .sampark-cso-lang-picker {
+  direction: ltr;
+  width: auto;
+  min-width: 13rem;
+  max-width: 100%;
+  flex: 0 1 auto;
+}
+.sampark-language .sampark-cso-lang-button {
+  direction: ltr;
+  width: 100%;
+  height: 2.5rem;
+  padding: 0 0.7rem;
+}
+.sampark-language .sampark-cso-lang-listbox {
+  direction: ltr;
+  width: max-content;
+  min-width: 100%;
+  max-width: calc(100vw - 3rem);
+}
+
+/* The translated chrome is set in scripts whose ascenders and descenders are
+   taller than the Latin faces the type scale was drawn for. Nothing is clipped
+   at 1.2, but a Devanagari or Nastaliq line needs the extra leading to keep
+   the marks off the line above and below. */
+.sampark-page:not(:lang(en)) .page-head-question {
+  line-height: 1.55;
+}
+
+.sampark-page:not(:lang(en)) .pane-title,
+.sampark-page:not(:lang(en)) .section-head-tight h3,
+.sampark-page:not(:lang(en)) .documents h4 {
+  line-height: 1.5;
+}
+
+/* Urdu reads right to left. The translated chrome is flipped; the corpus,
+   office names, sources and the letter keep their own run. */
+.sampark-page:lang(ur) {
+  direction: rtl;
+}
+
+.sampark-page:lang(ur) .sheet-letter {
+  direction: ltr;
+  text-align: left;
+}
+
+.sampark-page:lang(ur) .page-head .overline,
+.sampark-page:lang(ur) .page-head-question,
+.sampark-page:lang(ur) .page-head .section-strap,
+.sampark-page:lang(ur) .sampark-language-label,
+.sampark-page:lang(ur) .sampark-language-note,
+.sampark-page:lang(ur) .pane-title,
+.sampark-page:lang(ur) .section-head-tight h3,
+.sampark-page:lang(ur) .sampark-copy,
+.sampark-page:lang(ur) .situation-index > .meta,
+.sampark-page:lang(ur) .situation-count,
+.sampark-page:lang(ur) .contact-routes .contact-directory,
+.sampark-page:lang(ur) .documents .doc-lead,
+.sampark-page:lang(ur) .documents .doc-caveat,
+.sampark-page:lang(ur) .documents h4,
+.sampark-page:lang(ur) .cso-consent span {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Nastaliq hangs below the baseline by more than the Latin faces do. The
+   prose keeps its normal size but gains enough leading that a descender from
+   one line cannot touch the line beneath it. */
+.sampark-page:lang(ur) .documents .doc-lead,
+.sampark-page:lang(ur) .documents .doc-caveat,
+.sampark-page:lang(ur) .sampark-copy,
+.sampark-page:lang(ur) .situation-index > .meta,
+.sampark-page:lang(ur) .sampark-language-note,
+.sampark-page:lang(ur) .cso-consent span {
+  line-height: 2.2;
+}
+
+/* A long agglutinated Kannada or Malayalam word can be wider than a phone
+   column. These are the translated blocks, so breaking inside a word is
+   better than letting the line run past the card. */
+.sampark-page .page-head .section-strap,
+.sampark-page .page-head-question,
+.sampark-page .pane-title,
+.sampark-page .section-head-tight h3,
+.sampark-page .sampark-copy,
+.sampark-page .cso-consent span {
+  overflow-wrap: break-word;
+}
+
+/* The picker row reads from the right in Urdu: label first, then the control
+   to its left. The control itself stays LTR so its option text is stable. */
+.sampark-page:lang(ur) .sampark-language {
+  direction: rtl;
+}
+
+/* The last Nastaliq line still hangs a pixel or two below the line box even
+   at 2.2 leading. A little bottom padding keeps the box around the ink. */
+.sampark-page:lang(ur) .page-head .section-strap,
+.sampark-page:lang(ur) .situation-index > .meta,
+.sampark-page:lang(ur) .documents .doc-lead,
+.sampark-page:lang(ur) .documents .doc-caveat,
+.sampark-page:lang(ur) .sampark-language-note,
+.sampark-page:lang(ur) .cso-consent span,
+.sampark-page:lang(ur) .contact-routes .contact-directory {
+  padding-block-end: 0.3em;
+}
+
+.sampark-page:lang(ur) .sampark-language-label {
+  padding-block-end: 0.3em;
+}
+
+.sampark-page:lang(ur) .doc-source,
+.sampark-page:lang(ur) .cso-fields label span,
+.sampark-page:lang(ur) .cso-reference,
+.sampark-page:lang(ur) .doc-enclosures li {
+  direction: rtl;
+  text-align: right;
+  line-height: 2.2;
+  padding-block-end: 0.3em;
+}
+
+.sampark-page:lang(ur) .cso-actions .btn {
+  direction: rtl;
+}
+
+.sampark-page:lang(ur) #situation-search {
+  direction: rtl;
+}
+
+/* The interface added for the map list, the ladder, the sheet and the clock
+   carries the same languages, so it follows the page's Urdu reading
+   direction. Corpus records and the letter keep their own run. */
+.sampark-page:lang(ur) .section-strap,
+.sampark-page:lang(ur) .locator-browse-title,
+.sampark-page:lang(ur) .locator-browse-summary .meta,
+.sampark-page:lang(ur) .locator-search-label,
+.sampark-page:lang(ur) .locator-group-title,
+.sampark-page:lang(ur) .locator-group-note,
+.sampark-page:lang(ur) .locator-caption,
+.sampark-page:lang(ur) .locator-picked h4,
+.sampark-page:lang(ur) .locator-item-meta,
+.sampark-page:lang(ur) .locator-codes-summary,
+.sampark-page:lang(ur) .locator-codes-head .meta,
+.sampark-page:lang(ur) .locator-codes-download,
+.sampark-page:lang(ur) .ladder-here,
+.sampark-page:lang(ur) .ladder-address,
+.sampark-page:lang(ur) .ladder-level,
+.sampark-page:lang(ur) .ladder-facts dt,
+.sampark-page:lang(ur) .clock-title,
+.sampark-page:lang(ur) .clock-count,
+.sampark-page:lang(ur) .sheet-actions,
+.sampark-page:lang(ur) .sheet-note,
+.sampark-page:lang(ur) .sheet-address > span,
+.sampark-page:lang(ur) .sheet-escalated,
+.sampark-page:lang(ur) .sheet-block > h4,
+.sampark-page:lang(ur) .sheet-facts dt,
+.sampark-page:lang(ur) .sheet-applicant label > span,
+.sampark-page:lang(ur) .sheet-applicant-note,
+.sampark-page:lang(ur) .sheet-receipt,
+.sampark-page:lang(ur) .sheet-lang-note,
+.sampark-page:lang(ur) .sheet-letter-head h4,
+.sampark-page:lang(ur) .cso-help > p,
+.sampark-page:lang(ur) .traps-card > h4,
+.sampark-page:lang(ur) .traps-card > .meta,
+.sampark-page:lang(ur) .delivery-maps > summary,
+.sampark-page:lang(ur) .delivery-maps > .section-strap,
+.sampark-page:lang(ur) .delivery-maps-note {
+  direction: rtl;
+  text-align: right;
+}
+
+.sampark-page:lang(ur) .cso-help > p,
+.sampark-page:lang(ur) .sheet-escalated,
+.sampark-page:lang(ur) .sheet-receipt,
+.sampark-page:lang(ur) .sheet-applicant-note,
+.sampark-page:lang(ur) .locator-caption,
+.sampark-page:lang(ur) .locator-group-note,
+.sampark-page:lang(ur) .delivery-maps > .section-strap,
+.sampark-page:lang(ur) .delivery-maps-note {
+  line-height: 2.2;
+  padding-block-end: 0.3em;
+}
+
+.sampark-language-note {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.situation-search {
+  margin-block: var(--space-3);
+}
+
+.situation-search input[type='search'] {
+  width: 100%;
+  max-width: 34rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.7rem 0.85rem;
+  font: inherit;
+  font-size: 1rem;
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.situation-search input[type='search']:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+
+.situation-count {
+  margin-block-start: var(--space-2);
+}
+
+/* The contact routes behind a scheme: the two links a citizen can use now,
+   and a note where no phone number is recorded yet. */
+.contact-routes {
+  margin-block: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.contact-routes .pane-title {
+  margin-block: 0 var(--space-2);
+}
+
+.contact-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contact-list li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 0.45rem;
+  align-items: baseline;
+}
+
+.contact-list a {
+  font-weight: 600;
+}
+
+.contact-gap {
+  margin-block: var(--space-3) 0;
+}
+
+/* The map takes the full width now that it is step 1, not the left half of
+   a two-column pane. The square drawing is capped so the map does not undo
+   the scroll saved by folding the list. */
+.locator-ladder.locator-map-only {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.locator-map-only .locator-svg {
+  max-height: 37.5rem;
+}
+
+/* Documents to carry, and the THS hand-off: both read as a step in the walk,
+   not as a card floating beside it. */
+.documents,
+.cso-help {
+  margin-block: var(--space-4);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.documents .pane-title,
+.cso-help .pane-title {
+  margin-block: 0 var(--space-2);
+}
+
+.doc-list {
+  display: grid;
+  gap: var(--space-2);
+  margin: var(--space-3) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.doc-list li {
+  display: flex;
+  gap: var(--space-2);
+  align-items: baseline;
+}
+
+.doc-list input[type='checkbox'] {
+  margin: 0;
+}
+
+.doc-source,
+.sheet-source,
+.escalation-reach {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.doc-source {
+  margin-block: var(--space-2) 0;
+}
+
+.cso-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-block: var(--space-3);
+}
+
+.cso-fields label {
+  display: grid;
+  gap: 0.25rem;
+  flex: 1 1 14rem;
+  min-width: 0;
+}
+
+.cso-fields input {
+  width: 100%;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 0.65rem;
+  font: inherit;
+}
+
+.cso-consent {
+  display: flex;
+  gap: var(--space-2);
+  align-items: flex-start;
+  margin-block: var(--space-3);
+}
+
+.cso-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
 }
 
 .solution-grid {
@@ -3036,6 +3514,201 @@ select:focus-visible {
   font-weight: 650;
   letter-spacing: 0.02em;
   color: var(--color-text-muted);
+}
+
+/* ---------- Sampark as an independent CSO ---------- */
+.sampark-cso-affiliation {
+  margin: 0 0 var(--space-5);
+  max-width: 72ch;
+}
+
+.sampark-cso-affiliation a {
+  color: var(--color-accent-text);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sampark-cso-page > section {
+  margin-top: var(--space-6);
+}
+
+.sampark-cso-page .card p:last-child,
+.sampark-cso-page .card ul:last-child {
+  margin-bottom: 0;
+}
+
+.sampark-cso-table td,
+.sampark-cso-table th[scope='row'] {
+  white-space: normal;
+  vertical-align: top;
+}
+
+.sampark-cso-table th[scope='row'] {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.sampark-cso-table caption {
+  caption-side: top;
+  text-align: start;
+  padding-bottom: var(--space-2);
+}
+
+.sampark-agent-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sampark-agent-head h3 {
+  margin: 0;
+}
+
+.sampark-agent-status {
+  white-space: nowrap;
+  font-size: 0.68rem;
+}
+
+.sampark-agent-gate {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.sampark-agent-trace {
+  margin-top: var(--space-5);
+}
+
+.sampark-agent-trace ol,
+.sampark-agent-rules,
+.sampark-cso-actions,
+.sampark-cso-sources {
+  margin: 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.65rem;
+  max-width: 72ch;
+}
+
+.sampark-cso-actions {
+  gap: 0.8rem;
+}
+
+.sampark-offer-panel {
+  margin-top: var(--space-4);
+}
+
+.sampark-offer-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.sampark-offer-head h3 {
+  margin: 0;
+}
+
+.sampark-offer-stage {
+  white-space: nowrap;
+  font-size: 0.68rem;
+}
+
+.sampark-offer-summary {
+  max-width: 76ch;
+}
+
+.sampark-offer-facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0 0;
+}
+
+.sampark-offer-facts > div {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+}
+
+.sampark-offer-facts dt {
+  font-family: var(--font-data);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-1);
+}
+
+.sampark-offer-facts dd {
+  margin: 0;
+  color: var(--color-text-secondary);
+}
+
+.sampark-offer-facts ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: grid;
+  gap: 0.3rem;
+}
+
+.sampark-offer-note {
+  margin-top: var(--space-4);
+}
+
+.sampark-offer-note p {
+  margin: 0 0 var(--space-2);
+}
+
+.sampark-offer-note p:last-child {
+  margin-bottom: 0;
+}
+
+.sampark-gap-claim {
+  margin-top: var(--space-4);
+}
+
+.sampark-gap-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.sampark-gap-stat {
+  padding-top: var(--space-3);
+}
+
+.sampark-gap-stat strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3.4vw, 2.1rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.sampark-gap-stat span {
+  display: block;
+  margin-top: var(--space-2);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  text-wrap: pretty;
+}
+
+@media (max-width: 48rem) {
+  .sampark-agent-head,
+  .sampark-offer-head {
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .sampark-offer-facts {
+    grid-template-columns: 1fr;
+  }
+
+  .sampark-gap-stats {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---------- footer ---------- */
@@ -8832,6 +9505,80 @@ input[type='range'] {
   color: var(--color-text-muted);
 }
 
+/* The long list of States, districts or blocks sits behind one tab, so the
+   map and the ladder below are reachable without scrolling past it. */
+.locator-browse,
+.sampark-fold {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.locator-browse-summary,
+.sampark-fold-summary {
+  scroll-margin-block-start: 6.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-1) var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: none;
+  border: none;
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+  list-style: none;
+}
+
+.locator-browse-summary::-webkit-details-marker,
+.sampark-fold-summary::-webkit-details-marker {
+  display: none;
+}
+
+.locator-browse-summary::before,
+.sampark-fold-summary::before {
+  content: '▸';
+  color: var(--clay-600);
+  font-size: 0.8rem;
+}
+
+.locator-browse-summary[aria-expanded='true']::before,
+.sampark-fold-summary[aria-expanded='true']::before {
+  content: '▾';
+}
+
+.locator-browse-title,
+.sampark-fold-title {
+  color: var(--clay-800);
+  font-weight: 600;
+}
+
+.locator-browse-body,
+.sampark-fold-body {
+  padding: 0 var(--space-4) var(--space-4);
+}
+
+.sampark-fold {
+  margin-block: var(--space-4);
+}
+
+.sampark-fold-summary {
+  gap: var(--space-1) var(--space-3);
+}
+
+.sampark-fold-hint {
+  line-height: 1.45;
+}
+
+.sampark-fold-body > :first-child {
+  margin-top: 0;
+}
+
+.sampark-fold-body > :last-child {
+  margin-bottom: 0;
+}
+
 .locator-side {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -8903,6 +9650,8 @@ input[type='range'] {
   gap: var(--space-3);
   width: 100%;
   text-align: left;
+  color: inherit;
+  text-decoration: none;
   background: var(--color-surface);
   border: none;
   padding: var(--space-2) var(--space-3);
@@ -9373,6 +10122,124 @@ input[type='range'] {
 .delivery-maps-note {
   margin: 0 0 var(--space-3);
   max-width: 46rem;
+}
+
+/* Sampark carries more than a reading column: a map, a scheme record, a
+   contact card and a case form. On a wide screen it takes the room the shell
+   can give it, and the step heads become a label-and-copy row instead of a
+   narrow block with empty paper to its right. Pairs keep the same reading
+   order on a phone, where they stack. */
+@media (min-width: 72rem) {
+  .shell:has(.sampark-page) {
+    max-width: 90rem;
+  }
+
+  .sampark-top {
+    display: grid;
+    grid-template-columns: minmax(0, 1.75fr) minmax(19rem, 0.75fr);
+    gap: var(--space-7);
+    align-items: start;
+  }
+
+  .sampark-top .page-head {
+    max-width: none;
+    margin-bottom: var(--space-5);
+  }
+
+  .sampark-top .page-head .section-strap {
+    max-width: none;
+  }
+
+  .sampark-top .sampark-language {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+    border-left: 1px solid var(--color-border);
+  }
+
+  .sampark-top .sampark-language .sampark-cso-lang-picker {
+    width: 100%;
+  }
+
+  .sampark-page > .section-head-tight {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.7fr) minmax(0, 1.6fr);
+    gap: var(--space-6);
+    max-width: none;
+    align-items: start;
+  }
+
+  .sampark-page > .section-head-tight h3 {
+    margin: 0;
+  }
+
+  .sampark-page > .section-head-tight .section-strap {
+    max-width: none;
+  }
+
+  .sampark-step-pair,
+  .sampark-tail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+    gap: var(--space-5);
+    align-items: start;
+    margin-block: 0 var(--space-5);
+  }
+
+  .sampark-step-pair > *,
+  .sampark-tail-grid > * {
+    margin-block: 0;
+  }
+
+  /* The document card has two halves: what to show at the counter, and what
+     to put in the envelope. They sit side by side once there is room. */
+  .sampark-page > .documents {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(20rem, 0.75fr);
+    column-gap: var(--space-6);
+    align-items: start;
+  }
+
+  .sampark-page > .documents > .pane-title {
+    grid-column: 1 / -1;
+  }
+
+  .sampark-page > .documents > .doc-lead,
+  .sampark-page > .documents > p.meta:not(.doc-source):not(.doc-caveat) {
+    grid-column: 1;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .sampark-page > .documents > .doc-list:not(.doc-enclosures) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .sampark-page > .documents > .doc-source {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .sampark-page > .documents > h4 {
+    grid-column: 2;
+    grid-row: 2;
+    margin-top: 0;
+  }
+
+  .sampark-page > .documents > .doc-enclosures {
+    grid-column: 2;
+    grid-row: 3;
+    margin-top: 0;
+  }
+
+  .sampark-page > .documents > .doc-caveat {
+    grid-column: 2;
+    grid-row: 4;
+    margin-top: 0;
+  }
 }
 
 .escalation-example {
@@ -13112,3 +13979,88 @@ input[type='range'] {
     transition: none;
   }
 }
+
+/* ---------- CSO language bar and right-to-left page ---------- */
+.sampark-cso-lang {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  margin: var(--space-3) 0 var(--space-4);
+}
+.sampark-cso-lang .meta { margin: 0; flex-basis: 100%; }
+.sampark-cso-lang-picker {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+}
+.sampark-cso-lang-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  box-sizing: border-box;
+  width: 100%;
+  height: 2.9375rem;
+  padding: 0 0.75rem;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.35;
+  text-align: start;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sampark-cso-lang-button:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 1px;
+}
+.sampark-cso-lang-chevron {
+  flex: none;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.sampark-cso-lang-listbox {
+  position: absolute;
+  inset-inline-start: 0;
+  top: calc(100% + 0.25rem);
+  z-index: 30;
+  width: 100%;
+  max-height: 17rem;
+  margin: 0;
+  padding: 0.25rem;
+  overflow-y: auto;
+  list-style: none;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: 0 14px 32px rgba(27, 24, 21, 0.18);
+}
+.sampark-cso-lang-option {
+  padding: 0.6rem 0.65rem;
+  border-radius: calc(var(--radius-md) - 2px);
+  font-size: 1rem;
+  line-height: 1.35;
+  text-align: start;
+  cursor: pointer;
+}
+.sampark-cso-lang-option[aria-selected='true'] {
+  background: color-mix(in srgb, var(--color-focus) 9%, var(--color-surface));
+  font-weight: 600;
+}
+.sampark-cso-lang-option:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: -2px;
+}
+.sampark-cso-page[dir='rtl'] .card,
+.sampark-cso-page[dir='rtl'] .section-head,
+.sampark-cso-page[dir='rtl'] .sampark-gap-stat,
+.sampark-cso-page[dir='rtl'] .data-table th,
+.sampark-cso-page[dir='rtl'] .data-table td { text-align: right; }
+.sampark-cso-page[dir='rtl'] .sampark-cso-actions,
+.sampark-cso-page[dir='rtl'] .card ul,
+.sampark-cso-page[dir='rtl'] .sampark-cso-sources { padding-right: 1.2rem; padding-left: 0; }
+.sampark-cso-page[dir='rtl'] .filter-row { justify-content: flex-start; }

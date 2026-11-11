@@ -2055,6 +2055,147 @@ export const SCHEMES = [
       },
     ],
   },
+  {
+    id: 'sbm',
+    name: 'Swachh Bharat (Grameen)',
+    full: 'Swachh Bharat Mission (Grameen)',
+    ministry: 'Ministry of Jal Shakti, Department of Drinking Water and Sanitation',
+    portal: 'https://swachhbharatmission.ddws.gov.in',
+    what: 'A household toilet and its incentive for rural households, delivered through the Gram Panchayat and verified up through the district and State mission.',
+    note: 'The mission publishes the office chain and its contact list, but no citizen-facing deadline. The delivery maps below already carry the SBM escalation route.',
+    situations: [
+      {
+        id: 'toilet',
+        label: 'My toilet was not built',
+        complaint: 'I applied for a household toilet under the mission and it has not been built.',
+        ask: 'I ask that my toilet be built, or that you tell me in writing why my household is not eligible.',
+        clockGap:
+          'The SBM-Gramin Phase-II guidelines set verification stages but no period from application to construction. The mission publishes no citizen-facing deadline, so none is claimed here.',
+        rungs: [
+          {
+            level: 'village',
+            office: 'Gram Panchayat',
+            post: 'Gram Panchayat Secretary and the village swachhata committee',
+            decides:
+              'Records the household, verifies eligibility and the toilet, and forwards the incentive claim. The mission places construction and verification at the Gram Panchayat.',
+            carry: 'Aadhaar, bank passbook, the toilet application or registration number',
+            where: 'The Gram Panchayat office in your village',
+            status: 'official',
+            source: 'swachhbharatmission.ddws.gov.in (SBM-Gramin Phase-II guidelines)',
+          },
+          {
+            level: 'block',
+            office: 'Block office',
+            post: 'Block Development Officer',
+            decides:
+              'Verifies the Gram Panchayat record and moves the claim forward. The mission names the BDO as the first escalation above the village.',
+            carry: 'The Gram Panchayat’s verification record',
+            where: 'The block panchayat office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in (SBM-Gramin Phase-II guidelines)',
+          },
+          {
+            level: 'district',
+            office: 'District Water and Sanitation Mission',
+            post: 'District Mission Coordinator or CEO, Zila Panchayat',
+            decides:
+              'Holds district verification and the release of the district share. The designation differs by State.',
+            carry: 'The block’s report and the application number',
+            where: 'The district panchayat or District Water and Sanitation Mission office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'state',
+            office: 'State SBM-Gramin mission',
+            post: 'State Mission Director',
+            decides:
+              'Runs the State share, the district approvals and the State grievance machinery. The State names the mission office.',
+            carry: 'The district’s reply, or the absence of one',
+            where: 'The State mission office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'national',
+            office: 'Department of Drinking Water and Sanitation',
+            post: 'Joint Secretary (Sanitation) and Mission Director, SBM-Gramin',
+            decides:
+              'Sets the national norms and monitoring, and publishes the mission contact list.',
+            carry: 'The State’s reply',
+            where: 'swachhbharatmission.ddws.gov.in',
+            status: 'official',
+            source: 'swachhbharatmission.ddws.gov.in/contact-us',
+          },
+        ],
+      },
+      {
+        id: 'unusable',
+        label: 'The toilet built is unusable',
+        complaint: 'The toilet built for my household is not usable: it has no water, or it is broken.',
+        ask: 'I ask that the toilet be repaired and made usable, and that you reply to me in writing.',
+        clockGap:
+          'The mission publishes use verification and ODF status as Gram Panchayat records, with no period for a repair. No deadline is claimed here.',
+        rungs: [
+          {
+            level: 'village',
+            office: 'Gram Panchayat',
+            post: 'Gram Panchayat Secretary and the village swachhagrahi',
+            decides:
+              'Keeps the use-verification record and the ODF declaration. Report the condition with photographs and the declaration date.',
+            carry: 'Photographs of the toilet, the ODF declaration date, the toilet registration number',
+            where: 'The Gram Panchayat office in your village',
+            status: 'official',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'block',
+            office: 'Block office',
+            post: 'Block Development Officer',
+            decides:
+              'Inspects the site and checks the Gram Panchayat record. The mission treats use verification as a village record, so ask for that record first.',
+            carry: 'The Gram Panchayat’s use-verification record',
+            where: 'The block panchayat office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'district',
+            office: 'District Water and Sanitation Mission',
+            post: 'District Mission Coordinator or CEO, Zila Panchayat',
+            decides:
+              'Reviews slippage from ODF status and the district repair or rebuilding record.',
+            carry: 'The block’s inspection note',
+            where: 'The district panchayat or District Water and Sanitation Mission office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'state',
+            office: 'State SBM-Gramin mission',
+            post: 'State Mission Director',
+            decides:
+              'Holds the State ODF sustainability review and the State grievance machinery.',
+            carry: 'The district’s reply',
+            where: 'The State mission office',
+            status: 'varies',
+            source: 'swachhbharatmission.ddws.gov.in',
+          },
+          {
+            level: 'national',
+            office: 'Department of Drinking Water and Sanitation',
+            post: 'Joint Secretary (Sanitation) and Mission Director, SBM-Gramin',
+            decides:
+              'Sets the national ODF sustainability norms and publishes the mission contact list.',
+            carry: 'The State’s reply',
+            where: 'swachhbharatmission.ddws.gov.in',
+            status: 'official',
+            source: 'swachhbharatmission.ddws.gov.in/contact-us',
+          },
+        ],
+      },
+    ],
+  },
 ];
 
 // The scheme a citizen starts from is not always a central scheme, and the

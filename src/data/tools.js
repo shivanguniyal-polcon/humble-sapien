@@ -6,11 +6,13 @@
 // it. `label` is the plain-English category, kept visible so a first-time
 // reader is not asked to guess what a Sanskrit name does.
 //
-// `scripts` is the name carried into eight Indian scripts, in this order:
-// Devanagari, Bengali, Gujarati, Tamil, Telugu, Kannada, Malayalam, Urdu. It
-// is a specimen, not a translation claim: where a language has its own word
-// for the idea (Tamil கணக்கு, Malayalam കണക്ക്), that word is used; otherwise
-// the name is transliterated.
+// `scripts` is the name carried into the scripts the site serves, in this
+// order: Devanagari, Bengali, Gujarati, Tamil, Telugu, Kannada, Malayalam,
+// Urdu. It is a specimen, not a translation claim: where a language
+// has its own word for the idea (Tamil கணக்கு, Malayalam കണക്ക്), that word is
+// used; otherwise the name is transliterated.
+
+import { SAMPARK_SCRIPTS } from './samparkScripts.js';
 
 export const TOOLS = [
   {
@@ -88,20 +90,11 @@ export const TOOLS = [
   {
     id: 'touchpoints',
     name: 'Sampark',
-    label: 'Touchpoint maps',
+    label: 'Citizen access CSO',
     question: 'Which office owes you the answer?',
-    blurb: 'Follow a scheme from eligibility to grievance redressal, with the escalation route at every step.',
-    how: 'Walk down the map to your village for the office that owes you an answer, or start from the scheme and follow delivery step by step.',
-    scripts: [
-      ['hi', 'संपर्क'],
-      ['bn', 'সম্পর্ক'],
-      ['gu', 'સંપર્ક'],
-      ['ta', 'தொடர்பு'],
-      ['te', 'సంపర్కం'],
-      ['kn', 'ಸಂಪರ್ಕ'],
-      ['ml', 'സമ്പർക്കം'],
-      ['ur', 'رابطہ'],
-    ],
+    blurb: 'An independent CSO affiliated with THS. It turns a problem into the office that owes an answer, the papers to carry, a letter to hand over and the next rung. Automation prepares the case; a person decides.',
+    how: 'Start with what happened, use the map only when it helps, and leave with the sheet, the letter and the next step. A relative or CSC staff member can drive the same link.',
+    scripts: SAMPARK_SCRIPTS,
   },
   {
     id: 'simplifier',

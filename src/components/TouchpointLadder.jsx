@@ -1,4 +1,7 @@
 import { RUNG_STATUS, LEVELS } from '../data/schemes';
+import { rungKey } from '../data/verification';
+import { verification, verificationText } from '../lib/verification';
+import { copyFor } from '../data/samparkCopy';
 
 // The ladder, drawn.
 //
@@ -18,6 +21,7 @@ export default function TouchpointLadder({
   addressedLevel,
   onAddress,
   onPickSituation,
+  t = copyFor('en'),
 }) {
   if (!scheme) return null;
   const current = situation || scheme.situations[0];
@@ -25,11 +29,13 @@ export default function TouchpointLadder({
 
   const levelIndex = Object.fromEntries(LEVELS.map((l, i) => [l.id, i]));
   const pinnedIndex = rung ? levelIndex[rung] : -1;
+  const levelName = (id) =>
+    t[`level${id.charAt(0).toUpperCase()}${id.slice(1)}`] || id;
 
   return (
     <div className="ladder">
       {scheme.situations.length > 1 && (
-        <div className="filter-row" role="group" aria-label="Choose what you need">
+        <div className="filter-row" role="group" aria-label={t.ladderChooseNeed}>
           {scheme.situations.map((s) => (
             <button
               key={s.id}
@@ -48,15 +54,21 @@ export default function TouchpointLadder({
           const isYours = idx === pinnedIndex;
           const isAbove = pinnedIndex >= 0 && idx > pinnedIndex;
           const status = RUNG_STATUS[r.status];
+          const statusKey = r.status
+            ? `rung${r.status.charAt(0).toUpperCase()}${r.status.slice(1)}`
+            : '';
+          const check = verification('rungs', rungKey(scheme.id, current.id, r.level));
           return (
             <li
               key={`${r.level}-${r.office}`}
               className={`ladder-rung ${isYours ? 'is-yours' : ''} ${isAbove ? 'is-above' : ''}`}
             >
               <div className="ladder-rung-head">
-                <span className="ladder-level">{r.level}</span>
+                <span className="ladder-level">{levelName(r.level)}</span>
                 {isYours && (
-                  <span className="ladder-here">your rung{placeLabel ? ` · ${placeLabel}` : ''}</span>
+                  <span className="ladder-here">
+                    {t.ladderYourRung}{placeLabel ? ` · ${placeLabel}` : ''}
+                  </span>
                 )}
                 {onAddress && (
                   <button
@@ -65,22 +77,25 @@ export default function TouchpointLadder({
                     aria-pressed={addressedLevel === r.level}
                     onClick={() => onAddress(r.level)}
                   >
-                    {addressedLevel === r.level ? 'The letter goes here' : 'Address the letter here'}
+                    {addressedLevel === r.level ? t.ladderLetterGoesHere : t.ladderAddressHere}
                   </button>
                 )}
               </div>
 
               <h4 className="ladder-office">{r.office}</h4>
               <p className="ladder-post">{r.post}</p>
-              <p className="ladder-decides">{r.decides}</p>
+              <p className="ladder-decides">
+                <span className="meta">{t.rungDecisionLabel}: </span>
+                {r.decides}
+              </p>
 
               <dl className="ladder-facts">
                 <div>
-                  <dt>Where</dt>
+                  <dt>{t.ladderWhere}</dt>
                   <dd>{r.where}</dd>
                 </div>
                 <div>
-                  <dt>Carry</dt>
+                  <dt>{t.ladderCarry}</dt>
                   <dd>{r.carry}</dd>
                 </div>
               </dl>
@@ -88,11 +103,15 @@ export default function TouchpointLadder({
               <p className="ladder-source">
                 <span
                   className={`chip chip-tag ladder-status ladder-status-${r.status}`}
-                  title={status ? status.detail : ''}
+                  title={statusKey ? t[`${statusKey}Detail`] : ''}
                 >
-                  {status ? status.label : r.status}
+                  {statusKey ? t[`${statusKey}Label`] : status ? status.label : r.status}
                 </span>
                 <span className="meta">{r.source}</span>
+              </p>
+
+              <p className={`meta verification verification-${check.state}`}>
+                {verificationText(t, check)}
               </p>
             </li>
           );

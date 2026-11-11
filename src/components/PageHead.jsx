@@ -20,12 +20,14 @@ export default function PageHead({
   children,
   tight = false,
   className = '',
+  scriptsFor,
+  scriptsLabel,
 }) {
   const titleRef = useRef(null);
   // A tool's page prints its name in Indian scripts under the Latin title. The
   // data lives on the tool, so this lookup keeps every instrument covered and
   // saves each page from carrying the same eight strings.
-  const scripts = title ? toolByName(title)?.scripts : null;
+  const scripts = title ? toolByName(scriptsFor || title)?.scripts : null;
 
   useEffect(() => {
     if (title) document.title = `${title} · THS: The Humble Sapien`;
@@ -47,7 +49,7 @@ export default function PageHead({
         <ScriptSpecimen
           className="page-scripts"
           scripts={scripts}
-          label={`${title} in Indian scripts`}
+          label={scriptsLabel || `${title} in Indian scripts`}
         />
       ) : null}
       {question ? <h2 className="page-head-question">{question}</h2> : null}

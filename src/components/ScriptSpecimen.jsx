@@ -6,6 +6,7 @@
 // hidden from assistive technology so the words are read without punctuation.
 
 import { useEffect, useId, useRef, useState } from 'react';
+import { RTL_SCRIPTS } from '../data/samparkScripts.js';
 
 export default function ScriptSpecimen({
   scripts,
@@ -38,7 +39,11 @@ export default function ScriptSpecimen({
     entries.map(([lang, text], index) => {
       const beforeToggle = split && offset + index === visible.length - 1;
       return (
-        <span key={lang} lang={lang}>
+        <span
+          key={lang}
+          lang={lang}
+          dir={RTL_SCRIPTS.has(lang) ? 'rtl' : undefined}
+        >
           {text}
           {!beforeToggle && offset + index < scripts.length - 1 ? (
             <span className="script-specimen-sep" aria-hidden="true">

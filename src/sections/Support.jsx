@@ -15,6 +15,14 @@ export default function Support() {
         digitised datasets, and tools that stay free.
       </PageHead>
 
+      <div className="notice">
+        <strong>Sampark is a separate CSO in formation.</strong> THS is its
+        technology affiliate, not its owner. Sampark will publish its own
+        donation and CSR route only after incorporation and the tax approvals
+        are in hand; read the{' '}
+        <a href="#/sampark">entity and AI plan</a>.
+      </div>
+
       <div className="grid grid-2">
         <article className="card">
           <h3>Where the money comes from</h3>

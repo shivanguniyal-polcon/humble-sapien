@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { STATES, INDIA_VIEWBOX } from '../data/india/indiaAdmin';
-import { LGD_SNAPSHOT_LABEL, LGD_SOURCE } from '../data/india/lgd-meta';
+import { LGD_SNAPSHOT, LGD_SOURCE } from '../data/india/lgd-meta';
 import { downloadFile } from '../lib/download.js';
 import { loadState, loadVillages } from '../lib/india/load';
 import {
@@ -15,10 +15,10 @@ import {
   parsePlace,
   directoryCode,
   hierarchyCsv,
-  HIERARCHY_NOTE,
   LADDER_RUNG_FOR,
   LADDER_RUNG_NOTE,
 } from '../lib/india/hierarchy';
+import { copyFor, fill } from '../data/samparkCopy';
 
 // The drill-down: State, District, Tehsil, Block, Village.
 //
@@ -51,15 +51,22 @@ const LEVEL_NAME = {
 
 const PAGE = 60;
 
-export default function IndiaLocator({ onChange, place, onPlaceChange }) {
+export default function IndiaLocator({ onChange, place, onPlaceChange, t = copyFor('en') }) {
   const [path, setPath] = useState([]);
   const [chunkState, setChunkState] = useState(null);
   const [villageState, setVillageState] = useState(null);
   const [query, setQuery] = useState('');
+  // The list under the map is a tab, not a permanent wall of names. It is
+  // mounted only while open, so a closed tab costs neither scroll nor a
+  // screen-reader stop for every State.
+  const [browseOpen, setBrowseOpen] = useState(false);
+  const browseSummaryRef = useRef(null);
   const [limit, setLimit] = useState(PAGE);
   const [problem, setProblem] = useState(null);
 
   const level = path.length ? path[path.length - 1].level : 'india';
+  const levelLabel = (id) =>
+    t[`level${id.charAt(0).toUpperCase()}${id.slice(1)}`] || LEVEL_NAME[id];
   const stateEntry = path.find((p) => p.level === 'state');
   const districtEntry = path.find((p) => p.level === 'district');
   const tehsilEntry = path.find((p) => p.level === 'tehsil');
@@ -83,6 +90,18 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
   const gps = villageState && villageState.districtId === districtId ? villageState.gps : null;
   const busy = Boolean(stateId) && !chunk;
 
+  // Each row is a real link as well as a control. The href carries the place
+  // the row would open, so a volunteer can copy it, open it in a new tab, or
+  // send it on; the click handler keeps the in-page walk immediate.
+  const hrefFor = useCallback((entry) => {
+    const [route, query = ''] = String(window.location.hash || '').split('?');
+    const params = new URLSearchParams(query);
+    const value = placeFromPath([...path, entry]);
+    if (value) params.set('p', value);
+    const next = params.toString();
+    return `${route || '#/tools/touchpoints'}${next ? `?${next}` : ''}`;
+  }, [path]);
+
   // One chunk per State, fetched when a State is first chosen.
   useEffect(() => {
     if (!stateName) return undefined;
@@ -91,13 +110,13 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       .then((mod) => {
         if (!cancelled) setChunkState({ id: stateId, mod });
       })
-      .catch((err) => {
-        if (!cancelled) setProblem(`Could not load ${stateName}: ${err.message}`);
+      .catch(() => {
+        if (!cancelled) setProblem(fill(t.locatorLoadError, { place: stateName }));
       });
     return () => {
       cancelled = true;
     };
-  }, [stateId, stateName]);
+  }, [stateId, stateName, t.locatorLoadError]);
 
   // The village names are a second chunk, and it is cut per district. It is
   // fetched when a district is chosen, because a district holds the villages
@@ -272,11 +291,12 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     if (level === 'india') {
       return [
         {
-          title: 'States and union territories',
+          title: t.locatorStates,
           items: STATES.filter((s) => !q || matches(s.name, q)).map((s) => ({
             key: `s${s.id}`,
             name: s.name,
-            meta: `${s.districts} districts · ${s.blocks} blocks`,
+            meta: `${s.districts} ${levelLabel('district')} · ${s.blocks} ${levelLabel('block')}`,
+            href: hrefFor({ level: 'state', name: s.name, id: s.id, lgd_code: s.lgd_code }),
             pick: () => push({ level: 'state', name: s.name, id: s.id, lgd_code: s.lgd_code }),
           })),
         },
@@ -286,13 +306,14 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
     if (level === 'state') {
       return [
         {
-          title: 'Districts',
+          title: t.locatorDistricts,
           items: tree
             .filter((d) => !q || matches(d.name, q))
             .map((d) => ({
               key: `d${d.id}`,
               name: d.name,
-              meta: `${d.subdistricts.length} tehsils · ${d.blocks.length} blocks`,
+              meta: `${d.subdistricts.length} ${levelLabel('tehsil')} · ${d.blocks.length} ${levelLabel('block')}`,
+              href: hrefFor({ level: 'district', name: d.name, id: d.id, lgd_code: d.lgd_code }),
               pick: () => push({ level: 'district', name: d.name, id: d.id, lgd_code: d.lgd_code }),
             })),
         },
@@ -306,7 +327,8 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
         .map((t) => ({
           key: `t${t.id}`,
           name: t.name,
-          meta: `${d.blocks.filter((b) => b.subdistrict === t.id).length} blocks`,
+          meta: `${d.blocks.filter((b) => b.subdistrict === t.id).length} ${levelLabel('block')}`,
+          href: hrefFor({ level: 'tehsil', name: t.name, id: t.id, lgd_code: t.lgd_code }),
           pick: () => push({ level: 'tehsil', name: t.name, id: t.id, lgd_code: t.lgd_code }),
         }));
       const blocks = d.blocks
@@ -314,12 +336,13 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
         .map((b) => ({
           key: `b${b.id}`,
           name: b.name,
-          meta: 'block',
+          meta: levelLabel('block'),
+          href: hrefFor({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
           pick: () => push({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
         }));
       return [
-        { title: 'Tehsils', items: tehsils, note: 'A revenue division. The office that decides sits at the block or the district, not here.' },
-        { title: 'Blocks', items: blocks },
+        { title: t.locatorTehsils, items: tehsils, note: t.locatorTehsilNote },
+        { title: t.locatorBlocks, items: blocks },
       ];
     }
     if (level === 'tehsil') {
@@ -327,13 +350,14 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       const blocks = (d ? d.blocks : []).filter((b) => b.subdistrict === (tehsilEntry && tehsilEntry.id));
       return [
         {
-          title: 'Blocks in this tehsil',
+          title: t.locatorBlocksInTehsil,
           items: blocks
             .filter((b) => !q || matches(b.name, q))
             .map((b) => ({
               key: `b${b.id}`,
               name: b.name,
-              meta: 'block',
+              meta: levelLabel('block'),
+              href: hrefFor({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
               pick: () => push({ level: 'block', name: b.name, id: b.id, lgd_code: b.lgd_code }),
             })),
         },
@@ -344,27 +368,30 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       const found = searchVillages(villages, id, q, limit);
       return [
         {
-          title: 'Villages',
+          title: t.locatorVillages,
           // A block can hold two villages with the same name. The name is not
           // the identity; the position in the list is what keeps the rows
           // distinct for React.
-          items: found.map((name, index) => ({
-            key: `v${name}-${index}`,
-            name,
-            meta: 'village',
-            pick: () =>
-              push({
-                level: 'village',
-                name,
-                id,
-                ...villageDetails(villageCodes, villageGpCodes, gps, villages, id, name),
-              }),
-          })),
+          items: found.map((name, index) => {
+            const entry = {
+              level: 'village',
+              name,
+              id,
+              ...villageDetails(villageCodes, villageGpCodes, gps, villages, id, name),
+            };
+            return {
+              key: `v${name}-${index}`,
+              name,
+              meta: levelLabel('village'),
+              href: hrefFor(entry),
+              pick: () => push(entry),
+            };
+          }),
         },
       ];
     }
     return [];
-  }, [level, chunk, tree, query, villages, villageCodes, villageGpCodes, gps, limit, districtEntry, tehsilEntry, blockEntry]);
+  }, [level, chunk, tree, query, villages, villageCodes, villageGpCodes, gps, limit, districtEntry, tehsilEntry, blockEntry, t, hrefFor]);
 
   const totalVillages =
     level === 'block' && blockEntry ? villagesOf(villages, blockEntry.id).length : 0;
@@ -393,9 +420,9 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
 
   return (
     <div className="locator">
-      <nav className="locator-crumbs" aria-label="Where you are">
+      <nav className="locator-crumbs" aria-label={t.locatorCrumbs}>
         <button type="button" className="locator-crumb" onClick={() => step(-1)}>
-          India
+          {t.levelIndia}
         </button>
         {path.map((p, i) => (
           <span key={`${p.level}-${p.id}-${i}`} className="locator-crumb-wrap">
@@ -412,7 +439,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             {/* A district and a tehsil can share a name, so the crumb says
                 which one it is. */}
             {p.level !== 'state' && (
-              <span className="locator-crumb-level">{LEVEL_NAME[p.level].toLowerCase()}</span>
+              <span className="locator-crumb-level">{levelLabel(p.level).toLowerCase()}</span>
             )}
           </span>
         ))}
@@ -421,24 +448,24 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
       {path.length > 0 && (
         <details className="locator-codes">
           <summary className="locator-codes-summary">
-            <span className="locator-group-title">Directory and LGD codes</span>
-            <span className="meta">the codes behind this place</span>
+            <span className="locator-group-title">{t.locatorDirectoryTitle}</span>
+            <span className="meta">{t.locatorDirectoryHint}</span>
           </summary>
           <div className="locator-codes-body">
             <div className="locator-codes-head">
-              <span className="meta">One row per level, so a form can be filled in exactly.</span>
+              <span className="meta">{t.locatorDirectoryLead}</span>
               <button type="button" className="btn btn-secondary locator-codes-download" onClick={downloadHierarchy}>
-                Download hierarchy (CSV)
+                {t.locatorDirectoryDownload}
               </button>
             </div>
             <ol className="locator-code-list">
               {path.map((p) => (
                 <li key={`${p.level}-${p.id}`} className="locator-code-row">
-                  <span className="locator-code-level">{LEVEL_NAME[p.level]}</span>
+                  <span className="locator-code-level">{levelLabel(p.level)}</span>
                   <span className="locator-code-name">{p.name}</span>
                   <code className="locator-code">
                     {directoryCode(p)}
-                    {p.lgd_code ? ` · LGD ${p.lgd_code}` : ' · no LGD'}
+                    {p.lgd_code ? ` · LGD ${p.lgd_code}` : ` · ${t.locatorNoLgd}`}
                   </code>
                 </li>
               ))}
@@ -447,17 +474,17 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               <p className="meta locator-gp">
                 {villageEntry.gp_name ? (
                   <>
-                    Gram Panchayat: <strong>{villageEntry.gp_name}</strong>
+                    {t.locatorGramPanchayat}: <strong>{villageEntry.gp_name}</strong>
                     {villageEntry.gp_code ? ` (GP ${villageEntry.gp_code})` : ''}
                   </>
                 ) : (
-                  'No Gram Panchayat recorded in the directory for this village.'
+                  t.locatorNoGp
                 )}
               </p>
             )}
-            <p className="meta locator-codes-note">{HIERARCHY_NOTE}</p>
+            <p className="meta locator-codes-note">{t.locatorHierarchyNote}</p>
             <p className="meta locator-codes-note">
-              Source: {LGD_SOURCE}, snapshot {LGD_SNAPSHOT_LABEL}.
+              {fill(t.locatorSourceNote, { source: LGD_SOURCE, date: LGD_SNAPSHOT })}
             </p>
           </div>
         </details>
@@ -469,7 +496,10 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             className="locator-svg"
             viewBox={viewBox}
             role="img"
-            aria-label={`Map of ${LEVEL_NAME[level].toLowerCase()} level: ${shapes.length} shapes. The list beside the map carries the same names.`}
+            aria-label={fill(t.locatorMapAria, {
+              level: levelLabel(level).toLowerCase(),
+              n: shapes.length,
+            })}
           >
             {shapes.map((s) => (
               <path
@@ -483,28 +513,57 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             ))}
           </svg>
           <figcaption className="locator-caption">
-            {level === 'india'
-              ? 'State outlines. Pick one, then pick your district.'
-              : level === 'state'
-                ? 'Districts in this State.'
-                : level === 'district'
-                  ? 'Blocks in this district.'
-                  : level === 'tehsil'
-                    ? 'Blocks in this tehsil.'
-                    : 'The block you are in.'}
+            {t.locatorMapCaption}
           </figcaption>
         </figure>
 
         <div className="locator-side">
+          {/* The list is long, and the map answers most questions on its own.
+              It sits behind one tab so the page does not make the reader
+              scroll through every State to reach the ladder below. */}
+          <div
+            className="locator-browse"
+            onKeyDown={(event) => {
+              if (event.key !== 'Escape' || !browseOpen) return;
+              setBrowseOpen(false);
+              browseSummaryRef.current?.focus();
+            }}
+          >
+            <button
+              type="button"
+              className="locator-browse-summary"
+              ref={browseSummaryRef}
+              aria-expanded={browseOpen}
+              aria-controls="locator-browse-body"
+              aria-label={`${t.locatorBrowse}. ${busy
+                ? t.locatorLoading
+                : fill(t.locatorBrowseCount, {
+                  n: groups.reduce((count, group) => count + group.items.length, 0),
+                })}`}
+              onClick={() => setBrowseOpen((open) => !open)}
+            >
+              <span className="locator-browse-title">{t.locatorBrowse}</span>
+              <span className="meta">
+                {busy
+                  ? t.locatorLoading
+                  : fill(t.locatorBrowseCount, {
+                      n: groups.reduce((count, group) => count + group.items.length, 0),
+                    })}
+              </span>
+            </button>
+            {browseOpen && (
+            <div className="locator-browse-body" id="locator-browse-body">
           <div className="locator-search">
             <label htmlFor="locator-q" className="locator-search-label">
-              Search {LEVEL_NAME[level].toLowerCase()} names
+              {fill(t.locatorSearch, { level: levelLabel(level).toLowerCase() })}
             </label>
             <input
               id="locator-q"
               type="search"
               value={query}
-              placeholder={level === 'block' ? 'Type a village name' : `Type a ${LEVEL_NAME[level].toLowerCase()} name`}
+              placeholder={fill(t.locatorType, {
+                level: levelLabel(level === 'block' ? 'village' : level).toLowerCase(),
+              })}
               onChange={(e) => {
                 setQuery(e.target.value);
                 setLimit(PAGE);
@@ -512,7 +571,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
             />
           </div>
 
-          {busy && <p className="meta">Loading…</p>}
+          {busy && <p className="meta">{t.locatorLoading}</p>}
           {problem && <p className="locator-problem">{problem}</p>}
 
           {groups.map((g) => (
@@ -520,15 +579,31 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
               <h4 className="locator-group-title">{g.title}</h4>
               {g.note && <p className="meta locator-group-note">{g.note}</p>}
               {g.items.length === 0 ? (
-                <p className="meta">Nothing matches that name here.</p>
+                <p className="meta">{t.locatorNothing}</p>
               ) : (
                 <ul className="locator-list">
                   {g.items.map((item) => (
                     <li key={item.key}>
-                      <button type="button" className="locator-item" onClick={item.pick}>
+                      <a
+                        className="locator-item"
+                        href={item.href}
+                        onClick={(event) => {
+                          if (
+                            event.button !== 0 ||
+                            event.metaKey ||
+                            event.ctrlKey ||
+                            event.shiftKey ||
+                            event.altKey
+                          ) {
+                            return;
+                          }
+                          event.preventDefault();
+                          item.pick();
+                        }}
+                      >
                         <span className="locator-item-name">{item.name}</span>
                         <span className="locator-item-meta">{item.meta}</span>
-                      </button>
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -539,7 +614,7 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
                   className="btn btn-secondary locator-more"
                   onClick={() => setLimit((n) => n + PAGE * 2)}
                 >
-                  Show more ({totalVillages - g.items.length} left)
+                  {fill(t.locatorMore, { left: totalVillages - g.items.length })}
                 </button>
               )}
             </div>
@@ -547,22 +622,25 @@ export default function IndiaLocator({ onChange, place, onPlaceChange }) {
 
           {level === 'village' && villageEntry && (
             <div className="locator-picked">
-              <h4>You are at {villageEntry.name}</h4>
+              <h4>{fill(t.locatorYouAreAt, { place: villageEntry.name })}</h4>
               <p className="meta">
-                {blockEntry ? `${blockEntry.name} block` : ''}
-                {districtEntry ? `, ${districtEntry.name} district` : ''}
+                {blockEntry ? `${blockEntry.name} ${levelLabel('block').toLowerCase()}` : ''}
+                {districtEntry ? `, ${districtEntry.name} ${levelLabel('district').toLowerCase()}` : ''}
                 {stateEntry ? `, ${stateEntry.name}` : ''}
               </p>
               <p className="meta locator-picked-code">
-                Directory key <code>{directoryCode(villageEntry)}</code>
+                {t.locatorDirectoryKey} <code>{directoryCode(villageEntry)}</code>
               </p>
               <p className="meta locator-picked-gp">
                 {villageEntry.gp_name
-                  ? `Gram Panchayat ${villageEntry.gp_name}${villageEntry.gp_code ? ` · GP ${villageEntry.gp_code}` : ''}`
-                  : 'No Gram Panchayat recorded for this village.'}
+                  ? `${t.locatorGramPanchayat} ${villageEntry.gp_name}${villageEntry.gp_code ? ` · GP ${villageEntry.gp_code}` : ''}`
+                  : t.locatorNoGp}
               </p>
             </div>
           )}
+            </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

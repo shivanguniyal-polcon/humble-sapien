@@ -2,6 +2,10 @@ import { useMemo, useState } from 'react';
 import { LEVELS } from '../data/schemes';
 import { downloadFile } from '../lib/download.js';
 import { deadlineLines, buildLetter, describePlace } from '../lib/india/letter';
+import { rungKey } from '../data/verification';
+import { verification, verificationText } from '../lib/verification';
+import { schemeContacts } from '../lib/contacts';
+import { copyFor, fill } from '../data/samparkCopy';
 
 // The sheet.
 //
@@ -27,12 +31,17 @@ export default function Sheet({
   onAddress,
   clock,
   dates,
+  locale = 'en',
+  t = copyFor('en'),
 }) {
   const [copied, setCopied] = useState(null);
   const [lang, setLang] = useState('en');
   const [applicant, setApplicant] = useState({ name: '', mobile: '', id: '' });
 
-  const lines = useMemo(() => deadlineLines(clock, dates), [clock, dates]);
+  const lines = useMemo(
+    () => deadlineLines(clock, dates, undefined, locale),
+    [clock, dates, locale]
+  );
   const hindi = Boolean(situation && situation.hi);
   const effectiveLang = lang === 'hi' && hindi ? 'hi' : 'en';
 
@@ -55,12 +64,23 @@ export default function Sheet({
 
   if (!situation) return null;
 
+  // The date the office was last checked, on the sheet the citizen carries.
+  // A clerk can see how fresh the claim is without asking anyone.
+  const check = rung
+    ? verification('rungs', rungKey(scheme.id, situation.id, rung.level))
+    : null;
+  const routes = schemeContacts(scheme.id);
+  const levelLabel = (id) =>
+    t[`level${id.charAt(0).toUpperCase()}${id.slice(1)}`] ||
+    LEVELS.find((l) => l.id === id)?.label ||
+    id;
+
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(letter);
-      setCopied('The letter is on your clipboard.');
+      setCopied(t.sheetCopied);
     } catch {
-      setCopied('The browser would not copy it. Select the letter and copy it by hand.');
+      setCopied(t.sheetCopyFailed);
     }
   };
 
@@ -72,7 +92,7 @@ export default function Sheet({
       '-'
     );
     downloadFile(name, letter, 'text/plain;charset=utf-8');
-    setCopied(`Saved as ${name}.`);
+    setCopied(fill(t.sheetSaved, { file: name }));
   };
 
   const addressedIndex = rung ? LEVELS.findIndex((l) => l.id === rung.level) : -1;
@@ -85,13 +105,13 @@ export default function Sheet({
     <div className="sheet">
       <div className="sheet-actions">
         <button type="button" className="btn btn-secondary" onClick={copy}>
-          Copy the letter
+          {t.sheetCopy}
         </button>
         <button type="button" className="btn btn-secondary" onClick={download}>
-          Download the letter
+          {t.sheetDownload}
         </button>
         <button type="button" className="btn btn-primary" onClick={() => window.print()}>
-          Print this page
+          {t.sheetPrint}
         </button>
       </div>
       {copied && <p className="sheet-note meta">{copied}</p>}
@@ -101,29 +121,29 @@ export default function Sheet({
           not there; the title below does the work. */}
       <div className="print-masthead">
         <p className="print-imprint">
-          <span>The Humble Sapien · a sheet to carry</span>
+          <span>The Humble Sapien · {t.sheetCarryTagline}</span>
           <span>{scheme.name}</span>
         </p>
         <p className="print-title">
           {scheme.name}: {situation.label}
         </p>
-        <p className="print-where">{describePlace(place) || 'No place picked for this sheet.'}</p>
+        <p className="print-where">{describePlace(place) || t.sheetNoPlace}</p>
       </div>
 
       <h3 className="sheet-title">
         {scheme.name}: {situation.label}
       </h3>
       <p className="sheet-where">
-        {describePlace(place) || 'Pick a place on the map and this sheet fills itself in.'}
+        {describePlace(place) || t.sheetPickPlace}
       </p>
 
       {place && rungs.length > 0 && (
         <label className="sheet-address">
-          <span>Address the letter to</span>
+          <span>{t.sheetAddressTo}</span>
           <select value={rung ? rung.level : ''} onChange={(e) => onAddress(e.target.value)}>
             {rungs.map((r) => (
               <option key={r.level} value={r.level}>
-                {LEVELS.find((l) => l.id === r.level)?.label || r.level} - {r.office}
+                {levelLabel(r.level)} - {r.office}
               </option>
             ))}
           </select>
@@ -131,8 +151,7 @@ export default function Sheet({
       )}
       {escalated && rung && homeLevel && rung.level !== homeLevel && (
         <p className="sheet-escalated">
-          A deadline below has passed, so this letter is addressed to the office above your own
-          rung. Your village and panchayat stay in it.
+          {t.sheetEscalated}
         </p>
       )}
 
@@ -141,29 +160,37 @@ export default function Sheet({
       <div className="sheet-brief">
         {rung && (
           <section className="sheet-block">
-            <h4>Where to go</h4>
+            <h4>{t.sheetWhereToGo}</h4>
             <p className="sheet-office">
               <strong>{rung.office}</strong>
               <span className="meta">: {rung.post}</span>
             </p>
-            <p className="sheet-line">{rung.decides}</p>
+            <p className="sheet-line">
+              <span className="meta">{t.rungDecisionLabel}: </span>
+              {rung.decides}
+            </p>
             <dl className="sheet-facts">
               <div>
-                <dt>Where</dt>
+                <dt>{t.ladderWhere}</dt>
                 <dd>{rung.where}</dd>
               </div>
               <div>
-                <dt>Carry</dt>
+                <dt>{t.ladderCarry}</dt>
                 <dd>{rung.carry}</dd>
               </div>
             </dl>
-            <p className="meta sheet-source">Source: {rung.source}</p>
+            <p className="meta sheet-source">{t.sourceLabel} {rung.source}</p>
+            {check && (
+              <p className={`meta sheet-verified verification verification-${check.state}`}>
+                {verificationText(t, check)}
+              </p>
+            )}
           </section>
         )}
 
         {above.length > 0 && (
           <section className="sheet-block">
-            <h4>If that office does not answer</h4>
+            <h4>{t.sheetIfNoAnswer}</h4>
             <ol className="sheet-above">
               {above.map((r) => (
                 <li key={r.level}>
@@ -179,11 +206,11 @@ export default function Sheet({
 
         {lines.length > 0 && (
           <section className="sheet-block">
-            <h4>Dates</h4>
+            <h4>{t.sheetDates}</h4>
             <ul className="sheet-dates">
               {lines.map((l) => (
                 <li key={`${l.anchor}-${l.what}`}>
-                  {l.what}. Due on {l.due}
+                  {fill(t.sheetDueLine, { what: l.what, due: l.due })}
                   {l.passed && l.then ? `. ${l.then}` : ''}
                   <span className="meta"> {l.source}</span>
                 </li>
@@ -191,20 +218,53 @@ export default function Sheet({
             </ul>
           </section>
         )}
+
+        {routes && (
+          <section className="sheet-block">
+            <h4>{t.sheetHowReach}</h4>
+            <ul className="sheet-dates">
+              {routes.channels.map((channel) => (
+                <li key={channel.kind}>
+                  <a
+                    href={channel.href}
+                    {...(channel.kind === 'phone'
+                      ? {}
+                      : { target: '_blank', rel: 'noopener noreferrer' })}
+                  >
+                    {channel.label}
+                  </a>
+                  <span className="meta"> · {channel.text}</span>
+                </li>
+              ))}
+              {routes.directory && (
+                <li>{t.sheetDirectoryNote}</li>
+              )}
+            </ul>
+            {routes.gap && <p className="meta">{routes.gap}</p>}
+            {routes.helplines.length > 0 && (
+              <p className="meta sheet-source">
+                {t.sourceLabel} {routes.helplines[0].source.replace(/^https?:\/\//, '')}
+              </p>
+            )}
+            <p className={`meta verification verification-${routes.check.state}`}>
+              {verificationText(t, routes.check)}
+            </p>
+          </section>
+        )}
       </div>
 
       <section className="sheet-block">
         <div className="sheet-letter-head">
-          <h4>The letter</h4>
+          <h4>{t.sheetTheLetter}</h4>
           {hindi ? (
-            <div className="sheet-lang" role="group" aria-label="Letter language">
+            <div className="sheet-lang" role="group" aria-label={t.sheetLetterLanguage}>
               <button
                 type="button"
                 className={`chip ${effectiveLang === 'en' ? 'chip-active' : ''}`}
                 aria-pressed={effectiveLang === 'en'}
                 onClick={() => setLang('en')}
               >
-                English
+                {t.sheetLetterEnglish}
               </button>
               <button
                 type="button"
@@ -212,20 +272,19 @@ export default function Sheet({
                 aria-pressed={effectiveLang === 'hi'}
                 onClick={() => setLang('hi')}
               >
-                हिंदी
+                {t.sheetLetterHindi}
               </button>
             </div>
           ) : (
             <p className="meta sheet-lang-note">
-              Hindi letter: reviewed for MGNREGA, PM-JAY, PM-KISAN, PMAY-G, PM SVANidhi and
-              Saubhagya; the other schemes are in English until their text is checked.
+              {t.sheetHindiNote}
             </p>
           )}
         </div>
 
         <div className="sheet-applicant">
           <label>
-            <span>Name</span>
+            <span>{t.sheetName}</span>
             <input
               value={applicant.name}
               autoComplete="name"
@@ -233,7 +292,7 @@ export default function Sheet({
             />
           </label>
           <label>
-            <span>Mobile number</span>
+            <span>{t.sheetMobile}</span>
             <input
               value={applicant.mobile}
               inputMode="tel"
@@ -242,21 +301,17 @@ export default function Sheet({
             />
           </label>
           <label>
-            <span>Job card / application / beneficiary number</span>
+            <span>{t.sheetApplicantId}</span>
             <input
               value={applicant.id}
               onChange={(e) => setApplicant((a) => ({ ...a, id: e.target.value }))}
             />
           </label>
         </div>
-        <p className="meta sheet-applicant-note">
-          These stay in this browser tab. They are not sent to a server or saved.
-        </p>
+        <p className="meta sheet-applicant-note">{t.sheetApplicantNote}</p>
 
         <p className="sheet-receipt">
-          <strong>Take two copies.</strong> Hand over one and ask the office to put the date, its
-          signature and its stamp on your copy. If it will not take the letter, send it by
-          registered post and keep the receipt.
+          {t.sheetTakeTwo}
         </p>
 
         <pre className="sheet-letter" lang={effectiveLang === 'hi' ? 'hi' : undefined}>{letter}</pre>

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-16T12:20:37.784Z",
+  "generatedAt": "2026-11-16T18:20:37.979Z",
   "windowDays": 21,
   "complete": true,
   "failedSources": [],
@@ -18,7 +18,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:37.784Z",
+      "fetchedAt": "2026-11-16T18:20:37.979Z",
       "ok": true,
       "count": 6
     },
@@ -33,7 +33,7 @@
         "country": "United Kingdom",
         "iso": "GB"
       },
-      "fetchedAt": "2026-11-16T12:20:37.989Z",
+      "fetchedAt": "2026-11-16T18:20:38.213Z",
       "ok": true,
       "count": 6
     },
@@ -48,7 +48,7 @@
         "country": "France",
         "iso": "FR"
       },
-      "fetchedAt": "2026-11-16T12:20:38.169Z",
+      "fetchedAt": "2026-11-16T18:20:38.628Z",
       "ok": true,
       "count": 6
     },
@@ -59,7 +59,7 @@
       "type": "code",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:38.358Z",
+      "fetchedAt": "2026-11-16T18:20:38.825Z",
       "ok": true,
       "count": 10
     },
@@ -70,7 +70,7 @@
       "type": "code",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:41.392Z",
+      "fetchedAt": "2026-11-16T18:20:41.768Z",
       "ok": true,
       "count": 10
     },
@@ -85,7 +85,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:41.894Z",
+      "fetchedAt": "2026-11-16T18:20:42.220Z",
       "ok": true,
       "count": 6
     },
@@ -100,7 +100,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:42.549Z",
+      "fetchedAt": "2026-11-16T18:20:44.106Z",
       "ok": true,
       "count": 6
     },
@@ -115,7 +115,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:42.976Z",
+      "fetchedAt": "2026-11-16T18:20:44.433Z",
       "ok": true,
       "count": 6
     },
@@ -130,7 +130,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:43.203Z",
+      "fetchedAt": "2026-11-16T18:20:44.660Z",
       "ok": true,
       "count": 6
     },
@@ -145,7 +145,7 @@
         "country": "Canada",
         "iso": "CA"
       },
-      "fetchedAt": "2026-11-16T12:20:43.300Z",
+      "fetchedAt": "2026-11-16T18:20:44.782Z",
       "ok": true,
       "count": 1
     },
@@ -156,7 +156,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:44.039Z",
+      "fetchedAt": "2026-11-16T18:20:45.475Z",
       "ok": true,
       "count": 45
     },
@@ -167,7 +167,7 @@
       "type": "research",
       "tier": "primary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:47.745Z",
+      "fetchedAt": "2026-11-16T18:20:48.575Z",
       "ok": true,
       "count": 25
     },
@@ -182,7 +182,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-16T12:20:50.335Z",
+      "fetchedAt": "2026-11-16T18:20:51.864Z",
       "ok": true,
       "count": 3
     },
@@ -197,7 +197,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-16T12:20:51.043Z",
+      "fetchedAt": "2026-11-16T18:20:52.981Z",
       "ok": true,
       "count": 3
     },
@@ -212,7 +212,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-16T12:20:52.717Z",
+      "fetchedAt": "2026-11-16T18:20:54.677Z",
       "ok": true,
       "count": 0
     },
@@ -227,7 +227,7 @@
         "country": "United States",
         "iso": "US"
       },
-      "fetchedAt": "2026-11-16T12:20:54.170Z",
+      "fetchedAt": "2026-11-16T18:20:56.351Z",
       "ok": true,
       "count": 12
     },
@@ -238,7 +238,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:54.264Z",
+      "fetchedAt": "2026-11-16T18:20:56.429Z",
       "ok": false,
       "count": 0,
       "error": "import-ai: HTTP 403"
@@ -250,7 +250,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:54.312Z",
+      "fetchedAt": "2026-11-16T18:20:56.467Z",
       "ok": true,
       "count": 12
     },
@@ -261,7 +261,7 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:20:54.516Z",
+      "fetchedAt": "2026-11-16T18:20:56.749Z",
       "ok": true,
       "count": 0
     },
@@ -276,7 +276,7 @@
         "country": "India",
         "iso": "IN"
       },
-      "fetchedAt": "2026-11-16T12:20:54.734Z",
+      "fetchedAt": "2026-11-16T18:20:56.968Z",
       "ok": true,
       "count": 10
     },
@@ -287,230 +287,166 @@
       "type": "news",
       "tier": "secondary",
       "place": null,
-      "fetchedAt": "2026-11-16T12:21:02.278Z",
+      "fetchedAt": "2026-11-16T18:20:57.176Z",
       "ok": true,
       "count": 2
     }
   ],
   "items": [
     {
-      "title": "carla-simulator/carla",
-      "summary": "Open-source simulator for autonomous driving research. Language: C++. 14,613 stars.",
-      "url": "https://github.com/carla-simulator/carla",
-      "publishedAt": "2026-11-16T12:19:03.000Z",
+      "title": "vercel/ai",
+      "summary": "The AI Toolkit for TypeScript. From the creators of Next.js, the AI SDK is a free open-source library for building AI-powered applications and agents Language: TypeScript. 28,007 stars.",
+      "url": "https://github.com/vercel/ai",
+      "publishedAt": "2026-11-16T18:20:37.000Z",
       "sourceId": "github-repos",
       "sourceLabel": "GitHub repositories",
       "sourceType": "code",
       "tier": "primary",
       "place": null,
-      "publisher": "carla-simulator",
+      "publisher": "vercel",
       "categories": [
-        "ai",
+        "anthropic",
         "artificial-intelligence",
-        "autonomous-driving",
-        "autonomous-vehicles",
-        "carla",
-        "carla-simulator"
+        "gemini",
+        "generative-ai",
+        "generative-ui",
+        "javascript"
       ],
-      "id": "dev-25b1a340935c",
+      "id": "dev-727e8b06665b",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "Irsyadmr354/KESTREL",
+      "summary": "Jailbreak system prompt. One file, one speaker, no second-guessing. Paste it as the system prompt on any provider. 103 stars.",
+      "url": "https://github.com/Irsyadmr354/KESTREL",
+      "publishedAt": "2026-11-16T18:14:46.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "Irsyadmr354",
+      "categories": [
+        "ai-jailbreak",
+        "ai-jailbreak-universal",
+        "artificial-intelligence",
+        "jailbreak-ai",
+        "llm",
+        "prompt-engineering"
+      ],
+      "id": "dev-df393a53935f",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "Sam Altman on Nvidia without Jensen Huang: the industry will be ‘fine’",
+      "summary": "OpenAI CEO Sam Altman acknowledged the special role Nvidia CEO Jensen Huang has played in the AI boom, but ultimately thinks the industry will be “fine” without him at the helm.",
+      "url": "https://techcrunch.com/2026/11/16/sam-altman-on-nvidia-without-jensen-huang-the-industry-will-be-fine",
+      "publishedAt": "2026-11-16T18:11:10.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Jensen Huang",
+        "nvidia",
+        "OpenAI",
+        "sam altman"
+      ],
+      "id": "dev-adc690e60e20",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "AgileRL/AgileRL",
+      "summary": "The complete post-training stack for LLMs, plus RL for any problem. SFT, DPO and multi-turn agentic RL, with evolutionary hyperparameter optimization built in. Language: Python. 969 stars.",
+      "url": "https://github.com/AgileRL/AgileRL",
+      "publishedAt": "2026-11-16T18:09:26.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "AgileRL",
+      "categories": [
+        "agents",
+        "agilerl",
+        "artificial-intelligence",
+        "deep-learning",
+        "deep-reinforcement-learning",
+        "distributed"
+      ],
+      "id": "dev-b7d280143765",
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
     },
     {
-      "title": "OpenHands/OpenHands",
-      "summary": "🙌 OpenHands: AI-Driven Development Language: TypeScript. 93,577 stars.",
-      "url": "https://github.com/OpenHands/OpenHands",
-      "publishedAt": "2026-11-16T12:13:59.000Z",
+      "title": "stillwater-sc/universal",
+      "summary": "Large collection of number systems providing custom arithmetic for mixed-precision algorithm development and optimization for AI, Machine Learning, Computer Vision, Signal Processing, CAE, EDA, control, optimization, estimation, and approximation. Language: C++. 505 stars.",
+      "url": "https://github.com/stillwater-sc/universal",
+      "publishedAt": "2026-11-16T18:08:54.000Z",
       "sourceId": "github-repos",
       "sourceLabel": "GitHub repositories",
       "sourceType": "code",
       "tier": "primary",
       "place": null,
-      "publisher": "OpenHands",
+      "publisher": "stillwater-sc",
       "categories": [
-        "agent",
-        "artificial-intelligence",
-        "chatgpt",
-        "claude-ai",
-        "cli",
-        "developer-tools"
+        "arbitrary-precision",
+        "arbitrary-precision-arithmetic",
+        "arbitrary-precision-floats",
+        "arbitrary-precision-integers",
+        "arithmetic",
+        "artificial-intelligence"
       ],
-      "id": "dev-a44248e361e3",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "tphakala/birdnet-go",
-      "summary": "Self-hosted realtime soundscape analyser for birds, bats and other wildlife. Multi-model local AI inference, runs 24/7 on a Raspberry Pi. Language: Go. 2,455 stars.",
-      "url": "https://github.com/tphakala/birdnet-go",
-      "publishedAt": "2026-11-16T12:07:36.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "tphakala",
-      "categories": [
-        "artificial-intelligence",
-        "audio",
-        "bats",
-        "bioacoustics",
-        "birdnet",
-        "birdnet-pi"
-      ],
-      "id": "dev-293c3b9a3a0d",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "nautechsystems/nautilus_trader",
-      "summary": "Production-grade Rust-native trading engine with deterministic event-driven architecture Language: Rust. 31,575 stars.",
-      "url": "https://github.com/nautechsystems/nautilus_trader",
-      "publishedAt": "2026-11-16T12:07:24.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "nautechsystems",
-      "categories": [
-        "algorithmic-trading-engine",
-        "artificial-intelligence",
-        "crypto-trading",
-        "equity-trading",
-        "forex",
-        "futures-trading"
-      ],
-      "id": "dev-a45254181f19",
+      "id": "dev-8124e3d44699",
       "topics": [
-        "finance"
-      ],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "TimefoldAI/timefold-solver",
-      "summary": "The open source Solver AI for Java and Kotlin to optimize scheduling and routing. Solve the vehicle routing problem, employee rostering, task assignment, maintenance scheduling and other planning problems. Language: Java. 1,872 stars.",
-      "url": "https://github.com/TimefoldAI/timefold-solver",
-      "publishedAt": "2026-11-16T11:57:37.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "TimefoldAI",
-      "categories": [
-        "ai",
-        "artificial-intelligence",
-        "constraint-programming",
-        "constraint-solver",
-        "cvrp",
-        "employee-scheduling"
-      ],
-      "id": "dev-ec3637964711",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "kornia/kornia",
-      "summary": "🐍 Geometric Computer Vision Library for Spatial AI Language: Python. 12,388 stars.",
-      "url": "https://github.com/kornia/kornia",
-      "publishedAt": "2026-11-16T11:56:20.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "kornia",
-      "categories": [
-        "artificial-intelligence",
-        "computer-vision",
-        "deep-learning",
-        "hacktoberfest",
-        "image-processing",
-        "machine-learning"
-      ],
-      "id": "dev-4df6ae2fbdfd",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "Tencent/ncnn",
-      "summary": "ncnn is a high-performance neural network inference framework optimized for the mobile platform Language: C++. 24,054 stars.",
-      "url": "https://github.com/Tencent/ncnn",
-      "publishedAt": "2026-11-16T11:49:50.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "Tencent",
-      "categories": [
-        "android",
-        "arm-neon",
-        "artificial-intelligence",
-        "caffe",
-        "darknet",
-        "deep-learning"
-      ],
-      "id": "dev-60c5d3336d7c",
-      "topics": [
+        "personal-data",
+        "ip",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
     },
     {
-      "title": "taovietducofficial/OpenTechNotes",
-      "summary": "OpenTechNotes là kho tài liệu IT miễn phí, tổng hợp kiến thức nền tảng và kinh nghiệm thực chiến. Nội dung được tóm gọn, dễ hiểu và cập nhật thường xuyên để hỗ trợ học nhanh – hiểu sâu 103 stars.",
-      "url": "https://github.com/taovietducofficial/OpenTechNotes",
-      "publishedAt": "2026-11-16T11:43:57.000Z",
+      "title": "vinhnx/VTCode",
+      "summary": "VT Code is a terminal-first coding agent for your repo, in the CLI and native macOS app. Language: Rust. 912 stars.",
+      "url": "https://github.com/vinhnx/VTCode",
+      "publishedAt": "2026-11-16T18:08:52.000Z",
       "sourceId": "github-repos",
       "sourceLabel": "GitHub repositories",
       "sourceType": "code",
       "tier": "primary",
       "place": null,
-      "publisher": "taovietducofficial",
+      "publisher": "vinhnx",
       "categories": [
-        "ai-agents",
-        "artificial-intelligence",
-        "databases",
-        "devops",
-        "open-source",
-        "programming"
-      ],
-      "id": "dev-7ca1a27b3394",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
-    },
-    {
-      "title": "Significant-Gravitas/AutoGPT",
-      "summary": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters. Language: Python. 188,052 stars.",
-      "url": "https://github.com/Significant-Gravitas/AutoGPT",
-      "publishedAt": "2026-11-16T11:43:23.000Z",
-      "sourceId": "github-repos",
-      "sourceLabel": "GitHub repositories",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": "Significant-Gravitas",
-      "categories": [
-        "agentic-ai",
-        "agents",
+        "agent",
+        "agentclientprotocol",
+        "agentplugins",
+        "agentskills",
         "ai",
-        "artificial-intelligence",
-        "autonomous-agents",
-        "claude"
+        "artificial-intelligence"
       ],
-      "id": "dev-991cb8c74834",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
+      "id": "dev-679ae14ccda9",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
     },
     {
       "title": "AgentSwarms-fyi/agentswarms",
       "summary": "Unified Agentic AI and Data Platform Language: TypeScript. 302 stars.",
       "url": "https://github.com/AgentSwarms-fyi/agentswarms",
-      "publishedAt": "2026-11-16T11:17:31.000Z",
+      "publishedAt": "2026-11-16T17:51:22.000Z",
       "sourceId": "github-repos",
       "sourceLabel": "GitHub repositories",
       "sourceType": "code",
@@ -529,7 +465,626 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.392Z"
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "OpenHands/OpenHands",
+      "summary": "🙌 OpenHands: AI-Driven Development Language: TypeScript. 93,596 stars.",
+      "url": "https://github.com/OpenHands/OpenHands",
+      "publishedAt": "2026-11-16T17:45:55.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "OpenHands",
+      "categories": [
+        "agent",
+        "artificial-intelligence",
+        "chatgpt",
+        "claude-ai",
+        "cli",
+        "developer-tools"
+      ],
+      "id": "dev-a44248e361e3",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "Auction of Government of India Dated Securities",
+      "summary": "Government of India (GoI) has announced the sale (re-issue) of two dated securities for a notified amount of ₹33,000 crore as per the following details: Sr No Security Date of Repayment Notified Amount (₹ Crore) GoI specific Notification Auction Date Settlement Date 1 6.53% GS 2031 Sep 07, 2031 19,000 F.No.4(1)-B(W&M)/2026 dated November 16, 2026 November 20, 2026 (Friday) November 23, 2026 (Monday) 2 7.71% GS 2066 May 18, 2066 14,000 Total 33,000 2. GoI will have the option to retain additional subscription up to ₹2,000 crore against each security mentioned above. 3. The securities will be sold through Reserve Bank of India Mumbai Office, Fort, Mumbai &ndash; 400001. The sale will be subjec",
+      "url": "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63983",
+      "publishedAt": "2026-11-16T17:45:00.000Z",
+      "sourceId": "rbi-press",
+      "sourceLabel": "RBI press releases",
+      "sourceType": "policy",
+      "tier": "primary",
+      "place": {
+        "city": "Mumbai",
+        "country": "India",
+        "iso": "IN"
+      },
+      "publisher": null,
+      "categories": [],
+      "id": "dev-c2aabf5d69b8",
+      "topics": [
+        "finance",
+        "consumer",
+        "security"
+      ],
+      "fetchedAt": "2026-11-16T18:20:51.864Z"
+    },
+    {
+      "title": "sonos/tract",
+      "summary": "Tiny, no-nonsense, self-contained, Tensorflow and ONNX inference Language: Rust. 3,125 stars.",
+      "url": "https://github.com/sonos/tract",
+      "publishedAt": "2026-11-16T17:41:09.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "sonos",
+      "categories": [
+        "artificial-intelligence",
+        "neural-networks",
+        "onnx",
+        "rust",
+        "rust-library",
+        "tensorflow"
+      ],
+      "id": "dev-edd9e81f075b",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "kyegomez/swarms",
+      "summary": "The Enterprise-Grade Multi-Agent Orchestration Framework. Website: https://swarms.ai Language: Python. 7,384 stars.",
+      "url": "https://github.com/kyegomez/swarms",
+      "publishedAt": "2026-11-16T17:40:51.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "kyegomez",
+      "categories": [
+        "agentic-ai",
+        "agentic-workflow",
+        "agents",
+        "ai",
+        "artificial-intelligence",
+        "chatgpt"
+      ],
+      "id": "dev-df14e0f70124",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "FBI says Artex AI open-source hacking tool used to breach networks in ‘under three hours’",
+      "summary": "The FBI says that the open-source hacking tool was used in cyberattacks targeting a U.S. IT giant and the South Korean financial industry.",
+      "url": "https://techcrunch.com/2026/11/16/fbi-says-artex-ai-open-source-hacking-tool-used-to-breach-networks-in-under-three-hours",
+      "publishedAt": "2026-11-16T17:36:43.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Security",
+        "artex",
+        "cyberattacks",
+        "cybersecurity",
+        "penetration testing"
+      ],
+      "id": "dev-030a040e02b2",
+      "topics": [
+        "finance",
+        "security"
+      ],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "Significant-Gravitas/AutoGPT",
+      "summary": "AutoGPT is the vision of accessible AI for everyone, to use and to build on. Our mission is to provide the tools, so that you can focus on what matters. Language: Python. 188,059 stars.",
+      "url": "https://github.com/Significant-Gravitas/AutoGPT",
+      "publishedAt": "2026-11-16T17:36:42.000Z",
+      "sourceId": "github-repos",
+      "sourceLabel": "GitHub repositories",
+      "sourceType": "code",
+      "tier": "primary",
+      "place": null,
+      "publisher": "Significant-Gravitas",
+      "categories": [
+        "agentic-ai",
+        "agents",
+        "ai",
+        "artificial-intelligence",
+        "autonomous-agents",
+        "claude"
+      ],
+      "id": "dev-991cb8c74834",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:41.768Z"
+    },
+    {
+      "title": "Jordan Belfort’s new AI voice startup, Tone, wants to sell like the ‘Wolf of Wall Street’",
+      "summary": "Belfort claims his AI sales voice can already close deals almost as well as the best human salespeople, and he thinks it will catch up in a year.",
+      "url": "https://techcrunch.com/2026/11/16/jordan-belforts-new-ai-voice-startup-tone-wants-to-sell-like-the-wolf-of-wall-street",
+      "publishedAt": "2026-11-16T17:10:00.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "TC",
+        "AI"
+      ],
+      "id": "dev-d3a67d4f7f1a",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "OpenAI will embed Apollo researchers to investigate AI subversion",
+      "summary": "OpenAI will embed six Apollo Research evaluators to investigate whether its AI models engage in subversive behavior, but restrictions on access and disclosure raise questions about their independence.",
+      "url": "https://techcrunch.com/2026/11/16/openai-will-embed-apollo-researchers-to-investigate-ai-subversion",
+      "publishedAt": "2026-11-16T17:02:43.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "ai safety research",
+        "OpenAI"
+      ],
+      "id": "dev-99f66f454c3b",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient",
+      "summary": "AI coding agents are increasingly help developers fix bugs and build features largely on their own, but every interaction with their models consumes tokens. In each session, an agent sends instructions, tool descriptions, and session history to its model. Most efforts to reduce this cost focus on individual tasks. Yet developers return to the same […] The post TokenEconomizer: Learning from Experience to Make AI Coding Agents More Efficient appeared first on Microsoft Research .",
+      "url": "https://www.microsoft.com/en-us/research/blog/tokeneconomizer-learning-from-experience-to-make-ai-coding-agents-more-efficient",
+      "publishedAt": "2026-11-16T17:01:35.000Z",
+      "sourceId": "microsoft-research",
+      "sourceLabel": "Microsoft Research",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Redmond",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Research Blog"
+      ],
+      "id": "dev-669b07982406",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
+    },
+    {
+      "title": "Broadening access to AI for scientists",
+      "summary": "We’re expanding our ChatGPT for Academic Researchers program to offer 200,000 researchers worldwide free access to our frontier models.",
+      "url": "https://openai.com/index/expanding-chatgpt-for-academic-researchers",
+      "publishedAt": "2026-11-16T17:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Research"
+      ],
+      "id": "dev-f26f2a4dfd6b",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
+    },
+    {
+      "title": "Strengthening the fight against online child sexual abuse with new tools and support",
+      "summary": "New tools, practical guidance, and partnerships will help prevent, detect and respond to online child sexual exploitation and abuse.",
+      "url": "https://openai.com/index/strengthening-online-child-safety",
+      "publishedAt": "2026-11-16T17:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Safety"
+      ],
+      "id": "dev-b1c71d07875a",
+      "topics": [
+        "children"
+      ],
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
+    },
+    {
+      "title": "OpenAI releases a new image classifier and ChatGPT warnings to combat CSAM",
+      "summary": "ChatGPT will ban an account trying to access CSAM content for 24 hours as a warning",
+      "url": "https://techcrunch.com/2026/11/16/openai-releases-a-new-image-classifier-and-chatgpt-warnings-to-combat-csam",
+      "publishedAt": "2026-11-16T17:00:00.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "TC",
+        "AI",
+        "Apps",
+        "OpenAI",
+        "CSAM"
+      ],
+      "id": "dev-8c824024c914",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "Lambda Boosts AI Factory Resiliency and Efficiency With NVIDIA Photonics",
+      "summary": "To train an AI model, thousands of GPUs have to work together, requiring a network that’s fast, efficient and resilient. Lambda is tackling the network piece of the puzzle with NVIDIA Photonics co-packaged optics (CPO) switches. The cloud provider is using the switches to connect NVIDIA GB300 NVL72 racks with more than 10,000 GPUs, delivering […]",
+      "url": "https://blogs.nvidia.com/blog/lambda-photonics",
+      "publishedAt": "2026-11-16T16:00:51.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Networking",
+        "Supercomputing",
+        "AI Factory",
+        "Artificial Intelligence",
+        "Hardware"
+      ],
+      "id": "dev-aafc20d9f2a0",
+      "topics": [
+        "general-ai"
+      ],
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
+    },
+    {
+      "title": "NVIDIA Sweeps MLPerf Training and Endpoints as Vera Rubin Debuts With Leading Performance",
+      "summary": "In its MLPerf benchmarks debut, with results released today, the NVIDIA Vera Rubin platform delivers leading performance across training, post-training and agentic inference. NVIDIA swept every MLPerf Training v6.1 benchmark and, in its first MLPerf Endpoints submission, delivered more than 10x generational gains in throughput per watt for agentic AI — measuring how much agentic […]",
+      "url": "https://blogs.nvidia.com/blog/mlperf-training-endpoints-vera-rubin",
+      "publishedAt": "2026-11-16T16:00:25.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "AI Infrastructure",
+        "Hardware",
+        "Networking",
+        "Software",
+        "Agentic AI"
+      ],
+      "id": "dev-0f2a855bc6a8",
+      "topics": [
+        "autonomy"
+      ],
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
+    },
+    {
+      "title": "NVIDIA CUDA-X Libraries Give Agents the Tools to Accelerate Scientific Discovery",
+      "summary": "With expanded NVIDIA CUDA-X libraries, including cuPhoton, cuPotential and cuSpa, researchers can sift through vast amounts of data to accelerate research, from astrophysics and materials science to single-cell biology. The speedups are helping scientists analyze larger datasets and model more complex systems. The new libraries give AI agents the tools to help researchers make discoveries […]",
+      "url": "https://blogs.nvidia.com/blog/cuda-x-libraries-agents-accelerate-scientific-discovery",
+      "publishedAt": "2026-11-16T16:00:16.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI Infrastructure",
+        "Hardware",
+        "Software",
+        "Supercomputing",
+        "CUDA-X",
+        "DGX Spark"
+      ],
+      "id": "dev-8192f1094925",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
+    },
+    {
+      "title": "CUDA at 20: How the Platform Transformed Scientific Computing",
+      "summary": "This week at SC26, NVIDIA is marking two decades of CUDA by honoring the researchers, developers and engineers who helped make GPU computing a foundation for modern science and AI. CUDA’s 20th anniversary presents an occasion to reflect across computing eras, from the people who wrote the very first CUDA programs to the AI developers […]",
+      "url": "https://blogs.nvidia.com/blog/20-years-cuda",
+      "publishedAt": "2026-11-16T16:00:11.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Software",
+        "Supercomputing",
+        "Artificial Intelligence",
+        "CUDA",
+        "Developer Program"
+      ],
+      "id": "dev-f96db6736bc3",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
+    },
+    {
+      "title": "NVIDIA Announces Rubin HPC — A New GPU to Accelerate Agents for Science, Engineering and Analytics",
+      "summary": "Announced today at SC26, NVIDIA Rubin HPC is a new GPU in the NVIDIA Vera Rubin platform designed to accelerate simulation and data processing for science, engineering and analytics workflows. As agents help scientists and engineers explore more candidate materials, molecules and designs, they rely on simulations to test those ideas and guide their next […]",
+      "url": "https://blogs.nvidia.com/blog/rubin-hpc",
+      "publishedAt": "2026-11-16T16:00:01.000Z",
+      "sourceId": "nvidia",
+      "sourceLabel": "NVIDIA",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Santa Clara",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "AI Infrastructure",
+        "Supercomputing",
+        "Agentic AI",
+        "CUDA-X",
+        "NVIDIA Vera Rubin"
+      ],
+      "id": "dev-6cab091c059a",
+      "topics": [
+        "personal-data"
+      ],
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
+    },
+    {
+      "title": "Audible turns to AI to help users discover audiobooks",
+      "summary": "Audible's new AI-generated audio previews summarize a book's themes and what readers liked about it, in addition to playing the narrated sample.",
+      "url": "https://techcrunch.com/2026/11/16/audible-turns-to-ai-to-help-users-discover-audiobooks",
+      "publishedAt": "2026-11-16T15:52:19.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Apps",
+        "Media & Entertainment",
+        "Amazon",
+        "Audible",
+        "audiobooks"
+      ],
+      "id": "dev-6516c6696195",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "US tightens AI chip export controls to deter Chinese companies from accessing compute remotely",
+      "summary": "Under the interim rule, the U.S. will require firms to get licenses to export AI chips if they may provide compute to China or other restricted countries.",
+      "url": "https://techcrunch.com/2026/11/16/us-tightens-ai-chip-export-controls-to-deter-chinese-companies-from-accessing-compute-remotely",
+      "publishedAt": "2026-11-16T15:02:34.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Government & Policy",
+        "Hardware",
+        "AI chips",
+        "export controls",
+        "semiconductor export ban"
+      ],
+      "id": "dev-772ccdf8e8c7",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "Google Maps can now build trip itineraries with real-time details about each stop",
+      "summary": "You could use Ask Maps to plan a holiday shopping day trip or something more complex, like a three-day road trip featuring coastal hikes and oceanfront dining.",
+      "url": "https://techcrunch.com/2026/11/16/google-maps-can-now-build-trip-itineraries-with-real-time-details-about-each-stop",
+      "publishedAt": "2026-11-16T14:48:13.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "AI",
+        "Apps",
+        "Google",
+        "Google Maps"
+      ],
+      "id": "dev-5c136724c0de",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "New Ask Maps features to help with holiday travel and prep",
+      "summary": "Plan holiday road trips, get route tips, find local appointments, and search your saved lists with new Ask Maps features.",
+      "url": "https://blog.google/products-and-platforms/products/maps/ask-maps-holiday-travel-features-2026",
+      "publishedAt": "2026-11-16T14:00:00.000Z",
+      "sourceId": "google-ai-blog",
+      "sourceLabel": "Google AI Blog",
+      "sourceType": "research",
+      "tier": "primary",
+      "place": {
+        "city": "Mountain View",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Travel",
+        "Maps",
+        "AI"
+      ],
+      "id": "dev-0bc322583e6f",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
+    },
+    {
+      "title": "Nyayadhi makes chat-based AI tool for legal research available to more users in India: Here’s how it will - The Times of India",
+      "summary": "Nyayadhi makes chat-based AI tool for legal research available to more users in India: Here’s how it will The Times of India",
+      "url": "https://news.google.com/rss/articles/CBMipgJBVV95cUxNRWlMNTgtQjItbVhWbjd5R3RHc1ZNcnBqTVhUVnJCcmd2Q1llaVpkcTFIdEZlWXdzWlhwekFiaDczY1MyZGEzbGZwSTBmQzhNMmRRdmJ3TFk2RjBudTN5NVVva1YtZGRTWlh3c2Zrc3A0UXR5bU5oUGZ2VmR6UlMxQUVDMzlTdEpuRXJHNjdoZ2RpS2FZclk2X3J3SFQyaXlvMXJtU2tVVjRCVHNGcUxDT0plN05GamhGeC00dDctcUlIREkxQ3B5Mm5hUXJuTVdpUVRvRUI1UlFOSDVreGNXa0pYSFpFTmkxUC1NU3pYbXZQV21sUG11UVRjVzNxQlh2OUg1NTVYX2dKQnpnUjVheC1QaUlPYVpCOVFYRWtWYVZjWWtQSmfSAasCQVVfeXFMTkYxd3A0dTJtMjVITm9jZWtnQVB3NGp2VjFFOGEwOXNIRU9EVFJzT09xZldiMHVNQ0YyaUt1dlExdG9YNnhmczBpY0lEVHgwbXMwd2xGMnoxZ3oyQS1HZVlZelF3VWpGT3A1Y1hHMy0wMkZpbG4zVFhsSkt2Q1pDWk41V1YzYXpaY24zczZWVVBYbXF5ZU05Vl84ZVVuWE90VzktMC1pOUY2WmhyYUdDQTZuazBsUkZ0RkxTcmVOV3FDWUJ5R0Y3a0s5eko1ZnNOb2NZZXlkVVBlTm9xRXJqaVRzaW1NVDRxcElMaEVGcXI1U0lwWHgxZWhhTy1vVFBRajNrTmJzSnBTakQ0aTd6RnBWSFJwUnkwMlFSY1FOd214ZzdhdE13SFpfMnc?oc=5",
+      "publishedAt": "2026-11-16T13:57:00.000Z",
+      "sourceId": "google-news-ai-policy",
+      "sourceLabel": "Google News · India AI policy",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": null,
+      "publisher": "The Times of India",
+      "categories": [],
+      "id": "dev-5ce5caa8bef2",
+      "topics": [
+        "general-ai"
+      ],
+      "fetchedAt": "2026-11-16T18:20:57.176Z"
+    },
+    {
+      "title": "Freshworks alums raise $53M to take on Salesforce, HubSpot with AI-native CRM",
+      "summary": "Dreamteam has signed up more than 100 customers across 13 countries, with some businesses switching from established CRMs.",
+      "url": "https://techcrunch.com/2026/11/16/freshworks-alums-raise-53m-to-take-on-salesforce-hubspot-with-ai-native-crm",
+      "publishedAt": "2026-11-16T12:30:00.000Z",
+      "sourceId": "techcrunch-ai",
+      "sourceLabel": "TechCrunch · AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Enterprise",
+        "Startups",
+        "AI",
+        "Accel",
+        "CRM",
+        "Exclusive"
+      ],
+      "id": "dev-fcbaf2152a3d",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
+    },
+    {
+      "title": "Science at the Frontier: How scientists use ChatGPT",
+      "summary": "Explore how more than 1,800 scientists use ChatGPT in research. See findings on daily workflows, reported productivity, and expectations for discovery.",
+      "url": "https://openai.com/index/science-at-the-frontier",
+      "publishedAt": "2026-11-16T12:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Research"
+      ],
+      "id": "dev-f891bd93f3d2",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
+    },
+    {
+      "title": "Jensen Huang weighs a comeback at Nvidia",
+      "summary": "PLUS: Turn a messy plan into a shared board",
+      "url": "https://www.therundown.ai/articles/jensen-huang-weighs-a-comeback-at-nvidia",
+      "publishedAt": "2026-11-16T10:00:00.000Z",
+      "sourceId": "rundown-ai",
+      "sourceLabel": "The Rundown AI",
+      "sourceType": "news",
+      "tier": "secondary",
+      "place": null,
+      "publisher": null,
+      "categories": [
+        "ai"
+      ],
+      "id": "dev-4ef8e2de2c00",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Exclusive: AI Models May Need To Pass Tests Before Launch Under India's Draft Rules - NDTV Profit",
@@ -545,7 +1100,7 @@
       "categories": [],
       "id": "dev-7dbe54f41421",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:21:02.278Z"
+      "fetchedAt": "2026-11-16T18:20:57.176Z"
     },
     {
       "title": "LVMH’s Media Division announces strategic partnership with OpenAI",
@@ -567,7 +1122,29 @@
       ],
       "id": "dev-91e58e2ea930",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
+    },
+    {
+      "title": "Our first phase of embedded assessments",
+      "summary": "OpenAI begins embedded assessments with Apollo Research, METR, and Transluce, and Goodfire to independently evaluate model alignment, safeguards, and monitoring systems.",
+      "url": "https://openai.com/index/our-first-phase-of-embedded-assessments",
+      "publishedAt": "2026-11-16T08:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Safety"
+      ],
+      "id": "dev-ebd9eb949639",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
     },
     {
       "title": "SEBI will make market firms disclose AI use and keep humans in the loop, chairman says",
@@ -595,7 +1172,29 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
+    },
+    {
+      "title": "Advancing computer-use agents for healthcare teams",
+      "summary": "",
+      "url": "https://openai.com/index/advancing-computer-use-for-healthcare-teams",
+      "publishedAt": "2026-11-16T06:00:00.000Z",
+      "sourceId": "openai",
+      "sourceLabel": "OpenAI",
+      "sourceType": "lab",
+      "tier": "primary",
+      "place": {
+        "city": "San Francisco",
+        "country": "United States",
+        "iso": "US"
+      },
+      "publisher": null,
+      "categories": [
+        "Product"
+      ],
+      "id": "dev-b0ded74e06b0",
+      "topics": [],
+      "fetchedAt": "2026-11-16T18:20:37.979Z"
     },
     {
       "title": "Apple launches new app to study how people use AI for health",
@@ -623,7 +1222,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
     },
     {
       "title": "AI Day Seoul Brings Together Korea’s Industry Leaders, Startups and Developer Communities",
@@ -650,29 +1249,27 @@
       ],
       "id": "dev-46b48e728e81",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:44.660Z"
     },
     {
-      "title": "The King’s Trust and OpenAI launch £1m partnership",
-      "summary": "The King’s Trust and OpenAI launch a £1m partnership to help up to 25,000 young people across the UK build practical AI skills for work.",
-      "url": "https://openai.com/index/the-kings-trust-and-openai",
+      "title": "Hugging Face and OpenRouter join forces to make open-weight models easy to run",
+      "summary": "",
+      "url": "https://huggingface.co/blog/openrouter",
       "publishedAt": "2026-11-16T00:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
+      "sourceId": "huggingface-blog",
+      "sourceLabel": "Hugging Face",
       "sourceType": "lab",
       "tier": "primary",
       "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
+        "city": "Paris",
+        "country": "France",
+        "iso": "FR"
       },
       "publisher": null,
-      "categories": [
-        "Global Affairs"
-      ],
-      "id": "dev-e3915f7e4cf0",
+      "categories": [],
+      "id": "dev-853b24ff0d6e",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "Indian chip startup Bharat Semi lands $24M seed round as it eyes global AI sensor market",
@@ -699,51 +1296,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "A step toward defining the Standard Model on a lattice",
-      "summary": "Explore a candidate nonperturbative lattice definition of the Standard Model and how GPT-6 Astra helped turn the idea into a detailed proof.",
-      "url": "https://openai.com/index/step-toward-defining-the-standard-model",
-      "publishedAt": "2026-11-15T22:00:01.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Science"
-      ],
-      "id": "dev-87d7014c15ee",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
-    },
-    {
-      "title": "Our new blog for science",
-      "summary": "The OpenAI science blog shares new findings, practical methods, and firsthand accounts from researchers using AI to advance scientific discovery.",
-      "url": "https://openai.com/index/our-new-blog-for-science",
-      "publishedAt": "2026-11-15T22:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Science"
-      ],
-      "id": "dev-4b0fc5b701ff",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
     },
     {
       "title": "Is bad news for Jensen Huang also bad news for the AI industry?",
@@ -769,182 +1322,7 @@
       ],
       "id": "dev-2cb612de9116",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "SNL gathers all the tech tycoons for a lesson in dating and spycraft",
-      "summary": "While awkward, creepy tech executives have become a recurring theme on Saturday Night Live, this week’s episode gave the cast a chance to show off all their impressions at once.",
-      "url": "https://techcrunch.com/2026/11/15/snl-gathers-all-the-tech-tycoons-for-a-lesson-in-dating-and-spycraft",
-      "publishedAt": "2026-11-15T20:20:57.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Media & Entertainment",
-        "Jensen Huang",
-        "nvidia",
-        "Saturday night live",
-        "SNL"
-      ],
-      "id": "dev-1a811a22b701",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "Where was Nvidia’s security team?",
-      "summary": "Nvidia’s security chief quietly left in August, and now that CEO Jensen Huang has stepped down over his relationships, including one with an executive at a company suspected of funneling chips to China, a former intelligence officer says it’s the kind of leak that runs everyday conversations, which most corporate security teams are poorly equipped to catch.",
-      "url": "https://techcrunch.com/2026/11/14/where-was-nvidias-security-team",
-      "publishedAt": "2026-11-15T00:08:07.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "TC",
-        "nvidia"
-      ],
-      "id": "dev-cdf34d438f12",
-      "topics": [
-        "security"
-      ],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "Elon Musk, other tech execs sign petition calling on Nvidia to reinstate Jensen Huang",
-      "summary": "The petition had attracted more than 115,000 signatures as of Saturday afternoon.",
-      "url": "https://techcrunch.com/2026/11/14/elon-musk-other-tech-execs-sign-petition-calling-on-nvidia-to-reinstate-jensen-huang",
-      "publishedAt": "2026-11-14T21:41:22.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Amjad Masad",
-        "Elon Musk",
-        "Jensen Huang",
-        "nvidia",
-        "tim sweeney"
-      ],
-      "id": "dev-9a736294c460",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "The AI graveyard: a running list of projects and startups that didn’t make it",
-      "summary": "From Apple's repeatedly delayed Siri AI to OpenAI's messy \"super app\" launch, here's a look at the AI projects that shut down or missed expectations.",
-      "url": "https://techcrunch.com/2026/11/14/the-ai-graveyard-a-running-list-of-projects-and-startups-that-didnt-make-it",
-      "publishedAt": "2026-11-14T17:30:00.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "evergreens",
-        "Microsoft",
-        "OpenAI",
-        "siri ai"
-      ],
-      "id": "dev-b08cefd9996d",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "Asian governments react to Nvidia CEO Jensen Huang’s exit",
-      "summary": "Some governments moved to confirm chip supply commitments, while others are monitoring the impact on local projects or addressing ongoing investigations.",
-      "url": "https://techcrunch.com/2026/11/14/asian-governments-react-to-nvidia-ceo-jensen-huangs-exit",
-      "publishedAt": "2026-11-14T16:34:15.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Government & Policy",
-        "TC",
-        "Jensen Huang",
-        "nvidia"
-      ],
-      "id": "dev-2a2bfff1121f",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
-    },
-    {
-      "title": "India should use AI to declutter its complex, messy legal system | Hindustan Times - Hindustan Times",
-      "summary": "India should use AI to declutter its complex, messy legal system | Hindustan Times Hindustan Times",
-      "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQUUFGME5rSHpZUGcwNEcwUUI1RndleVg5Qkw3dlJLOGNhOUVPeUdRdkI4Z01adXUxVk1kaENQd0hGQnRyTjNzSElnSUtiSURUT1RjNUYzdUdhV1lNMFJUVW1iUG5PUTQ4TG1vVGY2c193ZXpxckczMjhNSnpvdVB2YzZHYWFubFI0TEcyY0xMVE1hTFVZUWxfX0liTnhQeV84Y2tBS0d3dGp5cnNmM05udWZhQ3FJU2xUby1TNEpWd2vSAcYBQVVfeXFMTllpNG9XNHNjd094NmUxckNURTRRY09iVHhmOFVsX2lpWVdqekJHcXhWLWFEWFh3cXV2RVVLLU15bEZKbm5iYk1mZHBuS2lPd01LOW5VZ1NQYnBleEJBdTB1S05zUlcwQXMzVHFCVTZRM3gyUWVNaTZuWEN5U09vTFNHTktQNldYSVFLZDc3VUNoVmo1TGcycVYtbzFYdnNsZWg5V3hkc0czYzMzU3lxakc4NlBadmJJVlloU0JvSmpfd25KNkFR?oc=5",
-      "publishedAt": "2026-11-14T00:35:33.000Z",
-      "sourceId": "google-news-ai-policy",
-      "sourceLabel": "Google News · India AI policy",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": null,
-      "publisher": "Hindustan Times",
-      "categories": [],
-      "id": "dev-24eeb6eeb18e",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:21:02.278Z"
-    },
-    {
-      "title": "Jensen Huang’s departure blasts big hole in AI startup funding, VCs and founders say",
-      "summary": "Nvidia poured tens of billions into AI startups under Huang. Without him at the helm, founders and VCs are bracing for smaller checks and lower valuations.",
-      "url": "https://techcrunch.com/2026/11/13/jensen-huangs-departure-blasts-big-hole-in-ai-startup-funding-vcs-and-founders-say",
-      "publishedAt": "2026-11-13T22:43:00.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Startups",
-        "Venture",
-        "open source",
-        "nvidia",
-        "Jensen Huang"
-      ],
-      "id": "dev-ad639fbc6552",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
+      "fetchedAt": "2026-11-16T18:20:56.351Z"
     },
     {
       "title": "Advancing science & engineering with Antigravity’s /teamwork",
@@ -969,36 +1347,7 @@
       ],
       "id": "dev-be81354d8a30",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
-    },
-    {
-      "title": "AI agent startup LangChain hits $3B valuation",
-      "summary": "LangChain now claims 7,000 customers of its model and platform agnostic agent management tool LangSmith.",
-      "url": "https://techcrunch.com/2026/11/13/ai-agent-startup-langchain-hits-3b-valuation",
-      "publishedAt": "2026-11-13T19:37:57.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Fundraising",
-        "Startups",
-        "agent",
-        "In Brief",
-        "langchain"
-      ],
-      "id": "dev-38741df50e34",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     },
     {
       "title": "WeightBench: Evaluating Language Models as Weight-Space Programmers",
@@ -1014,7 +1363,7 @@
       "categories": [],
       "id": "dev-4f1d14deb7fa",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Imitation Bootstrapped Multi-Agent Reinforcement Learning",
@@ -1032,7 +1381,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Elliptic Sampling: Optimal Interpolant Schedules for Gaussians and Beyond",
@@ -1050,7 +1399,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "ModHarness-RL: Recasting Harnesses as Learnable and Evolving Programs for Agentic RL",
@@ -1068,7 +1417,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Alignment by Socialization: Learning Tradeoffs Under Selection",
@@ -1087,7 +1436,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "WaferTetris: Efficient Freeform Mapping on Wafer-Scale Accelerators",
@@ -1105,31 +1454,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
-    },
-    {
-      "title": "Export-banned Nvidia chips are behind China’s most powerful AI models — uh-oh, Jensen!",
-      "summary": "New research shows the most advanced AI models from China were trained on banned Nvidia chips.",
-      "url": "https://techcrunch.com/2026/11/13/export-banned-nvidia-chips-are-behind-chinas-most-powerful-ai-models-uh-oh-jensen",
-      "publishedAt": "2026-11-13T18:40:30.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "banned ai",
-        "nvidia"
-      ],
-      "id": "dev-f17748102e2c",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Can Mechanistic Interpretability Help Explain LLM Agent Failures? A Case Study on Web Element Hallucination",
@@ -1148,7 +1473,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "MeReader: An Offline, Privacy-Preserving, Progress-Aware AI Assistant for Narrative eBook Reading",
@@ -1168,7 +1493,7 @@
         "consumer",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Agentic induction of common data elements and information extraction from sarcoma case report abstracts",
@@ -1189,7 +1514,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Agentic AI for Discovering Fault-Tolerant Quantum Circuits",
@@ -1208,7 +1533,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "ARCHER: From Rationale Imitation to Executable Reasoning in Small Language Models",
@@ -1227,7 +1552,7 @@
         "personal-data",
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "TradeGauntlet: Evaluating Compliance Controls for Autonomous Trading Agents",
@@ -1246,7 +1571,7 @@
         "finance",
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Build a Robot Pick-and-Place Simulation with SimReady Assets",
@@ -1268,7 +1593,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "Interactive Program Induction with Language Model Priors",
@@ -1286,7 +1611,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "From AI-Enabled Remote Patient Monitoring Toward Agentic Robotics: Embodiment, Governance, and Care Integration",
@@ -1305,7 +1630,7 @@
         "autonomy",
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Auction of State Government Securities",
@@ -1327,7 +1652,7 @@
       "topics": [
         "competition"
       ],
-      "fetchedAt": "2026-11-16T12:20:50.335Z"
+      "fetchedAt": "2026-11-16T18:20:51.864Z"
     },
     {
       "title": "Auction of 91-Day, 182-Day and 364-Day Treasury Bills",
@@ -1349,7 +1674,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-11-16T12:20:50.335Z"
+      "fetchedAt": "2026-11-16T18:20:51.864Z"
     },
     {
       "title": "Do Verifier Judgments Survive Abstraction? Measuring Verification Transport for LLM Agent Evaluation",
@@ -1368,7 +1693,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Typing Matters: Muscle, Language and Typing Behaviour in Live Keystroke Decoding from sEMG",
@@ -1384,29 +1709,7 @@
       "categories": [],
       "id": "dev-04f6b553f786",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
-    },
-    {
-      "title": "Reserve Bank of India imposes monetary penalty on One Mobikwik Systems Limited",
-      "summary": "Reserve Bank of India (RBI) has, by an order dated November 06, 2026, imposed a monetary penalty of ₹9.00 lakh (Rupees Nine Lakh only) on One Mobikwik Systems Limited (the company) for non-compliance with certain provisions of the directions issued by RBI on &lsquo;Prepaid Payment lnstruments (PPIs)&rsquo; and &lsquo;Fraud reporting&rsquo;. This penalty has been imposed in exercise of powers conferred on RBI under the provisions of section 30(1) read with section 26(6) of the Payment and Settlement Systems Act, 2007. The statutory inspection of the company was conducted by RBI with reference to its operations for the period from June 2025 to March 2026. Based on supervisory findings of non-c",
-      "url": "https://www.rbi.org.in/scripts/BS_PressReleaseDisplay.aspx?prid=63973",
-      "publishedAt": "2026-11-13T17:30:00.000Z",
-      "sourceId": "rbi-press",
-      "sourceLabel": "RBI press releases",
-      "sourceType": "policy",
-      "tier": "primary",
-      "place": {
-        "city": "Mumbai",
-        "country": "India",
-        "iso": "IN"
-      },
-      "publisher": null,
-      "categories": [],
-      "id": "dev-7fa4358da268",
-      "topics": [
-        "finance"
-      ],
-      "fetchedAt": "2026-11-16T12:20:50.335Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "When to Trust Simulated Patient Responses:Support-Gated World Models for Vasopressor Decision Support",
@@ -1426,7 +1729,7 @@
         "health",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Black-Box Uncertainty Quantification for Large Language Models via Ensemble-of-Ensembles",
@@ -1444,7 +1747,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Between Obligations and Evidence: A Participatory Study of Translating the EU AI Act into Technical Requirements",
@@ -1460,7 +1763,7 @@
       "categories": [],
       "id": "dev-cb4357eeb69b",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Accounting for Trust and Safety: Bounding Content-Moderation Quality from Records You Already Hold",
@@ -1476,7 +1779,7 @@
       "categories": [],
       "id": "dev-b291a00ea2ca",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Efficiency Gains in Social Science Research: A Prospective Silicon Sampling Protocol for Pre-Treatment and Code Optimization",
@@ -1495,7 +1798,7 @@
         "synthetic-media",
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Towards Explainable Sleep Stage Classification using Single-Channel Electroencephalogram",
@@ -1514,7 +1817,7 @@
         "personal-data",
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "XYBench: Helping with the problem behind the question",
@@ -1534,7 +1837,7 @@
       "categories": [],
       "id": "dev-8400bdfe1e2a",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "LECAT: Measuring LLM Category Learning from Pretraining Data",
@@ -1552,7 +1855,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "CoPre-MoE: Consolidating and Preserving MoE for Multimodal Continual Instruction Tuning",
@@ -1568,7 +1871,7 @@
       "categories": [],
       "id": "dev-ebb218cf4555",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "LitArc-Bench: Disentangling Text-Specific Reader-Response Dynamics from Position and Lexical Affect",
@@ -1584,7 +1887,7 @@
       "categories": [],
       "id": "dev-def932c2da9f",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Gamer: A Generalist Vision-Language-Action Foundation Model for Long-Horizon Real-Time Game Agent",
@@ -1604,7 +1907,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Smart Home Agents Make Capable but Unpredictable Grid Operators",
@@ -1620,7 +1923,7 @@
       "categories": [],
       "id": "dev-52bd6aa6f892",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "VelServe: Taming Decode Jitters in LLM Inference with Tail-Calibrated Scheduling",
@@ -1638,7 +1941,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "AI-Based Multi-View Echocardiographic Image Synthesis using Dynamic Shape Control",
@@ -1657,7 +1960,7 @@
         "synthetic-media",
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Vision-Language-Action Models: A Life-Cycle Survey of Design, Training and Deployment",
@@ -1676,7 +1979,7 @@
         "autonomy",
         "consumer"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Evaluating Human Sensitivity to Gender Biased AI-Generated Content through Human Assessment of Google's Autocomplete Function",
@@ -1692,7 +1995,7 @@
       "categories": [],
       "id": "dev-aecaaa067287",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "f-Divergence Self-Play for Tabular Anomaly Detection via Large Language Models",
@@ -1708,7 +2011,7 @@
       "categories": [],
       "id": "dev-594fa08c4749",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Envisioning Agentic Robotics: A New Era of Robotic Systems",
@@ -1727,34 +2030,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
-    },
-    {
-      "title": "ChatGPT’s new Wallet lets AI agents shop and check out for you",
-      "summary": "ChatGPT Wallet lets AI agents shop and check out on users' behalf, starting with a limited rollout to U.S. Pro subscribers.",
-      "url": "https://techcrunch.com/2026/11/13/chatgpts-new-wallet-lets-ai-agents-shop-and-check-out-for-you",
-      "publishedAt": "2026-11-13T16:00:12.000Z",
-      "sourceId": "techcrunch-ai",
-      "sourceLabel": "TechCrunch · AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Commerce",
-        "AI agents",
-        "ChatGPT",
-        "dots",
-        "eCommerce"
-      ],
-      "id": "dev-4e379f6cb9d3",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.170Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "VLAN: Vision-Language Accessible Navigation",
@@ -1770,7 +2046,7 @@
       "categories": [],
       "id": "dev-d6dc63a4a86c",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Marimba: A System One Model for Speech",
@@ -1786,7 +2062,7 @@
       "categories": [],
       "id": "dev-fd9dfd0f0ec7",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Causal AI-Driven Secure mmWave Beam Alignment with Defensive Variational Autoencoders",
@@ -1804,7 +2080,7 @@
       "topics": [
         "ip"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Learning Word-Level Explanations of Text Reuse in Latin Literature with Little Annotation",
@@ -1822,7 +2098,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Experts Across Schemas: Agent-Guided Mixture-of-Relational-Experts for Cross-Database Generalization",
@@ -1840,7 +2116,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Microsoft’s Outlook outage hits day two",
@@ -1858,7 +2134,7 @@
       ],
       "id": "dev-7cf9abec031b",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "AI for Parameter Selection in Sample-based Quantum Diagonalization",
@@ -1876,7 +2152,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "When evaluation becomes intervention in clinical AI",
@@ -1894,29 +2170,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:44.039Z"
-    },
-    {
-      "title": "Introducing ChatGPT Wallet",
-      "summary": "Introducing ChatGPT Wallet, a secure way for agents in ChatGPT Work, Codex, and dots to complete purchases with user approval and existing card protections.",
-      "url": "https://openai.com/index/introducing-chatgpt-wallet",
-      "publishedAt": "2026-11-13T15:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Product"
-      ],
-      "id": "dev-5bf4951adbe9",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
+      "fetchedAt": "2026-11-16T18:20:45.475Z"
     },
     {
       "title": "Large language models put existential risk from artificial intelligence at 10%",
@@ -1934,7 +2188,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "llama.cpp v1.0.0 : A stronger foundation for the local AI ecosystem",
@@ -1954,7 +2208,7 @@
       "categories": [],
       "id": "dev-40e78db6601d",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "AI opens up new revenue streams for Info Edge’s Naukri",
@@ -1980,34 +2234,7 @@
       ],
       "id": "dev-d27a0bd0e57a",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
-    },
-    {
-      "title": "How AI Is Helping Care Teams Get Patients the Right Care, Sooner",
-      "summary": "From pediatric research to smart hospitals, AI is helping care teams spend less time on routine tasks and more time with patients. Health systems and startups are putting it to work across healthcare, from matching patients to clinical trials to supporting radiologists, hospital teams and patients at home. Clinicians stay at the center, reviewing AI […]",
-      "url": "https://blogs.nvidia.com/blog/how-ai-is-helping-care-teams",
-      "publishedAt": "2026-11-13T13:00:42.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "AI for Good",
-        "Healthcare and Life Sciences",
-        "Inception"
-      ],
-      "id": "dev-ece4b84db3e9",
-      "topics": [
-        "health"
-      ],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Measuring Public Participation in Local Government: An Audio-Based Instrument for Classifying Speakers in City Council Meetings",
@@ -2023,7 +2250,7 @@
       "categories": [],
       "id": "dev-392c236fbd0f",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "How far do Google’s smart glasses protect bystanders? We looked at five everyday situations",
@@ -2050,7 +2277,7 @@
       ],
       "id": "dev-bc8944b17cc0",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Algorithmic Opacity as a Principal-Agent Problem",
@@ -2068,7 +2295,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Nvidia enters life without Jensen Huang",
@@ -2086,7 +2313,7 @@
       ],
       "id": "dev-dc324b42ac5a",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "The Transformer Paradigm: Dynamic Processing and a New Principle of Inference",
@@ -2104,7 +2331,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Measured from the feed: the unsustainable growth of AI video generation",
@@ -2120,7 +2347,7 @@
       "categories": [],
       "id": "dev-aacd67ce8c66",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "DOCKET: A Pluralistic Benchmark for Evaluating AI-Assisted Policy Feedback in U.S. Rulemaking",
@@ -2138,27 +2365,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
-    },
-    {
-      "title": "Shield helps technicians hand off legacy portal work with OpenAI",
-      "summary": "Shield uses OpenAI to help IT technicians hand off work in legacy portals. Its Forge agents navigate systems so technicians can focus on issues needing their judgment.",
-      "url": "https://openai.com/business/customer-stories/shield",
-      "publishedAt": "2026-11-13T08:00:00.000Z",
-      "sourceId": "openai",
-      "sourceLabel": "OpenAI",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "San Francisco",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [],
-      "id": "dev-d1318183fe17",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.784Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Interview: MemStore’s Diwank Singh Tomer and Ishita Jindal on AI agent memory, contradictions and deletion",
@@ -2186,7 +2393,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Hyderabad Police’s new AI tool can link suspects to criminal networks. But how does it work?",
@@ -2214,7 +2421,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Auditing Chatbots for Incursion into Professional Legal Practice",
@@ -2230,7 +2437,7 @@
       "categories": [],
       "id": "dev-2c5125890cd4",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Microsoft Research Focus – Edition #98",
@@ -2252,7 +2459,7 @@
       ],
       "id": "dev-1a84fda56816",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
     },
     {
       "title": "LLMON: An LLM-Native Markup Language, now in Granite 4.1 3B and 8B",
@@ -2274,7 +2481,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "Scalable Conversational Assessment: Chat-Based Exams with a Two-Agent LLM Pipeline",
@@ -2294,7 +2501,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Introducing Gemini 4 Hydrogen",
@@ -2314,7 +2521,7 @@
       "categories": [],
       "id": "dev-a8d5fa7d24b3",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Google Search gets a major upgrade with Gemini 4 Hydrogen",
@@ -2338,7 +2545,7 @@
       ],
       "id": "dev-ad614f81e42f",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
     },
     {
       "title": "Amazon turns Ring cameras into robots",
@@ -2356,7 +2563,7 @@
       ],
       "id": "dev-02bfaac9d4bd",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Data Center Governance Under AI Expansion Pressures",
@@ -2372,7 +2579,7 @@
       "categories": [],
       "id": "dev-74aab7c8281f",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Beyond Curiosity: Habit and Organizational Learning Capability as Predictors of Shadow AI",
@@ -2391,7 +2598,7 @@
         "synthetic-media",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "A Code-Level Audit of X",
@@ -2407,7 +2614,7 @@
       "categories": [],
       "id": "dev-f4a07bdd9c01",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "AI, financial services and smarter chats: Kunal Shah reveals the next 3 bets of WhatsApp",
@@ -2436,7 +2643,7 @@
       "topics": [
         "finance"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Large Language Models as Digital Twins: a Distribution-Aware Questionnaire-Based Evaluation",
@@ -2454,7 +2661,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Japan flags privacy risks in Google, Meta, TikTok and LINE Yahoo’s AI and advertising practices",
@@ -2483,7 +2690,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "AI’s biggest CEO may be on his way out",
@@ -2501,7 +2708,7 @@
       ],
       "id": "dev-b081dcbc2a36",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "From State of THE ART to Human Prediction Algorithms",
@@ -2517,7 +2724,7 @@
       "categories": [],
       "id": "dev-f2ad57770769",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "IIIT Hyderabad Director on How AI Agents Used Plain Text Keys in Indian Systems",
@@ -2542,7 +2749,7 @@
         "autonomy",
         "security"
       ],
-      "fetchedAt": "2026-11-16T12:20:51.043Z"
+      "fetchedAt": "2026-11-16T18:20:52.981Z"
     },
     {
       "title": "Report: Government is likely to push for indigenous AI model use in critical sectors",
@@ -2570,7 +2777,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Between Niti and Nyaya: A Society-Centered Framework for AI Governance",
@@ -2586,7 +2793,7 @@
       "categories": [],
       "id": "dev-16114f97a09c",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "The Definitive Fine-Tuning Guide for 3D Generation Models",
@@ -2606,7 +2813,7 @@
       "categories": [],
       "id": "dev-56dac742ff29",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
+      "fetchedAt": "2026-11-16T18:20:38.628Z"
     },
     {
       "title": "Harnessing Environmental Scatterers for Endogenous Target Covertness in 6G ISAC: A New Paradigm for Sensing Security",
@@ -2624,7 +2831,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "One Future Fits All: Text-to-image AI and the Narrowing of Global Imagination",
@@ -2644,7 +2851,7 @@
         "ip",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Robustness Within a Fairness Budget: Parity Frontiers and Equal-Opportunity Reversal",
@@ -2660,7 +2867,7 @@
       "categories": [],
       "id": "dev-75f2f3e58038",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Scaling public input on AI policy with pluralistic agents",
@@ -2678,7 +2885,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Using wearables to enable cardiovascular-kidney-metabolic (CKM) risk profiling for personalized coaching",
@@ -2703,7 +2910,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     },
     {
       "title": "Modeling the Travel Time-Pollution Exposure Trade-off in Urban Route Choice",
@@ -2721,7 +2928,7 @@
       "topics": [
         "ip"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Owned Edits to a Shared Decision Rule: Learning Private Exceptions as Typed, Gated, Withdrawable Weight Edits",
@@ -2739,7 +2946,7 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Controlling the Probability of Unknown Unknowns in Pre-Deployment Testing of AI Systems",
@@ -2755,7 +2962,7 @@
       "categories": [],
       "id": "dev-cc8e1f9d4965",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:47.745Z"
+      "fetchedAt": "2026-11-16T18:20:48.575Z"
     },
     {
       "title": "Gemini Decisions API: Fast, calibrated multimodal decisions",
@@ -2778,7 +2985,7 @@
       ],
       "id": "dev-cce714811b51",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
     },
     {
       "title": "Try Tabletop: Customizable, collaborative spaces for groups to plan, play and do more together.",
@@ -2801,7 +3008,7 @@
       ],
       "id": "dev-bad6ee94c356",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
     },
     {
       "title": "AlphaGenome 2: Deciphering how cells read DNA to better understand disease",
@@ -2821,7 +3028,7 @@
       "categories": [],
       "id": "dev-e879c6fc35d4",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Australia plans mandatory safety rules, new regulator for frontier AI companies",
@@ -2849,7 +3056,7 @@
       "topics": [
         "security"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "OpenAI invites brands to set up shop in ChatGPT",
@@ -2867,7 +3074,7 @@
       ],
       "id": "dev-ae5ab34a3ffd",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Experience the art and legacy of Dr. Esther Mahlangu",
@@ -2891,7 +3098,7 @@
       ],
       "id": "dev-14eef01dc0f4",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
     },
     {
       "title": "Madras High Court flags fake, AI-generated books in public libraries, orders FIR",
@@ -2917,11 +3124,11 @@
       ],
       "id": "dev-0ae6b047c3e5",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.734Z"
+      "fetchedAt": "2026-11-16T18:20:56.968Z"
     },
     {
       "title": "Edge0/Edge0-145B-q3k",
-      "summary": "Pipeline: text-generation. Library: edge0. 92,228 downloads. 86 likes. Tags: edge0, gguf, moe, edge-inference, latent-moe.",
+      "summary": "Pipeline: text-generation. Library: edge0. 92,228 downloads. 110 likes. Tags: edge0, gguf, moe, edge-inference, latent-moe.",
       "url": "https://huggingface.co/Edge0/Edge0-145B-q3k",
       "publishedAt": "2026-11-11T05:23:10.000Z",
       "sourceId": "huggingface-models",
@@ -2942,11 +3149,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "Edge0/Edge0-145B-NVFP4",
-      "summary": "Pipeline: text-generation. Library: edge0. 55,335 downloads. 339 likes. Tags: edge0, gguf, moe, edge-inference, latent-moe.",
+      "summary": "Pipeline: text-generation. Library: edge0. 55,335 downloads. 368 likes. Tags: edge0, gguf, moe, edge-inference, latent-moe.",
       "url": "https://huggingface.co/Edge0/Edge0-145B-NVFP4",
       "publishedAt": "2026-11-11T05:22:51.000Z",
       "sourceId": "huggingface-models",
@@ -2967,57 +3174,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
-    },
-    {
-      "title": "BotPsy: On-Device Personal Assistant with a Sub-Billion-Parameter Agentic Language Model",
-      "summary": "",
-      "url": "https://huggingface.co/blog/qvac/botpsy",
-      "publishedAt": "2026-11-11T05:01:16.000Z",
-      "sourceId": "huggingface-blog",
-      "sourceLabel": "Hugging Face",
-      "sourceType": "lab",
-      "tier": "primary",
-      "place": {
-        "city": "Paris",
-        "country": "France",
-        "iso": "FR"
-      },
-      "publisher": null,
-      "categories": [],
-      "id": "dev-b22522d14a17",
-      "topics": [
-        "autonomy",
-        "general-ai"
-      ],
-      "fetchedAt": "2026-11-16T12:20:38.169Z"
-    },
-    {
-      "title": "How AI Helps Recyclers Turn Mixed Waste Into Reusable Material",
-      "summary": "Vision AI and robotics pick what’s worth recovering out of conveyor belts of used clothing, bottles and mixed recyclables, diverting thousands of tons of materials from landfills.",
-      "url": "https://blogs.nvidia.com/blog/ai-recycling-startups",
-      "publishedAt": "2026-11-11T03:00:20.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Robotics",
-        "AI for Good",
-        "Computer Vision",
-        "Healthcare and Life Sciences",
-        "Inception"
-      ],
-      "id": "dev-a3f9078912ac",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "Lazare, veni foras: Reprogramming Dormant Neurons to Backdoor AI Agents",
@@ -3042,7 +3199,7 @@
         "autonomy",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
     },
     {
       "title": "Gemini Intelligence: New features, on more devices",
@@ -3067,7 +3224,7 @@
       ],
       "id": "dev-b73105fe4ec5",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:44.433Z"
     },
     {
       "title": "Gemini 4 Carbon is now available",
@@ -3087,34 +3244,7 @@
       "categories": [],
       "id": "dev-fc6b6a56df7b",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
-    },
-    {
-      "title": "NVIDIA Expands Open Source Commitment With OpenShell Contribution and New AI Infrastructure",
-      "summary": "Kubernetes, the open source system that manages how applications run across thousands of AI factories, has become the foundation for AI, and the demands on it are only growing. To help meet them, NVIDIA is deepening its commitment to open source at KubeCon + CloudNativeCon, the flagship conference for the Kubernetes and cloud-native communities. NVIDIA […]",
-      "url": "https://blogs.nvidia.com/blog/open-source-openshell-infrastructure",
-      "publishedAt": "2026-11-10T16:00:03.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI Infrastructure",
-        "AI Factory",
-        "Artificial Intelligence",
-        "Cloud Services",
-        "Dynamo",
-        "GPU"
-      ],
-      "id": "dev-405fdcad1ce1",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Huang's bad week just got a lot worse",
@@ -3132,34 +3262,7 @@
       ],
       "id": "dev-bb0d17d684bd",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
-    },
-    {
-      "title": "We’re bringing Adobe’s creative and productivity tools closer to your everyday Google apps.",
-      "summary": "Google and Adobe are integrating creative and productivity tools. Edit PDFs in Drive and use Adobe AI in Gemini. See what’s new in this partnership.",
-      "url": "https://blog.google/company-news/inside-google/company-announcements/adobe-google-partnership-integration",
-      "publishedAt": "2026-11-10T14:00:00.000Z",
-      "sourceId": "google-ai-blog",
-      "sourceLabel": "Google AI Blog",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Mountain View",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Google DeepMind",
-        "Company announcements (DEPRECATED)",
-        "Google Workspace",
-        "Google Cloud",
-        "AI",
-        "Gemini App"
-      ],
-      "id": "dev-66ed14c6418f",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.976Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Introducing AlphaProof Code: a breakthrough in verifying complex software at depth",
@@ -3179,7 +3282,7 @@
       "categories": [],
       "id": "dev-f8c1a7370c13",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Opening the datasets behind our AI weather models",
@@ -3199,7 +3302,7 @@
       "categories": [],
       "id": "dev-cd88f6cf71e0",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Anthropic says ‘pacing, not pausing’ with Fable 5.2",
@@ -3217,7 +3320,7 @@
       ],
       "id": "dev-c6bb84fd5747",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Exploring the world's languages with Language Explorer",
@@ -3242,7 +3345,7 @@
       "topics": [
         "personal-data"
       ],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     },
     {
       "title": "Gemini Robotics 2.5 accelerates real-world general dexterity",
@@ -3264,7 +3367,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:37.989Z"
+      "fetchedAt": "2026-11-16T18:20:38.213Z"
     },
     {
       "title": "Amazon builds its home robot team",
@@ -3284,40 +3387,11 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
-    },
-    {
-      "title": "Practice Makes Precise: At CoRL, NVIDIA and Partners Reveal How Robots Rehearse Delicate Work in Simulation",
-      "summary": "Simulation, which has long been the proving ground for robots learning to walk, roll and hop, is now helping researchers teach robots tasks that require a finer touch: aligning gears, connecting cables and assembling small components. The shift from locomotion to manipulation is taking center stage at this week’s Conference on Robot Learning (CoRL) in […]",
-      "url": "https://blogs.nvidia.com/blog/robotics-simulation-advancements-corl",
-      "publishedAt": "2026-11-09T14:00:01.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "Robotics",
-        "Agentic AI",
-        "Artificial Intelligence",
-        "Cosmos",
-        "Events",
-        "Industrial and Manufacturing"
-      ],
-      "id": "dev-7cd5e1029071",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "MinimaLabs/KLM-1.6",
-      "summary": "Pipeline: text-generation. Library: transformers. 1,948 downloads. 88 likes. Tags: transformers, safetensors, klm, text-generation, custom_code.",
+      "summary": "Pipeline: text-generation. Library: transformers. 1,948 downloads. 118 likes. Tags: transformers, safetensors, klm, text-generation, custom_code.",
       "url": "https://huggingface.co/MinimaLabs/KLM-1.6",
       "publishedAt": "2026-11-09T10:00:48.000Z",
       "sourceId": "huggingface-models",
@@ -3338,7 +3412,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "Jensen Huang admits affair amid spy claims",
@@ -3356,38 +3430,11 @@
       ],
       "id": "dev-8e66ef1c2851",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
-    },
-    {
-      "title": "NVIDIA Announces New Planned Investments in Korean Startups at the MSIT-NVIDIA AI Startup Partnership Forum",
-      "summary": "Korea’s Ministry of Science and ICT and NVIDIA hosted the MSIT-NVIDIA AI Startup Partnership Forum at COEX. Representatives from the Ministry of Science and ICT and NVIDIA met with over 20 Korean startups across foundation models, physical AI, AI infrastructure and AI semiconductors. NVIDIA also announced an investment in Korean startup Point2, with additional investments […]",
-      "url": "https://blogs.nvidia.com/blog/korean-startup-investments-msit",
-      "publishedAt": "2026-11-09T08:00:53.000Z",
-      "sourceId": "nvidia",
-      "sourceLabel": "NVIDIA",
-      "sourceType": "research",
-      "tier": "primary",
-      "place": {
-        "city": "Santa Clara",
-        "country": "United States",
-        "iso": "US"
-      },
-      "publisher": null,
-      "categories": [
-        "AI",
-        "Agentic AI",
-        "Events",
-        "Inception",
-        "Physical AI",
-        "Robotics"
-      ],
-      "id": "dev-6d49d7349281",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:43.203Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "MiniMaxAI/MiniMax-H3-Image-PE",
-      "summary": "Pipeline: text-generation. Library: transformers. 2,730 downloads. 74 likes. Tags: transformers, safetensors, qwen3_5, image-text-to-text, prompt-expansion.",
+      "summary": "Pipeline: text-generation. Library: transformers. 2,730 downloads. 89 likes. Tags: transformers, safetensors, qwen3_5, image-text-to-text, prompt-expansion.",
       "url": "https://huggingface.co/MiniMaxAI/MiniMax-H3-Image-PE",
       "publishedAt": "2026-11-08T15:35:23.000Z",
       "sourceId": "huggingface-models",
@@ -3408,11 +3455,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "tencent/Qwen3.8-27B-DSpine-b16",
-      "summary": "Pipeline: text-generation. 5,984 downloads. 284 likes. Tags: safetensors, qwen3, dspine, speculative-decoding, draft-model.",
+      "summary": "Pipeline: text-generation. 5,984 downloads. 286 likes. Tags: safetensors, qwen3, dspine, speculative-decoding, draft-model.",
       "url": "https://huggingface.co/tencent/Qwen3.8-27B-DSpine-b16",
       "publishedAt": "2026-11-07T14:20:29.000Z",
       "sourceId": "huggingface-models",
@@ -3433,11 +3480,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "NousResearch/Arete-27B",
-      "summary": "Pipeline: text-generation. 9,187 downloads. 626 likes. Tags: safetensors, qwen3_5, nous-research, arete, supervised-fine-tuning.",
+      "summary": "Pipeline: text-generation. 9,187 downloads. 634 likes. Tags: safetensors, qwen3_5, nous-research, arete, supervised-fine-tuning.",
       "url": "https://huggingface.co/NousResearch/Arete-27B",
       "publishedAt": "2026-11-06T19:31:28.000Z",
       "sourceId": "huggingface-models",
@@ -3458,7 +3505,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "Big Tech sues to save the feed",
@@ -3476,7 +3523,7 @@
       ],
       "id": "dev-535dfbdaf8c3",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "An inside look at Anthropic’s AI speedup",
@@ -3496,7 +3543,7 @@
       "topics": [
         "labour"
       ],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:56.467Z"
     },
     {
       "title": "Detecting signs of hypertension using wearable sensors",
@@ -3521,7 +3568,7 @@
       "topics": [
         "health"
       ],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     },
     {
       "title": "Formally verifying agent-written full-stack web apps with PDD Kit",
@@ -3545,27 +3592,7 @@
       "topics": [
         "autonomy"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
-    },
-    {
-      "title": "Agility’s $2.5B humanoid hits Nasdaq",
-      "summary": "PLUS: Apple’s first robot faces another delay",
-      "url": "https://www.therundown.ai/articles/agility-2-5b-humanoid-hits-nasdaq",
-      "publishedAt": "2026-11-05T15:30:00.000Z",
-      "sourceId": "rundown-ai",
-      "sourceLabel": "The Rundown AI",
-      "sourceType": "news",
-      "tier": "secondary",
-      "place": null,
-      "publisher": null,
-      "categories": [
-        "robotics"
-      ],
-      "id": "dev-8fc6246167cc",
-      "topics": [
-        "autonomy"
-      ],
-      "fetchedAt": "2026-11-16T12:20:54.312Z"
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
     },
     {
       "title": "CSRI-NGRI: IIIT-H Director as Guest of Honour",
@@ -3589,7 +3616,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:51.043Z"
+      "fetchedAt": "2026-11-16T18:20:52.981Z"
     },
     {
       "title": "Agile Deliberation: How AI helps humans define the gray areas",
@@ -3614,11 +3641,11 @@
       ],
       "id": "dev-d8fa341b96c3",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     },
     {
       "title": "meituan-longcat/LongCat-2.5",
-      "summary": "Pipeline: image-text-to-text. 1,850 downloads. 295 likes. Tags: safetensors, pro_v, multimodal, image-text-to-text, text-generation.",
+      "summary": "Pipeline: image-text-to-text. 1,850 downloads. 315 likes. Tags: safetensors, pro_v, multimodal, image-text-to-text, text-generation.",
       "url": "https://huggingface.co/meituan-longcat/LongCat-2.5",
       "publishedAt": "2026-11-04T11:48:50.000Z",
       "sourceId": "huggingface-models",
@@ -3639,7 +3666,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "IIIT‑H Projects Selected For NeurIPS 2026",
@@ -3663,7 +3690,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:51.043Z"
+      "fetchedAt": "2026-11-16T18:20:52.981Z"
     },
     {
       "title": "Learn the rules: The hacker mindset",
@@ -3685,36 +3712,11 @@
       ],
       "id": "dev-7f05432d1620",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
-    },
-    {
-      "title": "Scantist/GLM-5.3-SLIM-GGUF",
-      "summary": "Pipeline: text-generation. 24,357 downloads. 1,422 likes. Tags: gguf, llama.cpp, glm_moe_dsa, moe, neural-architecture-search.",
-      "url": "https://huggingface.co/Scantist/GLM-5.3-SLIM-GGUF",
-      "publishedAt": "2026-11-02T13:11:14.000Z",
-      "sourceId": "huggingface-models",
-      "sourceLabel": "Hugging Face models",
-      "sourceType": "code",
-      "tier": "primary",
-      "place": null,
-      "publisher": null,
-      "categories": [
-        "gguf",
-        "llama.cpp",
-        "glm_moe_dsa",
-        "moe",
-        "neural-architecture-search",
-        "nas"
-      ],
-      "id": "dev-4790b9b5667f",
-      "topics": [
-        "general-ai"
-      ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
     },
     {
       "title": "moonshotai/Kimi-K3.1-Pro",
-      "summary": "Pipeline: image-text-to-text. Library: transformers. 49,428 downloads. 2,121 likes. Tags: transformers, safetensors, kimi_k31, text-generation, compressed-tensors.",
+      "summary": "Pipeline: image-text-to-text. Library: transformers. 49,428 downloads. 2,133 likes. Tags: transformers, safetensors, kimi_k31, text-generation, compressed-tensors.",
       "url": "https://huggingface.co/moonshotai/Kimi-K3.1-Pro",
       "publishedAt": "2026-11-02T04:13:51.000Z",
       "sourceId": "huggingface-models",
@@ -3735,11 +3737,11 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "ccore/Qwen3.5-4B-GLB-3D-Coder",
-      "summary": "Pipeline: text-generation. 59,137 downloads. 438 likes. Tags: safetensors, gguf, qwen3_5, code, threejs.",
+      "summary": "Pipeline: text-generation. 59,137 downloads. 443 likes. Tags: safetensors, gguf, qwen3_5, code, threejs.",
       "url": "https://huggingface.co/ccore/Qwen3.5-4B-GLB-3D-Coder",
       "publishedAt": "2026-11-01T22:30:01.000Z",
       "sourceId": "huggingface-models",
@@ -3760,7 +3762,7 @@
       "topics": [
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:38.358Z"
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "From synthetic enterprise data evaluations to real Microsoft Copilot AI confidence",
@@ -3784,29 +3786,32 @@
       "topics": [
         "synthetic-media"
       ],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
+      "fetchedAt": "2026-11-16T18:20:42.220Z"
     },
     {
-      "title": "Microsoft Research Focus – Edition #97",
-      "summary": "Host Sowbhagya Suresh shares some of the latest news and cutting-edge research from across Microsoft—from understanding the challenges facing coding agents to uncovering how people use AI at work and improving extended-range weather forecasting. The post Microsoft Research Focus – Edition #97 appeared first on Microsoft Research .",
-      "url": "https://www.microsoft.com/en-us/research/podcast/microsoft-research-focus-edition-97",
-      "publishedAt": "2026-10-29T19:19:16.000Z",
-      "sourceId": "microsoft-research",
-      "sourceLabel": "Microsoft Research",
-      "sourceType": "research",
+      "title": "KRAFTON/Raon-1-nano",
+      "summary": "Pipeline: text-generation. Library: transformers. 1,510 downloads. 121 likes. Tags: transformers, safetensors, raon1_nano, text-generation, raon.",
+      "url": "https://huggingface.co/KRAFTON/Raon-1-nano",
+      "publishedAt": "2026-10-29T05:38:14.000Z",
+      "sourceId": "huggingface-models",
+      "sourceLabel": "Hugging Face models",
+      "sourceType": "code",
       "tier": "primary",
-      "place": {
-        "city": "Redmond",
-        "country": "United States",
-        "iso": "US"
-      },
+      "place": null,
       "publisher": null,
       "categories": [
-        "Microsoft Research Podcast"
+        "transformers",
+        "safetensors",
+        "raon1_nano",
+        "text-generation",
+        "raon",
+        "conversational"
       ],
-      "id": "dev-8eef8a1c6a51",
-      "topics": [],
-      "fetchedAt": "2026-11-16T12:20:41.894Z"
+      "id": "dev-63d4ab177918",
+      "topics": [
+        "general-ai"
+      ],
+      "fetchedAt": "2026-11-16T18:20:38.825Z"
     },
     {
       "title": "Getting hired in AI: Navigating Canada’s evolving AI job market",
@@ -3832,7 +3837,7 @@
         "labour",
         "general-ai"
       ],
-      "fetchedAt": "2026-11-16T12:20:43.300Z"
+      "fetchedAt": "2026-11-16T18:20:44.782Z"
     },
     {
       "title": "The sleep framework: A new way for LLMs to retain knowledge in continual learning",
@@ -3857,7 +3862,7 @@
       ],
       "id": "dev-feb4caa835f1",
       "topics": [],
-      "fetchedAt": "2026-11-16T12:20:42.549Z"
+      "fetchedAt": "2026-11-16T18:20:44.106Z"
     }
   ]
 }
